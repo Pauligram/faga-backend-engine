@@ -1,17 +1,26 @@
-# Use the highly trusted Nginx + PHP production image wrapper
-FROM richarvey/nginx-php-fpm:latest
+# Use the explicit PHP 8.4 alpine build with alpine package managers
+FROM php:8.4-fpm-alpine
 
-# Set your project directory room
-COPY . /var/www/html
+# Install essential system utilities and Nginx proxy wrappers
+RUN alpine-apk-add --no-cache \
+    nginx \
+    postgresql-dev \
+    libpq \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Define the webroot straight to Laravel's entry portal
-ENV WEBROOT /var/www/html/public
-ENV APP_ENV production
+# Download verified stable Composer binaries straight from official roots
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install system dependencies and optimize framework cache maps
-RUN cd /var/www/html && \
-    composer install --no-dev --optimize-autoloader --no-interaction && \
-    php artisan config:cache && \
-    php artisan route:cache
+# Configure working directories 
+WORKDIR /var/var/www/html
+COPY . .
 
-EXPOSE 8000
+# Run secure dependency extraction loops satisfying modern PHP parameters
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Mirror static public directories straight into your Nginx defaults public directories configuration rooms
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 10000
+
+CMD nginx && php-fpm

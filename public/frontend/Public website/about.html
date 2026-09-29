@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About FAGA | Logistics, Marketplace, Food & Services</title>
+
+    <meta name="description"
+          content="Learn about FAGA — a connected platform for logistics, marketplace, food ordering and professional services.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --navy: #071a33;
+            --navy-2: #0b2342;
+            --navy-3: #102d50;
+            --orange: #f7931e;
+            --orange-dark: #df7d0b;
+            --white: #ffffff;
+            --text: #172033;
+            --muted: #667085;
+            --light: #f7f9fc;
+            --border: #e5eaf0;
+            --success: #12a150;
+            --shadow: 0 12px 35px rgba(7, 26, 51, .08);
+            --radius: 18px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: auto;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(7, 26, 51, .97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .nav-inner {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.8px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            color: var(--navy);
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,.88);
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: .2s ease;
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255,255,255,.25);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .btn-orange:hover {
+            background: #ff9f2e;
+            transform: translateY(-1px);
+        }
+
+        .menu-toggle {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(7,26,51,.97), rgba(11,35,66,.94)),
+                radial-gradient(circle at 80% 20%, rgba(247,147,30,.25), transparent 35%);
+            color: white;
+            padding: 92px 0 90px;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            align-items: center;
+            gap: 70px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--orange);
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            margin-bottom: 17px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--orange);
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 70px);
+            line-height: 1.03;
+            letter-spacing: -2.5px;
+            margin-bottom: 23px;
+        }
+
+        .hero h1 span {
+            color: var(--orange);
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: rgba(255,255,255,.78);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-card {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.22);
+        }
+
+        .hero-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .hero-card-icon {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            border-radius: 15px;
+            background: rgba(247,147,30,.15);
+            color: var(--orange);
+            font-size: 24px;
+        }
+
+        .live-pill {
+            background: rgba(18,161,80,.14);
+            color: #55db91;
+            padding: 7px 11px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .hero-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .hero-card p {
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .mini-services {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .mini-service {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 12px;
+            padding: 13px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .mini-service i {
+            color: var(--orange);
+        }
+
+        /* =========================
+           SECTION
+        ========================== */
+
+        section {
+            padding: 90px 0;
+        }
+
+        .section-head {
+            max-width: 700px;
+            margin-bottom: 45px;
+        }
+
+        .section-head.center {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-head h2 {
+            font-size: clamp(30px, 4vw, 46px);
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 14px;
+        }
+
+        .section-head p {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        /* =========================
+           INTRO
+        ========================== */
+
+        .intro {
+            background: var(--white);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .intro-copy h2 {
+            font-size: 40px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .intro-copy h2 span {
+            color: var(--orange);
+        }
+
+        .intro-copy p {
+            color: var(--muted);
+            margin-bottom: 17px;
+        }
+
+        .check-list {
+            display: grid;
+            gap: 13px;
+            margin-top: 25px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .check-item i {
+            flex: 0 0 auto;
+            width: 25px;
+            height: 25px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(247,147,30,.13);
+            color: var(--orange);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .check-item span {
+            font-weight: 600;
+            color: #344054;
+        }
+
+        .intro-visual {
+            min-height: 430px;
+            background: var(--navy);
+            border-radius: 28px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-visual::before {
+            content: "";
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            background: rgba(247,147,30,.12);
+            top: -100px;
+            right: -70px;
+        }
+
+        .visual-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .visual-logo {
+            width: 76px;
+            height: 76px;
+            background: var(--orange);
+            color: var(--navy);
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .visual-title {
+            color: white;
+            font-size: 34px;
+            font-weight: 800;
+            max-width: 350px;
+            line-height: 1.2;
+            margin-top: 45px;
+        }
+
+        .visual-bottom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .visual-stat {
+            padding: 17px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px;
+        }
+
+        .visual-stat strong {
+            color: var(--orange);
+            font-size: 21px;
+            display: block;
+        }
+
+        .visual-stat span {
+            color: rgba(255,255,255,.68);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MISSION
+        ========================== */
+
+        .mission {
+            background: var(--light);
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .mission-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            transition: .25s ease;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .mission-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 15px;
+            background: rgba(247,147,30,.12);
+            color: var(--orange);
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .mission-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .mission-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================
+           ECOSYSTEM
+        ========================== */
+
+        .ecosystem {
+            background: var(--navy);
+            color: white;
+        }
+
+        .ecosystem .section-head p {
+            color: rgba(255,255,255,.68);
+        }
+
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .eco-card {
+            border: 1px solid rgba(255,255,255,.1);
+            background: rgba(255,255,255,.055);
+            border-radius: 17px;
+            padding: 27px 22px;
+            transition: .25s ease;
+        }
+
+        .eco-card:hover {
+            border-color: rgba(247,147,30,.45);
+            transform: translateY(-4px);
+        }
+
+        .eco-card i {
+            color: var(--orange);
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
+
+        .eco-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .eco-card p {
+            color: rgba(255,255,255,.63);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           VALUES
+        ========================== */
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .value-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            display: flex;
+            gap: 18px;
+            background: white;
+        }
+
+        .value-number {
+            flex: 0 0 auto;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--navy);
+            color: var(--orange);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+        }
+
+        .value-card h3 {
+            margin-bottom: 7px;
+            font-size: 18px;
+        }
+
+        .value-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================
+           CTA
+        ========================== */
+
+        .cta {
+            padding-top: 30px;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--orange), #ffad42);
+            border-radius: 25px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .cta-box h2 {
+            color: var(--navy);
+            font-size: 34px;
+            line-height: 1.2;
+            margin-bottom: 9px;
+        }
+
+        .cta-box p {
+            color: rgba(7,26,51,.75);
+            max-width: 620px;
+        }
+
+        .cta-box .btn {
+            background: var(--navy);
+            color: white;
+            white-space: nowrap;
+        }
+
+        .cta-box .btn:hover {
+            background: var(--navy-3);
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #041226;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .footer-main {
+            padding: 65px 0 40px;
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 45px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,.58);
+            max-width: 330px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .footer-title {
+            font-weight: 800;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,.58);
+            font-size: 13px;
+            transition: .2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: rgba(255,255,255,.45);
+            font-size: 12px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .socials a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.65);
+            transition: .2s ease;
+        }
+
+        .socials a:hover {
+            color: var(--orange);
+            border-color: var(--orange);
+        }
+
+        /* =========================
+           BACK TO TOP
+        ========================== */
+
+        .back-top {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border: none;
+            background: var(--orange);
+            color: var(--navy);
+            cursor: pointer;
+            display: none;
+            place-items: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,.2);
+            z-index: 900;
+        }
+
+        .back-top.show {
+            display: grid;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1000px) {
+            .nav-links {
+                gap: 15px;
+            }
+
+            .hero-grid,
+            .intro-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 70px 0;
+            }
+
+            .hero-card {
+                max-width: 600px;
+            }
+
+            .ecosystem-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-main {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+
+            .footer-main .footer-column:last-child {
+                grid-column: 2;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                width: min(100% - 28px, 1180px);
+            }
+
+            .nav-inner {
+                min-height: 67px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+
+            .nav-mobile-open .nav-links {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 74px;
+                background: var(--navy);
+                border: 1px solid rgba(255,255,255,.1);
+                border-radius: 15px;
+                padding: 18px;
+                display: grid;
+                gap: 5px;
+            }
+
+            .nav-mobile-open .nav-links a {
+                padding: 12px;
+                border-radius: 8px;
+            }
+
+            .nav-mobile-open .nav-links a:hover {
+                background: rgba(255,255,255,.05);
+            }
+
+            .nav-mobile-open .nav-actions {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 330px;
+                background: var(--navy);
+                display: flex;
+                padding: 0 18px 18px;
+                border-radius: 0 0 15px 15px;
+            }
+
+            section {
+                padding: 65px 0;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .mission-grid,
+            .values-grid,
+            .ecosystem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-bottom {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-box {
+                padding: 32px 25px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+
+            .footer-main .footer-column:last-child {
+                grid-column: auto;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 22px;
+            }
+
+            .brand-mark {
+                width: 34px;
+                height: 34px;
+            }
+
+            .hero {
+                padding: 55px 0;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                display: grid;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .intro-visual {
+                min-height: 390px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-main .footer-column:last-child {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================== -->
+
+<header class="navbar" id="navbar">
+    <div class="container nav-inner">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">F</span>
+            <span>FAGA</span>
+        </a>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="logistics.html">Logistics</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="food.html">Food</a>
+            <a href="services.html">Services</a>
+            <a href="about.html" class="active">About</a>
+            <a href="help.html">Help</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+            <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+</header>
+
+
+<!-- =========================
+     HERO
+========================== -->
+
+<section class="hero">
+
+    <div class="container hero-grid">
+
+        <div>
+            <div class="eyebrow">About FAGA</div>
+
+            <h1>
+                One platform.
+                <span>Many possibilities.</span>
+            </h1>
+
+            <p>
+                FAGA is designed to bring everyday commerce, logistics,
+                food and professional services together in one connected
+                digital platform.
+            </p>
+
+            <div class="hero-actions">
+                <a href="../user portal/register.html" class="btn btn-orange">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Create an Account
+                </a>
+
+                <a href="#our-story" class="btn btn-outline">
+                    Discover FAGA
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+
+            <div class="hero-card-top">
+                <div class="hero-card-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <span class="live-pill">
+                    <i class="fa-solid fa-circle"></i>
+                    Connected Platform
+                </span>
+            </div>
+
+            <h3>A connected FAGA ecosystem</h3>
+
+            <p>
+                From getting a package delivered to ordering food,
+                buying products or finding a professional, FAGA brings
+                multiple everyday needs into one experience.
+            </p>
+
+            <div class="mini-services">
+
+                <div class="mini-service">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    Logistics
+                </div>
+
+                <div class="mini-service">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Marketplace
+                </div>
+
+                <div class="mini-service">
+                    <i class="fa-solid fa-utensils"></i>
+                    Food
+                </div>
+
+                <div class="mini-service">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Services
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     OUR STORY
+========================== -->
+
+<section class="intro" id="our-story">
+
+    <div class="container intro-grid">
+
+        <div class="intro-copy">
+
+            <div class="eyebrow">Our Story</div>
+
+            <h2>
+                Making everyday
+                <span>transactions simpler.</span>
+            </h2>
+
+            <p>
+                FAGA is built around a simple idea: people should not have
+                to navigate a different platform for every everyday need.
+            </p>
+
+            <p>
+                Whether someone needs to send something, buy something,
+                order a meal or find a trusted service provider, FAGA
+                brings these experiences together through one platform.
+            </p>
+
+            <p>
+                Our ecosystem is designed to connect customers,
+                businesses, riders, restaurants and service professionals
+                while creating opportunities for people and businesses
+                to participate in the digital economy.
+            </p>
+
+            <div class="check-list">
+
+                <div class="check-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>One account across the FAGA ecosystem</span>
+                </div>
+
+                <div class="check-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Connected logistics and commerce experiences</span>
+                </div>
+
+                <div class="check-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Opportunities for individuals and businesses</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="intro-visual">
+
+            <div class="visual-content">
+
+                <div class="visual-logo">F</div>
+
+                <div class="visual-title">
+                    Connecting people,
+                    businesses and
+                    everyday needs.
+                </div>
+
+                <div class="visual-bottom">
+
+                    <div class="visual-stat">
+                        <strong>01</strong>
+                        <span>Connected account</span>
+                    </div>
+
+                    <div class="visual-stat">
+                        <strong>04</strong>
+                        <span>Core ecosystems</span>
+                    </div>
+
+                    <div class="visual-stat">
+                        <strong>∞</strong>
+                        <span>Possibilities</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MISSION
+========================== -->
+
+<section class="mission">
+
+    <div class="container">
+
+        <div class="section-head center">
+
+            <div class="eyebrow">What Drives Us</div>
+
+            <h2>Our mission</h2>
+
+            <p>
+                FAGA is focused on making digital commerce and everyday
+                services more accessible, connected and convenient.
+            </p>
+
+        </div>
+
+        <div class="mission-grid">
+
+            <article class="mission-card">
+
+                <div class="mission-icon">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+
+                <h3>Connect</h3>
+
+                <p>
+                    Connect customers with products, restaurants,
+                    riders, businesses and service professionals
+                    through one platform.
+                </p>
+
+            </article>
+
+
+            <article class="mission-card">
+
+                <div class="mission-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <h3>Simplify</h3>
+
+                <p>
+                    Reduce friction in everyday transactions by
+                    bringing discovery, ordering, payment and delivery
+                    closer together.
+                </p>
+
+            </article>
+
+
+            <article class="mission-card">
+
+                <div class="mission-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <h3>Create Opportunity</h3>
+
+                <p>
+                    Give businesses, riders and service providers
+                    digital tools that can help them reach more
+                    customers and grow.
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ECOSYSTEM
+========================== -->
+
+<section class="ecosystem">
+
+    <div class="container">
+
+        <div class="section-head center">
+
+            <div class="eyebrow">The FAGA Ecosystem</div>
+
+            <h2>Everything works together.</h2>
+
+            <p>
+                FAGA connects several everyday experiences into one
+                ecosystem rather than treating them as isolated services.
+            </p>
+
+        </div>
+
+        <div class="ecosystem-grid">
+
+            <article class="eco-card">
+                <i class="fa-solid fa-truck-fast"></i>
+                <h3>Logistics</h3>
+                <p>
+                    Delivery, dispatch and movement of goods from one
+                    location to another.
+                </p>
+            </article>
+
+            <article class="eco-card">
+                <i class="fa-solid fa-store"></i>
+                <h3>Marketplace</h3>
+                <p>
+                    A digital marketplace connecting buyers and sellers
+                    across different product categories.
+                </p>
+            </article>
+
+            <article class="eco-card">
+                <i class="fa-solid fa-bowl-food"></i>
+                <h3>Food</h3>
+                <p>
+                    Discover restaurants and order food through a
+                    convenient digital experience.
+                </p>
+            </article>
+
+            <article class="eco-card">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h3>Services</h3>
+                <p>
+                    Discover professionals and businesses offering
+                    useful services for everyday needs.
+                </p>
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     VALUES
+========================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="eyebrow">Our Values</div>
+
+            <h2>How we want FAGA to operate.</h2>
+
+            <p>
+                The platform is designed around principles that guide
+                how we build products, serve users and work with partners.
+            </p>
+
+        </div>
+
+        <div class="values-grid">
+
+            <article class="value-card">
+
+                <div class="value-number">01</div>
+
+                <div>
+                    <h3>Customer First</h3>
+                    <p>
+                        We aim to make every interaction straightforward,
+                        useful and respectful of the customer's time.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article class="value-card">
+
+                <div class="value-number">02</div>
+
+                <div>
+                    <h3>Trust & Safety</h3>
+                    <p>
+                        Trust, transparency and responsible platform
+                        operations are fundamental to the FAGA experience.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article class="value-card">
+
+                <div class="value-number">03</div>
+
+                <div>
+                    <h3>Accessibility</h3>
+                    <p>
+                        We want individuals and businesses to have access
+                        to useful digital tools and opportunities.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article class="value-card">
+
+                <div class="value-number">04</div>
+
+                <div>
+                    <h3>Continuous Improvement</h3>
+                    <p>
+                        We continuously improve the platform based on
+                        technology, feedback and real-world needs.
+                    </p>
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================== -->
+
+<section class="cta">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <div>
+                <h2>Ready to experience FAGA?</h2>
+
+                <p>
+                    Create one account and explore the FAGA ecosystem —
+                    from logistics and food to marketplace products
+                    and professional services.
+                </p>
+            </div>
+
+            <a href="../user portal/register.html" class="btn">
+                Get Started
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">F</span>
+                    <span>FAGA</span>
+                </a>
+
+                <p>
+                    A connected platform for logistics, marketplace,
+                    food and professional services.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <div class="footer-title">Explore</div>
+
+                <div class="footer-links">
+                    <a href="logistics.html">Logistics</a>
+                    <a href="marketplace.html">Marketplace</a>
+                    <a href="food.html">Food</a>
+                    <a href="services.html">Services</a>
+                    <a href="track-order.html">Track Order</a>
+                </div>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <div class="footer-title">Company</div>
+
+                <div class="footer-links">
+                    <a href="about.html">About FAGA</a>
+                    <a href="help.html">Help Center</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="safety.html">Safety</a>
+                </div>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <div class="footer-title">Account</div>
+
+                <div class="footer-links">
+                    <a href="../user portal/login.html">Login</a>
+                    <a href="../user portal/register.html">Create Account</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © <span id="year"></span> FAGA. All rights reserved.
+            </span>
+
+            <div class="socials">
+
+                <a href="#" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="#" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="#" aria-label="X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+
+                <a href="#" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- BACK TO TOP -->
+
+<button class="back-top" id="backTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+
+<script>
+    /* =========================
+       MOBILE NAVIGATION
+    ========================== */
+
+    const navbar = document.getElementById("navbar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    menuToggle.addEventListener("click", () => {
+        navbar.classList.toggle("nav-mobile-open");
+
+        const icon = menuToggle.querySelector("i");
+
+        if (navbar.classList.contains("nav-mobile-open")) {
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-xmark");
+        } else {
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+        }
+    });
+
+
+    /* Close mobile menu after clicking a link */
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            navbar.classList.remove("nav-mobile-open");
+
+            const icon = menuToggle.querySelector("i");
+
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+
+        });
+
+    });
+
+
+    /* =========================
+       BACK TO TOP
+    ========================== */
+
+    const backTop = document.getElementById("backTop");
+
+    window.addEventListener("scroll", () => {
+
+        if (window.scrollY > 450) {
+            backTop.classList.add("show");
+        } else {
+            backTop.classList.remove("show");
+        }
+
+    });
+
+    backTop.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+
+
+    /* =========================
+       CURRENT YEAR
+    ========================== */
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+
+    /* =========================
+       BACKEND INTEGRATION NOTES
+    ==========================
+
+       This page is primarily informational and does not require
+       authentication.
+
+       Suggested future endpoints:
+
+       GET /api/company/profile
+       GET /api/company/about
+       GET /api/company/statistics
+
+       The static content above can later be replaced with data
+       returned from the backend/CMS.
+
+       SECURITY:
+       - Never expose private API keys in this file.
+       - Public company information may be cached.
+       - Any administrative content must be protected server-side.
+    ========================== */
+</script>
+
+</body>
+</html>

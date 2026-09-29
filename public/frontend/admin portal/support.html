@@ -1,0 +1,4160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support | FAGA Admin</title>
+
+<style>
+:root{
+    --navy:#071a33;
+    --navy2:#0b2342;
+    --navy3:#102d50;
+    --orange:#f7931e;
+    --orange-dark:#df7d0d;
+    --bg:#f4f6f9;
+    --white:#fff;
+    --text:#172033;
+    --muted:#697586;
+    --border:#e2e7ee;
+    --success:#16a34a;
+    --success-bg:#eaf8ef;
+    --warning:#d97706;
+    --warning-bg:#fff7e6;
+    --danger:#dc2626;
+    --danger-bg:#fef0f0;
+    --info:#2563eb;
+    --info-bg:#edf4ff;
+    --purple:#7c3aed;
+    --purple-bg:#f3edff;
+    --shadow:0 4px 18px rgba(7,26,51,.07);
+    --sidebar:250px;
+    --topbar:70px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* TOPBAR */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:var(--topbar);
+    background:var(--navy);
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:0 22px;
+    z-index:1000;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mobile-menu{
+    display:none;
+    width:38px;
+    height:38px;
+    border:1px solid rgba(255,255,255,.1);
+    background:var(--navy2);
+    color:white;
+    border-radius:6px;
+    margin-right:10px;
+}
+
+.brand{
+    width:var(--sidebar);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:24px;
+    font-weight:800;
+}
+
+.brand-fa{color:white}
+.brand-ga{color:var(--orange)}
+
+.admin-badge{
+    font-size:9px;
+    background:var(--orange);
+    padding:4px 7px;
+    border-radius:4px;
+    letter-spacing:.6px;
+}
+
+.top-search{
+    flex:1;
+    max-width:560px;
+    position:relative;
+}
+
+.top-search input{
+    width:100%;
+    height:40px;
+    border:none;
+    outline:none;
+    border-radius:7px;
+    background:var(--navy2);
+    color:white;
+    padding:0 42px 0 15px;
+}
+
+.top-search input::placeholder{
+    color:#9eacc0;
+}
+
+.top-search span{
+    position:absolute;
+    right:14px;
+    top:10px;
+    color:#aab7c9;
+}
+
+.top-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.top-action{
+    height:40px;
+    padding:0 11px;
+    border:1px solid rgba(255,255,255,.09);
+    background:var(--navy2);
+    color:white;
+    border-radius:7px;
+}
+
+.notification{
+    position:relative;
+    min-width:40px;
+}
+
+.notification-badge{
+    position:absolute;
+    right:-3px;
+    top:-5px;
+    width:17px;
+    height:17px;
+    background:var(--orange);
+    border-radius:50%;
+    font-size:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding-left:13px;
+    margin-left:5px;
+    border-left:1px solid rgba(255,255,255,.1);
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+.profile-name{
+    font-size:12px;
+    font-weight:700;
+}
+
+.profile-role{
+    color:#9eacc0;
+    font-size:9px;
+    margin-top:2px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    top:var(--topbar);
+    left:0;
+    bottom:0;
+    width:var(--sidebar);
+    background:var(--navy);
+    color:white;
+    overflow-y:auto;
+    z-index:900;
+    padding:15px 10px;
+}
+
+.sidebar-title{
+    color:#718198;
+    font-size:9px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:14px 12px 7px;
+}
+
+.side-link{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 12px;
+    margin-bottom:2px;
+    border-radius:7px;
+    color:#c6d0dd;
+    font-size:12px;
+}
+
+.side-link:hover{
+    background:var(--navy2);
+    color:white;
+}
+
+.side-link.active{
+    background:var(--orange);
+    color:white;
+    font-weight:700;
+}
+
+.side-icon{
+    width:20px;
+    text-align:center;
+    font-size:14px;
+}
+
+.side-count{
+    margin-left:auto;
+    padding:2px 7px;
+    border-radius:20px;
+    background:rgba(255,255,255,.1);
+    font-size:9px;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:var(--sidebar);
+    padding-top:var(--topbar);
+    min-height:100vh;
+}
+
+.content{
+    padding:28px;
+    max-width:1800px;
+    margin:auto;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:23px;
+}
+
+.page-title{
+    color:var(--navy);
+    font-size:27px;
+    font-weight:800;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+.header-actions{
+    display:flex;
+    gap:9px;
+}
+
+.btn{
+    border:1px solid var(--border);
+    background:white;
+    color:var(--text);
+    border-radius:7px;
+    padding:10px 14px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.btn:hover{
+    background:#f8fafc;
+}
+
+.btn-primary{
+    background:var(--orange);
+    border-color:var(--orange);
+    color:white;
+}
+
+.btn-primary:hover{
+    background:var(--orange-dark);
+}
+
+/* KPI */
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.kpi{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:17px;
+    box-shadow:var(--shadow);
+}
+
+.kpi-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.kpi-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:var(--info-bg);
+    color:var(--info);
+    font-size:18px;
+}
+
+.kpi:nth-child(2) .kpi-icon{
+    background:var(--warning-bg);
+    color:var(--warning);
+}
+
+.kpi:nth-child(3) .kpi-icon{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.kpi:nth-child(4) .kpi-icon{
+    background:var(--danger-bg);
+    color:var(--danger);
+}
+
+.kpi:nth-child(5) .kpi-icon{
+    background:var(--purple-bg);
+    color:var(--purple);
+}
+
+.kpi:nth-child(6) .kpi-icon{
+    background:#fff4e7;
+    color:var(--orange);
+}
+
+.kpi-label{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:13px;
+}
+
+.kpi-value{
+    color:var(--navy);
+    font-size:21px;
+    font-weight:800;
+    margin-top:4px;
+}
+
+.kpi-change{
+    font-size:9px;
+    margin-top:5px;
+}
+
+.positive{color:var(--success)}
+.negative{color:var(--danger)}
+
+/* PANELS */
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+}
+
+.panel-header{
+    padding:16px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.panel-title{
+    color:var(--navy);
+    font-size:14px;
+    font-weight:800;
+}
+
+.panel-subtitle{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+/* SUPPORT SEARCH */
+
+.support-search{
+    background:var(--navy);
+    border-radius:10px;
+    padding:25px;
+    color:white;
+    margin-bottom:20px;
+}
+
+.support-search h2{
+    font-size:18px;
+    font-weight:800;
+}
+
+.support-search p{
+    color:#b9c5d4;
+    font-size:10px;
+    margin-top:5px;
+}
+
+.support-search-box{
+    display:flex;
+    gap:8px;
+    margin-top:17px;
+}
+
+.support-search-box input{
+    flex:1;
+    height:43px;
+    border:none;
+    border-radius:7px;
+    padding:0 14px;
+    outline:none;
+}
+
+.support-search-box button{
+    background:var(--orange);
+    border:none;
+    color:white;
+    border-radius:7px;
+    padding:0 20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* SUPPORT KPI */
+
+.support-grid{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.agent-status{
+    padding:18px;
+}
+
+.agent-summary{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding-bottom:17px;
+    border-bottom:1px solid var(--border);
+}
+
+.agent-number{
+    font-size:30px;
+    font-weight:800;
+    color:var(--navy);
+}
+
+.agent-label{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.agent-progress{
+    flex:1;
+}
+
+.progress-title{
+    display:flex;
+    justify-content:space-between;
+    font-size:9px;
+    margin-bottom:6px;
+}
+
+.progress-bar{
+    height:7px;
+    border-radius:20px;
+    background:#edf0f4;
+    overflow:hidden;
+}
+
+.progress-bar span{
+    display:block;
+    height:100%;
+    background:var(--success);
+    border-radius:20px;
+}
+
+.agent-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:17px;
+}
+
+.agent-stat{
+    background:#f8fafc;
+    border-radius:7px;
+    padding:12px;
+}
+
+.agent-stat strong{
+    display:block;
+    color:var(--navy);
+    font-size:16px;
+}
+
+.agent-stat span{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+/* QUEUE */
+
+.queue{
+    padding-bottom:5px;
+}
+
+.queue-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 18px;
+    border-bottom:1px solid #edf0f4;
+}
+
+.queue-item:last-child{
+    border-bottom:none;
+}
+
+.queue-icon{
+    width:32px;
+    height:32px;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--info-bg);
+    color:var(--info);
+    flex-shrink:0;
+}
+
+.queue-info{
+    flex:1;
+}
+
+.queue-name{
+    font-size:10px;
+    font-weight:800;
+}
+
+.queue-meta{
+    font-size:8px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.queue-count{
+    font-size:15px;
+    font-weight:800;
+    color:var(--navy);
+}
+
+/* FILTERS */
+
+.filter-panel{
+    padding:15px;
+    margin-bottom:18px;
+}
+
+.filter-row{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr 1fr auto;
+    gap:9px;
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    height:39px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    outline:none;
+    padding:0 10px;
+    font-size:10px;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--orange);
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    padding:0 18px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+}
+
+.tab{
+    border:none;
+    background:none;
+    padding:13px 12px;
+    font-size:9px;
+    color:var(--muted);
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+}
+
+.tab.active{
+    color:var(--orange);
+    font-weight:800;
+    border-bottom-color:var(--orange);
+}
+
+/* BULK */
+
+.bulk-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 18px;
+    background:#fafbfc;
+    border-bottom:1px solid var(--border);
+}
+
+.bulk-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.bulk-left label{
+    font-size:9px;
+    color:var(--muted);
+}
+
+.bulk-actions{
+    display:flex;
+    gap:6px;
+}
+
+.bulk-btn{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    padding:6px 9px;
+    font-size:8px;
+    font-weight:700;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+}
+
+th{
+    background:#f8fafc;
+    color:#697586;
+    text-transform:uppercase;
+    letter-spacing:.45px;
+    font-size:9px;
+    text-align:left;
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+}
+
+td{
+    padding:13px 14px;
+    font-size:10px;
+    border-bottom:1px solid #edf0f4;
+    vertical-align:middle;
+}
+
+tr:hover td{
+    background:#fbfcfd;
+}
+
+.ticket-id{
+    color:var(--info);
+    font-weight:800;
+}
+
+.customer{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.customer-avatar{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#edf1f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:800;
+    color:var(--navy);
+}
+
+.customer-name{
+    font-weight:800;
+    font-size:10px;
+}
+
+.customer-email{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:2px;
+}
+
+.issue{
+    max-width:220px;
+}
+
+.issue-title{
+    font-weight:700;
+}
+
+.issue-sub{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+.status{
+    display:inline-flex;
+    padding:4px 7px;
+    border-radius:4px;
+    font-size:8px;
+    font-weight:800;
+}
+
+.status-open{
+    background:var(--info-bg);
+    color:var(--info);
+}
+
+.status-pending{
+    background:var(--warning-bg);
+    color:var(--warning);
+}
+
+.status-resolved{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.status-escalated{
+    background:var(--danger-bg);
+    color:var(--danger);
+}
+
+.status-closed{
+    background:#eef0f3;
+    color:#667085;
+}
+
+.priority{
+    font-size:8px;
+    font-weight:800;
+}
+
+.priority-high{color:var(--danger)}
+.priority-medium{color:var(--warning)}
+.priority-low{color:var(--success)}
+
+.table-action{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    padding:6px 9px;
+    font-size:9px;
+    font-weight:700;
+}
+
+.table-action:hover{
+    background:#f6f8fa;
+}
+
+/* LOWER */
+
+.lower-grid{
+    display:grid;
+    grid-template-columns:1.15fr 1fr 1fr;
+    gap:18px;
+    margin-top:20px;
+}
+
+.metric-list{
+    padding:8px 18px 12px;
+}
+
+.metric-row{
+    display:flex;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.metric-row:last-child{
+    border-bottom:none;
+}
+
+.metric-name{
+    font-size:9px;
+    color:var(--muted);
+}
+
+.metric-value{
+    font-size:10px;
+    font-weight:800;
+    color:var(--navy);
+}
+
+.agent-list{
+    padding:7px 18px;
+}
+
+.agent-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.agent-row:last-child{
+    border-bottom:none;
+}
+
+.agent-avatar{
+    width:29px;
+    height:29px;
+    border-radius:50%;
+    background:#eaf0f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:8px;
+    font-weight:800;
+}
+
+.agent-name{
+    font-size:9px;
+    font-weight:800;
+}
+
+.agent-role{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:2px;
+}
+
+.agent-score{
+    margin-left:auto;
+    font-size:9px;
+    font-weight:800;
+}
+
+.alert{
+    display:flex;
+    gap:10px;
+    padding:12px 18px;
+    border-bottom:1px solid #edf0f4;
+}
+
+.alert:last-child{
+    border-bottom:none;
+}
+
+.alert-icon{
+    width:29px;
+    height:29px;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--warning-bg);
+    color:var(--warning);
+    flex-shrink:0;
+}
+
+.alert-title{
+    font-size:9px;
+    font-weight:800;
+}
+
+.alert-text{
+    color:var(--muted);
+    font-size:8px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+/* PAGINATION */
+
+.pagination{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+}
+
+.pagination-info{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.page-buttons{
+    display:flex;
+    gap:4px;
+}
+
+.page-btn{
+    min-width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    font-size:9px;
+}
+
+.page-btn.active{
+    background:var(--orange);
+    color:white;
+    border-color:var(--orange);
+}
+
+/* MODAL */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(2,12,25,.68);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:680px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-title{
+    color:var(--navy);
+    font-size:16px;
+    font-weight:800;
+}
+
+.close-modal{
+    width:31px;
+    height:31px;
+    border:none;
+    border-radius:6px;
+    background:#f1f4f7;
+    font-size:16px;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.ticket-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:17px;
+}
+
+.summary-box{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:11px;
+}
+
+.summary-box span{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+}
+
+.summary-box strong{
+    display:block;
+    color:var(--navy);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.conversation{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.message{
+    padding:13px;
+    border-bottom:1px solid var(--border);
+}
+
+.message:last-child{
+    border-bottom:none;
+}
+
+.message-head{
+    display:flex;
+    justify-content:space-between;
+    font-size:9px;
+}
+
+.message-name{
+    font-weight:800;
+}
+
+.message-time{
+    color:var(--muted);
+}
+
+.message-body{
+    color:#536174;
+    font-size:9px;
+    line-height:1.6;
+    margin-top:6px;
+}
+
+.reply-box{
+    margin-top:15px;
+}
+
+.reply-box textarea{
+    width:100%;
+    min-height:85px;
+    resize:vertical;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:10px;
+    outline:none;
+    font-size:10px;
+}
+
+.reply-box textarea:focus{
+    border-color:var(--orange);
+}
+
+.modal-footer{
+    padding:15px 20px;
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:var(--navy);
+    color:white;
+    padding:13px 17px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:3000;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1400px){
+
+    .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .filter-row{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:1150px){
+
+    .support-grid{
+        grid-template-columns:1fr;
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .brand{
+        width:auto;
+    }
+
+    .top-search{
+        display:none;
+    }
+
+    .profile-name,
+    .profile-role{
+        display:none;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .content{
+        padding:17px;
+    }
+
+    .page-header{
+        flex-direction:column;
+    }
+
+    .header-actions{
+        width:100%;
+    }
+
+    .header-actions .btn{
+        flex:1;
+    }
+
+    .kpi-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .filter-row{
+        grid-template-columns:1fr;
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr;
+    }
+
+    .agent-stats{
+        grid-template-columns:1fr;
+    }
+
+    .ticket-summary{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .support-search-box{
+        flex-direction:column;
+    }
+
+    .support-search-box button{
+        height:42px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+    <button class="mobile-menu" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="brand">
+
+        <span>
+            <span class="brand-fa">FA</span><span class="brand-ga">GA</span>
+        </span>
+
+        <span class="admin-badge">
+            ADMIN
+        </span>
+
+    </div>
+
+    <div class="top-search">
+
+        <input
+            id="globalSearch"
+            type="text"
+            placeholder="Search tickets, users, orders..."
+            onkeydown="globalSearch(event)"
+        >
+
+        <span>⌕</span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <button class="top-action"
+                onclick="showToast('Opening support agent console...')">
+            🎧 Agent Console
+        </button>
+
+        <button class="top-action notification"
+                onclick="showToast('You have 12 support notifications')">
+            🔔
+            <span class="notification-badge">12</span>
+        </button>
+
+        <div class="admin-profile">
+
+            <div class="avatar">
+                SA
+            </div>
+
+            <div>
+
+                <div class="profile-name">
+                    Super Admin
+                </div>
+
+                <div class="profile-role">
+                    Administrator
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-title">
+        Overview
+    </div>
+
+    <a class="side-link" href="../Public website/index.html">
+        <span class="side-icon">▦</span>
+        Dashboard
+    </a>
+
+
+    <div class="sidebar-title">
+        Management
+    </div>
+
+    <a class="side-link" href="users.html">
+        <span class="side-icon">♙</span>
+        Users
+        <span class="side-count">48K</span>
+    </a>
+
+    <a class="side-link" href="orders.html">
+        <span class="side-icon">▤</span>
+        Orders
+    </a>
+
+    <a class="side-link" href="../Public website/logistics.html">
+        <span class="side-icon">▰</span>
+        Logistics
+    </a>
+
+    <a class="side-link" href="riders.html">
+        <span class="side-icon">♟</span>
+        Riders
+    </a>
+
+    <a class="side-link" href="../Public website/marketplace.html">
+        <span class="side-icon">▥</span>
+        Marketplace
+    </a>
+
+    <a class="side-link" href="sellers.html">
+        <span class="side-icon">◫</span>
+        Sellers
+    </a>
+
+    <a class="side-link" href="../Public website/services.html">
+        <span class="side-icon">⚒</span>
+        Services
+    </a>
+
+    <a class="side-link" href="service-providers.html">
+        <span class="side-icon">♙</span>
+        Service Providers
+    </a>
+
+    <a class="side-link" href="../Public website/food.html">
+        <span class="side-icon">♨</span>
+        Food & Restaurants
+    </a>
+
+
+    <div class="sidebar-title">
+        Finance
+    </div>
+
+    <a class="side-link" href="payments.html">
+        <span class="side-icon">₦</span>
+        Payments
+    </a>
+
+    <a class="side-link" href="wallets.html">
+        <span class="side-icon">▣</span>
+        Wallets
+    </a>
+
+    <a class="side-link" href="payouts.html">
+        <span class="side-icon">⇧</span>
+        Payouts
+        <span class="side-count">214</span>
+    </a>
+
+    <a class="side-link" href="reports.html">
+        <span class="side-icon">▥</span>
+        Reports
+    </a>
+
+
+    <div class="sidebar-title">
+        Operations
+    </div>
+
+    <a class="side-link active" href="support.html">
+        <span class="side-icon">?</span>
+        Support
+        <span class="side-count">36</span>
+    </a>
+
+    <a class="side-link" href="disputes.html">
+        <span class="side-icon">⚠</span>
+        Disputes
+        <span class="side-count">12</span>
+    </a>
+
+    <a class="side-link" href="settings.html">
+        <span class="side-icon">⚙</span>
+        Settings
+    </a>
+
+    <a class="side-link" href="audit-logs.html">
+        <span class="side-icon">◷</span>
+        Audit Logs
+    </a>
+
+
+    <div class="sidebar-title">
+        Portal
+    </div>
+
+    <a class="side-link" href="../user portal/dashboard.html">
+        <span class="side-icon">↗</span>
+        User Portal
+    </a>
+
+    <a class="side-link"
+       href="#"
+       onclick="logout(event)">
+        <span class="side-icon">⇥</span>
+        Sign Out
+    </a>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<div class="content">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1 class="page-title">
+                Support Center
+            </h1>
+
+            <p class="page-subtitle">
+                Manage customer conversations, support tickets,
+                escalations and service issues across FAGA.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button class="btn"
+                    onclick="showToast('Support performance report queued')">
+                ↓ Export
+            </button>
+
+            <button class="btn"
+                    onclick="showToast('Opening agent management...')">
+                Manage Agents
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="createTicket()">
+                + Create Ticket
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <section class="support-search">
+
+        <h2>
+            How can we help?
+        </h2>
+
+        <p>
+            Search customers, tickets, orders, transactions and
+            previous support conversations.
+        </p>
+
+        <div class="support-search-box">
+
+            <input
+                id="supportSearch"
+                type="text"
+                placeholder="Search ticket ID, customer, order number or keyword..."
+                onkeydown="supportSearch(event)"
+            >
+
+            <button onclick="performSupportSearch()">
+                Search Support
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- KPIs -->
+
+    <section class="kpi-grid">
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">?</div>
+            </div>
+
+            <div class="kpi-label">
+                Open Tickets
+            </div>
+
+            <div class="kpi-value">
+                186
+            </div>
+
+            <div class="kpi-change negative">
+                ↑ 12.4% today
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">◷</div>
+            </div>
+
+            <div class="kpi-label">
+                Pending Response
+            </div>
+
+            <div class="kpi-value">
+                74
+            </div>
+
+            <div class="kpi-change negative">
+                18 over SLA
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">✓</div>
+            </div>
+
+            <div class="kpi-label">
+                Resolved Today
+            </div>
+
+            <div class="kpi-value">
+                428
+            </div>
+
+            <div class="kpi-change positive">
+                ↑ 8.7%
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">⚠</div>
+            </div>
+
+            <div class="kpi-label">
+                Escalated
+            </div>
+
+            <div class="kpi-value">
+                36
+            </div>
+
+            <div class="kpi-change negative">
+                7 critical
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">★</div>
+            </div>
+
+            <div class="kpi-label">
+                Customer Satisfaction
+            </div>
+
+            <div class="kpi-value">
+                94.8%
+            </div>
+
+            <div class="kpi-change positive">
+                ↑ 2.1%
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">⚡</div>
+            </div>
+
+            <div class="kpi-label">
+                Avg. Response Time
+            </div>
+
+            <div class="kpi-value">
+                4m 28s
+            </div>
+
+            <div class="kpi-change positive">
+                ↓ 18% faster
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AGENT + QUEUE -->
+
+    <section class="support-grid">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Support Team
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Live support agent availability
+                    </div>
+
+                </div>
+
+                <button class="btn"
+                        onclick="showToast('Opening agent dashboard...')">
+                    Agent Dashboard
+                </button>
+
+            </div>
+
+
+            <div class="agent-status">
+
+                <div class="agent-summary">
+
+                    <div>
+
+                        <div class="agent-number">
+                            42 / 58
+                        </div>
+
+                        <div class="agent-label">
+                            Agents online
+                        </div>
+
+                    </div>
+
+                    <div class="agent-progress">
+
+                        <div class="progress-title">
+
+                            <span>
+                                Current capacity
+                            </span>
+
+                            <strong>
+                                72%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-bar">
+                            <span style="width:72%;"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="agent-stats">
+
+                    <div class="agent-stat">
+
+                        <strong>
+                            31
+                        </strong>
+
+                        <span>
+                            Available
+                        </span>
+
+                    </div>
+
+
+                    <div class="agent-stat">
+
+                        <strong>
+                            11
+                        </strong>
+
+                        <span>
+                            Busy
+                        </span>
+
+                    </div>
+
+
+                    <div class="agent-stat">
+
+                        <strong>
+                            16
+                        </strong>
+
+                        <span>
+                            Offline
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Support Queue
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Tickets requiring attention
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="queue">
+
+                <div class="queue-item">
+
+                    <div class="queue-icon">
+                        ▰
+                    </div>
+
+                    <div class="queue-info">
+
+                        <div class="queue-name">
+                            Logistics & Delivery
+                        </div>
+
+                        <div class="queue-meta">
+                            Delivery issues and tracking
+                        </div>
+
+                    </div>
+
+                    <div class="queue-count">
+                        62
+                    </div>
+
+                </div>
+
+
+                <div class="queue-item">
+
+                    <div class="queue-icon">
+                        ₦
+                    </div>
+
+                    <div class="queue-info">
+
+                        <div class="queue-name">
+                            Payments & Wallets
+                        </div>
+
+                        <div class="queue-meta">
+                            Payment and refund issues
+                        </div>
+
+                    </div>
+
+                    <div class="queue-count">
+                        41
+                    </div>
+
+                </div>
+
+
+                <div class="queue-item">
+
+                    <div class="queue-icon">
+                        ◫
+                    </div>
+
+                    <div class="queue-info">
+
+                        <div class="queue-name">
+                            Marketplace
+                        </div>
+
+                        <div class="queue-meta">
+                            Orders and seller issues
+                        </div>
+
+                    </div>
+
+                    <div class="queue-count">
+                        38
+                    </div>
+
+                </div>
+
+
+                <div class="queue-item">
+
+                    <div class="queue-icon">
+                        ⚒
+                    </div>
+
+                    <div class="queue-info">
+
+                        <div class="queue-name">
+                            Services & Food
+                        </div>
+
+                        <div class="queue-meta">
+                            Booking and restaurant issues
+                        </div>
+
+                    </div>
+
+                    <div class="queue-count">
+                        27
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+
+    <section class="panel filter-panel">
+
+        <div class="filter-row">
+
+            <div class="field">
+
+                <label>
+                    Search Tickets
+                </label>
+
+                <input
+                    id="ticketFilter"
+                    type="text"
+                    placeholder="Ticket, customer or order..."
+                    oninput="filterTickets()"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Status
+                </label>
+
+                <select id="statusFilter"
+                        onchange="filterTickets()">
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="open">
+                        Open
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="escalated">
+                        Escalated
+                    </option>
+
+                    <option value="resolved">
+                        Resolved
+                    </option>
+
+                    <option value="closed">
+                        Closed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Category
+                </label>
+
+                <select id="categoryFilter"
+                        onchange="filterTickets()">
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                    <option value="logistics">
+                        Logistics
+                    </option>
+
+                    <option value="payment">
+                        Payments
+                    </option>
+
+                    <option value="marketplace">
+                        Marketplace
+                    </option>
+
+                    <option value="food">
+                        Food
+                    </option>
+
+                    <option value="service">
+                        Services
+                    </option>
+
+                    <option value="account">
+                        Account
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Priority
+                </label>
+
+                <select id="priorityFilter"
+                        onchange="filterTickets()">
+
+                    <option value="all">
+                        All Priorities
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="low">
+                        Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Assigned Agent
+                </label>
+
+                <select>
+
+                    <option>
+                        All Agents
+                    </option>
+
+                    <option>
+                        Sarah Okafor
+                    </option>
+
+                    <option>
+                        Daniel James
+                    </option>
+
+                    <option>
+                        Grace Bello
+                    </option>
+
+                    <option>
+                        Michael Ade
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button class="btn btn-primary"
+                    onclick="resetFilters()"
+                    style="align-self:end;">
+                Reset
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- TICKETS -->
+
+    <section class="panel">
+
+        <div class="tabs">
+
+            <button class="tab active"
+                    onclick="setTab(this,'all')">
+                All Tickets
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'open')">
+                Open
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'pending')">
+                Pending
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'escalated')">
+                Escalated
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'resolved')">
+                Resolved
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'closed')">
+                Closed
+            </button>
+
+        </div>
+
+
+        <div class="bulk-bar">
+
+            <div class="bulk-left">
+
+                <input
+                    type="checkbox"
+                    id="selectAll"
+                    onchange="selectAllTickets(this)"
+                >
+
+                <label>
+                    <span id="selectedCount">0</span>
+                    selected
+                </label>
+
+            </div>
+
+
+            <div class="bulk-actions">
+
+                <button class="bulk-btn"
+                        onclick="bulkAssign()">
+                    Assign
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkReply()">
+                    Reply
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkResolve()">
+                    Resolve
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkExport()">
+                    Export
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table id="ticketTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Ticket
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Issue
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Priority
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Assigned
+                        </th>
+
+                        <th>
+                            Updated
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr data-status="open"
+                        data-category="logistics"
+                        data-priority="high">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98421
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    AO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Amina Okafor
+                                    </div>
+
+                                    <div class="customer-email">
+                                        amina@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Package has not arrived
+                                </div>
+
+                                <div class="issue-sub">
+                                    Order #ORD-48219
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Logistics
+                        </td>
+
+                        <td>
+                            <span class="priority priority-high">
+                                HIGH
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Sarah Okafor
+                        </td>
+
+                        <td>
+                            4 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98421')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="pending"
+                        data-category="payment"
+                        data-priority="high">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98420
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    KA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Kunle Ade
+                                    </div>
+
+                                    <div class="customer-email">
+                                        kunle@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Wallet debit not reflected
+                                </div>
+
+                                <div class="issue-sub">
+                                    Transaction #WAL-98211
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Payments
+                        </td>
+
+                        <td>
+                            <span class="priority priority-high">
+                                HIGH
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+                            Daniel James
+                        </td>
+
+                        <td>
+                            12 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98420')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="escalated"
+                        data-category="marketplace"
+                        data-priority="high">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98419
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    CE
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Chinedu Eze
+                                    </div>
+
+                                    <div class="customer-email">
+                                        chinedu@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Seller dispute over damaged item
+                                </div>
+
+                                <div class="issue-sub">
+                                    Order #ORD-48172
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Marketplace
+                        </td>
+
+                        <td>
+                            <span class="priority priority-high">
+                                HIGH
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-escalated">
+                                Escalated
+                            </span>
+                        </td>
+
+                        <td>
+                            Grace Bello
+                        </td>
+
+                        <td>
+                            28 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98419')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="open"
+                        data-category="food"
+                        data-priority="medium">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98418
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    BO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Blessing Obi
+                                    </div>
+
+                                    <div class="customer-email">
+                                        blessing@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Wrong meal delivered
+                                </div>
+
+                                <div class="issue-sub">
+                                    Food order #FD-72198
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Food
+                        </td>
+
+                        <td>
+                            <span class="priority priority-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Michael Ade
+                        </td>
+
+                        <td>
+                            35 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98418')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="resolved"
+                        data-category="service"
+                        data-priority="low">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98417
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    YA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Yusuf Abdullahi
+                                    </div>
+
+                                    <div class="customer-email">
+                                        yusuf@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Service provider arrived late
+                                </div>
+
+                                <div class="issue-sub">
+                                    Booking #SRV-23891
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Services
+                        </td>
+
+                        <td>
+                            <span class="priority priority-low">
+                                LOW
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-resolved">
+                                Resolved
+                            </span>
+                        </td>
+
+                        <td>
+                            Sarah Okafor
+                        </td>
+
+                        <td>
+                            1 hr ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98417')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="pending"
+                        data-category="account"
+                        data-priority="medium">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98416
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    FO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Fatima Ojo
+                                    </div>
+
+                                    <div class="customer-email">
+                                        fatima@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Unable to verify account
+                                </div>
+
+                                <div class="issue-sub">
+                                    User #USR-28491
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Account
+                        </td>
+
+                        <td>
+                            <span class="priority priority-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+                            Daniel James
+                        </td>
+
+                        <td>
+                            2 hrs ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98416')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="open"
+                        data-category="logistics"
+                        data-priority="medium">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98415
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    SO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Samuel Okoro
+                                    </div>
+
+                                    <div class="customer-email">
+                                        samuel@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Rider cannot contact customer
+                                </div>
+
+                                <div class="issue-sub">
+                                    Delivery #DEL-77281
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Logistics
+                        </td>
+
+                        <td>
+                            <span class="priority priority-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Michael Ade
+                        </td>
+
+                        <td>
+                            3 hrs ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98415')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="closed"
+                        data-category="payment"
+                        data-priority="low">
+
+                        <td>
+                            <input class="ticket-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="ticket-id">
+                                TKT-98414
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    IA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Ibrahim Ali
+                                    </div>
+
+                                    <div class="customer-email">
+                                        ibrahim@example.com
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue">
+
+                                <div class="issue-title">
+                                    Refund confirmation
+                                </div>
+
+                                <div class="issue-sub">
+                                    Payment #PAY-98412
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Payments
+                        </td>
+
+                        <td>
+                            <span class="priority priority-low">
+                                LOW
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-closed">
+                                Closed
+                            </span>
+                        </td>
+
+                        <td>
+                            Grace Bello
+                        </td>
+
+                        <td>
+                            Yesterday
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openTicket('TKT-98414')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="pagination">
+
+            <div class="pagination-info">
+                Showing 1–8 of 186 tickets
+            </div>
+
+            <div class="page-buttons">
+
+                <button class="page-btn"
+                        onclick="showToast('Already on first page')">
+                    ‹
+                </button>
+
+                <button class="page-btn active">
+                    1
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 2...')">
+                    2
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 3...')">
+                    3
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 4...')">
+                    4
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading next page...')">
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LOWER PANELS -->
+
+    <section class="lower-grid">
+
+        <!-- SUPPORT METRICS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Support Performance
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Today's support metrics
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="metric-list">
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        First response SLA
+                    </span>
+                    <span class="metric-value">
+                        96.2%
+                    </span>
+                </div>
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        Resolution SLA
+                    </span>
+                    <span class="metric-value">
+                        91.8%
+                    </span>
+                </div>
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        Average handle time
+                    </span>
+                    <span class="metric-value">
+                        8m 42s
+                    </span>
+                </div>
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        Tickets per agent
+                    </span>
+                    <span class="metric-value">
+                        10.2
+                    </span>
+                </div>
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        Reopened tickets
+                    </span>
+                    <span class="metric-value">
+                        3.8%
+                    </span>
+                </div>
+
+                <div class="metric-row">
+                    <span class="metric-name">
+                        Escalation rate
+                    </span>
+                    <span class="metric-value">
+                        4.2%
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOP AGENTS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Top Support Agents
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Performance this month
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="agent-list">
+
+                <div class="agent-row">
+
+                    <div class="agent-avatar">
+                        SO
+                    </div>
+
+                    <div>
+
+                        <div class="agent-name">
+                            Sarah Okafor
+                        </div>
+
+                        <div class="agent-role">
+                            Senior Support Agent
+                        </div>
+
+                    </div>
+
+                    <div class="agent-score">
+                        98.4%
+                    </div>
+
+                </div>
+
+
+                <div class="agent-row">
+
+                    <div class="agent-avatar">
+                        DB
+                    </div>
+
+                    <div>
+
+                        <div class="agent-name">
+                            Daniel Bello
+                        </div>
+
+                        <div class="agent-role">
+                            Support Agent
+                        </div>
+
+                    </div>
+
+                    <div class="agent-score">
+                        97.8%
+                    </div>
+
+                </div>
+
+
+                <div class="agent-row">
+
+                    <div class="agent-avatar">
+                        GB
+                    </div>
+
+                    <div>
+
+                        <div class="agent-name">
+                            Grace Bello
+                        </div>
+
+                        <div class="agent-role">
+                            Marketplace Support
+                        </div>
+
+                    </div>
+
+                    <div class="agent-score">
+                        96.9%
+                    </div>
+
+                </div>
+
+
+                <div class="agent-row">
+
+                    <div class="agent-avatar">
+                        MA
+                    </div>
+
+                    <div>
+
+                        <div class="agent-name">
+                            Michael Ade
+                        </div>
+
+                        <div class="agent-role">
+                            Logistics Support
+                        </div>
+
+                    </div>
+
+                    <div class="agent-score">
+                        95.7%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERTS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Support Alerts
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Issues requiring attention
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="alert">
+
+                    <div class="alert-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <div class="alert-title">
+                            18 tickets over SLA
+                        </div>
+
+                        <div class="alert-text">
+                            Several customer requests have exceeded
+                            the first-response target.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alert">
+
+                    <div class="alert-icon">
+                        ⚠
+                    </div>
+
+                    <div>
+
+                        <div class="alert-title">
+                            7 critical escalations
+                        </div>
+
+                        <div class="alert-text">
+                            Payment and delivery cases require
+                            supervisor review.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alert">
+
+                    <div class="alert-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <div class="alert-title">
+                            Queue capacity at 72%
+                        </div>
+
+                        <div class="alert-text">
+                            Consider assigning additional agents
+                            during peak hours.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- TICKET MODAL -->
+
+<div class="modal-overlay" id="ticketModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                Ticket TKT-98421
+            </div>
+
+            <button class="close-modal"
+                    onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="ticket-summary">
+
+                <div class="summary-box">
+
+                    <span>
+                        Customer
+                    </span>
+
+                    <strong>
+                        Amina Okafor
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Category
+                    </span>
+
+                    <strong>
+                        Logistics
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Priority
+                    </span>
+
+                    <strong>
+                        High
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Order
+                    </span>
+
+                    <strong>
+                        ORD-48219
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Assigned
+                    </span>
+
+                    <strong>
+                        Sarah Okafor
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong>
+                        Open
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="conversation">
+
+                <div class="message">
+
+                    <div class="message-head">
+
+                        <span class="message-name">
+                            Amina Okafor
+                        </span>
+
+                        <span class="message-time">
+                            14:32
+                        </span>
+
+                    </div>
+
+                    <div class="message-body">
+                        My package was supposed to arrive earlier
+                        today, but I have not received it yet.
+                        Please help me check where the rider is.
+                    </div>
+
+                </div>
+
+
+                <div class="message">
+
+                    <div class="message-head">
+
+                        <span class="message-name">
+                            Sarah Okafor · Support
+                        </span>
+
+                        <span class="message-time">
+                            14:35
+                        </span>
+
+                    </div>
+
+                    <div class="message-body">
+                        Hello Amina. I am checking the delivery
+                        status and rider location now. I will update
+                        you shortly.
+                    </div>
+
+                </div>
+
+
+                <div class="message">
+
+                    <div class="message-head">
+
+                        <span class="message-name">
+                            System
+                        </span>
+
+                        <span class="message-time">
+                            14:37
+                        </span>
+
+                    </div>
+
+                    <div class="message-body">
+                        Order ORD-48219 is currently assigned to rider
+                        RD-4821 and has an active delivery status.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="reply-box">
+
+                <textarea
+                    id="replyMessage"
+                    placeholder="Write a reply to the customer..."></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn"
+                    onclick="closeModal()">
+                Close
+            </button>
+
+            <button class="btn"
+                    onclick="assignTicket()">
+                Assign
+            </button>
+
+            <button class="btn"
+                    onclick="escalateTicket()">
+                Escalate
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="sendReply()">
+                Send Reply
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* SIDEBAR */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList
+        .toggle("open");
+
+}
+
+
+/* TOAST */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },2800);
+
+}
+
+
+/* SUPPORT SEARCH */
+
+function performSupportSearch(){
+
+    const value =
+        document
+            .getElementById("supportSearch")
+            .value
+            .trim();
+
+    if(!value){
+
+        showToast(
+            "Enter a ticket, order, customer or keyword"
+        );
+
+        return;
+
+    }
+
+    showToast(
+        "Searching support for: " + value
+    );
+
+}
+
+
+function supportSearch(event){
+
+    if(event.key === "Enter"){
+
+        performSupportSearch();
+
+    }
+
+}
+
+
+/* TABS */
+
+function setTab(button,status){
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("statusFilter")
+        .value = status;
+
+    filterTickets();
+
+}
+
+
+/* FILTER */
+
+function filterTickets(){
+
+    const search =
+        document
+            .getElementById("ticketFilter")
+            .value
+            .toLowerCase();
+
+    const status =
+        document
+            .getElementById("statusFilter")
+            .value;
+
+    const category =
+        document
+            .getElementById("categoryFilter")
+            .value;
+
+    const priority =
+        document
+            .getElementById("priorityFilter")
+            .value;
+
+    const rows =
+        document
+            .querySelectorAll("#ticketTable tbody tr");
+
+    rows.forEach(row => {
+
+        const text =
+            row.innerText.toLowerCase();
+
+        const rowStatus =
+            row.dataset.status;
+
+        const rowCategory =
+            row.dataset.category;
+
+        const rowPriority =
+            row.dataset.priority;
+
+        const matchSearch =
+            !search ||
+            text.includes(search);
+
+        const matchStatus =
+            status === "all" ||
+            rowStatus === status;
+
+        const matchCategory =
+            category === "all" ||
+            rowCategory === category;
+
+        const matchPriority =
+            priority === "all" ||
+            rowPriority === priority;
+
+        row.style.display =
+            matchSearch &&
+            matchStatus &&
+            matchCategory &&
+            matchPriority
+                ? ""
+                : "none";
+
+    });
+
+}
+
+
+/* RESET */
+
+function resetFilters(){
+
+    document.getElementById("ticketFilter").value = "";
+
+    document.getElementById("statusFilter").value = "all";
+
+    document.getElementById("categoryFilter").value = "all";
+
+    document.getElementById("priorityFilter").value = "all";
+
+    filterTickets();
+
+    showToast("Support filters reset");
+
+}
+
+
+/* SELECT ALL */
+
+function selectAllTickets(master){
+
+    const visibleChecks =
+        [...document.querySelectorAll(
+            "#ticketTable tbody tr"
+        )]
+        .filter(row => row.style.display !== "none")
+        .map(row =>
+            row.querySelector(".ticket-check")
+        );
+
+    visibleChecks.forEach(check => {
+
+        check.checked =
+            master.checked;
+
+    });
+
+    updateSelected();
+
+}
+
+
+function updateSelected(){
+
+    const checks =
+        document.querySelectorAll(
+            ".ticket-check:checked"
+        );
+
+    document
+        .getElementById("selectedCount")
+        .textContent = checks.length;
+
+}
+
+
+/* BULK ACTIONS */
+
+function getSelectedCount(){
+
+    return document
+        .querySelectorAll(
+            ".ticket-check:checked"
+        )
+        .length;
+
+}
+
+
+function bulkAssign(){
+
+    const count = getSelectedCount();
+
+    if(!count){
+
+        showToast("Select tickets first");
+
+        return;
+
+    }
+
+    showToast(
+        count +
+        " ticket(s) ready for assignment"
+    );
+
+}
+
+
+function bulkReply(){
+
+    const count = getSelectedCount();
+
+    if(!count){
+
+        showToast("Select tickets first");
+
+        return;
+
+    }
+
+    showToast(
+        "Opening bulk reply for " +
+        count +
+        " ticket(s)"
+    );
+
+}
+
+
+function bulkResolve(){
+
+    const count = getSelectedCount();
+
+    if(!count){
+
+        showToast("Select tickets first");
+
+        return;
+
+    }
+
+    if(confirm(
+        "Resolve " +
+        count +
+        " selected ticket(s)?"
+    )){
+
+        showToast(
+            count +
+            " ticket(s) marked for resolution"
+        );
+
+    }
+
+}
+
+
+function bulkExport(){
+
+    const count = getSelectedCount();
+
+    if(!count){
+
+        showToast("Select tickets first");
+
+        return;
+
+    }
+
+    showToast(
+        "Preparing export for " +
+        count +
+        " ticket(s)"
+    );
+
+}
+
+
+/* TICKET MODAL */
+
+function openTicket(ticketId){
+
+    document
+        .querySelector(".modal-title")
+        .textContent =
+        "Ticket " + ticketId;
+
+    document
+        .getElementById("ticketModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("ticketModal")
+        .classList
+        .remove("show");
+
+}
+
+
+document
+    .getElementById("ticketModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* TICKET ACTIONS */
+
+function sendReply(){
+
+    const message =
+        document
+            .getElementById("replyMessage")
+            .value
+            .trim();
+
+    if(!message){
+
+        showToast(
+            "Write a reply first"
+        );
+
+        return;
+
+    }
+
+    document
+        .getElementById("replyMessage")
+        .value = "";
+
+    showToast(
+        "Reply sent successfully"
+    );
+
+}
+
+
+function assignTicket(){
+
+    showToast(
+        "Opening ticket assignment..."
+    );
+
+}
+
+
+function escalateTicket(){
+
+    if(confirm(
+        "Escalate this ticket to a supervisor?"
+    )){
+
+        showToast(
+            "Ticket escalated successfully"
+        );
+
+    }
+
+}
+
+
+/* CREATE TICKET */
+
+function createTicket(){
+
+    showToast(
+        "Opening new support ticket form..."
+    );
+
+}
+
+
+/* GLOBAL SEARCH */
+
+function globalSearch(event){
+
+    if(event.key !== "Enter"){
+
+        return;
+
+    }
+
+    const value =
+        event.target.value.trim();
+
+    if(!value){
+
+        return;
+
+    }
+
+    showToast(
+        "Searching FAGA support records for: " +
+        value
+    );
+
+}
+
+
+/* LOGOUT */
+
+function logout(event){
+
+    event.preventDefault();
+
+    if(!confirm(
+        "Sign out of FAGA Admin?"
+    )){
+
+        return;
+
+    }
+
+    showToast("Signing out...");
+
+    setTimeout(() => {
+
+        window.location.href="../user portal/login.html";
+
+    },700);
+
+}
+
+
+/*
+=========================================================
+BACKEND INTEGRATION
+=========================================================
+
+SUPPORT TICKETS
+
+GET:
+
+/api/admin/support
+/api/admin/support/:id
+/api/admin/support/summary
+/api/admin/support/queue
+/api/admin/support/agents
+/api/admin/support/categories
+/api/admin/support/search
+/api/admin/support/export
+
+POST:
+
+/api/admin/support/tickets
+/api/admin/support/tickets/:id/reply
+/api/admin/support/tickets/:id/assign
+/api/admin/support/tickets/:id/escalate
+/api/admin/support/tickets/:id/resolve
+/api/admin/support/tickets/:id/close
+
+PUT:
+
+/api/admin/support/tickets/:id
+/api/admin/support/tickets/:id/status
+/api/admin/support/tickets/:id/priority
+/api/admin/support/tickets/:id/assignment
+
+BULK:
+
+POST /api/admin/support/bulk/assign
+POST /api/admin/support/bulk/resolve
+POST /api/admin/support/bulk/close
+POST /api/admin/support/bulk/export
+
+AGENTS:
+
+GET /api/admin/support/agents
+GET /api/admin/support/agents/:id
+GET /api/admin/support/agents/:id/performance
+POST /api/admin/support/agents/:id/status
+
+LIVE CHAT:
+
+GET /api/admin/support/conversations
+GET /api/admin/support/conversations/:id
+POST /api/admin/support/conversations/:id/reply
+POST /api/admin/support/conversations/:id/assign
+
+REPORTING:
+
+GET /api/admin/support/reports
+GET /api/admin/support/reports/performance
+GET /api/admin/support/reports/sla
+GET /api/admin/support/reports/satisfaction
+
+IMPORTANT SECURITY RULES:
+
+- Admin authorization MUST be enforced server-side.
+- Agents must only see conversations permitted by their role.
+- Customer personal information must be access-controlled.
+- Support messages should be permanently auditable.
+- Ticket status changes should create audit-log records.
+- Assignment changes should be logged.
+- Escalations should record the responsible administrator.
+- Payment/refund requests should not be approved merely because
+  a support agent changed a browser-side status.
+- Financial actions must go through the payment/wallet backend.
+- Support agents should not directly modify immutable financial
+  ledger records.
+- Sensitive customer data should be minimized in the UI.
+- File attachments should be scanned and access-controlled.
+- Search results should be permission-filtered server-side.
+- Live chat should use authenticated sessions.
+- Rate limiting should protect support APIs.
+- All production ticket IDs and customer data should come
+  from the backend rather than hard-coded HTML.
+
+ONE FAGA ACCOUNT ARCHITECTURE:
+
+A customer, rider, seller, service provider or restaurant user
+continues to use ONE FAGA account.
+
+Support should identify the user's account and active role(s)
+from the backend rather than creating separate support identities.
+
+=========================================================
+*/
+
+</script>
+
+</body>
+</html>

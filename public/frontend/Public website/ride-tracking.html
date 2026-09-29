@@ -1,0 +1,2761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Ride | FAGA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0d2748;
+            --orange: #f7931e;
+            --orange-dark: #df7f0d;
+            --white: #ffffff;
+            --light: #f5f7fa;
+            --text: #172033;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --green: #16a34a;
+            --red: #dc2626;
+            --blue: #2563eb;
+            --shadow: 0 10px 30px rgba(7, 26, 51, 0.12);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 72px;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--orange);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #dbe4ef;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.35);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            border: none;
+            color: var(--navy);
+            font-weight: 700;
+            padding: 11px 20px;
+            border-radius: 8px;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 26px;
+        }
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            color: white;
+            padding: 35px 6% 80px;
+        }
+
+        .page-header-inner {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            color: #b8c7d9;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb a {
+            color: var(--orange);
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .tracking-wrapper {
+            max-width: 1250px;
+            margin: -45px auto 70px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tracking-grid {
+            display: grid;
+            grid-template-columns: 1fr 410px;
+            gap: 20px;
+        }
+
+        /* =========================
+           MAP
+        ========================= */
+
+        .map-card {
+            background: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 680px;
+            position: relative;
+        }
+
+        .map-area {
+            min-height: 680px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(90deg, rgba(255,255,255,.75) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,.75) 1px, transparent 1px),
+                #e5eadf;
+
+            background-size: 65px 65px;
+        }
+
+        .road {
+            position: absolute;
+            background: white;
+            border: 1px solid #d3d8cf;
+            box-shadow: 0 0 0 1px rgba(255,255,255,.5);
+        }
+
+        .road-1 {
+            width: 130%;
+            height: 60px;
+            left: -15%;
+            top: 26%;
+            transform: rotate(-12deg);
+        }
+
+        .road-2 {
+            width: 120%;
+            height: 45px;
+            left: -10%;
+            top: 58%;
+            transform: rotate(18deg);
+        }
+
+        .road-3 {
+            width: 100%;
+            height: 35px;
+            left: 15%;
+            top: 35%;
+            transform: rotate(70deg);
+        }
+
+        .road-4 {
+            width: 90%;
+            height: 32px;
+            left: 30%;
+            top: 72%;
+            transform: rotate(-63deg);
+        }
+
+        .map-place {
+            position: absolute;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .place-1 {
+            top: 15%;
+            left: 16%;
+        }
+
+        .place-2 {
+            top: 42%;
+            right: 15%;
+        }
+
+        .place-3 {
+            bottom: 19%;
+            left: 15%;
+        }
+
+        .place-4 {
+            bottom: 11%;
+            right: 20%;
+        }
+
+        /* Route */
+
+        .route-line {
+            position: absolute;
+            width: 5px;
+            height: 48%;
+            background: var(--orange);
+            top: 26%;
+            left: 51%;
+            transform: rotate(30deg);
+            transform-origin: top center;
+            border-radius: 10px;
+            box-shadow: 0 0 0 4px rgba(247,147,30,.15);
+            z-index: 3;
+        }
+
+        .route-line::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-right: 2px dashed white;
+            opacity: .7;
+        }
+
+        /* Destination */
+
+        .destination-marker {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--red);
+            border: 5px solid white;
+            border-radius: 6px;
+            right: 23%;
+            bottom: 19%;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+        }
+
+        .destination-marker::after {
+            content: "Destination";
+            position: absolute;
+            white-space: nowrap;
+            top: 31px;
+            left: -20px;
+            font-size: 10px;
+            background: white;
+            color: var(--text);
+            padding: 4px 7px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.12);
+        }
+
+        /* Driver marker */
+
+        .driver-marker {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--navy);
+            border: 4px solid white;
+            left: 43%;
+            top: 29%;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            box-shadow: 0 5px 18px rgba(0,0,0,.25);
+            transition: all 1s linear;
+        }
+
+        .driver-pulse {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 2px solid var(--orange);
+            opacity: .4;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(.7);
+                opacity: .7;
+            }
+
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Map info */
+
+        .map-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 14px 18px;
+            box-shadow: var(--shadow);
+            z-index: 30;
+            min-width: 220px;
+        }
+
+        .map-status strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .map-status span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #ecfdf3;
+            color: var(--green);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-top: 6px;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        /* Map controls */
+
+        .map-controls {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            z-index: 30;
+        }
+
+        .map-control {
+            width: 43px;
+            height: 43px;
+            border: none;
+            background: white;
+            border-radius: 9px;
+            box-shadow: var(--shadow);
+            font-size: 19px;
+        }
+
+        .map-control:hover {
+            background: #f8fafc;
+        }
+
+        /* Map bottom */
+
+        .map-bottom {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            background: var(--navy);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            z-index: 30;
+        }
+
+        .map-bottom strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .map-bottom span {
+            color: #b9c6d6;
+            font-size: 11px;
+        }
+
+        /* =========================
+           SIDE PANEL
+        ========================= */
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 21px;
+        }
+
+        /* Status */
+
+        .status-card {
+            border-top: 4px solid var(--orange);
+        }
+
+        .status-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .status-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .status-title {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .eta {
+            text-align: right;
+        }
+
+        .eta strong {
+            display: block;
+            font-size: 25px;
+            color: var(--orange-dark);
+        }
+
+        .eta span {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .progress {
+            height: 7px;
+            background: #edf0f3;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 17px;
+        }
+
+        .progress-bar {
+            width: 42%;
+            height: 100%;
+            background: var(--orange);
+            border-radius: 10px;
+            transition: width .5s;
+        }
+
+        /* =========================
+           DRIVER
+        ========================= */
+
+        .driver-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .driver-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .driver-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .driver-details {
+            flex: 1;
+        }
+
+        .driver-details strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .driver-details span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .rating {
+            margin-top: 3px;
+            font-size: 11px;
+            color: #d97706;
+        }
+
+        .driver-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 17px;
+        }
+
+        .driver-action {
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 9px;
+            padding: 10px 5px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .driver-action:hover {
+            border-color: var(--orange);
+            background: #fff8ef;
+        }
+
+        /* =========================
+           VEHICLE
+        ========================= */
+
+        .vehicle-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .vehicle-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 11px;
+            background: #eef2f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .vehicle-info {
+            flex: 1;
+        }
+
+        .vehicle-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .vehicle-info span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .plate {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 9px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        /* =========================
+           TRIP DETAILS
+        ========================= */
+
+        .trip-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .trip-route {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .trip-route::before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 11px;
+            bottom: 11px;
+            width: 2px;
+            background: #d8dde4;
+        }
+
+        .trip-point {
+            position: relative;
+            margin-bottom: 17px;
+        }
+
+        .trip-point:last-child {
+            margin-bottom: 0;
+        }
+
+        .trip-point::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--green);
+            border: 3px solid white;
+            box-shadow: 0 0 0 1px var(--green);
+        }
+
+        .trip-point.destination::before {
+            background: var(--red);
+            box-shadow: 0 0 0 1px var(--red);
+            border-radius: 3px;
+        }
+
+        .trip-point span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .trip-point strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FARE
+        ========================= */
+
+        .fare-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .fare-row span:first-child {
+            color: var(--muted);
+        }
+
+        .fare-total {
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        /* =========================
+           SAFETY
+        ========================= */
+
+        .safety-card {
+            background: #fffaf3;
+            border: 1px solid #f9d8ad;
+        }
+
+        .safety-card h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .safety-card p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 13px;
+        }
+
+        .safety-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .safety-button {
+            border: 1px solid #e9c58e;
+            background: white;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .emergency {
+            color: var(--red);
+        }
+
+        /* =========================
+           CANCEL
+        ========================= */
+
+        .cancel-button {
+            width: 100%;
+            background: white;
+            border: 1px solid #fecaca;
+            color: var(--red);
+            padding: 12px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .cancel-button:hover {
+            background: #fef2f2;
+        }
+
+        /* =========================
+           TIMELINE
+        ========================= */
+
+        .timeline-section {
+            max-width: 1250px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .timeline-section h2 {
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .timeline-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 18px;
+            left: 65%;
+            width: 70%;
+            height: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item.completed:not(:last-child)::after {
+            background: var(--orange);
+        }
+
+        .timeline-icon {
+            width: 37px;
+            height: 37px;
+            border-radius: 50%;
+            background: #eef2f7;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 9px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-item.completed .timeline-icon {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .timeline-item.active .timeline-icon {
+            background: var(--navy);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(7,26,51,.1);
+        }
+
+        .timeline-item strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .timeline-item span {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 2px;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            border-radius: 17px;
+            padding: 28px;
+            box-shadow: 0 25px 60px rgba(0,0,0,.25);
+        }
+
+        .modal-box h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .modal-box p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 9px;
+        }
+
+        .modal-cancel {
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .modal-confirm {
+            background: var(--orange);
+            border: none;
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: var(--navy);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 9px;
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 4000;
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: var(--navy);
+            color: white;
+            padding: 55px 6% 25px;
+        }
+
+        .footer-grid {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 35px;
+        }
+
+        .footer-brand p {
+            color: #aebdce;
+            font-size: 13px;
+            max-width: 350px;
+            margin-top: 14px;
+        }
+
+        footer h4 {
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer li {
+            margin-bottom: 9px;
+        }
+
+        footer li a {
+            color: #aebdce;
+            font-size: 13px;
+        }
+
+        footer li a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            max-width: 1250px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.1);
+            display: flex;
+            justify-content: space-between;
+            color: #91a2b7;
+            font-size: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1050px) {
+
+            .tracking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-card,
+            .map-area {
+                min-height: 550px;
+            }
+
+            .side-panel {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+            }
+
+            .status-card,
+            .trip-card,
+            .safety-card,
+            .cancel-button {
+                grid-column: span 2;
+            }
+
+            .timeline {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+
+            .timeline-item:nth-child(3)::after {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .nav-actions .btn-outline {
+                display: none;
+            }
+
+            .nav-actions .btn-orange {
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+
+            .page-header {
+                padding: 30px 20px 70px;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .tracking-wrapper {
+                padding: 0 12px;
+                margin-top: -35px;
+            }
+
+            .map-card,
+            .map-area {
+                min-height: 430px;
+            }
+
+            .side-panel {
+                display: flex;
+            }
+
+            .status-card,
+            .trip-card,
+            .safety-card,
+            .cancel-button {
+                grid-column: auto;
+            }
+
+            .timeline {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .timeline-item::after {
+                display: none !important;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-brand {
+                grid-column: auto;
+            }
+
+            .driver-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .safety-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .map-status {
+                left: 10px;
+                top: 10px;
+            }
+
+            .map-controls {
+                right: 10px;
+                bottom: 10px;
+            }
+
+            .map-bottom {
+                left: 10px;
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <span class="logo-mark">F</span>
+            FAGA
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="index.html">Home</a>
+
+            <a href="logistics.html" class="active">
+                Logistics
+            </a>
+
+            <a href="marketplace.html">
+                Marketplace
+            </a>
+
+            <a href="services.html">
+                Services
+            </a>
+
+            <a href="food.html">
+                Food
+            </a>
+
+            <a href="jobs.html">
+                Jobs
+            </a>
+
+            <a href="help.html">
+                Help
+            </a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="../user portal/login.html" class="btn-outline">
+                Login
+            </a>
+
+            <a href="../user portal/dashboard.html" class="btn-orange">
+                My Account
+            </a>
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+                type="button"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-inner">
+
+            <div class="breadcrumb">
+
+                <a href="index.html">Home</a>
+                &nbsp; / &nbsp;
+
+                <a href="logistics.html">Logistics</a>
+                &nbsp; / &nbsp;
+
+                Track Ride
+
+            </div>
+
+            <h1>Track Your Ride</h1>
+
+            <p>
+                Follow your FAGA driver's location and trip progress
+                in real time.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         TRACKING
+    ========================== -->
+
+    <main class="tracking-wrapper">
+
+        <div class="tracking-grid">
+
+
+            <!-- =====================
+                 MAP
+            ====================== -->
+
+            <section class="map-card">
+
+                <div class="map-area" id="mapArea">
+
+                    <div class="road road-1"></div>
+                    <div class="road road-2"></div>
+                    <div class="road road-3"></div>
+                    <div class="road road-4"></div>
+
+                    <span class="map-place place-1">
+                        Victoria Island
+                    </span>
+
+                    <span class="map-place place-2">
+                        Lekki
+                    </span>
+
+                    <span class="map-place place-3">
+                        Ikoyi
+                    </span>
+
+                    <span class="map-place place-4">
+                        Oniru
+                    </span>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="destination-marker"></div>
+
+
+                    <div
+                        class="driver-marker"
+                        id="driverMarker"
+                    >
+
+                        🚗
+
+                        <div class="driver-pulse"></div>
+
+                    </div>
+
+
+                    <!-- MAP STATUS -->
+
+                    <div class="map-status">
+
+                        <strong id="mapStatus">
+                            Driver is on the way
+                        </strong>
+
+                        <span id="mapStatusText">
+                            Heading to your pickup location
+                        </span>
+
+                        <div class="live-badge">
+
+                            <span class="live-dot"></span>
+
+                            LIVE TRACKING
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MAP CONTROLS -->
+
+                    <div class="map-controls">
+
+                        <button
+                            type="button"
+                            class="map-control"
+                            id="zoomIn"
+                        >
+                            +
+                        </button>
+
+                        <button
+                            type="button"
+                            class="map-control"
+                            id="zoomOut"
+                        >
+                            −
+                        </button>
+
+                        <button
+                            type="button"
+                            class="map-control"
+                            id="centerMap"
+                        >
+                            ◎
+                        </button>
+
+                    </div>
+
+
+                    <div class="map-bottom">
+
+                        <strong id="mapDistance">
+                            1.8 km away
+                        </strong>
+
+                        <span>
+                            Updated just now
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================
+                 SIDE PANEL
+            ====================== -->
+
+            <aside class="side-panel">
+
+
+                <!-- STATUS -->
+
+                <div class="card status-card">
+
+                    <div class="status-top">
+
+                        <div>
+
+                            <div class="status-label">
+                                Current ride status
+                            </div>
+
+                            <div
+                                class="status-title"
+                                id="rideStatus"
+                            >
+                                Driver arriving
+                            </div>
+
+                        </div>
+
+                        <div class="eta">
+
+                            <strong id="eta">
+                                4 min
+                            </strong>
+
+                            <span>
+                                estimated arrival
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="progressBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DRIVER -->
+
+                <div class="card driver-card">
+
+                    <h3>Your driver</h3>
+
+                    <div class="driver-info">
+
+                        <div class="driver-avatar">
+                            CO
+                        </div>
+
+                        <div class="driver-details">
+
+                            <strong>
+                                Chinedu Okafor
+                            </strong>
+
+                            <span>
+                                FAGA Ride Driver
+                            </span>
+
+                            <div class="rating">
+                                ★ 4.9 · 326 trips
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="driver-actions">
+
+                        <button
+                            type="button"
+                            class="driver-action"
+                            id="callDriver"
+                        >
+                            📞 Call
+                        </button>
+
+                        <button
+                            type="button"
+                            class="driver-action"
+                            id="messageDriver"
+                        >
+                            💬 Message
+                        </button>
+
+                        <button
+                            type="button"
+                            class="driver-action"
+                            id="shareTrip"
+                        >
+                            🔗 Share
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VEHICLE -->
+
+                <div class="card vehicle-card">
+
+                    <div class="vehicle-icon">
+                        🚘
+                    </div>
+
+                    <div class="vehicle-info">
+
+                        <strong>
+                            Toyota Corolla
+                        </strong>
+
+                        <span>
+                            Black · 2022
+                        </span>
+
+                    </div>
+
+                    <div class="plate">
+                        KSF 428 AB
+                    </div>
+
+                </div>
+
+
+                <!-- TRIP -->
+
+                <div class="card trip-card">
+
+                    <h3>Trip details</h3>
+
+                    <div class="trip-route">
+
+                        <div class="trip-point">
+
+                            <span>
+                                PICKUP
+                            </span>
+
+                            <strong>
+                                Victoria Island
+                            </strong>
+
+                        </div>
+
+
+                        <div class="trip-point destination">
+
+                            <span>
+                                DESTINATION
+                            </span>
+
+                            <strong>
+                                Lekki Phase 1
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FARE -->
+
+                <div class="card">
+
+                    <div class="fare-row">
+
+                        <span>
+                            Estimated fare
+                        </span>
+
+                        <strong>
+                            ₦2,400
+                        </strong>
+
+                    </div>
+
+                    <div class="fare-row">
+
+                        <span>
+                            Ride type
+                        </span>
+
+                        <strong>
+                            Economy
+                        </strong>
+
+                    </div>
+
+                    <div class="fare-row">
+
+                        <span>
+                            Payment
+                        </span>
+
+                        <strong>
+                            Card
+                        </strong>
+
+                    </div>
+
+
+                    <div class="fare-total">
+
+                        <span>
+                            Total estimate
+                        </span>
+
+                        <span>
+                            ₦2,400
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SAFETY -->
+
+                <div class="card safety-card">
+
+                    <h3>
+                        🛡️ Stay safe
+                    </h3>
+
+                    <p>
+                        Share your trip with someone you trust or
+                        report a safety concern.
+                    </p>
+
+                    <div class="safety-actions">
+
+                        <button
+                            type="button"
+                            class="safety-button"
+                            id="shareSafety"
+                        >
+                            🔗 Share Trip
+                        </button>
+
+                        <button
+                            type="button"
+                            class="safety-button emergency"
+                            id="emergencyBtn"
+                        >
+                            🚨 Emergency
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CANCEL -->
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    id="cancelRide"
+                >
+                    Cancel Ride
+                </button>
+
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         RIDE TIMELINE
+    ========================== -->
+
+    <section class="timeline-section">
+
+        <h2>Your ride progress</h2>
+
+        <div class="timeline" id="timeline">
+
+
+            <div class="timeline-item completed">
+
+                <div class="timeline-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    Ride Requested
+                </strong>
+
+                <span>
+                    Completed
+                </span>
+
+            </div>
+
+
+            <div class="timeline-item completed">
+
+                <div class="timeline-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    Driver Assigned
+                </strong>
+
+                <span>
+                    Completed
+                </span>
+
+            </div>
+
+
+            <div class="timeline-item active">
+
+                <div class="timeline-icon">
+                    🚗
+                </div>
+
+                <strong>
+                    Driver Arriving
+                </strong>
+
+                <span>
+                    4 min away
+                </span>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-icon">
+                    📍
+                </div>
+
+                <strong>
+                    Pickup
+                </strong>
+
+                <span>
+                    Waiting
+                </span>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-icon">
+                    🛣️
+                </div>
+
+                <strong>
+                    Trip Started
+                </strong>
+
+                <span>
+                    Waiting
+                </span>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    Completed
+                </strong>
+
+                <span>
+                    Waiting
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <span class="logo-mark">
+                        F
+                    </span>
+
+                    FAGA
+
+                </div>
+
+                <p>
+                    FAGA brings logistics, rides, marketplace,
+                    food and on-demand services together in one platform.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Explore</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="logistics.html">
+                            Logistics
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="marketplace.html">
+                            Marketplace
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="services.html">
+                            Services
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="food.html">
+                            Food
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Rides</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="ride-booking.html">
+                            Book a Ride
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ride-tracking.html">
+                            Track Ride
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="delivery-booking.html">
+                            Send Package
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="track-order.html">
+                            Track Delivery
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Support</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="help.html">
+                            Help Center
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="safety.html">
+                            Safety
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="privacy.html">
+                            Privacy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="terms.html">
+                            Terms
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 FAGA. All rights reserved.
+            </span>
+
+            <span>
+                Safe, convenient transportation.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         CANCEL MODAL
+    ========================== -->
+
+    <div
+        class="modal"
+        id="cancelModal"
+    >
+
+        <div class="modal-box">
+
+            <h2>
+                Cancel this ride?
+            </h2>
+
+            <p>
+                Are you sure you want to cancel your current ride?
+                Cancellation fees may apply according to FAGA's
+                cancellation policy.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-cancel"
+                    id="keepRide"
+                >
+                    Keep Ride
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-confirm"
+                    id="confirmCancel"
+                >
+                    Cancel Ride
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         EMERGENCY MODAL
+    ========================== -->
+
+    <div
+        class="modal"
+        id="emergencyModal"
+    >
+
+        <div class="modal-box">
+
+            <h2>
+                🚨 Emergency Assistance
+            </h2>
+
+            <p>
+                If you are in immediate danger, contact your local
+                emergency service first. FAGA safety support can also
+                receive a safety report about this trip.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-cancel"
+                    id="closeEmergency"
+                >
+                    Close
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-confirm"
+                    id="reportEmergency"
+                >
+                    Report Safety Issue
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         TOAST
+    ========================== -->
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+
+    <script>
+
+        /* ==========================================
+           FAGA RIDE TRACKING
+           PUBLIC / CUSTOMER FRONTEND
+        ========================================== */
+
+
+        const driverMarker =
+            document.getElementById("driverMarker");
+
+        const rideStatus =
+            document.getElementById("rideStatus");
+
+        const eta =
+            document.getElementById("eta");
+
+        const progressBar =
+            document.getElementById("progressBar");
+
+        const mapStatus =
+            document.getElementById("mapStatus");
+
+        const mapStatusText =
+            document.getElementById("mapStatusText");
+
+        const mapDistance =
+            document.getElementById("mapDistance");
+
+        const toast =
+            document.getElementById("toast");
+
+
+        /* ==========================================
+           DEMO RIDE STATE
+        ========================================== */
+
+        let currentStage = 0;
+
+        const rideStages = [
+
+            {
+                status: "Driver arriving",
+                mapStatus: "Driver is on the way",
+                mapText: "Heading to your pickup location",
+                eta: "4 min",
+                distance: "1.8 km away",
+                progress: "42%"
+            },
+
+            {
+                status: "Driver arriving",
+                mapStatus: "Driver is getting closer",
+                mapText: "Your driver is approaching pickup",
+                eta: "2 min",
+                distance: "0.9 km away",
+                progress: "56%"
+            },
+
+            {
+                status: "Driver arrived",
+                mapStatus: "Driver has arrived",
+                mapText: "Your driver is waiting at pickup",
+                eta: "Now",
+                distance: "At pickup",
+                progress: "68%"
+            },
+
+            {
+                status: "Trip started",
+                mapStatus: "Trip in progress",
+                mapText: "You are on your way to the destination",
+                eta: "18 min",
+                distance: "6.2 km remaining",
+                progress: "78%"
+            },
+
+            {
+                status: "Trip completed",
+                mapStatus: "You have arrived",
+                mapText: "Trip completed successfully",
+                eta: "Arrived",
+                distance: "Destination reached",
+                progress: "100%"
+            }
+
+        ];
+
+
+        /* ==========================================
+           DEMO DRIVER MOVEMENT
+        ========================================== */
+
+        const driverPositions = [
+
+            {
+                left: "43%",
+                top: "29%"
+            },
+
+            {
+                left: "47%",
+                top: "36%"
+            },
+
+            {
+                left: "51%",
+                top: "43%"
+            },
+
+            {
+                left: "55%",
+                top: "53%"
+            },
+
+            {
+                left: "64%",
+                top: "67%"
+            }
+
+        ];
+
+
+        function updateRideStage() {
+
+            const stage =
+                rideStages[currentStage];
+
+            rideStatus.textContent =
+                stage.status;
+
+            eta.textContent =
+                stage.eta;
+
+            progressBar.style.width =
+                stage.progress;
+
+            mapStatus.textContent =
+                stage.mapStatus;
+
+            mapStatusText.textContent =
+                stage.mapText;
+
+            mapDistance.textContent =
+                stage.distance;
+
+
+            if (driverPositions[currentStage]) {
+
+                driverMarker.style.left =
+                    driverPositions[currentStage].left;
+
+                driverMarker.style.top =
+                    driverPositions[currentStage].top;
+
+            }
+
+
+            updateTimeline();
+
+        }
+
+
+        /* ==========================================
+           TIMELINE
+        ========================================== */
+
+        function updateTimeline() {
+
+            const items =
+                document.querySelectorAll(".timeline-item");
+
+            items.forEach((item, index) => {
+
+                item.classList.remove("completed");
+                item.classList.remove("active");
+
+                if (index < currentStage + 2) {
+
+                    item.classList.add("completed");
+
+                }
+
+            });
+
+
+            const activeIndex =
+                Math.min(currentStage + 2, items.length - 1);
+
+            items[activeIndex]
+                .classList.remove("completed");
+
+            items[activeIndex]
+                .classList.add("active");
+
+        }
+
+
+        /* ==========================================
+           DEMO LIVE UPDATE
+
+           This simulates GPS movement.
+
+           Production should NOT use this timer.
+
+           Replace with WebSocket/SSE updates from
+           your backend.
+        ========================================== */
+
+        let demoTimer =
+            setInterval(() => {
+
+                if (currentStage < rideStages.length - 1) {
+
+                    currentStage++;
+
+                    updateRideStage();
+
+                } else {
+
+                    clearInterval(demoTimer);
+
+                }
+
+            }, 8000);
+
+
+        /* ==========================================
+           MAP CONTROLS
+        ========================================== */
+
+        let mapScale = 1;
+
+        const mapArea =
+            document.getElementById("mapArea");
+
+
+        document.getElementById("zoomIn")
+            .addEventListener("click", () => {
+
+                mapScale =
+                    Math.min(mapScale + .1, 1.5);
+
+                mapArea.style.transform =
+                    `scale(${mapScale})`;
+
+            });
+
+
+        document.getElementById("zoomOut")
+            .addEventListener("click", () => {
+
+                mapScale =
+                    Math.max(mapScale - .1, .8);
+
+                mapArea.style.transform =
+                    `scale(${mapScale})`;
+
+            });
+
+
+        document.getElementById("centerMap")
+            .addEventListener("click", () => {
+
+                mapScale = 1;
+
+                mapArea.style.transform =
+                    "scale(1)";
+
+                showToast(
+                    "Map centered on your ride."
+                );
+
+            });
+
+
+        /* ==========================================
+           CALL DRIVER
+        ========================================== */
+
+        document.getElementById("callDriver")
+            .addEventListener("click", () => {
+
+                /*
+                Production:
+
+                The backend should return a protected
+                communication channel or masked phone
+                number.
+
+                Never expose private driver information
+                unnecessarily.
+                */
+
+                showToast(
+                    "Calling your FAGA driver..."
+                );
+
+            });
+
+
+        /* ==========================================
+           MESSAGE DRIVER
+        ========================================== */
+
+        document.getElementById("messageDriver")
+            .addEventListener("click", () => {
+
+                /*
+                Production:
+
+                Open FAGA's secure ride messaging system.
+
+                POST /api/rides/:rideId/messages
+                GET  /api/rides/:rideId/messages
+                */
+
+                showToast(
+                    "Opening secure driver messaging..."
+                );
+
+            });
+
+
+        /* ==========================================
+           SHARE TRIP
+        ========================================== */
+
+        async function shareTrip() {
+
+            /*
+            Production:
+
+            POST /api/rides/:rideId/share
+
+            Backend should generate a temporary,
+            permission-controlled tracking link.
+
+            Never expose permanent ride IDs or
+            sensitive customer information.
+            */
+
+            const shareData = {
+                title: "My FAGA Ride",
+                text: "Track my FAGA ride in real time."
+            };
+
+            if (navigator.share) {
+
+                try {
+
+                    await navigator.share(shareData);
+
+                } catch (error) {
+
+                    console.log("Share cancelled.");
+
+                }
+
+            } else {
+
+                showToast(
+                    "Trip sharing link will be generated by FAGA."
+                );
+
+            }
+
+        }
+
+
+        document.getElementById("shareTrip")
+            .addEventListener("click", shareTrip);
+
+
+        document.getElementById("shareSafety")
+            .addEventListener("click", shareTrip);
+
+
+        /* ==========================================
+           CANCEL RIDE
+        ========================================== */
+
+        const cancelModal =
+            document.getElementById("cancelModal");
+
+        document.getElementById("cancelRide")
+            .addEventListener("click", () => {
+
+                cancelModal.classList.add("show");
+
+            });
+
+
+        document.getElementById("keepRide")
+            .addEventListener("click", () => {
+
+                cancelModal.classList.remove("show");
+
+            });
+
+
+        document.getElementById("confirmCancel")
+            .addEventListener("click", async () => {
+
+                /*
+                Production:
+
+                POST /api/rides/:rideId/cancel
+
+                Backend determines:
+
+                - Whether cancellation is allowed
+                - Whether a cancellation fee applies
+                - Current ride state
+                - Payment/refund consequences
+
+                Never calculate cancellation fees
+                only in the browser.
+                */
+
+                cancelModal.classList.remove("show");
+
+                clearInterval(demoTimer);
+
+                rideStatus.textContent =
+                    "Ride cancelled";
+
+                mapStatus.textContent =
+                    "Ride cancelled";
+
+                mapStatusText.textContent =
+                    "Your ride request has been cancelled.";
+
+                eta.textContent =
+                    "--";
+
+                progressBar.style.width =
+                    "0%";
+
+                showToast(
+                    "Your ride has been cancelled."
+                );
+
+            });
+
+
+        /* ==========================================
+           EMERGENCY
+        ========================================== */
+
+        const emergencyModal =
+            document.getElementById("emergencyModal");
+
+
+        document.getElementById("emergencyBtn")
+            .addEventListener("click", () => {
+
+                emergencyModal.classList.add("show");
+
+            });
+
+
+        document.getElementById("closeEmergency")
+            .addEventListener("click", () => {
+
+                emergencyModal.classList.remove("show");
+
+            });
+
+
+        document.getElementById("reportEmergency")
+            .addEventListener("click", async () => {
+
+                /*
+                Production:
+
+                POST /api/rides/:rideId/safety-report
+
+                Example:
+
+                {
+                    "type": "emergency",
+                    "ride_id": "...",
+                    "location": {
+                        "latitude": 0,
+                        "longitude": 0
+                    }
+                }
+
+                Backend should securely process the
+                safety report and maintain an audit trail.
+                */
+
+                emergencyModal.classList.remove("show");
+
+                showToast(
+                    "Safety report submitted to FAGA."
+                );
+
+            });
+
+
+        /* ==========================================
+           CLOSE MODALS ON BACKDROP
+        ========================================== */
+
+        document.querySelectorAll(".modal")
+            .forEach(modal => {
+
+                modal.addEventListener("click", event => {
+
+                    if (event.target === modal) {
+
+                        modal.classList.remove("show");
+
+                    }
+
+                });
+
+            });
+
+
+        /* ==========================================
+           TOAST
+        ========================================== */
+
+        function showToast(message) {
+
+            toast.textContent =
+                message;
+
+            toast.classList.add("show");
+
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 3000);
+
+        }
+
+
+        /* ==========================================
+           MOBILE MENU
+        ========================================== */
+
+        document.getElementById("mobileMenu")
+            .addEventListener("click", () => {
+
+                const nav =
+                    document.querySelector(".nav-links");
+
+                if (nav.style.display === "flex") {
+
+                    nav.style.display = "none";
+
+                } else {
+
+                    nav.style.display = "flex";
+
+                    nav.style.position = "absolute";
+                    nav.style.top = "72px";
+                    nav.style.left = "0";
+                    nav.style.right = "0";
+                    nav.style.background = "#071a33";
+                    nav.style.padding = "20px";
+                    nav.style.flexDirection = "column";
+                    nav.style.alignItems = "flex-start";
+
+                }
+
+            });
+
+
+        /* ==========================================
+           PRODUCTION API ARCHITECTURE
+        ==========================================
+
+        When backend is ready, the page should receive
+        the ride ID from ride-booking.html.
+
+        Example:
+
+        ride-tracking.html?rideId=RID-1000284
+
+
+        Then load:
+
+        GET
+        /api/rides/:rideId
+
+
+        GET
+        /api/rides/:rideId/driver
+
+
+        GET
+        /api/rides/:rideId/tracking
+
+
+        Cancel:
+
+        POST
+        /api/rides/:rideId/cancel
+
+
+        Share:
+
+        POST
+        /api/rides/:rideId/share
+
+
+        Safety:
+
+        POST
+        /api/rides/:rideId/safety-report
+
+
+        ==========================================
+
+        REAL-TIME LOCATION
+
+        Recommended architecture:
+
+        Customer Browser
+                ↓
+        FAGA Backend
+                ↓
+        Driver Mobile App
+                ↓
+        GPS Coordinates
+                ↓
+        FAGA Backend
+                ↓
+        WebSocket / SSE
+                ↓
+        Customer Browser
+
+
+        Example WebSocket:
+
+        wss://api.faga.com/rides/:rideId
+
+
+        Driver sends:
+
+        {
+            "latitude": 6.4281,
+            "longitude": 3.4219,
+            "heading": 120,
+            "speed": 28,
+            "timestamp": "..."
+        }
+
+
+        Backend should validate and broadcast only
+        authorized ride information.
+
+        NEVER trust location data directly from
+        another browser.
+
+        NEVER put private map/payment/backend
+        secrets in this HTML.
+
+        ==========================================
+
+        MAP PROVIDER
+
+        This demo intentionally uses a CSS map.
+
+        Production options:
+
+        - Google Maps
+        - Mapbox
+        - OpenStreetMap + Leaflet
+
+        The map should display:
+
+        ✓ Pickup
+        ✓ Destination
+        ✓ Driver's current GPS location
+        ✓ Route
+        ✓ ETA
+        ✓ Driver direction/heading
+
+        ========================================== */
+
+        updateRideStage();
+
+    </script>
+
+</body>
+</html>

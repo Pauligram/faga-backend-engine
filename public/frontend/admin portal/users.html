@@ -1,0 +1,4103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FAGA Admin — Users</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0d2745;
+            --navy-3: #12395f;
+            --orange: #ff7a18;
+            --orange-dark: #e76509;
+            --white: #ffffff;
+            --bg: #f4f6f9;
+            --border: #e1e7ee;
+            --text: #172033;
+            --muted: #6b7280;
+            --green: #16a34a;
+            --red: #dc2626;
+            --yellow: #d97706;
+            --blue: #2563eb;
+            --purple: #7c3aed;
+            --shadow: 0 4px 18px rgba(7, 26, 51, .06);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            height: 68px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+
+            background: var(--navy);
+            color: white;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 24px;
+        }
+
+        .mobile-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 21px;
+        }
+
+        .logo {
+            width: 215px;
+            flex-shrink: 0;
+
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .admin-label {
+            color: #9aadc1 !important;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 5px;
+        }
+
+        .top-search {
+            max-width: 550px;
+            flex: 1;
+            position: relative;
+        }
+
+        .top-search input {
+            width: 100%;
+            height: 39px;
+
+            border: none;
+            border-radius: 5px;
+            outline: none;
+
+            padding: 0 42px 0 14px;
+            font-size: 12px;
+        }
+
+        .top-search span {
+            position: absolute;
+            right: 14px;
+            top: 11px;
+            color: var(--muted);
+        }
+
+        .top-actions {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-action {
+            cursor: pointer;
+            position: relative;
+            font-size: 18px;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--orange);
+
+            position: absolute;
+            right: -4px;
+            top: -4px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .admin-avatar {
+            width: 37px;
+            height: 37px;
+            border-radius: 50%;
+
+            background: var(--orange);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .admin-profile strong {
+            font-size: 11px;
+        }
+
+        .admin-profile small {
+            display: block;
+            color: #9fb0c3;
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            bottom: 0;
+
+            width: 235px;
+
+            background: var(--navy-2);
+            color: white;
+
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .sidebar-section {
+            padding: 22px 13px 7px;
+
+            color: #7d94ac;
+            font-size: 9px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .sidebar-link {
+            margin: 2px 10px;
+            padding: 11px 12px;
+
+            border-radius: 5px;
+
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            color: #c3cedb;
+            font-size: 12px;
+
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,.07);
+            color: white;
+        }
+
+        .sidebar-link.active {
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+
+            min-width: 19px;
+            height: 19px;
+            padding: 0 5px;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--orange);
+            color: white;
+
+            font-size: 9px;
+        }
+
+        .sidebar-link.active .sidebar-badge {
+            background: white;
+            color: var(--orange);
+        }
+
+        .sidebar-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            margin-top: 20px;
+            padding-top: 10px;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 235px;
+            padding: 94px 28px 35px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            margin-bottom: 22px;
+        }
+
+        .page-heading h1 {
+            color: var(--navy);
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .heading-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 5px;
+
+            padding: 10px 15px;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-orange:hover {
+            background: var(--orange-dark);
+        }
+
+        .btn-white {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--navy);
+        }
+
+        /* =====================================================
+           SUMMARY CARDS
+        ===================================================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 13px;
+
+            margin-bottom: 19px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            padding: 16px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card small {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .summary-number {
+            margin-top: 9px;
+
+            color: var(--navy);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .summary-bottom {
+            margin-top: 7px;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 8px;
+        }
+
+        .green {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .orange {
+            color: var(--orange-dark);
+            font-weight: 700;
+        }
+
+        .red {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            box-shadow: var(--shadow);
+
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .card-header {
+            min-height: 55px;
+
+            padding: 13px 17px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h2 {
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        /* =====================================================
+           FILTER AREA
+        ===================================================== */
+
+        .filters {
+            padding: 15px 17px;
+
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+
+            gap: 9px;
+
+            border-bottom: 1px solid var(--border);
+            background: #fbfcfd;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+
+            color: var(--muted);
+            font-size: 8px;
+            font-weight: 700;
+
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 36px;
+
+            border: 1px solid var(--border);
+            border-radius: 4px;
+
+            outline: none;
+            background: white;
+
+            padding: 0 10px;
+
+            font-size: 10px;
+            color: var(--text);
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--orange);
+        }
+
+        .filter-button {
+            align-self: end;
+
+            height: 36px;
+            padding: 0 14px;
+
+            border: none;
+            border-radius: 4px;
+
+            background: var(--navy);
+            color: white;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-toolbar {
+            padding: 12px 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .selected-info {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .small-btn {
+            height: 29px;
+
+            border: 1px solid var(--border);
+            border-radius: 4px;
+
+            background: white;
+
+            padding: 0 10px;
+
+            font-size: 8px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .small-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange-dark);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 11px 14px;
+
+            text-align: left;
+
+            background: #f8fafc;
+
+            color: var(--muted);
+
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 12px 14px;
+
+            font-size: 9px;
+
+            border-bottom: 1px solid #eef1f5;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafbfd;
+        }
+
+        .checkbox {
+            width: 14px;
+            height: 14px;
+            accent-color: var(--orange);
+            cursor: pointer;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 175px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            background: var(--navy-2);
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            flex-shrink: 0;
+        }
+
+        .avatar.orange-bg {
+            background: var(--orange);
+        }
+
+        .avatar.green-bg {
+            background: var(--green);
+        }
+
+        .avatar.blue-bg {
+            background: var(--blue);
+        }
+
+        .user-cell strong {
+            display: block;
+            font-size: 10px;
+            color: var(--text);
+        }
+
+        .user-cell small {
+            display: block;
+
+            color: var(--muted);
+            font-size: 8px;
+
+            margin-top: 3px;
+        }
+
+        .role-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            max-width: 190px;
+        }
+
+        .role {
+            display: inline-block;
+
+            padding: 4px 7px;
+
+            border-radius: 20px;
+
+            font-size: 7px;
+            font-weight: 700;
+        }
+
+        .role-customer {
+            background: #e8eef5;
+            color: var(--navy);
+        }
+
+        .role-rider {
+            background: #fff0e5;
+            color: #c2410c;
+        }
+
+        .role-seller {
+            background: #e8f0ff;
+            color: #1d4ed8;
+        }
+
+        .role-provider {
+            background: #f1e9ff;
+            color: #6d28d9;
+        }
+
+        .role-restaurant {
+            background: #e8f8ed;
+            color: #15803d;
+        }
+
+        .status {
+            display: inline-block;
+
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            font-size: 7px;
+            font-weight: 700;
+        }
+
+        .status-active {
+            color: #15803d;
+            background: #dcfce7;
+        }
+
+        .status-pending {
+            color: #b45309;
+            background: #fef3c7;
+        }
+
+        .status-suspended {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .status-verified {
+            color: #1d4ed8;
+            background: #dbeafe;
+        }
+
+        .action-menu {
+            position: relative;
+        }
+
+        .more-btn {
+            width: 29px;
+            height: 29px;
+
+            border: 1px solid var(--border);
+            border-radius: 4px;
+
+            background: white;
+
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dropdown {
+            display: none;
+
+            position: absolute;
+            right: 0;
+            top: 33px;
+
+            width: 145px;
+
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,.12);
+
+            z-index: 100;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .dropdown button {
+            display: block;
+
+            width: 100%;
+
+            padding: 9px 11px;
+
+            text-align: left;
+
+            border: none;
+            background: white;
+
+            font-size: 9px;
+
+            cursor: pointer;
+        }
+
+        .dropdown button:hover {
+            background: #f6f8fa;
+        }
+
+        .dropdown .danger {
+            color: var(--red);
+        }
+
+        /* =====================================================
+           PAGINATION
+        ===================================================== */
+
+        .pagination {
+            padding: 13px 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination-info {
+            color: var(--muted);
+            font-size: 8px;
+        }
+
+        .pages {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-btn {
+            width: 28px;
+            height: 28px;
+
+            border: 1px solid var(--border);
+            border-radius: 4px;
+
+            background: white;
+
+            font-size: 8px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        /* =====================================================
+           LOWER GRID
+        ===================================================== */
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .role-stat {
+            padding: 16px 17px;
+        }
+
+        .role-stat-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+        .role-stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .role-stat-icon {
+            width: 33px;
+            height: 33px;
+
+            border-radius: 6px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f3f5f8;
+        }
+
+        .role-stat-info {
+            flex: 1;
+        }
+
+        .role-stat-info strong {
+            display: block;
+            font-size: 9px;
+        }
+
+        .role-stat-info small {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 7px;
+        }
+
+        .progress {
+            height: 5px;
+
+            background: #edf0f3;
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--orange);
+            border-radius: 10px;
+        }
+
+        .role-count {
+            color: var(--navy);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           SECURITY PANEL
+        ===================================================== */
+
+        .security-list {
+            padding: 7px 17px;
+        }
+
+        .security-row {
+            padding: 12px 0;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            border-bottom: 1px solid #eef1f5;
+        }
+
+        .security-row:last-child {
+            border-bottom: none;
+        }
+
+        .security-icon {
+            width: 31px;
+            height: 31px;
+
+            background: #f5f7fa;
+            border-radius: 6px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .security-info {
+            flex: 1;
+        }
+
+        .security-info strong {
+            display: block;
+            font-size: 9px;
+        }
+
+        .security-info small {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 7px;
+        }
+
+        .security-number {
+            color: var(--navy);
+            font-weight: 800;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            margin-left: 235px;
+
+            background: var(--navy);
+            color: #91a2b5;
+
+            padding: 20px 28px;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 9px;
+        }
+
+        .footer span {
+            color: var(--orange);
+        }
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            background: var(--navy);
+            color: white;
+
+            padding: 13px 17px;
+
+            border-radius: 6px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,.2);
+
+            font-size: 10px;
+
+            transform: translateY(100px);
+            opacity: 0;
+
+            transition: .3s;
+
+            z-index: 5000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1250px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .filter-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 950px) {
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .logo {
+                width: auto;
+            }
+
+            .top-search {
+                display: none;
+            }
+
+            .sidebar {
+                left: -235px;
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .footer {
+                margin-left: 0;
+            }
+
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                padding: 0 12px;
+            }
+
+            .admin-profile > div:last-child {
+                display: none;
+            }
+
+            .main {
+                padding: 88px 12px 25px;
+            }
+
+            .page-heading {
+                display: block;
+            }
+
+            .heading-actions {
+                margin-top: 14px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .summary-card {
+                padding: 12px;
+            }
+
+            .summary-number {
+                font-size: 18px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .table-toolbar {
+                display: block;
+            }
+
+            .toolbar-actions {
+                margin-top: 10px;
+            }
+
+            .footer {
+                display: block;
+                line-height: 1.8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div
+        class="mobile-toggle"
+        onclick="toggleSidebar()">
+        ☰
+    </div>
+
+    <a href="../Public website/index.html" class="logo">
+        FA<span>GA</span>
+        <span class="admin-label">Admin</span>
+    </a>
+
+    <div class="top-search">
+
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Search users, orders, products, riders..."
+        >
+
+        <span>🔍</span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <div
+            class="top-action"
+            onclick="showToast('Notifications opened')">
+
+            🔔
+
+            <span class="notification-dot"></span>
+
+        </div>
+
+        <div
+            class="top-action"
+            onclick="showToast('Support center opened')">
+
+            💬
+
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                SA
+            </div>
+
+            <div>
+                <strong>Super Admin</strong>
+                <small>Administrator</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+        Overview
+    </div>
+
+    <a
+        class="sidebar-link"
+        href="../Public website/index.html">
+
+        <span class="sidebar-icon">📊</span>
+        Dashboard
+
+    </a>
+
+
+    <div class="sidebar-section">
+        Platform
+    </div>
+
+    <a
+        class="sidebar-link active"
+        href="users.html">
+
+        <span class="sidebar-icon">👥</span>
+        Users
+
+        <span class="sidebar-badge">
+            24
+        </span>
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="orders.html">
+
+        <span class="sidebar-icon">📦</span>
+        Orders
+
+        <span class="sidebar-badge">
+            18
+        </span>
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="../Public website/logistics.html">
+
+        <span class="sidebar-icon">🚚</span>
+        Logistics
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="riders.html">
+
+        <span class="sidebar-icon">🏍️</span>
+        Riders
+
+        <span class="sidebar-badge">
+            7
+        </span>
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="../Public website/marketplace.html">
+
+        <span class="sidebar-icon">🛍️</span>
+        Marketplace
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="sellers.html">
+
+        <span class="sidebar-icon">🏪</span>
+        Sellers
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="../Public website/services.html">
+
+        <span class="sidebar-icon">🛠️</span>
+        Services
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="service-providers.html">
+
+        <span class="sidebar-icon">👨‍🔧</span>
+        Service Providers
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="../Public website/food.html">
+
+        <span class="sidebar-icon">🍽️</span>
+        Food & Restaurants
+
+    </a>
+
+
+    <div class="sidebar-section">
+        Finance
+    </div>
+
+
+    <a
+        class="sidebar-link"
+        href="payments.html">
+
+        <span class="sidebar-icon">💳</span>
+        Payments
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="wallets.html">
+
+        <span class="sidebar-icon">💰</span>
+        Wallets
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="payouts.html">
+
+        <span class="sidebar-icon">🏦</span>
+        Payouts
+
+    </a>
+
+
+    <div class="sidebar-section">
+        Management
+    </div>
+
+
+    <a
+        class="sidebar-link"
+        href="reports.html">
+
+        <span class="sidebar-icon">📈</span>
+        Reports
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="support.html">
+
+        <span class="sidebar-icon">🎧</span>
+        Support
+
+        <span class="sidebar-badge">
+            9
+        </span>
+
+    </a>
+
+
+    <a
+        class="sidebar-link"
+        href="disputes.html">
+
+        <span class="sidebar-icon">⚠️</span>
+        Disputes
+
+        <span class="sidebar-badge">
+            3
+        </span>
+
+    </a>
+
+
+    <div class="sidebar-section">
+        System
+    </div>
+
+
+    <a
+        class="sidebar-link"
+        href="settings.html">
+
+        <span class="sidebar-icon">⚙️</span>
+        Settings
+
+    </a>
+
+
+    <div
+        class="sidebar-link"
+        onclick="showToast('Audit logs opened')">
+
+        <span class="sidebar-icon">🔐</span>
+        Audit Logs
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+        <a
+            class="sidebar-link"
+            href="../user portal/dashboard.html">
+
+            <span class="sidebar-icon">↩</span>
+            User Portal
+
+        </a>
+
+
+        <div
+            class="sidebar-link"
+            style="color:#ff9a9a;"
+            onclick="logout()">
+
+            <span class="sidebar-icon">↪</span>
+            Sign Out
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+    <!-- PAGE HEADER -->
+
+    <section class="page-heading">
+
+        <div>
+
+            <h1>User Management</h1>
+
+            <p>
+                Manage FAGA accounts, verification, activities and access.
+            </p>
+
+        </div>
+
+
+        <div class="heading-actions">
+
+            <button
+                class="btn btn-white"
+                onclick="exportUsers()">
+
+                ↓ Export Users
+
+            </button>
+
+
+            <button
+                class="btn btn-orange"
+                onclick="addUser()">
+
+                + Add User
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <small>
+                Total Users
+            </small>
+
+            <div class="summary-number">
+                48,392
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="green">
+                    ↑ 8.4%
+                </span>
+
+                <span style="color:var(--muted);">
+                    this month
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Active Users
+            </small>
+
+            <div class="summary-number">
+                42,817
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="green">
+                    88.5%
+                </span>
+
+                <span style="color:var(--muted);">
+                    of accounts
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                New This Month
+            </small>
+
+            <div class="summary-number">
+                3,842
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="green">
+                    ↑ 12.6%
+                </span>
+
+                <span style="color:var(--muted);">
+                    vs last month
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Pending Verification
+            </small>
+
+            <div class="summary-number">
+                326
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="orange">
+                    Needs review
+                </span>
+
+                <span style="color:var(--muted);">
+                    applications
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Suspended
+            </small>
+
+            <div class="summary-number">
+                87
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="red">
+                    0.18%
+                </span>
+
+                <span style="color:var(--muted);">
+                    of accounts
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         USERS TABLE
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    All Users
+                </h2>
+
+                <p>
+                    One FAGA account may have multiple activities.
+                </p>
+
+            </div>
+
+            <span
+                style="font-size:9px;color:var(--muted);">
+
+                48,392 accounts
+
+            </span>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <div class="filters">
+
+            <div class="field">
+
+                <label>
+                    Search
+                </label>
+
+                <input
+                    type="text"
+                    id="userSearch"
+                    placeholder="Name, email, phone or user ID..."
+                    oninput="filterUsers()"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Activity
+                </label>
+
+                <select
+                    id="roleFilter"
+                    onchange="filterUsers()">
+
+                    <option value="all">
+                        All Activities
+                    </option>
+
+                    <option value="customer">
+                        Customer
+                    </option>
+
+                    <option value="rider">
+                        Rider
+                    </option>
+
+                    <option value="seller">
+                        Seller
+                    </option>
+
+                    <option value="provider">
+                        Service Provider
+                    </option>
+
+                    <option value="restaurant">
+                        Restaurant
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Account Status
+                </label>
+
+                <select
+                    id="statusFilter"
+                    onchange="filterUsers()">
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="active">
+                        Active
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="suspended">
+                        Suspended
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Verification
+                </label>
+
+                <select>
+
+                    <option>
+                        All
+                    </option>
+
+                    <option>
+                        Verified
+                    </option>
+
+                    <option>
+                        Unverified
+                    </option>
+
+                    <option>
+                        Pending
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="filter-button"
+                onclick="resetFilters()">
+
+                Reset
+
+            </button>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="table-toolbar">
+
+            <div
+                class="selected-info"
+                id="selectedInfo">
+
+                0 users selected
+
+            </div>
+
+
+            <div class="toolbar-actions">
+
+                <button
+                    class="small-btn"
+                    onclick="bulkVerify()">
+
+                    ✓ Verify
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkMessage()">
+
+                    ✉ Message
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkSuspend()">
+
+                    Suspend
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th style="width:30px;">
+
+                            <input
+                                type="checkbox"
+                                class="checkbox"
+                                id="selectAll"
+                                onchange="toggleAll(this)"
+                            >
+
+                        </th>
+
+                        <th>
+                            User
+                        </th>
+
+                        <th>
+                            Contact
+                        </th>
+
+                        <th>
+                            Activities
+                        </th>
+
+                        <th>
+                            Verification
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Joined
+                        </th>
+
+                        <th>
+                            Last Active
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="usersTable">
+
+
+                    <!-- USER 1 -->
+
+                    <tr
+                        data-name="Alex Okafor"
+                        data-role="customer seller"
+                        data-status="active">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar orange-bg">
+                                    AO
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Alex Okafor
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100284
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                alex@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 801 234 5678
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-seller">
+                                    Seller
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-active">
+                                Active
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 12, 2026
+                        </td>
+
+                        <td>
+                            2 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Alex Okafor')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="editUser('Alex Okafor')">
+
+                                        Edit Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Alex Okafor')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('Alex Okafor')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 2 -->
+
+                    <tr
+                        data-name="Mary Kalu"
+                        data-role="customer rider"
+                        data-status="active">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar blue-bg">
+                                    MK
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Mary Kalu
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100283
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                mary@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 803 222 1098
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-rider">
+                                    Rider
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-active">
+                                Active
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 11, 2026
+                        </td>
+
+                        <td>
+                            8 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Mary Kalu')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="editUser('Mary Kalu')">
+
+                                        Edit Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Mary Kalu')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('Mary Kalu')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 3 -->
+
+                    <tr
+                        data-name="David Johnson"
+                        data-role="customer provider"
+                        data-status="pending">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar green-bg">
+                                    DJ
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        David Johnson
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100282
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                david@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 805 332 2211
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-provider">
+                                    Service Provider
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 10, 2026
+                        </td>
+
+                        <td>
+                            15 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('David Johnson')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="verifyUser('David Johnson')">
+
+                                        Verify Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('David Johnson')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('David Johnson')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 4 -->
+
+                    <tr
+                        data-name="Grace Beauty"
+                        data-role="customer seller"
+                        data-status="active">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar">
+                                    GB
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Grace Beauty
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100281
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                grace@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 809 447 1288
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-seller">
+                                    Seller
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-active">
+                                Active
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 09, 2026
+                        </td>
+
+                        <td>
+                            21 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Grace Beauty')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="editUser('Grace Beauty')">
+
+                                        Edit Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Grace Beauty')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('Grace Beauty')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 5 -->
+
+                    <tr
+                        data-name="Emeka Okoro"
+                        data-role="customer rider"
+                        data-status="pending">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar orange-bg">
+                                    EO
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Emeka Okoro
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100280
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                emeka@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 802 551 7734
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-rider">
+                                    Rider
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 09, 2026
+                        </td>
+
+                        <td>
+                            32 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Emeka Okoro')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="verifyUser('Emeka Okoro')">
+
+                                        Verify Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Emeka Okoro')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('Emeka Okoro')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 6 -->
+
+                    <tr
+                        data-name="Sarah Ade"
+                        data-role="customer restaurant"
+                        data-status="active">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar blue-bg">
+                                    SA
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Sarah Ade
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100279
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                sarah@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 807 128 8843
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-restaurant">
+                                    Restaurant
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-active">
+                                Active
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 08, 2026
+                        </td>
+
+                        <td>
+                            41 min ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Sarah Ade')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="editUser('Sarah Ade')">
+
+                                        Edit Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Sarah Ade')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendUser('Sarah Ade')">
+
+                                        Suspend Account
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 7 -->
+
+                    <tr
+                        data-name="Tom Yusuf"
+                        data-role="customer"
+                        data-status="suspended">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar">
+                                    TY
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Tom Yusuf
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100278
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                tom@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 810 991 2203
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-suspended">
+                                Suspended
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 07, 2026
+                        </td>
+
+                        <td>
+                            Yesterday
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Tom Yusuf')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="activateUser('Tom Yusuf')">
+
+                                        Reactivate Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Tom Yusuf')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- USER 8 -->
+
+                    <tr
+                        data-name="Fresh Taste"
+                        data-role="customer restaurant"
+                        data-status="pending">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox user-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="avatar green-bg">
+                                    FT
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Fresh Taste
+                                    </strong>
+
+                                    <small>
+                                        #FAGA-100277
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div>
+                                fresh@example.com
+                            </div>
+
+                            <small style="color:var(--muted);">
+                                +234 806 778 1092
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <div class="role-list">
+
+                                <span class="role role-customer">
+                                    Customer
+                                </span>
+
+                                <span class="role role-restaurant">
+                                    Restaurant
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Sep 06, 2026
+                        </td>
+
+                        <td>
+                            1 hr ago
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewUser('Fresh Taste')">
+
+                                        View Profile
+
+                                    </button>
+
+                                    <button
+                                        onclick="verifyUser('Fresh Taste')">
+
+                                        Verify Account
+
+                                    </button>
+
+                                    <button
+                                        onclick="manageRoles('Fresh Taste')">
+
+                                        Manage Activities
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <div class="pagination">
+
+            <div class="pagination-info">
+
+                Showing
+                <strong>1–8</strong>
+                of
+                <strong>48,392</strong>
+                users
+
+            </div>
+
+
+            <div class="pages">
+
+                <button
+                    class="page-btn"
+                    onclick="changePage('previous')">
+
+                    ‹
+
+                </button>
+
+                <button class="page-btn active">
+                    1
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(2)">
+
+                    2
+
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(3)">
+
+                    3
+
+                </button>
+
+                <button class="page-btn">
+                    ...
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(6049)">
+
+                    6049
+
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage('next')">
+
+                    ›
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOWER INFORMATION
+    ====================================================== -->
+
+    <section class="lower-grid">
+
+
+        <!-- USER ACTIVITIES -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Users by Activity
+                    </h2>
+
+                    <p>
+                        Accounts can participate in multiple activities.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="role-stat">
+
+
+                <div class="role-stat-row">
+
+                    <div class="role-stat-icon">
+                        👤
+                    </div>
+
+                    <div class="role-stat-info">
+
+                        <strong>
+                            Customers
+                        </strong>
+
+                        <small>
+                            Shopping, food, logistics & services
+                        </small>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:92%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="role-count">
+                        44,510
+                    </div>
+
+                </div>
+
+
+                <div class="role-stat-row">
+
+                    <div class="role-stat-icon">
+                        🏍️
+                    </div>
+
+                    <div class="role-stat-info">
+
+                        <strong>
+                            Riders
+                        </strong>
+
+                        <small>
+                            Delivery partners
+                        </small>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:31%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="role-count">
+                        742
+                    </div>
+
+                </div>
+
+
+                <div class="role-stat-row">
+
+                    <div class="role-stat-icon">
+                        🏪
+                    </div>
+
+                    <div class="role-stat-info">
+
+                        <strong>
+                            Sellers
+                        </strong>
+
+                        <small>
+                            Marketplace merchants
+                        </small>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:25%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="role-count">
+                        1,284
+                    </div>
+
+                </div>
+
+
+                <div class="role-stat-row">
+
+                    <div class="role-stat-icon">
+                        🛠️
+                    </div>
+
+                    <div class="role-stat-info">
+
+                        <strong>
+                            Service Providers
+                        </strong>
+
+                        <small>
+                            People offering services
+                        </small>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:18%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="role-count">
+                        864
+                    </div>
+
+                </div>
+
+
+                <div class="role-stat-row">
+
+                    <div class="role-stat-icon">
+                        🍽️
+                    </div>
+
+                    <div class="role-stat-info">
+
+                        <strong>
+                            Restaurants
+                        </strong>
+
+                        <small>
+                            Food partners
+                        </small>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:13%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="role-count">
+                        486
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Account Security
+                    </h2>
+
+                    <p>
+                        Recent security and authentication activity.
+                    </p>
+
+                </div>
+
+                <span
+                    style="color:var(--orange-dark);font-size:9px;font-weight:700;cursor:pointer;"
+                    onclick="showToast('Opening security logs')">
+
+                    View Logs →
+
+                </span>
+
+            </div>
+
+
+            <div class="security-list">
+
+
+                <div class="security-row">
+
+                    <div class="security-icon">
+                        🔐
+                    </div>
+
+                    <div class="security-info">
+
+                        <strong>
+                            Verified Accounts
+                        </strong>
+
+                        <small>
+                            Users with completed verification
+                        </small>
+
+                    </div>
+
+                    <div class="security-number">
+                        46,832
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-icon">
+                        📱
+                    </div>
+
+                    <div class="security-info">
+
+                        <strong>
+                            Phone Verified
+                        </strong>
+
+                        <small>
+                            Accounts with verified phone numbers
+                        </small>
+
+                    </div>
+
+                    <div class="security-number">
+                        47,104
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-icon">
+                        ✉️
+                    </div>
+
+                    <div class="security-info">
+
+                        <strong>
+                            Email Verified
+                        </strong>
+
+                        <small>
+                            Accounts with verified emails
+                        </small>
+
+                    </div>
+
+                    <div class="security-number">
+                        45,991
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-icon">
+                        🛡️
+                    </div>
+
+                    <div class="security-info">
+
+                        <strong>
+                            Two-Factor Authentication
+                        </strong>
+
+                        <small>
+                            Accounts protected by 2FA
+                        </small>
+
+                    </div>
+
+                    <div class="security-number">
+                        18,422
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-icon">
+                        ⚠️
+                    </div>
+
+                    <div class="security-info">
+
+                        <strong>
+                            Security Reviews
+                        </strong>
+
+                        <small>
+                            Accounts requiring administrator review
+                        </small>
+
+                    </div>
+
+                    <div class="security-number red">
+                        36
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div>
+
+        <strong style="color:white;">
+            FAGA Admin
+        </strong>
+
+        —
+        User Management
+
+    </div>
+
+    <div>
+
+        FAGA Platform v1.0
+        <span>●</span>
+        Secure Administration
+
+    </div>
+
+</footer>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    let toastTimer;
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(function() {
+
+            toast.classList.remove("show");
+
+        }, 2800);
+
+    }
+
+
+    /* =====================================================
+       USER FILTER
+    ===================================================== */
+
+    function filterUsers() {
+
+        const search =
+            document
+                .getElementById("userSearch")
+                .value
+                .toLowerCase()
+                .trim();
+
+        const role =
+            document
+                .getElementById("roleFilter")
+                .value;
+
+        const status =
+            document
+                .getElementById("statusFilter")
+                .value;
+
+        const rows =
+            document
+                .querySelectorAll("#usersTable tr");
+
+
+        rows.forEach(function(row) {
+
+            const name =
+                row.dataset.name
+                    ? row.dataset.name.toLowerCase()
+                    : "";
+
+            const rowRoles =
+                row.dataset.role
+                    ? row.dataset.role.toLowerCase()
+                    : "";
+
+            const rowStatus =
+                row.dataset.status
+                    ? row.dataset.status.toLowerCase()
+                    : "";
+
+
+            const searchMatch =
+                !search ||
+                name.includes(search) ||
+                rowRoles.includes(search);
+
+            const roleMatch =
+                role === "all" ||
+                rowRoles.includes(role);
+
+            const statusMatch =
+                status === "all" ||
+                rowStatus === status;
+
+
+            row.style.display =
+                searchMatch &&
+                roleMatch &&
+                statusMatch
+                    ? ""
+                    : "none";
+
+        });
+
+    }
+
+
+    /* =====================================================
+       RESET FILTERS
+    ===================================================== */
+
+    function resetFilters() {
+
+        document
+            .getElementById("userSearch")
+            .value = "";
+
+        document
+            .getElementById("roleFilter")
+            .value = "all";
+
+        document
+            .getElementById("statusFilter")
+            .value = "all";
+
+        filterUsers();
+
+        showToast("Filters reset");
+
+    }
+
+
+    /* =====================================================
+       SELECT ALL
+    ===================================================== */
+
+    function toggleAll(master) {
+
+        const checkboxes =
+            document
+                .querySelectorAll(".user-check");
+
+        checkboxes.forEach(function(box) {
+
+            const row =
+                box.closest("tr");
+
+            if (row.style.display !== "none") {
+
+                box.checked =
+                    master.checked;
+
+            }
+
+        });
+
+        updateSelected();
+
+    }
+
+
+    /* =====================================================
+       SELECTED COUNT
+    ===================================================== */
+
+    function updateSelected() {
+
+        const selected =
+            document
+                .querySelectorAll(".user-check:checked")
+                .length;
+
+        document
+            .getElementById("selectedInfo")
+            .textContent =
+                selected +
+                " user" +
+                (selected === 1 ? "" : "s") +
+                " selected";
+
+    }
+
+
+    /* =====================================================
+       DROPDOWN
+    ===================================================== */
+
+    function toggleMenu(button) {
+
+        document
+            .querySelectorAll(".dropdown")
+            .forEach(function(menu) {
+
+                if (
+                    menu !== button.nextElementSibling
+                ) {
+
+                    menu.classList.remove("show");
+
+                }
+
+            });
+
+
+        button
+            .nextElementSibling
+            .classList.toggle("show");
+
+    }
+
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                !event.target.closest(".action-menu")
+            ) {
+
+                document
+                    .querySelectorAll(".dropdown")
+                    .forEach(function(menu) {
+
+                        menu.classList.remove("show");
+
+                    });
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       USER ACTIONS
+    ===================================================== */
+
+    function viewUser(name) {
+
+        showToast(
+            "Opening profile: " + name
+        );
+
+    }
+
+
+    function editUser(name) {
+
+        showToast(
+            "Opening account editor: " + name
+        );
+
+    }
+
+
+    function manageRoles(name) {
+
+        showToast(
+            "Managing activities for " + name
+        );
+
+    }
+
+
+    function verifyUser(name) {
+
+        const confirmed =
+            confirm(
+                "Verify the FAGA account for " +
+                name +
+                "?"
+            );
+
+        if (confirmed) {
+
+            showToast(
+                name +
+                " has been marked for verification."
+            );
+
+        }
+
+    }
+
+
+    function suspendUser(name) {
+
+        const confirmed =
+            confirm(
+                "Suspend the FAGA account for " +
+                name +
+                "?"
+            );
+
+        if (confirmed) {
+
+            showToast(
+                name +
+                " account suspension initiated."
+            );
+
+        }
+
+    }
+
+
+    function activateUser(name) {
+
+        const confirmed =
+            confirm(
+                "Reactivate the FAGA account for " +
+                name +
+                "?"
+            );
+
+        if (confirmed) {
+
+            showToast(
+                name +
+                " account reactivation initiated."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       BULK ACTIONS
+    ===================================================== */
+
+    function getSelectedUsers() {
+
+        const selected = [];
+
+        document
+            .querySelectorAll(".user-check:checked")
+            .forEach(function(box) {
+
+                const row =
+                    box.closest("tr");
+
+                if (row) {
+
+                    selected.push(
+                        row.dataset.name
+                    );
+
+                }
+
+            });
+
+        return selected;
+
+    }
+
+
+    function bulkVerify() {
+
+        const users =
+            getSelectedUsers();
+
+        if (!users.length) {
+
+            showToast(
+                "Select at least one user first."
+            );
+
+            return;
+
+        }
+
+        showToast(
+            users.length +
+            " user account(s) queued for verification."
+        );
+
+    }
+
+
+    function bulkMessage() {
+
+        const users =
+            getSelectedUsers();
+
+        if (!users.length) {
+
+            showToast(
+                "Select users to message."
+            );
+
+            return;
+
+        }
+
+        showToast(
+            "Messaging " +
+            users.length +
+            " selected user(s)."
+        );
+
+    }
+
+
+    function bulkSuspend() {
+
+        const users =
+            getSelectedUsers();
+
+        if (!users.length) {
+
+            showToast(
+                "Select users to suspend."
+            );
+
+            return;
+
+        }
+
+        const confirmed =
+            confirm(
+                "Suspend " +
+                users.length +
+                " selected account(s)?"
+            );
+
+        if (confirmed) {
+
+            showToast(
+                users.length +
+                " account(s) queued for suspension."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ADD USER
+    ===================================================== */
+
+    function addUser() {
+
+        showToast(
+            "Opening new user registration."
+        );
+
+    }
+
+
+    /* =====================================================
+       EXPORT
+    ===================================================== */
+
+    function exportUsers() {
+
+        showToast(
+            "Preparing user export..."
+        );
+
+        /*
+            BACKEND:
+
+            GET /api/admin/users/export
+
+            The backend should generate
+            CSV/XLSX data based on the
+            selected filters.
+        */
+
+    }
+
+
+    /* =====================================================
+       PAGINATION
+    ===================================================== */
+
+    function changePage(page) {
+
+        showToast(
+            "Loading page " + page + "..."
+        );
+
+        /*
+            BACKEND:
+
+            GET /api/admin/users?page=2
+
+            The actual user list should
+            be server-side paginated.
+        */
+
+    }
+
+
+    /* =====================================================
+       GLOBAL SEARCH
+    ===================================================== */
+
+    document
+        .getElementById("globalSearch")
+        .addEventListener(
+            "keypress",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    const query =
+                        this.value.trim();
+
+                    if (!query) {
+                        return;
+                    }
+
+                    document
+                        .getElementById("userSearch")
+                        .value = query;
+
+                    filterUsers();
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+        const confirmed =
+            confirm(
+                "Sign out of the FAGA Admin Portal?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        /*
+            BACKEND:
+
+            POST /api/admin/logout
+
+            Then:
+
+            window.location.href="../user portal/login.html";
+        */
+
+        window.location.href="../user portal/login.html";
+
+    }
+
+</script>
+
+</body>
+</html>

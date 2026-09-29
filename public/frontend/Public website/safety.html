@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="FAGA Safety Center - Safety guidelines for customers, riders, sellers, restaurants and service providers.">
+  <title>Safety Center | FAGA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #0b2547;
+      --navy-3: #12345d;
+      --orange: #f7931e;
+      --orange-dark: #df7f0b;
+      --orange-light: #fff3e2;
+      --white: #ffffff;
+      --bg: #f6f8fb;
+      --text: #172033;
+      --muted: #667085;
+      --border: #e5e9f0;
+      --success: #198754;
+      --danger: #d64545;
+      --danger-light: #fff1f1;
+      --green-light: #eaf8f0;
+      --blue-light: #edf5ff;
+      --shadow: 0 12px 35px rgba(7, 26, 51, .08);
+      --radius: 16px;
+      --container: 1180px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================== */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 26, 51, .98);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .12);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 25px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--orange);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      color: #dce5f1;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 11px;
+      border-radius: 8px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(255,255,255,.08);
+      color: white;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: white;
+    }
+
+    .btn-orange:hover {
+      background: var(--orange-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      color: white;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.35);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    .mobile-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: white;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 8px 0 20px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      color: #dce5f1;
+      padding: 11px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(255,255,255,.08);
+      color: white;
+    }
+
+    .mobile-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(247,147,30,.2), transparent 30%),
+        linear-gradient(135deg, var(--navy), #0d3159);
+      color: white;
+      padding: 72px 0 82px;
+    }
+
+    .hero-content {
+      max-width: 820px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 30px;
+      background: rgba(247,147,30,.12);
+      border: 1px solid rgba(247,147,30,.28);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 60px);
+      line-height: 1.06;
+      letter-spacing: -1.8px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: var(--orange);
+    }
+
+    .hero p {
+      max-width: 730px;
+      color: #cbd7e5;
+      font-size: 17px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .emergency-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 25px;
+      color: #d9e4ef;
+      font-size: 13px;
+    }
+
+    /* =========================
+       SAFETY INTRO
+    ========================== */
+
+    .intro {
+      padding: 48px 0 20px;
+    }
+
+    .intro-card {
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .intro-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 15px;
+      background: var(--green-light);
+      color: var(--success);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+    }
+
+    .intro-card h2 {
+      color: var(--navy);
+      font-size: 23px;
+      margin-bottom: 7px;
+    }
+
+    .intro-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       SAFETY CARDS
+    ========================== */
+
+    .section {
+      padding: 35px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 23px;
+    }
+
+    .section-heading h2 {
+      color: var(--navy);
+      font-size: 27px;
+      letter-spacing: -.5px;
+      margin-bottom: 6px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 720px;
+    }
+
+    .safety-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .safety-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: 0 7px 25px rgba(7,26,51,.05);
+      transition: .2s;
+    }
+
+    .safety-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 17px;
+      font-size: 20px;
+    }
+
+    .icon-orange {
+      background: var(--orange-light);
+      color: var(--orange-dark);
+    }
+
+    .icon-blue {
+      background: var(--blue-light);
+      color: #2266a7;
+    }
+
+    .icon-green {
+      background: var(--green-light);
+      color: var(--success);
+    }
+
+    .icon-red {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .safety-card h3 {
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .safety-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 13px;
+    }
+
+    .safety-card ul {
+      padding-left: 19px;
+      color: #526074;
+      font-size: 13px;
+    }
+
+    .safety-card li {
+      margin-bottom: 7px;
+    }
+
+    /* =========================
+       ROLE SAFETY
+    ========================== */
+
+    .role-section {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 55px 0;
+      margin-top: 15px;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .role-card {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 24px;
+      background: #fbfcfe;
+    }
+
+    .role-header {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 14px;
+    }
+
+    .role-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: white;
+    }
+
+    .role-card h3 {
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .role-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .role-card ul {
+      padding-left: 19px;
+      color: #526074;
+      font-size: 13px;
+    }
+
+    .role-card li {
+      margin-bottom: 7px;
+    }
+
+    /* =========================
+       SAFE DELIVERY
+    ========================== */
+
+    .delivery-section {
+      padding: 55px 0;
+    }
+
+    .delivery-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .delivery-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .delivery-card h3 {
+      color: var(--navy);
+      font-size: 19px;
+      margin-bottom: 13px;
+    }
+
+    .delivery-list {
+      list-style: none;
+    }
+
+    .delivery-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 11px 0;
+      border-bottom: 1px solid #edf0f4;
+      color: #526074;
+      font-size: 13px;
+    }
+
+    .delivery-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .delivery-list i {
+      color: var(--success);
+      margin-top: 4px;
+    }
+
+    /* =========================
+       PROHIBITED ITEMS
+    ========================== */
+
+    .prohibited {
+      background: var(--navy);
+      color: white;
+      padding: 55px 0;
+      margin-top: 15px;
+    }
+
+    .prohibited .section-heading h2 {
+      color: white;
+    }
+
+    .prohibited .section-heading p {
+      color: #bdcbdb;
+    }
+
+    .prohibited-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .prohibited-item {
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.045);
+      border-radius: 12px;
+    }
+
+    .prohibited-item i {
+      color: var(--orange);
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .prohibited-item h3 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .prohibited-item p {
+      color: #aebdd0;
+      font-size: 12px;
+    }
+
+    /* =========================
+       INCIDENT / REPORTING
+    ========================== */
+
+    .report-section {
+      padding: 60px 0;
+    }
+
+    .report-box {
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .report-box h2 {
+      color: var(--navy);
+      font-size: 26px;
+      margin-bottom: 7px;
+    }
+
+    .report-box > p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 25px;
+      max-width: 720px;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .report-option {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 21px;
+      background: #fbfcfe;
+    }
+
+    .report-option i {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      background: var(--orange-light);
+      color: var(--orange-dark);
+    }
+
+    .report-option h3 {
+      color: var(--navy);
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .report-option p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .report-option a {
+      color: var(--orange-dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       EMERGENCY
+    ========================== */
+
+    .emergency {
+      margin-top: 5px;
+      padding: 28px;
+      border-radius: 14px;
+      border: 1px solid #f2cccc;
+      background: var(--danger-light);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .emergency-icon {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--danger);
+      color: white;
+      font-size: 20px;
+    }
+
+    .emergency h3 {
+      color: #842f2f;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .emergency p {
+      color: #704848;
+      font-size: 13px;
+    }
+
+    /* =========================
+       CTA
+    ========================== */
+
+    .cta {
+      padding: 10px 0 65px;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, var(--navy), #0d315a);
+      color: white;
+      border-radius: var(--radius);
+      padding: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .cta-box h2 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .cta-box p {
+      color: #c2d0df;
+      font-size: 13px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      background: #041326;
+      color: #aebed0;
+      padding: 55px 0 25px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 35px;
+      padding-bottom: 40px;
+    }
+
+    .footer-brand p {
+      max-width: 330px;
+      margin-top: 13px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .footer-title {
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .footer-links a {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 9px;
+      transition: .2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--orange);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .footer-social a {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.06);
+    }
+
+    .footer-social a:hover {
+      background: var(--orange);
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 12px;
+    }
+
+    /* =========================
+       BACK TO TOP
+    ========================== */
+
+    #backTop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 43px;
+      height: 43px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,.2);
+      display: none;
+      place-items: center;
+      z-index: 100;
+    }
+
+    #backTop.show {
+      display: grid;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 1080px) {
+      .nav-links a {
+        padding: 9px 7px;
+        font-size: 12px;
+      }
+
+      .nav-actions .btn {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+
+      .prohibited-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .mobile-menu.open {
+        display: block;
+      }
+
+      .safety-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .role-grid,
+      .delivery-layout,
+      .report-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 28px, var(--container));
+      }
+
+      .hero {
+        padding: 55px 0 62px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .intro-card {
+        grid-template-columns: 1fr;
+        padding: 23px;
+      }
+
+      .safety-grid,
+      .prohibited-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section,
+      .delivery-section,
+      .report-section {
+        padding: 35px 0;
+      }
+
+      .report-box {
+        padding: 23px;
+      }
+
+      .emergency {
+        flex-direction: column;
+      }
+
+      .cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 27px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <header class="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">
+          <i class="fa-solid fa-bolt"></i>
+        </span>
+        FAGA
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="logistics.html">Logistics</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="food.html">Food</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="help.html">Help</a>
+
+      <div class="mobile-buttons">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero">
+    <div class="container hero-content">
+
+      <div class="eyebrow">
+        <i class="fa-solid fa-shield-halved"></i>
+        FAGA Safety Center
+      </div>
+
+      <h1>Safety comes <span>first.</span></h1>
+
+      <p>
+        Whether you're ordering food, sending a package, buying from the
+        marketplace or booking a service, FAGA is designed to make everyday
+        transactions safer, clearer and more reliable.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#report" class="btn btn-orange">
+          <i class="fa-solid fa-flag"></i>
+          Report a Safety Issue
+        </a>
+
+        <a href="help.html" class="btn btn-outline">
+          <i class="fa-solid fa-circle-question"></i>
+          Get Help
+        </a>
+      </div>
+
+      <div class="emergency-note">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        If you are facing an immediate emergency, contact your local emergency
+        services first.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       INTRO
+  ========================== -->
+
+  <section class="intro">
+    <div class="container">
+
+      <div class="intro-card">
+
+        <div class="intro-icon">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+
+        <div>
+          <h2>Our approach to safety</h2>
+
+          <p>
+            Safety is a shared responsibility. FAGA works to provide tools,
+            policies and processes that help customers, riders, sellers,
+            restaurants and service providers interact responsibly on the
+            platform.
+          </p>
+
+          <p style="margin-top:10px;">
+            Our safety features may include account verification, transaction
+            monitoring, order tracking, reporting tools, platform policies,
+            support channels and measures designed to detect or prevent abuse.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       EVERYONE
+  ========================== -->
+
+  <section class="section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Safety basics for everyone</h2>
+        <p>
+          A few simple practices can help protect your account, your
+          transactions and the people you interact with.
+        </p>
+      </div>
+
+      <div class="safety-grid">
+
+        <article class="safety-card">
+          <div class="card-icon icon-orange">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+
+          <h3>Protect your account</h3>
+
+          <p>
+            Keep your account credentials private and use strong,
+            unique authentication information.
+          </p>
+
+          <ul>
+            <li>Never share your password or verification codes.</li>
+            <li>Review account activity regularly.</li>
+            <li>Report suspicious login activity.</li>
+          </ul>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-blue">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+
+          <h3>Communicate carefully</h3>
+
+          <p>
+            Keep transaction-related communication within appropriate
+            FAGA channels where available.
+          </p>
+
+          <ul>
+            <li>Be cautious with unexpected payment requests.</li>
+            <li>Do not share unnecessary personal information.</li>
+            <li>Report suspicious or abusive messages.</li>
+          </ul>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-green">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+
+          <h3>Verify locations</h3>
+
+          <p>
+            Confirm pickup and delivery details before a transaction
+            begins.
+          </p>
+
+          <ul>
+            <li>Check addresses carefully.</li>
+            <li>Use available order tracking features.</li>
+            <li>Meet or hand over items in appropriate locations.</li>
+          </ul>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-red">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+
+          <h3>Watch for impersonation</h3>
+
+          <p>
+            FAGA personnel should not ask for sensitive credentials or
+            unnecessary payment information.
+          </p>
+
+          <ul>
+            <li>Be cautious of unofficial support requests.</li>
+            <li>Do not disclose verification codes.</li>
+            <li>Use official support channels.</li>
+          </ul>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-orange">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+
+          <h3>Review transactions</h3>
+
+          <p>
+            Check order details before confirming a purchase, booking or
+            delivery.
+          </p>
+
+          <ul>
+            <li>Verify item or service details.</li>
+            <li>Review charges before payment.</li>
+            <li>Keep transaction records when appropriate.</li>
+          </ul>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-blue">
+            <i class="fa-solid fa-flag"></i>
+          </div>
+
+          <h3>Report concerns</h3>
+
+          <p>
+            Prompt reporting helps FAGA investigate potential safety,
+            fraud or abuse issues.
+          </p>
+
+          <ul>
+            <li>Report suspicious activity promptly.</li>
+            <li>Provide relevant order information.</li>
+            <li>Contact emergency services for immediate emergencies.</li>
+          </ul>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       ROLE SAFETY
+  ========================== -->
+
+  <section class="role-section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Safety by role</h2>
+        <p>
+          Different FAGA participants have different responsibilities.
+        </p>
+      </div>
+
+      <div class="role-grid">
+
+        <!-- CUSTOMER -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <h3>Customers</h3>
+          </div>
+
+          <p>
+            Help keep deliveries, purchases and service appointments safe.
+          </p>
+
+          <ul>
+            <li>Use accurate delivery and contact information.</li>
+            <li>Do not request prohibited goods or unlawful services.</li>
+            <li>Treat riders and providers respectfully.</li>
+            <li>Report unsafe behavior through official channels.</li>
+          </ul>
+        </article>
+
+        <!-- RIDERS -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+
+            <h3>Riders & Drivers</h3>
+          </div>
+
+          <p>
+            Follow applicable road, vehicle, delivery and platform safety
+            requirements.
+          </p>
+
+          <ul>
+            <li>Follow applicable traffic and transportation laws.</li>
+            <li>Never operate a vehicle while impaired.</li>
+            <li>Use appropriate safety equipment.</li>
+            <li>Do not accept prohibited or suspicious packages.</li>
+          </ul>
+        </article>
+
+        <!-- SELLERS -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-store"></i>
+            </div>
+
+            <h3>Sellers</h3>
+          </div>
+
+          <p>
+            Provide accurate product information and comply with applicable
+            selling requirements.
+          </p>
+
+          <ul>
+            <li>List products accurately.</li>
+            <li>Do not sell prohibited or unlawful products.</li>
+            <li>Use appropriate packaging.</li>
+            <li>Handle customer information responsibly.</li>
+          </ul>
+        </article>
+
+        <!-- RESTAURANTS -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+
+            <h3>Restaurants</h3>
+          </div>
+
+          <p>
+            Follow applicable food safety and preparation requirements.
+          </p>
+
+          <ul>
+            <li>Follow applicable food safety regulations.</li>
+            <li>Package food appropriately for transport.</li>
+            <li>Provide accurate menu and allergen information where required.</li>
+            <li>Maintain appropriate food handling standards.</li>
+          </ul>
+        </article>
+
+        <!-- SERVICE PROVIDERS -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+
+            <h3>Service Providers</h3>
+          </div>
+
+          <p>
+            Provide services professionally and comply with applicable
+            licensing requirements.
+          </p>
+
+          <ul>
+            <li>Maintain required qualifications and licenses.</li>
+            <li>Represent services accurately.</li>
+            <li>Respect customer privacy and property.</li>
+            <li>Follow applicable safety standards.</li>
+          </ul>
+        </article>
+
+        <!-- EVERYONE -->
+
+        <article class="role-card">
+          <div class="role-header">
+            <div class="role-icon">
+              <i class="fa-solid fa-people-group"></i>
+            </div>
+
+            <h3>Everyone</h3>
+          </div>
+
+          <p>
+            Respect other people and help maintain a safe platform.
+          </p>
+
+          <ul>
+            <li>No harassment, threats or violence.</li>
+            <li>No fraud or deliberate platform abuse.</li>
+            <li>Respect personal boundaries.</li>
+            <li>Report serious safety concerns promptly.</li>
+          </ul>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       DELIVERY SAFETY
+  ========================== -->
+
+  <section class="delivery-section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Safer deliveries and pickups</h2>
+        <p>
+          Use these practical steps when sending or receiving items.
+        </p>
+      </div>
+
+      <div class="delivery-layout">
+
+        <div class="delivery-card">
+          <h3>
+            <i class="fa-solid fa-box" style="color:var(--orange);margin-right:8px;"></i>
+            Sending an item
+          </h3>
+
+          <ul class="delivery-list">
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Provide accurate pickup and delivery information.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Package items securely and appropriately.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Accurately describe the package when requested.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Do not attempt to send prohibited or unlawful goods.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Keep relevant order information available until completion.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="delivery-card">
+          <h3>
+            <i class="fa-solid fa-hand-holding-box" style="color:var(--orange);margin-right:8px;"></i>
+            Receiving an item
+          </h3>
+
+          <ul class="delivery-list">
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Confirm the delivery details before accepting the item.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Use a safe and appropriate handover location.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Check the package for obvious damage where appropriate.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Report significant delivery problems promptly.</span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>Do not make unnecessary payments outside approved channels.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       PROHIBITED ITEMS
+  ========================== -->
+
+  <section class="prohibited">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Restricted and prohibited activity</h2>
+        <p>
+          FAGA may restrict or prohibit certain products, activities and
+          transactions for legal, safety or operational reasons.
+        </p>
+      </div>
+
+      <div class="prohibited-grid">
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <h3>Illegal goods</h3>
+          <p>
+            Goods whose sale, possession or transportation is unlawful.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-skull-crossbones"></i>
+          <h3>Dangerous materials</h3>
+          <p>
+            Hazardous materials that cannot safely be handled through the
+            relevant service.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-file-circle-xmark"></i>
+          <h3>Fraudulent transactions</h3>
+          <p>
+            Transactions involving deception, stolen payment methods or
+            deliberate platform abuse.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-user-lock"></i>
+          <h3>Unauthorized access</h3>
+          <p>
+            Attempts to access another person's account, data or systems.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-bullhorn"></i>
+          <h3>Harassment</h3>
+          <p>
+            Threatening, abusive, discriminatory or intimidating behavior.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-box-open"></i>
+          <h3>Misdeclared packages</h3>
+          <p>
+            Concealing or deliberately misrepresenting package contents.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-code"></i>
+          <h3>Platform abuse</h3>
+          <p>
+            Malware, unauthorized automation, attacks or attempts to disrupt
+            platform operations.
+          </p>
+        </div>
+
+        <div class="prohibited-item">
+          <i class="fa-solid fa-money-bill-transfer"></i>
+          <h3>Off-platform scams</h3>
+          <p>
+            Attempts to redirect users into suspicious or unauthorized
+            payment arrangements.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       REPORTING
+  ========================== -->
+
+  <section class="report-section" id="report">
+    <div class="container">
+
+      <div class="report-box">
+
+        <h2>Report a safety concern</h2>
+
+        <p>
+          If something does not feel right, report it. Include relevant
+          information such as an order number, account details where
+          appropriate, screenshots or a description of what happened.
+        </p>
+
+        <div class="report-grid">
+
+          <div class="report-option">
+            <i class="fa-solid fa-headset"></i>
+
+            <h3>Contact Support</h3>
+
+            <p>
+              Get help with an order, delivery, account or platform concern.
+            </p>
+
+            <a href="help.html">
+              Open Help Center
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="report-option">
+            <i class="fa-solid fa-envelope"></i>
+
+            <h3>Safety & Legal</h3>
+
+            <p>
+              For serious platform safety, legal or abuse-related matters.
+            </p>
+
+            <a href="mailto:safety@faga.com">
+              safety@faga.com
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="report-option">
+            <i class="fa-solid fa-flag"></i>
+
+            <h3>Report a User or Listing</h3>
+
+            <p>
+              Report suspicious behavior, listings, messages or transactions.
+            </p>
+
+            <a href="contact.html">
+              Contact FAGA
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="report-option">
+            <i class="fa-solid fa-shield"></i>
+
+            <h3>Account Security</h3>
+
+            <p>
+              If you believe your account has been compromised, act quickly.
+            </p>
+
+            <a href="../user portal/login.html">
+              Secure My Account
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="emergency">
+
+          <div class="emergency-icon">
+            <i class="fa-solid fa-phone-volume"></i>
+          </div>
+
+          <div>
+            <h3>Immediate danger or emergency?</h3>
+
+            <p>
+              FAGA support is not a replacement for emergency services.
+              If you are in immediate danger or someone needs urgent medical,
+              fire, police or other emergency assistance, contact the
+              appropriate local emergency service first.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       SAFETY TECHNOLOGY
+  ========================== -->
+
+  <section class="section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Safety features on FAGA</h2>
+        <p>
+          Depending on the service and account type, FAGA may provide tools
+          designed to improve transaction visibility and safety.
+        </p>
+      </div>
+
+      <div class="safety-grid">
+
+        <article class="safety-card">
+          <div class="card-icon icon-blue">
+            <i class="fa-solid fa-location-crosshairs"></i>
+          </div>
+
+          <h3>Order tracking</h3>
+
+          <p>
+            Track eligible deliveries and view relevant status information.
+          </p>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-green">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+
+          <h3>Account verification</h3>
+
+          <p>
+            Some roles or activities may require additional verification.
+          </p>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-orange">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+
+          <h3>Notifications</h3>
+
+          <p>
+            Receive relevant transaction and account notifications through
+            supported channels.
+          </p>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-red">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <h3>Fraud monitoring</h3>
+
+          <p>
+            FAGA may use automated and manual measures to identify suspicious
+            activity.
+          </p>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-blue">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+
+          <h3>Support channels</h3>
+
+          <p>
+            Users can report issues and request assistance through available
+            support channels.
+          </p>
+        </article>
+
+        <article class="safety-card">
+          <div class="card-icon icon-green">
+            <i class="fa-solid fa-file-shield"></i>
+          </div>
+
+          <h3>Policies & controls</h3>
+
+          <p>
+            Platform rules help define acceptable use and provide a framework
+            for addressing abuse.
+          </p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       CTA
+  ========================== -->
+
+  <section class="cta">
+    <div class="container">
+
+      <div class="cta-box">
+
+        <div>
+          <h2>Have a safety question?</h2>
+
+          <p>
+            Visit the Help Center or contact FAGA for assistance.
+          </p>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="help.html" class="btn btn-orange">
+            <i class="fa-solid fa-circle-question"></i>
+            Help Center
+          </a>
+
+          <a href="contact.html" class="btn btn-outline">
+            <i class="fa-solid fa-envelope"></i>
+            Contact Us
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+
+          <a href="index.html" class="brand">
+            <span class="brand-mark">
+              <i class="fa-solid fa-bolt"></i>
+            </span>
+            FAGA
+          </a>
+
+          <p>
+            One platform for logistics, marketplace shopping, food delivery
+            and trusted everyday services.
+          </p>
+
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="#" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="#" aria-label="X">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="#" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <div>
+          <div class="footer-title">Platform</div>
+
+          <div class="footer-links">
+            <a href="logistics.html">Logistics</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="food.html">Food</a>
+            <a href="services.html">Services</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-title">Company</div>
+
+          <div class="footer-links">
+            <a href="about.html">About FAGA</a>
+            <a href="contact.html">Contact</a>
+            <a href="help.html">Help Center</a>
+            <a href="../user portal/register.html">Become a Partner</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-title">Legal</div>
+
+          <div class="footer-links">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="safety.html" style="color:var(--orange);">Safety</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © <span id="year"></span> FAGA. All rights reserved.
+        </div>
+
+        <div>
+          Safety is everyone's responsibility.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <button id="backTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script>
+    /*
+      ==============================================
+      FAGA SAFETY PAGE
+      Frontend-only implementation.
+
+      Suggested backend integration:
+
+      GET  /api/safety
+      GET  /api/safety/guidelines
+      GET  /api/safety/prohibited-items
+      GET  /api/safety/reports
+      POST /api/safety/report
+      POST /api/support/ticket
+
+      Production requirements:
+      - Authenticate report submissions.
+      - Rate-limit abuse reports.
+      - Validate and sanitize all submitted data server-side.
+      - Store safety reports securely.
+      - Apply role-based access to safety cases.
+      - Maintain an audit trail for case actions.
+      - Do not expose internal fraud-detection rules.
+      - Do not expose provider/API secrets in frontend code.
+      ==============================================
+    */
+
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+
+      const icon = mobileToggle.querySelector("i");
+
+      if (mobileMenu.classList.contains("open")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+      } else {
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+
+    document.querySelectorAll("#mobileMenu a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+
+        const icon = mobileToggle.querySelector("i");
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      });
+    });
+
+    /* Back to top */
+
+    const backTop = document.getElementById("backTop");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 500) {
+        backTop.classList.add("show");
+      } else {
+        backTop.classList.remove("show");
+      }
+    });
+
+    backTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    /* Close mobile menu when switching to desktop */
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        mobileMenu.classList.remove("open");
+
+        const icon = mobileToggle.querySelector("i");
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+
+    /* Current year */
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>

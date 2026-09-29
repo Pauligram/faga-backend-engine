@@ -1,0 +1,3060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAGA Admin — Sellers</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a2f;
+            --navy-2: #0b2744;
+            --navy-3: #102f4e;
+            --orange: #ff7a00;
+            --orange-dark: #e96700;
+            --white: #ffffff;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --border: #e3e8ef;
+            --text: #162235;
+            --muted: #6b7788;
+            --green: #0f9d58;
+            --red: #d93025;
+            --yellow: #f4a000;
+            --blue: #2878d8;
+            --purple: #7654d6;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .topbar-inner {
+            width: 100%;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            width: 230px;
+            min-width: 230px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 27px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .brand-logo span {
+            color: var(--orange);
+        }
+
+        .admin-label {
+            font-size: 10px;
+            background: var(--orange);
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-weight: 800;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: transparent;
+            border: 0;
+            color: white;
+            font-size: 25px;
+        }
+
+        .global-search {
+            flex: 1;
+            max-width: 680px;
+            position: relative;
+        }
+
+        .global-search input {
+            width: 100%;
+            height: 42px;
+            border: 0;
+            border-radius: 8px;
+            padding: 0 48px 0 16px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .global-search button {
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            width: 34px;
+            height: 34px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--orange);
+            color: white;
+        }
+
+        .top-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-action {
+            border: 0;
+            background: transparent;
+            color: white;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .top-action:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+        .notification {
+            position: relative;
+            font-size: 19px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--orange);
+            color: white;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding-left: 10px;
+            border-left: 1px solid rgba(255,255,255,.12);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+        }
+
+        .admin-user strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .admin-user span {
+            display: block;
+            font-size: 10px;
+            color: #aebccc;
+            margin-top: 2px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            background: var(--navy);
+            color: #dbe4ed;
+            overflow-y: auto;
+            z-index: 900;
+            padding: 18px 12px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 22px;
+        }
+
+        .sidebar-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #718298;
+            padding: 0 12px 8px;
+            font-weight: 800;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #c9d4df;
+            padding: 11px 12px;
+            border-radius: 7px;
+            font-size: 13px;
+            text-align: left;
+            margin-bottom: 2px;
+        }
+
+        .side-link:hover {
+            background: rgba(255,255,255,.06);
+            color: white;
+        }
+
+        .side-link.active {
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+        }
+
+        .side-icon {
+            width: 21px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .side-badge {
+            margin-left: auto;
+            background: #e75b47;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding-top: 68px;
+            min-height: 100vh;
+        }
+
+        .content {
+            padding: 28px;
+            max-width: 1700px;
+            margin: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .btn:hover {
+            border-color: #c7d0dc;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+        }
+
+        .btn-danger {
+            background: #fff4f3;
+            color: var(--red);
+            border-color: #ffd3cf;
+        }
+
+        .btn-success {
+            background: #eefaf3;
+            color: var(--green);
+            border-color: #c8ecd6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            right: -25px;
+            bottom: -35px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(255,122,0,.06);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 900;
+            margin-top: 9px;
+        }
+
+        .stat-meta {
+            margin-top: 7px;
+            font-size: 11px;
+        }
+
+        .positive {
+            color: var(--green);
+        }
+
+        .warning {
+            color: var(--yellow);
+        }
+
+        .negative {
+            color: var(--red);
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+            padding: 17px 19px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .panel-header h2 {
+            font-size: 15px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .panel-body {
+            padding: 18px;
+        }
+
+        .filter-panel {
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            gap: 10px;
+        }
+
+        .input,
+        .select {
+            width: 100%;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 0 12px;
+            outline: none;
+            background: white;
+            color: var(--text);
+            font-size: 12px;
+        }
+
+        .input:focus,
+        .select:focus {
+            border-color: var(--orange);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab {
+            border: 0;
+            background: transparent;
+            padding: 14px 14px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .tab.active {
+            color: var(--orange);
+            border-bottom-color: var(--orange);
+        }
+
+        .bulk-bar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 16px;
+            background: #fff8f1;
+            border-bottom: 1px solid #ffe1c7;
+        }
+
+        .bulk-bar.show {
+            display: flex;
+        }
+
+        .bulk-left {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .small-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .small-btn:hover {
+            background: #f7f8fa;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1120px;
+        }
+
+        th {
+            background: #fafbfd;
+            color: #697789;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 12px 13px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #fcfdff;
+        }
+
+        .seller-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+        }
+
+        .seller-avatar {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 8px;
+            background: #edf2f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .seller-name {
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .seller-id {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .activity-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 7px;
+            border-radius: 5px;
+            background: #f0f3f7;
+            color: #4e5d70;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .tag.orange {
+            background: #fff1e4;
+            color: #d96300;
+        }
+
+        .tag.blue {
+            background: #edf5ff;
+            color: #2168b9;
+        }
+
+        .tag.green {
+            background: #eaf8ef;
+            color: #168148;
+        }
+
+        .tag.purple {
+            background: #f1edff;
+            color: #6346bc;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status.active {
+            color: var(--green);
+            background: #eaf8ef;
+        }
+
+        .status.pending {
+            color: var(--yellow);
+            background: #fff7df;
+        }
+
+        .status.suspended {
+            color: var(--red);
+            background: #fff0ef;
+        }
+
+        .status.rejected {
+            color: #747d89;
+            background: #f0f2f5;
+        }
+
+        .status.review {
+            color: var(--blue);
+            background: #edf5ff;
+        }
+
+        .rating {
+            font-weight: 800;
+        }
+
+        .rating span {
+            color: #f4a000;
+        }
+
+        .money {
+            font-weight: 800;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-btn {
+            border: 1px solid var(--border);
+            background: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .action-menu {
+            position: absolute;
+            right: 0;
+            top: 37px;
+            min-width: 175px;
+            background: white;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 30px rgba(0,0,0,.13);
+            border-radius: 8px;
+            padding: 5px;
+            z-index: 50;
+            display: none;
+        }
+
+        .action-menu.show {
+            display: block;
+        }
+
+        .action-menu button {
+            display: block;
+            width: 100%;
+            padding: 9px 10px;
+            background: transparent;
+            border: 0;
+            text-align: left;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .action-menu button:hover {
+            background: #f5f7fa;
+        }
+
+        .action-menu .danger {
+            color: var(--red);
+        }
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 20px;
+        }
+
+        .seller-ranking {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .ranking-row {
+            display: grid;
+            grid-template-columns: 30px 1fr auto;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f2f4f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 11px;
+        }
+
+        .rank-info strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .rank-info span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        .rank-value {
+            text-align: right;
+        }
+
+        .rank-value strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .rank-value span {
+            font-size: 10px;
+            color: var(--green);
+        }
+
+        .health-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .health-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .health-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .health-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f4f7;
+            font-size: 15px;
+        }
+
+        .health-left strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .health-left span {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .health-number {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .pagination {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-info {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .page-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 8px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .page-btn.active {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2,13,25,.62);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: 760px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.3);
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 17px;
+        }
+
+        .close-modal {
+            border: 0;
+            background: #f2f4f7;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .seller-profile {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .large-avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 12px;
+            background: #edf2f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 900;
+            color: var(--navy);
+        }
+
+        .seller-profile h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .seller-profile p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .profile-status {
+            margin-left: auto;
+            align-self: flex-start;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 13px;
+        }
+
+        .detail-box span {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .detail-box strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .modal-section {
+            margin-top: 18px;
+        }
+
+        .modal-section h4 {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .document-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .document {
+            padding: 11px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: var(--navy);
+            color: white;
+            padding: 13px 17px;
+            border-radius: 8px;
+            font-size: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .25s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 45px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state strong {
+            display: block;
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding: 25px 0 10px;
+            color: #8793a2;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 1250px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .brand {
+                width: auto;
+                min-width: auto;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .top-actions .support-action {
+                display: none;
+            }
+
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .content {
+                padding: 18px 12px;
+            }
+
+            .global-search {
+                display: none;
+            }
+
+            .admin-user > div:last-child {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .document-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<header class="topbar">
+    <div class="topbar-inner">
+
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+        <div class="brand">
+            <div class="brand-logo">FA<span>GA</span></div>
+            <div class="admin-label">ADMIN</div>
+        </div>
+
+        <div class="global-search">
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search sellers, users, stores, products..."
+                onkeydown="globalSearch(event)"
+            >
+            <button onclick="runGlobalSearch()">⌕</button>
+        </div>
+
+        <div class="top-actions">
+
+            <button class="top-action notification" onclick="showToast('You have 8 marketplace notifications.')">
+                🔔
+                <span class="notification-badge">8</span>
+            </button>
+
+            <button class="top-action support-action" onclick="showToast('Opening admin support...')">
+                Support
+            </button>
+
+            <div class="admin-user">
+                <div class="avatar">SA</div>
+                <div>
+                    <strong>Super Admin</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Overview</div>
+
+        <button class="side-link" onclick="navigate('index.html')">
+            <span class="side-icon">▦</span>
+            Dashboard
+        </button>
+
+        <button class="side-link" onclick="navigate('users.html')">
+            <span class="side-icon">♙</span>
+            Users
+        </button>
+
+        <button class="side-link" onclick="navigate('orders.html')">
+            <span class="side-icon">▤</span>
+            Orders
+            <span class="side-badge">36</span>
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Operations</div>
+
+        <button class="side-link" onclick="navigate('logistics.html')">
+            <span class="side-icon">▣</span>
+            Logistics
+        </button>
+
+        <button class="side-link" onclick="navigate('riders.html')">
+            <span class="side-icon">♟</span>
+            Riders
+        </button>
+
+        <button class="side-link active" onclick="navigate('marketplace.html')">
+            <span class="side-icon">▥</span>
+            Marketplace
+        </button>
+
+        <button class="side-link active" onclick="navigate('sellers.html')">
+            <span class="side-icon">▱</span>
+            Sellers
+        </button>
+
+        <button class="side-link" onclick="navigate('services.html')">
+            <span class="side-icon">⚒</span>
+            Services
+        </button>
+
+        <button class="side-link" onclick="navigate('service-providers.html')">
+            <span class="side-icon">♧</span>
+            Service Providers
+        </button>
+
+        <button class="side-link" onclick="navigate('food.html')">
+            <span class="side-icon">♨</span>
+            Food & Restaurants
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Finance</div>
+
+        <button class="side-link" onclick="navigate('payments.html')">
+            <span class="side-icon">₦</span>
+            Payments
+        </button>
+
+        <button class="side-link" onclick="navigate('wallets.html')">
+            <span class="side-icon">▰</span>
+            Wallets
+        </button>
+
+        <button class="side-link" onclick="navigate('payouts.html')">
+            <span class="side-icon">⇄</span>
+            Payouts
+        </button>
+
+        <button class="side-link" onclick="navigate('reports.html')">
+            <span class="side-icon">◫</span>
+            Reports
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Administration</div>
+
+        <button class="side-link" onclick="navigate('support.html')">
+            <span class="side-icon">?</span>
+            Support
+        </button>
+
+        <button class="side-link" onclick="navigate('disputes.html')">
+            <span class="side-icon">⚠</span>
+            Disputes
+            <span class="side-badge">12</span>
+        </button>
+
+        <button class="side-link" onclick="navigate('settings.html')">
+            <span class="side-icon">⚙</span>
+            Settings
+        </button>
+
+        <button class="side-link" onclick="navigate('audit-logs.html')">
+            <span class="side-icon">≡</span>
+            Audit Logs
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Portal</div>
+
+        <button class="side-link" onclick="navigate('../dashboard.html')">
+            <span class="side-icon">↗</span>
+            User Portal
+        </button>
+
+        <button class="side-link" onclick="logout()">
+            <span class="side-icon">⇥</span>
+            Sign Out
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+    <div class="content">
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+                <h1>Seller Management</h1>
+                <p>Manage marketplace sellers, verification, stores, payouts, performance and seller compliance.</p>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn" onclick="exportSellers()">↓ Export Sellers</button>
+                <button class="btn btn-primary" onclick="addSeller()">+ Add Seller</button>
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             KPI CARDS
+        ====================================================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Sellers</div>
+                <div class="stat-value">6,482</div>
+                <div class="stat-meta positive">↑ 9.8% this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Active Sellers</div>
+                <div class="stat-value">5,714</div>
+                <div class="stat-meta positive">88.1% of sellers</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Pending Verification</div>
+                <div class="stat-value">326</div>
+                <div class="stat-meta warning">Requires review</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Marketplace GMV</div>
+                <div class="stat-value">₦42.6M</div>
+                <div class="stat-meta positive">↑ 16.4% this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Seller Payouts</div>
+                <div class="stat-value">₦28.9M</div>
+                <div class="stat-meta warning">₦4.2M pending</div>
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FILTERS
+        ====================================================== -->
+
+        <section class="panel filter-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h2>Seller Directory</h2>
+                    <p>Search and filter sellers across the FAGA marketplace.</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+
+                <button class="tab active" data-tab="all" onclick="setTab(this, 'all')">
+                    All Sellers
+                </button>
+
+                <button class="tab" data-tab="active" onclick="setTab(this, 'active')">
+                    Active
+                </button>
+
+                <button class="tab" data-tab="pending" onclick="setTab(this, 'pending')">
+                    Pending Verification
+                </button>
+
+                <button class="tab" data-tab="review" onclick="setTab(this, 'review')">
+                    Under Review
+                </button>
+
+                <button class="tab" data-tab="suspended" onclick="setTab(this, 'suspended')">
+                    Suspended
+                </button>
+
+                <button class="tab" data-tab="rejected" onclick="setTab(this, 'rejected')">
+                    Rejected
+                </button>
+
+            </div>
+
+            <div class="filters">
+
+                <input
+                    class="input"
+                    id="sellerSearch"
+                    type="text"
+                    placeholder="Search seller, store name, email or seller ID..."
+                    oninput="filterSellers()"
+                >
+
+                <select class="select" id="categoryFilter" onchange="filterSellers()">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Home">Home & Living</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Phones">Phones & Accessories</option>
+                    <option value="Food">Food & Groceries</option>
+                </select>
+
+                <select class="select" id="verificationFilter" onchange="filterSellers()">
+                    <option value="">Verification</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Review">Under Review</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+                <select class="select" id="storeFilter" onchange="filterSellers()">
+                    <option value="">Store Type</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Business">Business</option>
+                    <option value="Brand">Brand</option>
+                </select>
+
+                <select class="select" id="statusFilter" onchange="filterSellers()">
+                    <option value="">Account Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Suspended">Suspended</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+                <button class="btn" onclick="resetFilters()">Reset</button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BULK BAR
+        ====================================================== -->
+
+        <div class="bulk-bar" id="bulkBar">
+
+            <div class="bulk-left">
+                <span id="selectedCount">0</span> sellers selected
+            </div>
+
+            <div class="bulk-actions">
+                <button class="small-btn" onclick="bulkVerify()">✓ Verify</button>
+                <button class="small-btn" onclick="bulkMessage()">✉ Message</button>
+                <button class="small-btn" onclick="bulkPayout()">₦ Payout</button>
+                <button class="small-btn" onclick="bulkSuspend()">Suspend</button>
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SELLER TABLE
+        ====================================================== -->
+
+        <section class="panel">
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="selectAll" onchange="toggleAll(this)">
+                            </th>
+                            <th>Seller</th>
+                            <th>Store</th>
+                            <th>Category</th>
+                            <th>Verification</th>
+                            <th>Status</th>
+                            <th>Products</th>
+                            <th>Orders</th>
+                            <th>GMV</th>
+                            <th>Rating</th>
+                            <th>Joined</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="sellerTable">
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Electronics"
+                            data-store="Business"
+                            data-search="techworld electronics tech world SEL-10024"
+                        >
+                            <td>
+                                <input type="checkbox" class="seller-check" onchange="updateBulkBar()">
+                            </td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">TW</div>
+                                    <div>
+                                        <div class="seller-name">TechWorld Nigeria</div>
+                                        <div class="seller-id">SEL-10024</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Business</td>
+
+                            <td>
+                                <span class="tag blue">Electronics</span>
+                            </td>
+
+                            <td>
+                                <span class="status active">Verified</span>
+                            </td>
+
+                            <td>
+                                <span class="status active">Active</span>
+                            </td>
+
+                            <td>842</td>
+                            <td>3,284</td>
+
+                            <td class="money">₦8.42M</td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.8
+                                </div>
+                            </td>
+
+                            <td>Jan 14, 2025</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('TechWorld Nigeria')">View Seller</button>
+                                        <button onclick="messageSeller('TechWorld Nigeria')">Message</button>
+                                        <button onclick="viewStore('TechWorld Nigeria')">View Store</button>
+                                        <button onclick="viewPayouts('TechWorld Nigeria')">Payouts</button>
+                                        <button onclick="verifySeller('TechWorld Nigeria')">View Verification</button>
+                                        <button class="danger" onclick="suspendSeller('TechWorld Nigeria')">Suspend Seller</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Fashion"
+                            data-store="Brand"
+                            data-search="urban fashion house fashion urban sel-10081"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">UF</div>
+                                    <div>
+                                        <div class="seller-name">Urban Fashion House</div>
+                                        <div class="seller-id">SEL-10081</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Brand</td>
+
+                            <td><span class="tag purple">Fashion</span></td>
+
+                            <td><span class="status active">Verified</span></td>
+
+                            <td><span class="status active">Active</span></td>
+
+                            <td>1,284</td>
+                            <td>2,918</td>
+
+                            <td class="money">₦6.84M</td>
+
+                            <td><div class="rating"><span>★</span> 4.7</div></td>
+
+                            <td>Feb 03, 2025</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Urban Fashion House')">View Seller</button>
+                                        <button onclick="messageSeller('Urban Fashion House')">Message</button>
+                                        <button onclick="viewStore('Urban Fashion House')">View Store</button>
+                                        <button onclick="viewPayouts('Urban Fashion House')">Payouts</button>
+                                        <button onclick="verifySeller('Urban Fashion House')">View Verification</button>
+                                        <button class="danger" onclick="suspendSeller('Urban Fashion House')">Suspend Seller</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Pending"
+                            data-verification="Pending"
+                            data-category="Beauty"
+                            data-store="Individual"
+                            data-search="glow beauty store glow beauty sel-10214"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">GB</div>
+                                    <div>
+                                        <div class="seller-name">Glow Beauty Store</div>
+                                        <div class="seller-id">SEL-10214</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Individual</td>
+
+                            <td><span class="tag purple">Beauty</span></td>
+
+                            <td><span class="status pending">Pending</span></td>
+
+                            <td><span class="status pending">Pending</span></td>
+
+                            <td>76</td>
+                            <td>0</td>
+
+                            <td class="money">₦0</td>
+
+                            <td>—</td>
+
+                            <td>Sep 04, 2026</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Glow Beauty Store')">View Seller</button>
+                                        <button onclick="verifySeller('Glow Beauty Store')">Review Documents</button>
+                                        <button onclick="approveSeller('Glow Beauty Store')">Approve Seller</button>
+                                        <button onclick="messageSeller('Glow Beauty Store')">Message</button>
+                                        <button class="danger" onclick="rejectSeller('Glow Beauty Store')">Reject</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Phones"
+                            data-store="Business"
+                            data-search="mobile hub nigeria mobile hub phones accessories sel-10172"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">MH</div>
+                                    <div>
+                                        <div class="seller-name">Mobile Hub Nigeria</div>
+                                        <div class="seller-id">SEL-10172</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Business</td>
+
+                            <td><span class="tag blue">Phones</span></td>
+
+                            <td><span class="status active">Verified</span></td>
+
+                            <td><span class="status active">Active</span></td>
+
+                            <td>526</td>
+                            <td>2,406</td>
+
+                            <td class="money">₦5.91M</td>
+
+                            <td><div class="rating"><span>★</span> 4.6</div></td>
+
+                            <td>Mar 12, 2025</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Mobile Hub Nigeria')">View Seller</button>
+                                        <button onclick="messageSeller('Mobile Hub Nigeria')">Message</button>
+                                        <button onclick="viewStore('Mobile Hub Nigeria')">View Store</button>
+                                        <button onclick="viewPayouts('Mobile Hub Nigeria')">Payouts</button>
+                                        <button class="danger" onclick="suspendSeller('Mobile Hub Nigeria')">Suspend Seller</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Review"
+                            data-verification="Review"
+                            data-category="Home"
+                            data-store="Business"
+                            data-search="home decor nigeria home decor sel-10302"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">HD</div>
+                                    <div>
+                                        <div class="seller-name">Home Decor Nigeria</div>
+                                        <div class="seller-id">SEL-10302</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Business</td>
+
+                            <td><span class="tag green">Home</span></td>
+
+                            <td><span class="status review">Under Review</span></td>
+
+                            <td><span class="status review">Review</span></td>
+
+                            <td>214</td>
+                            <td>38</td>
+
+                            <td class="money">₦182K</td>
+
+                            <td><div class="rating"><span>★</span> 4.1</div></td>
+
+                            <td>Aug 28, 2026</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Home Decor Nigeria')">View Seller</button>
+                                        <button onclick="verifySeller('Home Decor Nigeria')">Review Documents</button>
+                                        <button onclick="messageSeller('Home Decor Nigeria')">Message</button>
+                                        <button onclick="approveSeller('Home Decor Nigeria')">Approve</button>
+                                        <button class="danger" onclick="rejectSeller('Home Decor Nigeria')">Reject</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Suspended"
+                            data-verification="Verified"
+                            data-category="Electronics"
+                            data-store="Individual"
+                            data-search="smart gadgets nigeria smart gadgets sel-09942"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">SG</div>
+                                    <div>
+                                        <div class="seller-name">Smart Gadgets NG</div>
+                                        <div class="seller-id">SEL-09942</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Individual</td>
+
+                            <td><span class="tag blue">Electronics</span></td>
+
+                            <td><span class="status active">Verified</span></td>
+
+                            <td><span class="status suspended">Suspended</span></td>
+
+                            <td>194</td>
+                            <td>682</td>
+
+                            <td class="money">₦1.42M</td>
+
+                            <td><div class="rating"><span>★</span> 3.8</div></td>
+
+                            <td>Nov 19, 2024</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Smart Gadgets NG')">View Seller</button>
+                                        <button onclick="messageSeller('Smart Gadgets NG')">Message</button>
+                                        <button onclick="restoreSeller('Smart Gadgets NG')">Restore Seller</button>
+                                        <button onclick="viewPayouts('Smart Gadgets NG')">Payouts</button>
+                                        <button class="danger" onclick="deleteSeller('Smart Gadgets NG')">Delete Seller</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Food"
+                            data-store="Brand"
+                            data-search="naija pantry naija pantry groceries food sel-10057"
+                        >
+                            <td><input type="checkbox" class="seller-check" onchange="updateBulkBar()"></td>
+
+                            <td>
+                                <div class="seller-cell">
+                                    <div class="seller-avatar">NP</div>
+                                    <div>
+                                        <div class="seller-name">Naija Pantry</div>
+                                        <div class="seller-id">SEL-10057</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Brand</td>
+
+                            <td><span class="tag orange">Food</span></td>
+
+                            <td><span class="status active">Verified</span></td>
+
+                            <td><span class="status active">Active</span></td>
+
+                            <td>392</td>
+                            <td>1,864</td>
+
+                            <td class="money">₦3.26M</td>
+
+                            <td><div class="rating"><span>★</span> 4.9</div></td>
+
+                            <td>Jan 29, 2025</td>
+
+                            <td>
+                                <div class="dropdown">
+                                    <button class="action-btn" onclick="toggleMenu(this)">⋮</button>
+
+                                    <div class="action-menu">
+                                        <button onclick="viewSeller('Naija Pantry')">View Seller</button>
+                                        <button onclick="messageSeller('Naija Pantry')">Message</button>
+                                        <button onclick="viewStore('Naija Pantry')">View Store</button>
+                                        <button onclick="viewPayouts('Naija Pantry')">Payouts</button>
+                                        <button class="danger" onclick="suspendSeller('Naija Pantry')">Suspend Seller</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="empty-state" id="emptyState">
+                    <strong>No sellers found</strong>
+                    Try changing your search or filter settings.
+                </div>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <div class="pagination">
+
+                <div class="page-info">
+                    Showing <strong>1–7</strong> of <strong>6,482</strong> sellers
+                </div>
+
+                <div class="page-buttons">
+                    <button class="page-btn">‹</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn" onclick="changePage(2)">2</button>
+                    <button class="page-btn" onclick="changePage(3)">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">5</button>
+                    <button class="page-btn">…</button>
+                    <button class="page-btn">926</button>
+                    <button class="page-btn">›</button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             LOWER OPERATIONS
+        ====================================================== -->
+
+        <div class="lower-grid">
+
+            <!-- TOP SELLERS -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Top Performing Sellers</h2>
+                        <p>Highest marketplace GMV this month.</p>
+                    </div>
+
+                    <button class="small-btn" onclick="navigate('reports.html')">
+                        View Report
+                    </button>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="seller-ranking">
+
+                        <div class="ranking-row">
+                            <div class="rank">1</div>
+
+                            <div class="rank-info">
+                                <strong>TechWorld Nigeria</strong>
+                                <span>842 products · 3,284 orders</span>
+                            </div>
+
+                            <div class="rank-value">
+                                <strong>₦8.42M</strong>
+                                <span>+18.2%</span>
+                            </div>
+                        </div>
+
+
+                        <div class="ranking-row">
+                            <div class="rank">2</div>
+
+                            <div class="rank-info">
+                                <strong>Urban Fashion House</strong>
+                                <span>1,284 products · 2,918 orders</span>
+                            </div>
+
+                            <div class="rank-value">
+                                <strong>₦6.84M</strong>
+                                <span>+14.7%</span>
+                            </div>
+                        </div>
+
+
+                        <div class="ranking-row">
+                            <div class="rank">3</div>
+
+                            <div class="rank-info">
+                                <strong>Mobile Hub Nigeria</strong>
+                                <span>526 products · 2,406 orders</span>
+                            </div>
+
+                            <div class="rank-value">
+                                <strong>₦5.91M</strong>
+                                <span>+11.4%</span>
+                            </div>
+                        </div>
+
+
+                        <div class="ranking-row">
+                            <div class="rank">4</div>
+
+                            <div class="rank-info">
+                                <strong>Naija Pantry</strong>
+                                <span>392 products · 1,864 orders</span>
+                            </div>
+
+                            <div class="rank-value">
+                                <strong>₦3.26M</strong>
+                                <span>+9.8%</span>
+                            </div>
+                        </div>
+
+
+                        <div class="ranking-row">
+                            <div class="rank">5</div>
+
+                            <div class="rank-info">
+                                <strong>Home & Living NG</strong>
+                                <span>306 products · 1,208 orders</span>
+                            </div>
+
+                            <div class="rank-value">
+                                <strong>₦2.94M</strong>
+                                <span>+7.6%</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MARKETPLACE HEALTH -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Seller Operations</h2>
+                        <p>Items requiring admin attention.</p>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="health-list">
+
+                        <div class="health-item">
+                            <div class="health-left">
+                                <div class="health-icon">✓</div>
+
+                                <div>
+                                    <strong>Pending Verification</strong>
+                                    <span>Seller accounts awaiting review</span>
+                                </div>
+                            </div>
+
+                            <div class="health-number warning">326</div>
+                        </div>
+
+
+                        <div class="health-item">
+                            <div class="health-left">
+                                <div class="health-icon">⚠</div>
+
+                                <div>
+                                    <strong>Seller Compliance</strong>
+                                    <span>Accounts requiring investigation</span>
+                                </div>
+                            </div>
+
+                            <div class="health-number negative">48</div>
+                        </div>
+
+
+                        <div class="health-item">
+                            <div class="health-left">
+                                <div class="health-icon">₦</div>
+
+                                <div>
+                                    <strong>Pending Payouts</strong>
+                                    <span>Seller funds awaiting settlement</span>
+                                </div>
+                            </div>
+
+                            <div class="health-number">₦4.2M</div>
+                        </div>
+
+
+                        <div class="health-item">
+                            <div class="health-left">
+                                <div class="health-icon">↩</div>
+
+                                <div>
+                                    <strong>Seller Disputes</strong>
+                                    <span>Open marketplace disputes</span>
+                                </div>
+                            </div>
+
+                            <div class="health-number negative">17</div>
+                        </div>
+
+
+                        <div class="health-item">
+                            <div class="health-left">
+                                <div class="health-icon">▥</div>
+
+                                <div>
+                                    <strong>Inactive Sellers</strong>
+                                    <span>No sales activity for 30+ days</span>
+                                </div>
+                            </div>
+
+                            <div class="health-number">768</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =====================================================
+             SELLER ACCOUNT MODEL
+        ====================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <h2>Seller Account Model</h2>
+                    <p>FAGA uses one account with marketplace capabilities attached to the user.</p>
+                </div>
+            </div>
+
+            <div class="panel-body">
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:repeat(4,1fr);
+                    gap:12px;
+                ">
+
+                    <div class="detail-box">
+                        <span>FAGA Account</span>
+                        <strong>One User Account</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Marketplace Role</span>
+                        <strong>Seller</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Store</span>
+                        <strong>Seller Profile</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Products</span>
+                        <strong>Marketplace Listings</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="footer">
+            FAGA Admin Portal · Seller Management · © 2026 FAGA
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     SELLER DETAIL MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="sellerModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>Seller Profile</h2>
+
+            <button class="close-modal" onclick="closeModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="seller-profile">
+
+                <div class="large-avatar" id="modalAvatar">
+                    TW
+                </div>
+
+                <div>
+                    <h3 id="modalSellerName">TechWorld Nigeria</h3>
+                    <p id="modalSellerId">
+                        Seller ID: SEL-10024 · Business Seller<br>
+                        Seller profile attached to the user's main FAGA account.
+                    </p>
+                </div>
+
+                <div class="profile-status">
+                    <span class="status active">Verified</span>
+                </div>
+
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+                    <span>Total Products</span>
+                    <strong>842</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Total Orders</span>
+                    <strong>3,284</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Marketplace GMV</span>
+                    <strong>₦8.42M</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Seller Rating</span>
+                    <strong>★ 4.8 / 5</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Pending Payout</span>
+                    <strong>₦382K</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Joined FAGA</span>
+                    <strong>Jan 14, 2025</strong>
+                </div>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h4>Seller Information</h4>
+
+                <div class="detail-grid">
+
+                    <div class="detail-box">
+                        <span>Email</span>
+                        <strong>seller@example.com</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Phone</span>
+                        <strong>+234 800 000 0000</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Category</span>
+                        <strong>Electronics</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Store Type</span>
+                        <strong>Business</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Location</span>
+                        <strong>Lagos, Nigeria</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Account Role</span>
+                        <strong>Seller</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h4>Verification Documents</h4>
+
+                <div class="document-list">
+
+                    <div class="document">
+                        <span>Business Registration</span>
+                        <span class="status active">Verified</span>
+                    </div>
+
+                    <div class="document">
+                        <span>Identity Verification</span>
+                        <span class="status active">Verified</span>
+                    </div>
+
+                    <div class="document">
+                        <span>Bank Account</span>
+                        <span class="status active">Verified</span>
+                    </div>
+
+                    <div class="document">
+                        <span>Seller Agreement</span>
+                        <span class="status active">Accepted</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn" onclick="messageCurrentSeller()">
+                Message Seller
+            </button>
+
+            <button class="btn" onclick="viewCurrentStore()">
+                View Store
+            </button>
+
+            <button class="btn btn-success" onclick="approveCurrentSeller()">
+                Approve
+            </button>
+
+            <button class="btn btn-danger" onclick="suspendCurrentSeller()">
+                Suspend
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div class="toast" id="toast"></div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    let currentSeller = "";
+
+    let currentTab = "all";
+
+
+    /* ---------------------------------------------------------
+       NAVIGATION
+    --------------------------------------------------------- */
+
+    function navigate(page) {
+        window.location.href = page;
+    }
+
+
+    /* ---------------------------------------------------------
+       SIDEBAR
+    --------------------------------------------------------- */
+
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("open");
+    }
+
+
+    /* ---------------------------------------------------------
+       TOAST
+    --------------------------------------------------------- */
+
+    function showToast(message) {
+
+        const toast = document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2800);
+    }
+
+
+    /* ---------------------------------------------------------
+       SELLER TABS
+    --------------------------------------------------------- */
+
+    function setTab(button, tab) {
+
+        document.querySelectorAll(".tab").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        currentTab = tab;
+
+        filterSellers();
+    }
+
+
+    /* ---------------------------------------------------------
+       FILTER SELLERS
+    --------------------------------------------------------- */
+
+    function filterSellers() {
+
+        const search =
+            document.getElementById("sellerSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const category =
+            document.getElementById("categoryFilter").value;
+
+        const verification =
+            document.getElementById("verificationFilter").value;
+
+        const store =
+            document.getElementById("storeFilter").value;
+
+        const status =
+            document.getElementById("statusFilter").value;
+
+        const rows =
+            document.querySelectorAll("#sellerTable tr");
+
+        let visible = 0;
+
+        rows.forEach(row => {
+
+            const rowSearch =
+                row.dataset.search.toLowerCase();
+
+            const rowStatus =
+                row.dataset.status;
+
+            const rowVerification =
+                row.dataset.verification;
+
+            const rowCategory =
+                row.dataset.category;
+
+            const rowStore =
+                row.dataset.store;
+
+            let matches = true;
+
+
+            if (search && !rowSearch.includes(search)) {
+                matches = false;
+            }
+
+
+            if (category && rowCategory !== category) {
+                matches = false;
+            }
+
+
+            if (verification && rowVerification !== verification) {
+                matches = false;
+            }
+
+
+            if (store && rowStore !== store) {
+                matches = false;
+            }
+
+
+            if (status && rowStatus !== status) {
+                matches = false;
+            }
+
+
+            if (currentTab !== "all") {
+
+                if (currentTab === "active" && rowStatus !== "Active") {
+                    matches = false;
+                }
+
+                if (currentTab === "pending" && rowVerification !== "Pending") {
+                    matches = false;
+                }
+
+                if (currentTab === "review" && rowVerification !== "Review") {
+                    matches = false;
+                }
+
+                if (currentTab === "suspended" && rowStatus !== "Suspended") {
+                    matches = false;
+                }
+
+                if (currentTab === "rejected" && rowStatus !== "Rejected") {
+                    matches = false;
+                }
+
+            }
+
+
+            row.style.display = matches ? "" : "none";
+
+            if (matches) {
+                visible++;
+            }
+
+        });
+
+
+        document.getElementById("emptyState").style.display =
+            visible === 0 ? "block" : "none";
+    }
+
+
+    /* ---------------------------------------------------------
+       RESET FILTERS
+    --------------------------------------------------------- */
+
+    function resetFilters() {
+
+        document.getElementById("sellerSearch").value = "";
+        document.getElementById("categoryFilter").value = "";
+        document.getElementById("verificationFilter").value = "";
+        document.getElementById("storeFilter").value = "";
+        document.getElementById("statusFilter").value = "";
+
+        document.querySelectorAll(".tab").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        document.querySelector('[data-tab="all"]').classList.add("active");
+
+        currentTab = "all";
+
+        document.querySelectorAll("#sellerTable tr").forEach(row => {
+            row.style.display = "";
+        });
+
+        document.getElementById("emptyState").style.display = "none";
+
+        showToast("Seller filters reset.");
+    }
+
+
+    /* ---------------------------------------------------------
+       SELECT ALL
+    --------------------------------------------------------- */
+
+    function toggleAll(master) {
+
+        document.querySelectorAll(".seller-check").forEach(check => {
+
+            const row = check.closest("tr");
+
+            if (row.style.display !== "none") {
+                check.checked = master.checked;
+            }
+
+        });
+
+        updateBulkBar();
+    }
+
+
+    /* ---------------------------------------------------------
+       BULK BAR
+    --------------------------------------------------------- */
+
+    function updateBulkBar() {
+
+        const checks =
+            [...document.querySelectorAll(".seller-check")];
+
+        const selected =
+            checks.filter(check => check.checked).length;
+
+        document.getElementById("selectedCount").textContent =
+            selected;
+
+        document.getElementById("bulkBar").classList.toggle(
+            "show",
+            selected > 0
+        );
+    }
+
+
+    /* ---------------------------------------------------------
+       BULK ACTIONS
+    --------------------------------------------------------- */
+
+    function bulkVerify() {
+
+        const count = selectedSellerCount();
+
+        if (!count) return;
+
+        showToast(`${count} seller${count > 1 ? "s" : ""} sent for verification approval.`);
+    }
+
+
+    function bulkMessage() {
+
+        const count = selectedSellerCount();
+
+        if (!count) return;
+
+        showToast(`Message composer opened for ${count} sellers.`);
+    }
+
+
+    function bulkPayout() {
+
+        const count = selectedSellerCount();
+
+        if (!count) return;
+
+        showToast(`Payout review opened for ${count} sellers.`);
+    }
+
+
+    function bulkSuspend() {
+
+        const count = selectedSellerCount();
+
+        if (!count) return;
+
+        if (confirm(`Suspend ${count} selected seller(s)?`)) {
+            showToast(`${count} seller(s) suspended.`);
+        }
+    }
+
+
+    function selectedSellerCount() {
+
+        return document.querySelectorAll(
+            ".seller-check:checked"
+        ).length;
+    }
+
+
+    /* ---------------------------------------------------------
+       DROPDOWN
+    --------------------------------------------------------- */
+
+    function toggleMenu(button) {
+
+        document.querySelectorAll(".action-menu").forEach(menu => {
+            if (menu !== button.nextElementSibling) {
+                menu.classList.remove("show");
+            }
+        });
+
+        button.nextElementSibling.classList.toggle("show");
+    }
+
+
+    document.addEventListener("click", function(event) {
+
+        if (!event.target.closest(".dropdown")) {
+
+            document.querySelectorAll(".action-menu").forEach(menu => {
+                menu.classList.remove("show");
+            });
+
+        }
+
+    });
+
+
+    /* ---------------------------------------------------------
+       SELLER MODAL
+    --------------------------------------------------------- */
+
+    function viewSeller(name) {
+
+        currentSeller = name;
+
+        document.getElementById("modalSellerName").textContent =
+            name;
+
+        document.getElementById("modalSellerId").innerHTML =
+            "Seller profile · Marketplace Seller<br>" +
+            "Seller profile attached to the user's main FAGA account.";
+
+        document.getElementById("sellerModal").classList.add("show");
+    }
+
+
+    function closeModal() {
+
+        document.getElementById("sellerModal")
+            .classList.remove("show");
+    }
+
+
+    document.getElementById("sellerModal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+                closeModal();
+            }
+
+        });
+
+
+    /* ---------------------------------------------------------
+       SELLER ACTIONS
+    --------------------------------------------------------- */
+
+    function messageSeller(name) {
+        showToast(`Opening message composer for ${name}.`);
+    }
+
+
+    function messageCurrentSeller() {
+
+        showToast(`Message composer opened for ${currentSeller}.`);
+    }
+
+
+    function viewStore(name) {
+
+        showToast(`Opening marketplace store for ${name}.`);
+    }
+
+
+    function viewCurrentStore() {
+
+        showToast(`Opening marketplace store for ${currentSeller}.`);
+    }
+
+
+    function viewPayouts(name) {
+
+        showToast(`Opening payout history for ${name}.`);
+    }
+
+
+    function verifySeller(name) {
+
+        showToast(`Opening verification documents for ${name}.`);
+    }
+
+
+    function approveSeller(name) {
+
+        if (confirm(`Approve ${name} as a FAGA marketplace seller?`)) {
+            showToast(`${name} has been approved.`);
+        }
+    }
+
+
+    function approveCurrentSeller() {
+
+        if (confirm(`Approve ${currentSeller} as a marketplace seller?`)) {
+            showToast(`${currentSeller} has been approved.`);
+            closeModal();
+        }
+    }
+
+
+    function rejectSeller(name) {
+
+        if (confirm(`Reject the seller application for ${name}?`)) {
+            showToast(`${name} has been rejected.`);
+        }
+    }
+
+
+    function suspendSeller(name) {
+
+        if (confirm(`Suspend ${name} from the FAGA marketplace?`)) {
+            showToast(`${name} has been suspended.`);
+        }
+    }
+
+
+    function suspendCurrentSeller() {
+
+        if (confirm(`Suspend ${currentSeller}?`)) {
+            showToast(`${currentSeller} has been suspended.`);
+            closeModal();
+        }
+    }
+
+
+    function restoreSeller(name) {
+
+        if (confirm(`Restore ${name} to active marketplace status?`)) {
+            showToast(`${name} has been restored.`);
+        }
+    }
+
+
+    function deleteSeller(name) {
+
+        if (confirm(`Delete ${name}? This action should be protected by backend permissions.`)) {
+            showToast(`${name} deletion request submitted.`);
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       ADD SELLER
+    --------------------------------------------------------- */
+
+    function addSeller() {
+
+        showToast(
+            "Seller creation form would open here. The seller is linked to an existing or newly created FAGA account."
+        );
+    }
+
+
+    /* ---------------------------------------------------------
+       EXPORT
+    --------------------------------------------------------- */
+
+    function exportSellers() {
+
+        showToast("Seller export is being prepared.");
+
+        /*
+            Backend integration:
+
+            GET /api/admin/marketplace/sellers/export
+
+            Suggested response:
+            CSV/XLSX download
+        */
+    }
+
+
+    /* ---------------------------------------------------------
+       PAGINATION
+    --------------------------------------------------------- */
+
+    function changePage(page) {
+
+        showToast(`Loading seller page ${page}.`);
+    }
+
+
+    /* ---------------------------------------------------------
+       GLOBAL SEARCH
+    --------------------------------------------------------- */
+
+    function globalSearch(event) {
+
+        if (event.key === "Enter") {
+            runGlobalSearch();
+        }
+    }
+
+
+    function runGlobalSearch() {
+
+        const value =
+            document.getElementById("globalSearch").value.trim();
+
+        if (!value) {
+            showToast("Enter a seller, store, product or user.");
+            return;
+        }
+
+        document.getElementById("sellerSearch").value = value;
+
+        filterSellers();
+
+        showToast(`Searching sellers for "${value}".`);
+    }
+
+
+    /* ---------------------------------------------------------
+       LOGOUT
+    --------------------------------------------------------- */
+
+    function logout() {
+
+        if (confirm("Sign out of the FAGA Admin Portal?")) {
+
+            /*
+                Backend:
+                POST /api/admin/logout
+            */
+
+            window.location.href="../user portal/login.html";
+        }
+    }
+
+
+    /* ---------------------------------------------------------
+       BACKEND INTEGRATION MAP
+    ---------------------------------------------------------
+
+       GET
+       /api/admin/marketplace/sellers
+
+       GET
+       /api/admin/marketplace/sellers/:id
+
+       POST
+       /api/admin/marketplace/sellers
+
+       PATCH
+       /api/admin/marketplace/sellers/:id
+
+       PATCH
+       /api/admin/marketplace/sellers/:id/status
+
+       PATCH
+       /api/admin/marketplace/sellers/:id/verify
+
+       PATCH
+       /api/admin/marketplace/sellers/:id/suspend
+
+       GET
+       /api/admin/marketplace/sellers/:id/products
+
+       GET
+       /api/admin/marketplace/sellers/:id/orders
+
+       GET
+       /api/admin/marketplace/sellers/:id/payouts
+
+       GET
+       /api/admin/marketplace/sellers/export
+
+       POST
+       /api/admin/marketplace/sellers/bulk-verify
+
+       POST
+       /api/admin/marketplace/sellers/bulk-status
+
+       POST
+       /api/admin/logout
+
+       IMPORTANT:
+       Seller is NOT a separate authentication account.
+
+       Recommended database model:
+
+       users
+       ├── id
+       ├── name
+       ├── email
+       ├── phone
+       └── ...
+
+       user_roles
+       ├── user_id
+       └── role = seller
+
+       seller_profiles
+       ├── user_id
+       ├── store_name
+       ├── business_type
+       ├── verification_status
+       ├── payout_account_id
+       └── ...
+
+       marketplace_products
+       ├── seller_id
+       ├── sku
+       ├── price
+       ├── stock
+       └── ...
+
+    --------------------------------------------------------- */
+
+</script>
+
+</body>
+</html>

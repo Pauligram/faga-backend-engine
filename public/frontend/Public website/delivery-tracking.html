@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Delivery | FAGA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0d294b;
+            --orange: #f7931e;
+            --orange-dark: #df7f0c;
+            --white: #ffffff;
+            --light: #f5f7fa;
+            --border: #e4e8ee;
+            --text: #172033;
+            --muted: #6b7280;
+            --green: #16a34a;
+            --red: #dc2626;
+            --blue: #2563eb;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: var(--navy);
+            color: var(--white);
+            height: 74px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: min(1200px, 92%);
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--orange);
+            color: var(--navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .nav-links a {
+            color: #e8edf4;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .btn-orange:hover {
+            background: var(--orange-dark);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,.35);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 27px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            background:
+                linear-gradient(135deg, rgba(7,26,51,.98), rgba(13,41,75,.94));
+            color: white;
+            padding: 55px 20px 65px;
+            text-align: center;
+        }
+
+        .page-header .badge {
+            display: inline-block;
+            background: rgba(247,147,30,.15);
+            border: 1px solid rgba(247,147,30,.35);
+            color: var(--orange);
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(30px, 5vw, 48px);
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            max-width: 650px;
+            margin: auto;
+            color: #d8e0eb;
+        }
+
+        /* =========================
+           TRACK SEARCH
+        ========================= */
+
+        .track-wrapper {
+            width: min(1200px, 92%);
+            margin: -30px auto 40px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .track-search {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 45px rgba(0,0,0,.12);
+            padding: 20px;
+        }
+
+        .search-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--muted);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-row input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(247,147,30,.12);
+        }
+
+        .search-row .btn {
+            min-width: 140px;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .container {
+            width: min(1200px, 92%);
+            margin: auto;
+        }
+
+        .tracking-grid {
+            display: grid;
+            grid-template-columns: 1.45fr .85fr;
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.04);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* =========================
+           MAP
+        ========================= */
+
+        .map {
+            height: 475px;
+            position: relative;
+            overflow: hidden;
+            background-color: #e9edf1;
+            background-image:
+                linear-gradient(25deg, transparent 46%, rgba(255,255,255,.9) 47%, rgba(255,255,255,.9) 50%, transparent 51%),
+                linear-gradient(150deg, transparent 46%, rgba(255,255,255,.9) 47%, rgba(255,255,255,.9) 50%, transparent 51%),
+                linear-gradient(90deg, transparent 48%, rgba(190,198,207,.55) 49%, rgba(190,198,207,.55) 51%, transparent 52%);
+            background-size: 150px 150px, 180px 180px, 100px 100px;
+        }
+
+        .map::before {
+            content: "";
+            position: absolute;
+            width: 130%;
+            height: 70px;
+            background: rgba(210,218,226,.8);
+            transform: rotate(-25deg);
+            top: 40%;
+            left: -15%;
+            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+        }
+
+        .map::after {
+            content: "";
+            position: absolute;
+            width: 120%;
+            height: 55px;
+            background: rgba(210,218,226,.8);
+            transform: rotate(35deg);
+            top: 52%;
+            left: -10%;
+        }
+
+        .map-road {
+            position: absolute;
+            background: white;
+            height: 18px;
+            border-radius: 20px;
+            transform: rotate(-28deg);
+            width: 600px;
+            left: -50px;
+            top: 45%;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+
+        .map-road.two {
+            transform: rotate(32deg);
+            top: 55%;
+            left: 20%;
+        }
+
+        .route {
+            position: absolute;
+            left: 23%;
+            top: 55%;
+            width: 55%;
+            height: 3px;
+            background: var(--orange);
+            transform: rotate(-13deg);
+            z-index: 4;
+            box-shadow: 0 0 0 2px rgba(247,147,30,.15);
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+        }
+
+        .map-marker span {
+            transform: rotate(45deg);
+            font-size: 18px;
+        }
+
+        .pickup-marker {
+            left: 20%;
+            top: 57%;
+            background: var(--green);
+            color: white;
+        }
+
+        .destination-marker {
+            right: 15%;
+            top: 34%;
+            background: var(--red);
+            color: white;
+        }
+
+        .rider-marker {
+            left: 48%;
+            top: 45%;
+            background: var(--orange);
+            color: var(--navy);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(247,147,30,.5);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(247,147,30,0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(247,147,30,0);
+            }
+        }
+
+        .map-label {
+            position: absolute;
+            z-index: 20;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0,0,0,.12);
+        }
+
+        .pickup-label {
+            left: 13%;
+            top: 67%;
+        }
+
+        .destination-label {
+            right: 8%;
+            top: 26%;
+        }
+
+        .rider-label {
+            left: 45%;
+            top: 36%;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .map-control {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 2px 7px rgba(0,0,0,.08);
+        }
+
+        .map-info {
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            z-index: 30;
+            background: white;
+            border-radius: 10px;
+            padding: 13px 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.12);
+        }
+
+        .map-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .map-info span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-badge {
+            background: #eaf8ef;
+            color: var(--green);
+            padding: 7px 11px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .eta-box {
+            background: #fff8ed;
+            border: 1px solid #ffe1b5;
+            padding: 17px;
+            border-radius: 11px;
+            margin-bottom: 20px;
+        }
+
+        .eta-box .eta-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .eta-box strong {
+            display: block;
+            color: var(--navy);
+            font-size: 27px;
+            margin-top: 3px;
+        }
+
+        .eta-box small {
+            color: var(--muted);
+        }
+
+        /* =========================
+           RIDER
+        ========================= */
+
+        .rider-profile {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .rider-avatar {
+            width: 62px;
+            height: 62px;
+            background: var(--navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .rider-info h3 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .rider-info p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .vehicle {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 18px;
+        }
+
+        .vehicle-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .vehicle-row span:first-child {
+            color: var(--muted);
+        }
+
+        .plate {
+            background: var(--navy);
+            color: white;
+            padding: 5px 9px;
+            border-radius: 4px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .contact-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .contact-btn {
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .contact-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange-dark);
+        }
+
+        /* =========================
+           TIMELINE
+        ========================= */
+
+        .timeline {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            display: flex;
+            gap: 15px;
+            padding-bottom: 23px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 10px;
+            top: 22px;
+            width: 2px;
+            height: calc(100% - 10px);
+            background: var(--border);
+        }
+
+        .timeline-item.completed .timeline-line {
+            background: var(--green);
+        }
+
+        .timeline-dot {
+            width: 21px;
+            height: 21px;
+            min-width: 21px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #cbd5e1;
+            z-index: 2;
+            position: relative;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: var(--orange);
+            border-color: var(--orange);
+            box-shadow: 0 0 0 5px rgba(247,147,30,.15);
+        }
+
+        .timeline-content strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .timeline-content span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        /* =========================
+           DETAILS GRID
+        ========================= */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 17px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 8px;
+            background: #fff4e6;
+            color: var(--orange-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .detail-row small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .detail-row strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .action-card {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .action-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange-dark);
+        }
+
+        .action-btn.danger:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* =========================
+           DELIVERY PROOF
+        ========================= */
+
+        .proof {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            min-height: 180px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .proof-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: var(--navy);
+            color: white;
+            margin-top: 60px;
+            padding: 50px 0 25px;
+        }
+
+        .footer-grid {
+            width: min(1200px, 92%);
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 35px;
+        }
+
+        .footer-brand p {
+            color: #b8c3d1;
+            font-size: 13px;
+            max-width: 330px;
+            margin-top: 14px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #b8c3d1;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .footer-col a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            width: min(1200px, 92%);
+            margin: 35px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.12);
+            color: #91a0b3;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: var(--navy);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 9px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.25);
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            width: min(450px, 100%);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 950px) {
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .tracking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map {
+                height: 420px;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .page-header {
+                padding: 40px 15px 55px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-row .btn {
+                width: 100%;
+            }
+
+            .map {
+                height: 350px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-card {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tracking-grid {
+                gap: 15px;
+            }
+
+            .card-header,
+            .card-body {
+                padding: 16px;
+            }
+
+            .route {
+                width: 60%;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .action-card {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .map-label {
+                font-size: 9px;
+            }
+
+            .map-marker {
+                width: 38px;
+                height: 38px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<header class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="logo">
+            <span class="logo-icon">F</span>
+            FAGA
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="logistics.html" class="active">Logistics</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="services.html">Services</a>
+            <a href="food.html">Food</a>
+            <a href="jobs.html">Jobs</a>
+            <a href="help.html">Help</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+            <a href="../user portal/dashboard.html" class="btn btn-orange">My Account</a>
+        </div>
+
+        <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+
+    </div>
+</header>
+
+<!-- =========================
+     MOBILE NAV
+========================= -->
+
+<div id="mobileNav" style="
+    display:none;
+    background:#071a33;
+    color:white;
+    padding:20px;
+    position:fixed;
+    top:74px;
+    left:0;
+    right:0;
+    z-index:999;
+">
+
+    <a href="index.html" style="display:block;padding:10px 0;">Home</a>
+    <a href="logistics.html" style="display:block;padding:10px 0;color:#f7931e;">Logistics</a>
+    <a href="marketplace.html" style="display:block;padding:10px 0;">Marketplace</a>
+    <a href="services.html" style="display:block;padding:10px 0;">Services</a>
+    <a href="food.html" style="display:block;padding:10px 0;">Food</a>
+    <a href="jobs.html" style="display:block;padding:10px 0;">Jobs</a>
+    <a href="help.html" style="display:block;padding:10px 0;">Help</a>
+    <a href="../user portal/login.html" style="display:block;padding:10px 0;">Login</a>
+</div>
+
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<section class="page-header">
+
+    <span class="badge">📦 LIVE DELIVERY TRACKING</span>
+
+    <h1>Track Your Package</h1>
+
+    <p>
+        Follow your dispatch rider and package in real time
+        from pickup to final delivery.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     TRACK SEARCH
+========================= -->
+
+<div class="track-wrapper">
+
+    <div class="track-search">
+
+        <label class="search-label">
+            Delivery Tracking Number
+        </label>
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="trackingInput"
+                placeholder="e.g. FAGA-DEL-847291"
+                value="FAGA-DEL-847291"
+            >
+
+            <button class="btn btn-orange" onclick="trackDelivery()">
+                Track Package
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<main class="container">
+
+    <!-- =========================
+         TRACKING + RIDER
+    ========================= -->
+
+    <section class="tracking-grid">
+
+        <!-- MAP -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>Live Delivery Location</h2>
+
+                <span class="status-badge" id="statusBadge">
+                    ● In Transit
+                </span>
+
+            </div>
+
+            <div class="map" id="map">
+
+                <div class="map-road"></div>
+                <div class="map-road two"></div>
+
+                <div class="route" id="route"></div>
+
+                <div class="map-marker pickup-marker">
+                    <span>📍</span>
+                </div>
+
+                <div class="map-label pickup-label">
+                    Pickup
+                </div>
+
+                <div class="map-marker destination-marker">
+                    <span>🏁</span>
+                </div>
+
+                <div class="map-label destination-label">
+                    Destination
+                </div>
+
+                <div class="map-marker rider-marker" id="riderMarker">
+                    <span>🏍️</span>
+                </div>
+
+                <div class="map-label rider-label">
+                    Dispatch Rider
+                </div>
+
+                <div class="map-controls">
+
+                    <button class="map-control" onclick="zoomMap('+')">
+                        +
+                    </button>
+
+                    <button class="map-control" onclick="zoomMap('-')">
+                        −
+                    </button>
+
+                    <button class="map-control" onclick="centerMap()">
+                        ◎
+                    </button>
+
+                </div>
+
+                <div class="map-info">
+
+                    <strong id="mapStatus">
+                        Rider is on the way
+                    </strong>
+
+                    <span>
+                        Live location updates enabled
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIDER CARD -->
+
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Dispatch Rider</h2>
+                <span class="status-badge">Online</span>
+            </div>
+
+            <div class="card-body">
+
+                <div class="eta-box">
+
+                    <span class="eta-label">
+                        Estimated delivery time
+                    </span>
+
+                    <strong id="eta">
+                        24 min
+                    </strong>
+
+                    <small id="distance">
+                        Approximately 5.8 km away
+                    </small>
+
+                </div>
+
+
+                <div class="rider-profile">
+
+                    <div class="rider-avatar">
+                        AM
+                    </div>
+
+                    <div class="rider-info">
+
+                        <h3>Ahmed Musa</h3>
+
+                        <p>
+                            Dispatch Rider
+                        </p>
+
+                        <div class="rating">
+                            ★ 4.9
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="vehicle">
+
+                    <div class="vehicle-row">
+                        <span>Vehicle</span>
+                        <strong>Honda Motorcycle</strong>
+                    </div>
+
+                    <div class="vehicle-row">
+                        <span>Colour</span>
+                        <strong>Black</strong>
+                    </div>
+
+                    <div class="vehicle-row">
+                        <span>Plate Number</span>
+                        <strong class="plate">ABC 245 XY</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-actions">
+
+                    <button
+                        class="contact-btn"
+                        onclick="callRider()"
+                    >
+                        📞 Call
+                    </button>
+
+                    <button
+                        class="contact-btn"
+                        onclick="messageRider()"
+                    >
+                        💬 Message
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DELIVERY STATUS
+    ========================= -->
+
+    <section class="card" style="margin-bottom:35px;">
+
+        <div class="card-header">
+
+            <h2>Delivery Status</h2>
+
+            <span style="font-size:12px;color:#6b7280;">
+                FAGA-DEL-847291
+            </span>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="timeline">
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-dot">✓</div>
+
+                    <div class="timeline-content">
+                        <strong>Request Created</strong>
+                        <span>12:15 PM • Delivery request received</span>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-dot">✓</div>
+
+                    <div class="timeline-content">
+                        <strong>Rider Assigned</strong>
+                        <span>12:17 PM • Ahmed accepted the delivery</span>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-dot">✓</div>
+
+                    <div class="timeline-content">
+                        <strong>Rider Arriving</strong>
+                        <span>12:19 PM • Rider is heading to pickup</span>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-dot">✓</div>
+
+                    <div class="timeline-content">
+                        <strong>Package Picked Up</strong>
+                        <span>12:29 PM • Package collected from sender</span>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item active">
+
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <strong>In Transit</strong>
+                        <span id="timelineTransit">
+                            12:31 PM • Package is on the way
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <strong>Delivered</strong>
+                        <span>Waiting for final delivery</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DELIVERY DETAILS
+    ========================= -->
+
+    <section class="details-grid">
+
+        <!-- PACKAGE -->
+
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Package Details</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        📦
+                    </div>
+
+                    <div>
+                        <small>Package Type</small>
+                        <strong>Small Parcel</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        📝
+                    </div>
+
+                    <div>
+                        <small>Description</small>
+                        <strong>Electronics accessories</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        ⚖️
+                    </div>
+
+                    <div>
+                        <small>Estimated Weight</small>
+                        <strong>2.5 kg</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        💰
+                    </div>
+
+                    <div>
+                        <small>Delivery Fee</small>
+                        <strong>₦2,950</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROUTE -->
+
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Delivery Route</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        A
+                    </div>
+
+                    <div>
+                        <small>Pickup Location</small>
+                        <strong>
+                            Ikeja City Mall, Lagos
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        B
+                    </div>
+
+                    <div>
+                        <small>Delivery Location</small>
+                        <strong>
+                            Victoria Island, Lagos
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        🕐
+                    </div>
+
+                    <div>
+                        <small>Estimated Arrival</small>
+                        <strong id="arrivalTime">
+                            12:55 PM
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+                        🚚
+                    </div>
+
+                    <div>
+                        <small>Delivery Type</small>
+                        <strong>Priority Dispatch</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ACTIONS
+    ========================= -->
+
+    <section class="card action-card">
+
+        <button class="action-btn" onclick="shareTracking()">
+            🔗 Share Tracking
+        </button>
+
+        <button class="action-btn" onclick="contactSupport()">
+            💬 Contact Support
+        </button>
+
+        <button class="action-btn" onclick="reportIssue()">
+            ⚠️ Report Issue
+        </button>
+
+        <button class="action-btn danger" onclick="cancelDelivery()">
+            ✕ Cancel Delivery
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         DELIVERY PROOF
+    ========================= -->
+
+    <section class="card" style="margin-bottom:35px;">
+
+        <div class="card-header">
+
+            <h2>Proof of Delivery</h2>
+
+            <span style="
+                color:#6b7280;
+                font-size:12px;
+            ">
+                Available after delivery
+            </span>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="proof">
+
+                <div>
+
+                    <div class="proof-icon">
+                        📷
+                    </div>
+
+                    <strong>
+                        Delivery proof will appear here
+                    </strong>
+
+                    <p style="margin-top:5px;font-size:12px;">
+                        FAGA will show the delivery photo,
+                        recipient confirmation or signature
+                        after successful delivery.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+                <span class="logo-icon">F</span>
+                FAGA
+            </div>
+
+            <p>
+                FAGA connects people with logistics,
+                marketplace, services, food and other
+                everyday solutions through one platform.
+            </p>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>Logistics</h4>
+
+            <a href="logistics.html">Logistics</a>
+            <a href="ride-booking.html">Book a Ride</a>
+            <a href="delivery-booking.html">Send a Package</a>
+            <a href="delivery-tracking.html">Track Delivery</a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>FAGA</h4>
+
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="help.html">Help Centre</a>
+            <a href="safety.html">Safety</a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>Legal</h4>
+
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="../user portal/register.html">Create Account</a>
+            <a href="../user portal/login.html">Login</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+        © 2026 FAGA. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h2 id="modalTitle">
+            Action
+        </h2>
+
+        <p id="modalMessage">
+            Action message.
+        </p>
+
+        <div class="modal-actions">
+
+            <button
+                class="btn"
+                style="
+                    background:#f1f3f5;
+                    color:#172033;
+                "
+                onclick="closeModal()"
+            >
+                Close
+            </button>
+
+            <button
+                class="btn btn-orange"
+                id="modalConfirm"
+                onclick="confirmModalAction()"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    function toggleMenu() {
+
+        const menu = document.getElementById("mobileNav");
+
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    function showToast(message) {
+
+        const toast = document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000);
+    }
+
+
+    /* =========================
+       TRACK DELIVERY
+    ========================= */
+
+    function trackDelivery() {
+
+        const trackingNumber =
+            document.getElementById("trackingInput").value.trim();
+
+        if (!trackingNumber) {
+
+            showToast(
+                "Please enter your delivery tracking number."
+            );
+
+            return;
+        }
+
+        showToast(
+            "Searching for " + trackingNumber + "..."
+        );
+
+        /*
+            PRODUCTION API:
+
+            GET /api/deliveries/:deliveryId
+
+            Example:
+
+            fetch(`/api/deliveries/${trackingNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateDeliveryUI(data);
+                });
+
+            The backend must verify that the tracking number
+            exists and that the user is authorized to view
+            the delivery information.
+        */
+
+        setTimeout(() => {
+
+            showToast(
+                "Delivery found. Live tracking updated."
+            );
+
+        }, 1200);
+    }
+
+
+    /* =========================
+       RIDER CONTACT
+    ========================= */
+
+    function callRider() {
+
+        showToast(
+            "Calling Ahmed..."
+        );
+
+        /*
+            PRODUCTION:
+
+            Do not expose the rider's personal phone number
+            directly if your privacy architecture uses masked
+            communication.
+
+            Recommended:
+
+            POST /api/deliveries/:deliveryId/contact-rider
+
+            The backend can then connect the customer and rider
+            through a masked phone system.
+        */
+    }
+
+
+    function messageRider() {
+
+        showToast(
+            "Opening secure rider messaging..."
+        );
+
+        /*
+            PRODUCTION:
+
+            Open FAGA's secure in-app messaging system.
+
+            GET /api/deliveries/:deliveryId/messages
+
+            POST /api/deliveries/:deliveryId/messages
+        */
+    }
+
+
+    /* =========================
+       SHARE TRACKING
+    ========================= */
+
+    async function shareTracking() {
+
+        const trackingUrl =
+            window.location.href;
+
+        try {
+
+            if (navigator.share) {
+
+                await navigator.share({
+                    title: "Track my FAGA delivery",
+                    text: "Track my package on FAGA.",
+                    url: trackingUrl
+                });
+
+            } else {
+
+                await navigator.clipboard.writeText(
+                    trackingUrl
+                );
+
+                showToast(
+                    "Tracking link copied."
+                );
+            }
+
+        } catch (error) {
+
+            showToast(
+                "Unable to share tracking link."
+            );
+        }
+
+
+        /*
+            PRODUCTION:
+
+            POST /api/deliveries/:deliveryId/share
+
+            The backend can create an authorized,
+            expiring tracking link.
+
+            Never expose private delivery information
+            in a permanent public URL.
+        */
+    }
+
+
+    /* =========================
+       SUPPORT
+    ========================= */
+
+    function contactSupport() {
+
+        showToast(
+            "Opening FAGA Support..."
+        );
+
+        setTimeout(() => {
+
+            window.location.href="help.html";
+
+        }, 800);
+    }
+
+
+    /* =========================
+       REPORT ISSUE
+    ========================= */
+
+    function reportIssue() {
+
+        openModal(
+            "Report Delivery Issue",
+            "Would you like to report a problem with this delivery?",
+            "Report Issue"
+        );
+
+        window.currentAction =
+            "report";
+    }
+
+
+    /* =========================
+       CANCEL DELIVERY
+    ========================= */
+
+    function cancelDelivery() {
+
+        openModal(
+            "Cancel Delivery",
+            "Are you sure you want to cancel this delivery? Cancellation may not be available once the package has reached a certain stage.",
+            "Cancel Delivery"
+        );
+
+        window.currentAction =
+            "cancel";
+    }
+
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    function openModal(
+        title,
+        message,
+        buttonText
+    ) {
+
+        document.getElementById("modalTitle")
+            .textContent = title;
+
+        document.getElementById("modalMessage")
+            .textContent = message;
+
+        document.getElementById("modalConfirm")
+            .textContent = buttonText;
+
+        document.getElementById("modal")
+            .classList.add("show");
+    }
+
+
+    function closeModal() {
+
+        document.getElementById("modal")
+            .classList.remove("show");
+    }
+
+
+    function confirmModalAction() {
+
+        const action =
+            window.currentAction;
+
+        closeModal();
+
+        if (action === "cancel") {
+
+            /*
+                PRODUCTION:
+
+                POST /api/deliveries/:deliveryId/cancel
+
+                Backend must verify:
+                - delivery belongs to customer
+                - cancellation is still allowed
+                - rider/package status
+                - applicable cancellation fee
+                - payment/refund status
+            */
+
+            showToast(
+                "Cancellation request submitted."
+            );
+
+        }
+
+        if (action === "report") {
+
+            /*
+                PRODUCTION:
+
+                POST /api/deliveries/:deliveryId/safety-report
+
+                Recommended payload:
+
+                {
+                    type: "delivery_issue",
+                    description: "...",
+                    location: {...}
+                }
+
+                Validate everything server-side.
+            */
+
+            showToast(
+                "Issue reported to FAGA Support."
+            );
+        }
+    }
+
+
+    /* =========================
+       MAP CONTROLS
+    ========================= */
+
+    let mapZoom = 1;
+
+    function zoomMap(direction) {
+
+        if (direction === "+") {
+            mapZoom = Math.min(mapZoom + .1, 1.5);
+        }
+
+        if (direction === "-") {
+            mapZoom = Math.max(mapZoom - .1, .8);
+        }
+
+        document.getElementById("map")
+            .style.transform =
+            `scale(${mapZoom})`;
+
+        document.getElementById("map")
+            .style.transformOrigin =
+            "center center";
+    }
+
+
+    function centerMap() {
+
+        mapZoom = 1;
+
+        document.getElementById("map")
+            .style.transform =
+            "scale(1)";
+
+        showToast(
+            "Map centered on your delivery."
+        );
+    }
+
+
+    /* =========================
+       DEMO LIVE RIDER MOVEMENT
+    ========================= */
+
+    let riderPosition = 48;
+
+    function simulateRiderMovement() {
+
+        const rider =
+            document.getElementById("riderMarker");
+
+        riderPosition += .18;
+
+        if (riderPosition > 67) {
+            riderPosition = 48;
+        }
+
+        rider.style.left =
+            riderPosition + "%";
+
+        /*
+            IMPORTANT:
+
+            This is only a FRONTEND DEMO.
+
+            In production, NEVER generate rider GPS
+            coordinates in the browser.
+
+            The actual flow should be:
+
+            RIDER APP
+                 ↓
+            GPS LOCATION
+                 ↓
+            FAGA BACKEND
+                 ↓
+            AUTHENTICATION + VALIDATION
+                 ↓
+            WebSocket / SSE
+                 ↓
+            CUSTOMER TRACKING PAGE
+
+            Example:
+
+            wss://api.faga.com/deliveries/:deliveryId
+
+            or
+
+            GET /api/deliveries/:deliveryId/tracking
+
+            The customer should receive only the location
+            information they are authorized to see.
+        */
+    }
+
+    setInterval(
+        simulateRiderMovement,
+        5000
+    );
+
+
+    /* =========================
+       BACKEND DATA MODEL
+    ========================= */
+
+    /*
+        Example production response:
+
+        {
+            "deliveryId": "FAGA-DEL-847291",
+            "status": "in_transit",
+            "etaMinutes": 24,
+            "distanceKm": 5.8,
+
+            "pickup": {
+                "address": "Ikeja City Mall, Lagos",
+                "lat": 6.6018,
+                "lng": 3.3515
+            },
+
+            "destination": {
+                "address": "Victoria Island, Lagos",
+                "lat": 6.4281,
+                "lng": 3.4219
+            },
+
+            "rider": {
+                "id": "RID-10045",
+                "name": "Ahmed Musa",
+                "rating": 4.9,
+                "vehicle": "Honda Motorcycle",
+                "plate": "ABC 245 XY"
+            },
+
+            "location": {
+                "lat": 6.55,
+                "lng": 3.39,
+                "updatedAt": "2026-09-19T11:45:00Z"
+            }
+        }
+
+        Recommended endpoints:
+
+        GET
+        /api/deliveries/:deliveryId
+
+        GET
+        /api/deliveries/:deliveryId/rider
+
+        GET
+        /api/deliveries/:deliveryId/tracking
+
+        POST
+        /api/deliveries/:deliveryId/cancel
+
+        POST
+        /api/deliveries/:deliveryId/share
+
+        POST
+        /api/deliveries/:deliveryId/safety-report
+
+        WebSocket:
+
+        wss://api.faga.com/deliveries/:deliveryId
+
+        The backend must remain the authoritative source
+        for:
+
+        - Delivery status
+        - Rider location
+        - ETA
+        - Fare
+        - Payment status
+        - Delivery authorization
+        - Cancellation rules
+
+        Never put secret API keys in this HTML file.
+    */
+
+
+    /* =========================
+       INITIALIZATION
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            showToast(
+                "Live delivery tracking is active."
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

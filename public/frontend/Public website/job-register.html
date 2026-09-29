@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Applicant Registration | FAGA Jobs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #0c2748;
+      --navy-3: #12375f;
+      --orange: #f7931e;
+      --orange-dark: #df7d0d;
+      --light: #f5f7fa;
+      --border: #e2e8ef;
+      --text: #17202a;
+      --muted: #687586;
+      --white: #ffffff;
+      --success: #16834b;
+      --danger: #c73535;
+      --shadow: 0 12px 35px rgba(7, 26, 51, .09);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+      background: var(--navy);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 3px 18px rgba(0,0,0,.12);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 24px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--orange);
+      color: white;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      padding: 9px 11px;
+      color: #e8edf3;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 7px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+      background: rgba(247,147,30,.16);
+    }
+
+    .nav-links a.active {
+      color: var(--orange);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.35);
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--navy);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 0;
+      color: white;
+      font-size: 23px;
+    }
+
+    /* =========================
+       PAGE HERO
+    ========================= */
+
+    .page-hero {
+      background:
+        radial-gradient(circle at 88% 20%, rgba(247,147,30,.18), transparent 30%),
+        linear-gradient(135deg, var(--navy), var(--navy-3));
+      color: white;
+      padding: 52px 0;
+    }
+
+    .page-hero-inner {
+      max-width: 800px;
+    }
+
+    .eyebrow {
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 9px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(30px, 4vw, 45px);
+      line-height: 1.12;
+      letter-spacing: -.8px;
+      margin-bottom: 10px;
+    }
+
+    .page-hero p {
+      color: #cbd7e4;
+      font-size: 14px;
+      max-width: 700px;
+    }
+
+    /* =========================
+       PROGRESS
+    ========================= */
+
+    .progress-wrap {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .progress {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #9aa5b1;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .progress-step.active {
+      color: var(--navy);
+    }
+
+    .progress-step.complete {
+      color: var(--success);
+    }
+
+    .progress-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid #d7dee6;
+      display: grid;
+      place-items: center;
+      background: white;
+      font-size: 11px;
+    }
+
+    .progress-step.active .progress-number {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: white;
+    }
+
+    .progress-step.complete .progress-number {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .progress-line {
+      width: 80px;
+      height: 1px;
+      background: #dfe5eb;
+      margin: 0 12px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main-section {
+      padding: 45px 0 70px;
+    }
+
+    .register-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .form-card,
+    .side-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .form-card {
+      padding: 30px;
+    }
+
+    .side-card {
+      padding: 22px;
+      position: sticky;
+      top: 98px;
+      margin-bottom: 18px;
+    }
+
+    .form-heading {
+      margin-bottom: 25px;
+    }
+
+    .form-heading h2 {
+      color: var(--navy);
+      font-size: 23px;
+      margin-bottom: 5px;
+    }
+
+    .form-heading p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       SELECTED JOB
+    ========================= */
+
+    .selected-job {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px;
+      margin-bottom: 25px;
+    }
+
+    .job-logo {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .selected-job span {
+      display: block;
+      color: #8a95a1;
+      font-size: 10px;
+      margin-bottom: 2px;
+    }
+
+    .selected-job strong {
+      display: block;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .selected-job small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-section {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-section:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .form-section-title {
+      margin-bottom: 18px;
+    }
+
+    .form-section-title h3 {
+      color: var(--navy);
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .form-section-title p {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 17px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    label .required {
+      color: var(--danger);
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap > i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9aa5b0;
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .input-wrap input,
+    .input-wrap select,
+    .input-wrap textarea,
+    .plain-input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      background: white;
+      color: var(--text);
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    .input-wrap input,
+    .input-wrap select,
+    .plain-input {
+      height: 45px;
+      padding: 0 12px 0 38px;
+    }
+
+    .input-wrap select {
+      padding-left: 12px;
+    }
+
+    .input-wrap textarea,
+    textarea {
+      min-height: 110px;
+      padding: 12px;
+      resize: vertical;
+    }
+
+    .input-wrap input:focus,
+    .input-wrap select:focus,
+    .input-wrap textarea:focus,
+    .plain-input:focus,
+    textarea:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(247,147,30,.09);
+    }
+
+    .help-text {
+      color: #8b96a1;
+      font-size: 9px;
+      margin-top: 5px;
+    }
+
+    .error {
+      display: none;
+      color: var(--danger);
+      font-size: 9px;
+      margin-top: 5px;
+    }
+
+    .form-group.invalid input,
+    .form-group.invalid select,
+    .form-group.invalid textarea {
+      border-color: var(--danger);
+    }
+
+    .form-group.invalid .error {
+      display: block;
+    }
+
+    /* =========================
+       RADIO
+    ========================= */
+
+    .radio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .radio-option {
+      position: relative;
+    }
+
+    .radio-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .radio-option label {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 13px;
+      min-height: 65px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .radio-option label strong {
+      color: var(--navy);
+      font-size: 11px;
+    }
+
+    .radio-option label span {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .radio-option input:checked + label {
+      border-color: var(--orange);
+      background: #fff9f0;
+      box-shadow: 0 0 0 2px rgba(247,147,30,.08);
+    }
+
+    /* =========================
+       TERMS
+    ========================= */
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 14px;
+      background: #f8fafc;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+    }
+
+    .consent input {
+      margin-top: 3px;
+      accent-color: var(--orange);
+    }
+
+    .consent label {
+      margin: 0;
+      color: #687586;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .consent a {
+      color: var(--orange-dark);
+      font-weight: 700;
+    }
+
+    /* =========================
+       SUBMIT
+    ========================= */
+
+    .form-actions {
+      border-top: 1px solid var(--border);
+      padding-top: 23px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .back-link:hover {
+      color: var(--navy);
+    }
+
+    .submit-btn {
+      min-width: 210px;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .side-card h3 {
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 14px;
+    }
+
+    .access-option {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .access-option.selected {
+      border-color: var(--orange);
+      background: #fff9f0;
+    }
+
+    .access-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .access-top strong {
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .access-top span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .access-option p {
+      color: var(--muted);
+      font-size: 9px;
+      margin-top: 4px;
+    }
+
+    .value-badge {
+      background: #ffedcf;
+      color: #9b5a09;
+      border-radius: 5px;
+      padding: 3px 6px;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .side-divider {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 11px 0;
+    }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      border-radius: 50%;
+      background: #eaf7f0;
+      color: var(--success);
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+    }
+
+    .check-item strong {
+      display: block;
+      color: var(--navy);
+      font-size: 10px;
+    }
+
+    .check-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .security-box {
+      background: #f7f9fb;
+      border-radius: 10px;
+      padding: 13px;
+      display: flex;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .security-box i {
+      color: var(--success);
+      margin-top: 2px;
+    }
+
+    .security-box p {
+      color: #687586;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: var(--navy);
+      color: white;
+    }
+
+    .footer-main {
+      padding: 55px 0 35px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 35px;
+    }
+
+    .footer-brand p {
+      color: #aebdcd;
+      font-size: 13px;
+      max-width: 330px;
+      margin-top: 13px;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: #aebdcd;
+      font-size: 12px;
+      margin: 9px 0;
+    }
+
+    .footer-col a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 18px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #92a4b7;
+      font-size: 11px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      max-width: 340px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 17px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 3000;
+      font-size: 12px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn .25s ease;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1050px) {
+      .nav-links a {
+        padding: 8px 7px;
+        font-size: 12px;
+      }
+
+      .nav-actions .btn {
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-mobile-open .nav-links {
+        display: flex;
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 68px;
+        background: var(--navy);
+        padding: 15px;
+        border-radius: 0 0 13px 13px;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow: var(--shadow);
+      }
+
+      .nav-mobile-open .nav-links a {
+        padding: 12px;
+      }
+
+      .register-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: static;
+      }
+
+      .footer-main {
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .page-hero {
+        padding: 40px 0;
+      }
+
+      .progress {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 15px 0;
+      }
+
+      .progress-line {
+        width: 35px;
+        flex: 0 0 35px;
+        margin: 0 7px;
+      }
+
+      .progress-step {
+        white-space: nowrap;
+      }
+
+      .form-card {
+        padding: 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .radio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--
+    ==========================================================
+    FAGA JOB APPLICANT REGISTRATION
+    ==========================================================
+
+    Expected URL:
+      job-register.html?job=JOB-1001&plan=1-year
+
+    This page collects applicant registration information.
+
+    NEXT STEP:
+      job-payment.html?job=JOB-1001&plan=1-year
+
+    IMPORTANT:
+      The selected plan in the URL is only a frontend convenience.
+      The backend MUST validate the plan and amount.
+
+    The applicant should NOT be allowed to upload a CV or submit
+    a job application until payment has been successfully verified.
+
+    Suggested backend endpoints:
+
+      POST /api/jobs/applicants/register
+      GET  /api/jobs/:id
+      GET  /api/jobs/application-access/plans
+
+    Production security:
+
+      - Server-side validation
+      - Email verification
+      - Phone verification where required
+      - CSRF protection where applicable
+      - Rate limiting
+      - Password hashing if applicant credentials are created here
+      - Secure session handling
+      - Duplicate-account detection
+      - Audit logging
+      - Do not trust hidden fields or URL parameters
+  -->
+
+
+  <!-- NAVBAR -->
+
+  <header class="navbar" id="navbar">
+
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">F</span>
+        FAGA
+      </a>
+
+
+      <nav class="nav-links">
+
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html" class="active">Jobs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+
+      </nav>
+
+
+      <div class="nav-actions">
+
+        <a href="../user portal/login.html" class="btn btn-outline">
+          Login
+        </a>
+
+        <a href="../user portal/register.html" class="btn btn-primary">
+          Get Started
+        </a>
+
+      </div>
+
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open menu"
+      >
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- PAGE HERO -->
+
+  <section class="page-hero">
+
+    <div class="container page-hero-inner">
+
+      <div class="eyebrow">
+        FAGA Jobs
+      </div>
+
+      <h1>Create Your Applicant Profile</h1>
+
+      <p>
+        Register your applicant information to continue with the
+        application process. After registration, you will select your
+        application access plan and complete payment.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROGRESS -->
+
+  <div class="progress-wrap">
+
+    <div class="container progress">
+
+      <div class="progress-step active">
+
+        <span class="progress-number">
+          1
+        </span>
+
+        <span>
+          Registration
+        </span>
+
+      </div>
+
+
+      <div class="progress-line"></div>
+
+
+      <div class="progress-step">
+
+        <span class="progress-number">
+          2
+        </span>
+
+        <span>
+          Payment
+        </span>
+
+      </div>
+
+
+      <div class="progress-line"></div>
+
+
+      <div class="progress-step">
+
+        <span class="progress-number">
+          3
+        </span>
+
+        <span>
+          Profile & CV
+        </span>
+
+      </div>
+
+
+      <div class="progress-line"></div>
+
+
+      <div class="progress-step">
+
+        <span class="progress-number">
+          4
+        </span>
+
+        <span>
+          Apply
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MAIN -->
+
+  <main class="main-section">
+
+    <div class="container register-grid">
+
+
+      <!-- FORM -->
+
+      <section class="form-card">
+
+        <div class="form-heading">
+
+          <h2>Applicant Registration</h2>
+
+          <p>
+            Enter accurate information. Your profile information may be
+            used when submitting applications to employers.
+          </p>
+
+        </div>
+
+
+        <!-- SELECTED JOB -->
+
+        <div class="selected-job">
+
+          <div class="job-logo" id="jobLogo">
+            FT
+          </div>
+
+          <div>
+
+            <span>
+              Applying for
+            </span>
+
+            <strong id="jobTitle">
+              Frontend Developer
+            </strong>
+
+            <small id="jobCompany">
+              FAGA Technologies • Lagos
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <form id="registrationForm" novalidate>
+
+
+          <!-- PERSONAL INFORMATION -->
+
+          <section class="form-section">
+
+            <div class="form-section-title">
+
+              <h3>Personal Information</h3>
+
+              <p>
+                Basic information used to identify your applicant account.
+              </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+              <div class="form-group">
+
+                <label for="firstName">
+                  First Name <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-user"></i>
+
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Enter first name"
+                    autocomplete="given-name"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Enter your first name.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="lastName">
+                  Last Name <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-user"></i>
+
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Enter last name"
+                    autocomplete="family-name"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Enter your last name.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="email">
+                  Email Address <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-envelope"></i>
+
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Enter a valid email address.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="phone">
+                  Phone Number <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-phone"></i>
+
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="0800 000 0000"
+                    autocomplete="tel"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Enter your phone number.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="dateOfBirth">
+                  Date of Birth <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-calendar"></i>
+
+                  <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Select your date of birth.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Gender <span class="required">*</span>
+                </label>
+
+                <div class="radio-grid">
+
+                  <div class="radio-option">
+
+                    <input
+                      type="radio"
+                      name="gender"
+                      id="genderMale"
+                      value="Male"
+                    >
+
+                    <label for="genderMale">
+                      <strong>Male</strong>
+                      <span>Select male</span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="radio-option">
+
+                    <input
+                      type="radio"
+                      name="gender"
+                      id="genderFemale"
+                      value="Female"
+                    >
+
+                    <label for="genderFemale">
+                      <strong>Female</strong>
+                      <span>Select female</span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="radio-option">
+
+                    <input
+                      type="radio"
+                      name="gender"
+                      id="genderOther"
+                      value="Prefer not to say"
+                    >
+
+                    <label for="genderOther">
+                      <strong>Prefer not to say</strong>
+                      <span>Optional disclosure</span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+                <div class="error" id="genderError">
+                  Select a gender option.
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- LOCATION -->
+
+          <section class="form-section">
+
+            <div class="form-section-title">
+
+              <h3>Location</h3>
+
+              <p>
+                Tell employers where you are currently based.
+              </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+              <div class="form-group">
+
+                <label for="state">
+                  State <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <select
+                    id="state"
+                    name="state"
+                    required
+                  >
+
+                    <option value="">
+                      Select state
+                    </option>
+
+                    <option>Abia</option>
+                    <option>Adamawa</option>
+                    <option>Akwa Ibom</option>
+                    <option>Anambra</option>
+                    <option>Bauchi</option>
+                    <option>Bayelsa</option>
+                    <option>Benue</option>
+                    <option>Borno</option>
+                    <option>Cross River</option>
+                    <option>Delta</option>
+                    <option>Ebonyi</option>
+                    <option>Edo</option>
+                    <option>Ekiti</option>
+                    <option>Enugu</option>
+                    <option>Gombe</option>
+                    <option>Imo</option>
+                    <option>Jigawa</option>
+                    <option>Kaduna</option>
+                    <option>Kano</option>
+                    <option>Katsina</option>
+                    <option>Kebbi</option>
+                    <option>Kogi</option>
+                    <option>Kwara</option>
+                    <option>Lagos</option>
+                    <option>Nasarawa</option>
+                    <option>Niger</option>
+                    <option>Ogun</option>
+                    <option>Ondo</option>
+                    <option>Osun</option>
+                    <option>Oyo</option>
+                    <option>Plateau</option>
+                    <option>Rivers</option>
+                    <option>Sokoto</option>
+                    <option>Taraba</option>
+                    <option>Yobe</option>
+                    <option>Zamfara</option>
+                    <option>FCT</option>
+
+                  </select>
+
+                </div>
+
+                <div class="error">
+                  Select your state.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="city">
+                  City <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-location-dot"></i>
+
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder="Enter city"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Enter your city.
+                </div>
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label for="address">
+                  Address
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-map-location-dot"></i>
+
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Enter your general address"
+                    autocomplete="street-address"
+                  >
+
+                </div>
+
+                <div class="help-text">
+                  Avoid entering unnecessary sensitive information.
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- EDUCATION -->
+
+          <section class="form-section">
+
+            <div class="form-section-title">
+
+              <h3>Education & Experience</h3>
+
+              <p>
+                Give employers a quick overview of your professional background.
+              </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+              <div class="form-group">
+
+                <label for="education">
+                  Highest Education <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <select
+                    id="education"
+                    name="education"
+                    required
+                  >
+
+                    <option value="">
+                      Select education level
+                    </option>
+
+                    <option>Secondary School</option>
+                    <option>OND / NCE</option>
+                    <option>HND</option>
+                    <option>Bachelor's Degree</option>
+                    <option>Postgraduate Degree</option>
+                    <option>Professional Qualification</option>
+                    <option>Other</option>
+
+                  </select>
+
+                </div>
+
+                <div class="error">
+                  Select your highest education level.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="experience">
+                  Years of Experience <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <select
+                    id="experience"
+                    name="experience"
+                    required
+                  >
+
+                    <option value="">
+                      Select experience
+                    </option>
+
+                    <option value="0">
+                      No experience
+                    </option>
+
+                    <option value="1">
+                      Less than 1 year
+                    </option>
+
+                    <option value="1-2">
+                      1–2 years
+                    </option>
+
+                    <option value="3-5">
+                      3–5 years
+                    </option>
+
+                    <option value="5-10">
+                      5–10 years
+                    </option>
+
+                    <option value="10+">
+                      10+ years
+                    </option>
+
+                  </select>
+
+                </div>
+
+                <div class="error">
+                  Select your experience level.
+                </div>
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label for="currentJob">
+                  Current / Previous Job
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-briefcase"></i>
+
+                  <input
+                    type="text"
+                    id="currentJob"
+                    name="currentJob"
+                    placeholder="e.g. Customer Service Officer"
+                  >
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label for="skills">
+                  Skills
+                </label>
+
+                <textarea
+                  id="skills"
+                  name="skills"
+                  placeholder="List your main skills, separated by commas"
+                ></textarea>
+
+                <div class="help-text">
+                  Example: Customer service, Microsoft Excel, Sales, Communication
+                </div>
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label for="certifications">
+                  Certifications
+                </label>
+
+                <textarea
+                  id="certifications"
+                  name="certifications"
+                  placeholder="List relevant certifications or professional qualifications"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ACCOUNT -->
+
+          <section class="form-section">
+
+            <div class="form-section-title">
+
+              <h3>Account Security</h3>
+
+              <p>
+                Create credentials for your FAGA applicant account.
+              </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+              <div class="form-group">
+
+                <label for="password">
+                  Password <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-lock"></i>
+
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                    required
+                  >
+
+                </div>
+
+                <div class="help-text">
+                  Use at least 8 characters with a mix of letters and numbers.
+                </div>
+
+                <div class="error">
+                  Password must be at least 8 characters.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="confirmPassword">
+                  Confirm Password <span class="required">*</span>
+                </label>
+
+                <div class="input-wrap">
+
+                  <i class="fa-solid fa-lock"></i>
+
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Repeat password"
+                    autocomplete="new-password"
+                    required
+                  >
+
+                </div>
+
+                <div class="error">
+                  Passwords do not match.
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- CONSENT -->
+
+          <div class="consent">
+
+            <input
+              type="checkbox"
+              id="termsConsent"
+              name="termsConsent"
+            >
+
+            <label for="termsConsent">
+
+              I confirm that the information I have provided is accurate
+              and I agree to the FAGA
+              <a href="terms.html" target="_blank">Terms of Service</a>
+              and
+              <a href="privacy.html" target="_blank">Privacy Policy</a>.
+              I understand that application access fees do not guarantee
+              employment, an interview, shortlisting or selection.
+
+            </label>
+
+          </div>
+
+
+          <div
+            class="error"
+            id="consentError"
+            style="margin-top:7px;"
+          >
+            You must accept the terms before continuing.
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="form-actions">
+
+            <a
+              href="javascript:history.back()"
+              class="back-link"
+            >
+              <i class="fa-solid fa-arrow-left"></i>
+              Back to Job
+            </a>
+
+
+            <button
+              type="submit"
+              class="btn btn-primary submit-btn"
+              id="continueButton"
+            >
+              Continue to Payment
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+      <!-- SIDEBAR -->
+
+      <aside>
+
+
+        <!-- APPLICATION ACCESS -->
+
+        <div class="side-card">
+
+          <h3>Application Access</h3>
+
+          <div
+            class="access-option"
+            data-plan="3-months"
+          >
+
+            <div class="access-top">
+
+              <div>
+                <strong>₦300</strong>
+                <span>/ 3 Months</span>
+              </div>
+
+            </div>
+
+            <p>
+              Applicant platform access for three months.
+            </p>
+
+          </div>
+
+
+          <div
+            class="access-option selected"
+            data-plan="1-year"
+          >
+
+            <div class="access-top">
+
+              <div>
+                <strong>₦500</strong>
+                <span>/ 1 Year</span>
+              </div>
+
+              <span class="value-badge">
+                BEST VALUE
+              </span>
+
+            </div>
+
+            <p>
+              Applicant platform access for one year.
+            </p>
+
+          </div>
+
+
+          <hr class="side-divider">
+
+
+          <div class="check-item">
+
+            <div class="check-icon">
+              <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+
+              <strong>Browse available jobs</strong>
+
+              <span>
+                Search published opportunities on FAGA.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="check-item">
+
+            <div class="check-icon">
+              <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+
+              <strong>Create your applicant profile</strong>
+
+              <span>
+                Store your professional application information.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="check-item">
+
+            <div class="check-icon">
+              <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+
+              <strong>Upload your CV</strong>
+
+              <span>
+                Upload your CV after payment is verified.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="check-item">
+
+            <div class="check-icon">
+              <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+
+              <strong>Apply to jobs</strong>
+
+              <span>
+                Submit applications during your active access period.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="security-box">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <p>
+              Your payment is handled through the configured payment
+              provider. FAGA does not store your card PIN, CVV or
+              other sensitive payment credentials.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- HELP -->
+
+        <div class="side-card">
+
+          <h3>Need Help?</h3>
+
+          <p
+            style="
+              color:var(--muted);
+              font-size:11px;
+              margin-bottom:12px;
+            "
+          >
+            If you have questions about registration, applications or
+            payment, our support team can help.
+          </p>
+
+          <a
+            href="help.html"
+            class="btn btn-outline"
+            style="
+              color:var(--navy);
+              border-color:var(--border);
+              width:100%;
+              font-size:11px;
+            "
+          >
+            <i class="fa-solid fa-circle-question"></i>
+            Visit Help Center
+          </a>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container footer-main">
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="brand">
+
+          <span class="brand-mark">
+            F
+          </span>
+
+          FAGA
+
+        </a>
+
+        <p>
+          Connecting people, businesses, services, opportunities and
+          communities through one trusted platform.
+        </p>
+
+      </div>
+
+
+      <div class="footer-col">
+
+        <h4>Explore</h4>
+
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+
+      </div>
+
+
+      <div class="footer-col">
+
+        <h4>Company</h4>
+
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help Center</a>
+        <a href="safety.html">Safety</a>
+
+      </div>
+
+
+      <div class="footer-col">
+
+        <h4>Legal</h4>
+
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="../user portal/login.html">Login</a>
+        <a href="../user portal/register.html">Create Account</a>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © 2026 FAGA. All rights reserved.
+      </span>
+
+      <span>
+        FAGA Jobs Applicant Platform
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <div class="toast" id="toast"></div>
+
+
+  <script>
+
+    /*
+      ==========================================================
+      FAGA JOB REGISTER JAVASCRIPT
+      ==========================================================
+
+      Expected URL:
+
+        job-register.html?job=JOB-1001&plan=1-year
+
+      The page reads the job ID and selected plan for display.
+
+      IMPORTANT:
+      These values MUST NOT be trusted by the backend.
+
+      When the form is submitted:
+
+        POST /api/jobs/applicants/register
+
+      Example request:
+
+        {
+          "job_id": "JOB-1001",
+          "plan": "1-year",
+          "first_name": "...",
+          "last_name": "...",
+          "email": "...",
+          "phone": "...",
+          ...
+        }
+
+      Expected backend response:
+
+        {
+          "success": true,
+          "applicant_id": "APP-10001",
+          "payment_session_id": "..."
+        }
+
+      Then redirect to:
+
+        job-payment.html?job=JOB-1001&applicant=APP-10001&plan=1-year
+
+      The payment page should initiate payment using the configured
+      payment provider.
+
+      NEVER:
+        - Trust amount from the browser.
+        - Trust plan duration from the browser.
+        - Mark payment as successful from JavaScript.
+        - Allow CV upload before verified payment.
+        - Put payment provider secret keys in this page.
+    */
+
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+
+    const jobId =
+      params.get("job") || "JOB-1001";
+
+
+    let selectedPlan =
+      params.get("plan") || "1-year";
+
+
+    /*
+      Demo job data.
+
+      In production:
+        GET /api/jobs/:id
+    */
+
+    const jobData = {
+
+      "JOB-1001": {
+        title: "Frontend Developer",
+        company: "FAGA Technologies",
+        location: "Lagos",
+        logo: "FT"
+      },
+
+      "JOB-1002": {
+        title: "Customer Support Officer",
+        company: "Swift Retail Nigeria",
+        location: "Lagos",
+        logo: "SR"
+      },
+
+      "JOB-1003": {
+        title: "Operations & Logistics Coordinator",
+        company: "Prime Distribution Ltd",
+        location: "Abuja",
+        logo: "PD"
+      },
+
+      "JOB-1004": {
+        title: "Digital Marketing Specialist",
+        company: "GrowthHub Africa",
+        location: "Remote",
+        logo: "GH"
+      }
+
+    };
+
+
+    const job =
+      jobData[jobId] || jobData["JOB-1001"];
+
+
+    /*
+      Display selected job
+    */
+
+    document.getElementById("jobLogo")
+      .textContent = job.logo;
+
+
+    document.getElementById("jobTitle")
+      .textContent = job.title;
+
+
+    document.getElementById("jobCompany")
+      .textContent =
+      `${job.company} • ${job.location}`;
+
+
+    /*
+      Select application plan
+    */
+
+    const accessOptions =
+      document.querySelectorAll(".access-option");
+
+
+    function selectPlan(plan) {
+
+      selectedPlan = plan;
+
+      accessOptions.forEach(option => {
+
+        option.classList.toggle(
+          "selected",
+          option.dataset.plan === plan
+        );
+
+      });
+
+    }
+
+
+    accessOptions.forEach(option => {
+
+      option.addEventListener("click", () => {
+
+        selectPlan(
+          option.dataset.plan
+        );
+
+      });
+
+    });
+
+
+    /*
+      Initial plan selection
+    */
+
+    if (
+      selectedPlan !== "3-months" &&
+      selectedPlan !== "1-year"
+    ) {
+      selectedPlan = "1-year";
+    }
+
+    selectPlan(selectedPlan);
+
+
+    /*
+      VALIDATION
+    */
+
+    const form =
+      document.getElementById("registrationForm");
+
+
+    function markInvalid(
+      input,
+      invalid
+    ) {
+
+      const group =
+        input.closest(".form-group");
+
+      if (!group) {
+        return;
+      }
+
+      group.classList.toggle(
+        "invalid",
+        invalid
+      );
+
+    }
+
+
+    function validateForm() {
+
+      let valid = true;
+
+
+      /*
+        Required text/select inputs
+      */
+
+      const requiredInputs = [
+        document.getElementById("firstName"),
+        document.getElementById("lastName"),
+        document.getElementById("email"),
+        document.getElementById("phone"),
+        document.getElementById("dateOfBirth"),
+        document.getElementById("state"),
+        document.getElementById("city"),
+        document.getElementById("education"),
+        document.getElementById("experience"),
+        document.getElementById("password"),
+        document.getElementById("confirmPassword")
+      ];
+
+
+      requiredInputs.forEach(input => {
+
+        const empty =
+          !input.value.trim();
+
+        markInvalid(input, empty);
+
+        if (empty) {
+          valid = false;
+        }
+
+      });
+
+
+      /*
+        Email validation
+      */
+
+      const email =
+        document.getElementById("email");
+
+
+      if (
+        email.value.trim() &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+          email.value.trim()
+        )
+      ) {
+
+        markInvalid(email, true);
+        valid = false;
+
+      }
+
+
+      /*
+        Password validation
+      */
+
+      const password =
+        document.getElementById("password");
+
+      const confirmPassword =
+        document.getElementById("confirmPassword");
+
+
+      if (
+        password.value.length > 0 &&
+        password.value.length < 8
+      ) {
+
+        markInvalid(password, true);
+        valid = false;
+
+      }
+
+
+      if (
+        confirmPassword.value &&
+        password.value !== confirmPassword.value
+      ) {
+
+        markInvalid(confirmPassword, true);
+        valid = false;
+
+      }
+
+
+      /*
+        Gender
+      */
+
+      const gender =
+        document.querySelector(
+          'input[name="gender"]:checked'
+        );
+
+
+      const genderError =
+        document.getElementById("genderError");
+
+
+      if (!gender) {
+
+        genderError.style.display =
+          "block";
+
+        valid = false;
+
+      } else {
+
+        genderError.style.display =
+          "none";
+
+      }
+
+
+      /*
+        Terms
+      */
+
+      const consent =
+        document.getElementById("termsConsent");
+
+      const consentError =
+        document.getElementById("consentError");
+
+
+      if (!consent.checked) {
+
+        consentError.style.display =
+          "block";
+
+        valid = false;
+
+      } else {
+
+        consentError.style.display =
+          "none";
+
+      }
+
+
+      return valid;
+
+    }
+
+
+    /*
+      FORM SUBMISSION
+    */
+
+    form.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        if (!validateForm()) {
+
+          showToast(
+            "Please complete the required fields."
+          );
+
+          const firstInvalid =
+            document.querySelector(
+              ".form-group.invalid input, .form-group.invalid select"
+            );
+
+          if (firstInvalid) {
+            firstInvalid.focus();
+          }
+
+          return;
+
+        }
+
+
+        const button =
+          document.getElementById("continueButton");
+
+
+        button.disabled = true;
+
+        button.innerHTML =
+          `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Creating Profile...
+          `;
+
+
+        /*
+          Gather applicant data.
+
+          Do not include the password in browser logs.
+        */
+
+        const formData =
+          new FormData(form);
+
+
+        const applicantData = {
+
+          job_id: jobId,
+
+          plan: selectedPlan,
+
+          first_name:
+            formData.get("firstName").trim(),
+
+          last_name:
+            formData.get("lastName").trim(),
+
+          email:
+            formData.get("email").trim(),
+
+          phone:
+            formData.get("phone").trim(),
+
+          date_of_birth:
+            formData.get("dateOfBirth"),
+
+          gender:
+            formData.get("gender"),
+
+          state:
+            formData.get("state"),
+
+          city:
+            formData.get("city").trim(),
+
+          address:
+            formData.get("address").trim(),
+
+          education:
+            formData.get("education"),
+
+          experience:
+            formData.get("experience"),
+
+          current_job:
+            formData.get("currentJob").trim(),
+
+          skills:
+            formData.get("skills").trim(),
+
+          certifications:
+            formData.get("certifications").trim(),
+
+          password:
+            formData.get("password")
+
+        };
+
+
+        /*
+          ======================================================
+          PRODUCTION API
+          ======================================================
+
+          const response = await fetch(
+            "/api/jobs/applicants/register",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              credentials: "include",
+              body: JSON.stringify(applicantData)
+            }
+          );
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              result.message ||
+              "Registration failed."
+            );
+          }
+
+          window.location.href =
+            `job-payment.html?job=${encodeURIComponent(jobId)}`
+            + `&applicant=${encodeURIComponent(result.applicant_id)}`
+            + `&plan=${encodeURIComponent(selectedPlan)}`;
+
+        */
+
+
+        /*
+          DEMO MODE
+
+          This simulates successful registration.
+
+          Replace this block with the API request above
+          when the backend is connected.
+        */
+
+        setTimeout(() => {
+
+          /*
+            Store only temporary non-sensitive navigation
+            information.
+
+            Do NOT store passwords, payment credentials or
+            sensitive applicant information in localStorage.
+          */
+
+          sessionStorage.setItem(
+            "faga_job_id",
+            jobId
+          );
+
+          sessionStorage.setItem(
+            "faga_job_plan",
+            selectedPlan
+          );
+
+
+          const url =
+            `job-payment.html?job=${encodeURIComponent(jobId)}`
+            + `&plan=${encodeURIComponent(selectedPlan)}`;
+
+
+          window.location.href = url;
+
+        }, 800);
+
+      }
+    );
+
+
+    /*
+      Remove validation error while user edits
+    */
+
+    form.querySelectorAll("input, select, textarea")
+      .forEach(input => {
+
+        input.addEventListener(
+          "input",
+          () => {
+
+            if (input.value.trim()) {
+              markInvalid(input, false);
+            }
+
+          }
+        );
+
+        input.addEventListener(
+          "change",
+          () => {
+
+            if (input.value.trim()) {
+              markInvalid(input, false);
+            }
+
+          }
+        );
+
+      });
+
+
+    /*
+      Mobile navigation
+    */
+
+    const navbar =
+      document.getElementById("navbar");
+
+
+    const menuToggle =
+      document.getElementById("menuToggle");
+
+
+    menuToggle.addEventListener(
+      "click",
+      () => {
+
+        navbar.classList.toggle(
+          "nav-mobile-open"
+        );
+
+
+        const icon =
+          menuToggle.querySelector("i");
+
+
+        if (
+          navbar.classList.contains(
+            "nav-mobile-open"
+          )
+        ) {
+
+          icon.className =
+            "fa-solid fa-xmark";
+
+        } else {
+
+          icon.className =
+            "fa-solid fa-bars";
+
+        }
+
+      }
+    );
+
+
+    document.querySelectorAll(".nav-links a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            navbar.classList.remove(
+              "nav-mobile-open"
+            );
+
+            menuToggle.querySelector("i")
+              .className =
+              "fa-solid fa-bars";
+
+          }
+        );
+
+      });
+
+
+    /*
+      Toast
+    */
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById("toast");
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.add("show");
+
+
+      clearTimeout(
+        window.toastTimer
+      );
+
+
+      window.toastTimer =
+        setTimeout(
+          () => {
+            toast.classList.remove("show");
+          },
+          3000
+        );
+
+    }
+
+  </script>
+
+</body>
+</html>

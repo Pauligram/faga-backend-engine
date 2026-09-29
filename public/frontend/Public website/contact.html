@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact FAGA | Get in Touch</title>
+
+    <meta name="description"
+          content="Contact FAGA for support, partnerships, business enquiries, logistics, marketplace, food and professional services.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0b2342;
+            --navy-3: #102d50;
+            --orange: #f7931e;
+            --orange-light: #fff4e6;
+            --white: #ffffff;
+            --text: #172033;
+            --muted: #667085;
+            --light: #f7f9fc;
+            --border: #e5eaf0;
+            --success: #12a150;
+            --danger: #d92d20;
+            --shadow: 0 12px 35px rgba(7, 26, 51, .08);
+            --radius: 18px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: auto;
+        }
+
+        /* =========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(7, 26, 51, .97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .nav-inner {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.8px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            color: var(--navy);
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,.88);
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: .2s ease;
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255,255,255,.25);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .btn-orange:hover {
+            background: #ff9f2e;
+            transform: translateY(-1px);
+        }
+
+        .btn-dark {
+            background: var(--navy);
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: var(--navy-3);
+        }
+
+        .menu-toggle {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* =========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(7,26,51,.98), rgba(11,35,66,.94)),
+                radial-gradient(circle at 85% 20%, rgba(247,147,30,.2), transparent 35%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 65px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--orange);
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            margin-bottom: 17px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--orange);
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 65px);
+            line-height: 1.04;
+            letter-spacing: -2.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--orange);
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: rgba(255,255,255,.76);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 27px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+        }
+
+        .hero-contact-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 22px;
+            padding: 28px;
+        }
+
+        .hero-contact-card h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .hero-contact-card > p {
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+
+        .hero-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 0;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .hero-contact-icon {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 auto;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: rgba(247,147,30,.13);
+            color: var(--orange);
+        }
+
+        .hero-contact-item strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .hero-contact-item span {
+            display: block;
+            color: rgba(255,255,255,.6);
+            font-size: 12px;
+        }
+
+        /* =========================================
+           CONTACT AREA
+        ========================================== */
+
+        .contact-section {
+            padding: 85px 0;
+            background: var(--light);
+        }
+
+        .section-head {
+            max-width: 720px;
+            margin-bottom: 42px;
+        }
+
+        .section-head.center {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-head h2 {
+            font-size: clamp(30px, 4vw, 44px);
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 13px;
+        }
+
+        .section-head p {
+            color: var(--muted);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* =========================================
+           CONTACT INFO
+        ========================================== */
+
+        .contact-info {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: .25s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: var(--orange);
+            background: var(--orange-light);
+            font-size: 19px;
+            margin-bottom: 15px;
+        }
+
+        .info-card h3 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .info-card a {
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .info-card a:hover {
+            color: var(--orange-dark);
+        }
+
+        .response-note {
+            background: var(--navy);
+            color: white;
+            border-radius: var(--radius);
+            padding: 23px;
+        }
+
+        .response-note i {
+            color: var(--orange);
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .response-note h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .response-note p {
+            color: rgba(255,255,255,.64);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           CONTACT FORM
+        ========================================== */
+
+        .contact-form-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+        }
+
+        .form-header h2 {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 7px;
+            color: #344054;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #d8dee8;
+            border-radius: 10px;
+            padding: 13px 14px;
+            outline: none;
+            background: white;
+            color: var(--text);
+            transition: .2s ease;
+        }
+
+        .form-control::placeholder {
+            color: #98a2b3;
+        }
+
+        .form-control:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(247,147,30,.1);
+        }
+
+        textarea.form-control {
+            min-height: 145px;
+            resize: vertical;
+        }
+
+        .form-error {
+            display: none;
+            color: var(--danger);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .form-group.error .form-control {
+            border-color: var(--danger);
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .privacy-text {
+            color: var(--muted);
+            font-size: 11px;
+            max-width: 430px;
+        }
+
+        .privacy-text a {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        /* =========================================
+           TOPICS
+        ========================================== */
+
+        .topics {
+            padding: 85px 0;
+            background: white;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .topic-card {
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            padding: 25px 20px;
+            transition: .25s ease;
+            background: white;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: rgba(247,147,30,.35);
+        }
+
+        .topic-card i {
+            color: var(--orange);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .topic-card h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .topic-card p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           FAQ
+        ========================================== */
+
+        .faq {
+            background: var(--light);
+            padding: 85px 0;
+        }
+
+        .faq-list {
+            max-width: 850px;
+            margin: auto;
+            display: grid;
+            gap: 10px;
+        }
+
+        .faq-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 19px 20px;
+            border: none;
+            background: white;
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .faq-question i {
+            color: var(--orange);
+            transition: .2s ease;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 20px 19px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* =========================================
+           CTA
+        ========================================== */
+
+        .cta {
+            padding: 70px 0 0;
+            background: white;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--orange), #ffad42);
+            border-radius: 24px;
+            padding: 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .cta-box h2 {
+            color: var(--navy);
+            font-size: 31px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .cta-box p {
+            color: rgba(7,26,51,.72);
+            max-width: 650px;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        footer {
+            background: #041226;
+            color: white;
+            margin-top: 70px;
+        }
+
+        .footer-main {
+            padding: 65px 0 40px;
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 45px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,.58);
+            max-width: 330px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .footer-title {
+            font-weight: 800;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,.58);
+            font-size: 13px;
+            transition: .2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: rgba(255,255,255,.45);
+            font-size: 12px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .socials a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.65);
+            transition: .2s ease;
+        }
+
+        .socials a:hover {
+            color: var(--orange);
+            border-color: var(--orange);
+        }
+
+        /* =========================================
+           TOAST
+        ========================================== */
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 3000;
+            min-width: 300px;
+            max-width: 400px;
+            padding: 15px 17px;
+            border-radius: 12px;
+            background: var(--navy);
+            color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,.2);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transform: translateY(130px);
+            opacity: 0;
+            pointer-events: none;
+            transition: .3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            color: var(--orange);
+            margin-top: 2px;
+        }
+
+        .toast strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .toast span {
+            color: rgba(255,255,255,.67);
+            font-size: 11px;
+        }
+
+        /* =========================================
+           BACK TO TOP
+        ========================================== */
+
+        .back-top {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border: none;
+            background: var(--orange);
+            color: var(--navy);
+            display: none;
+            place-items: center;
+            z-index: 2000;
+            box-shadow: 0 8px 25px rgba(0,0,0,.2);
+        }
+
+        .back-top.show {
+            display: grid;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 1000px) {
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-contact-card {
+                max-width: 600px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-main {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            .container {
+                width: min(100% - 28px, 1180px);
+            }
+
+            .nav-inner {
+                min-height: 67px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+
+            .nav-mobile-open .nav-links {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 67px;
+                background: var(--navy);
+                border: 1px solid rgba(255,255,255,.1);
+                border-radius: 0 0 15px 15px;
+                padding: 15px;
+                display: grid;
+                gap: 3px;
+            }
+
+            .nav-mobile-open .nav-links a {
+                padding: 11px;
+                border-radius: 8px;
+            }
+
+            .nav-mobile-open .nav-actions {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 345px;
+                background: var(--navy);
+                display: flex;
+                padding: 0 15px 15px;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .form-footer .btn {
+                width: 100%;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-box {
+                padding: 30px 25px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .brand {
+                font-size: 22px;
+            }
+
+            .brand-mark {
+                width: 34px;
+                height: 34px;
+            }
+
+            .hero {
+                padding: 50px 0;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                display: grid;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .contact-form-card {
+                padding: 23px 18px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar" id="navbar">
+
+    <div class="container nav-inner">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">F</span>
+            <span>FAGA</span>
+        </a>
+
+        <nav class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+
+            <a href="logistics.html">Logistics</a>
+
+            <a href="marketplace.html">Marketplace</a>
+
+            <a href="food.html">Food</a>
+
+            <a href="services.html">Services</a>
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html" class="active">Contact</a>
+
+            <a href="help.html">Help</a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="../user portal/login.html" class="btn btn-outline">
+                Login
+            </a>
+
+            <a href="../user portal/register.html" class="btn btn-orange">
+                Get Started
+            </a>
+
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================
+     HERO
+========================================== -->
+
+<section class="hero">
+
+    <div class="container hero-grid">
+
+        <div>
+
+            <div class="eyebrow">
+                Contact FAGA
+            </div>
+
+            <h1>
+                We're here to
+                <span>help.</span>
+            </h1>
+
+            <p>
+                Have a question, need assistance with an order,
+                or want to explore a business partnership?
+                Reach out to the FAGA team.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="#contact-form" class="btn btn-orange">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Send a Message
+                </a>
+
+                <a href="help.html" class="btn btn-outline">
+                    <i class="fa-solid fa-circle-question"></i>
+                    Visit Help Center
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-contact-card">
+
+            <h3>Get in touch</h3>
+
+            <p>
+                Choose the contact option that best matches what
+                you need help with.
+            </p>
+
+            <div class="hero-contact-item">
+
+                <div class="hero-contact-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+
+                <div>
+                    <strong>Email</strong>
+                    <span>support@faga.com</span>
+                </div>
+
+            </div>
+
+            <div class="hero-contact-item">
+
+                <div class="hero-contact-icon">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+
+                <div>
+                    <strong>Customer Support</strong>
+                    <span>Available through FAGA support channels</span>
+                </div>
+
+            </div>
+
+            <div class="hero-contact-item">
+
+                <div class="hero-contact-icon">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+
+                <div>
+                    <strong>Help Center</strong>
+                    <span>Guides, FAQs and support resources</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CONTACT SECTION
+========================================== -->
+
+<section class="contact-section" id="contact-form">
+
+    <div class="container">
+
+        <div class="section-head center">
+
+            <div class="eyebrow">
+                Send Us a Message
+            </div>
+
+            <h2>How can we help?</h2>
+
+            <p>
+                Send us your question or enquiry and our team can
+                direct it to the appropriate department.
+            </p>
+
+        </div>
+
+
+        <div class="contact-grid">
+
+            <!-- CONTACT INFORMATION -->
+
+            <div class="contact-info">
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fa-solid fa-life-ring"></i>
+                    </div>
+
+                    <h3>Customer Support</h3>
+
+                    <p>
+                        Need help with an order, delivery, account or
+                        another FAGA service?
+                    </p>
+
+                    <a href="help.html">
+                        Visit Help Center
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <h3>Business Enquiries</h3>
+
+                    <p>
+                        Interested in partnering with FAGA or using
+                        our platform for your business?
+                    </p>
+
+                    <a href="#contact-form">
+                        Contact Business Team
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+
+                    <h3>Logistics</h3>
+
+                    <p>
+                        Questions about deliveries, dispatch,
+                        riders or shipment tracking?
+                    </p>
+
+                    <a href="logistics.html">
+                        Explore Logistics
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <h3>Safety & Trust</h3>
+
+                    <p>
+                        Report a safety concern, suspicious activity
+                        or a platform issue.
+                    </p>
+
+                    <a href="safety.html">
+                        Safety Information
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="response-note">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <h3>Response times</h3>
+
+                    <p>
+                        Response times can vary depending on the type
+                        of enquiry. For urgent account or order issues,
+                        use the relevant support tools available in
+                        your FAGA account.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTACT FORM -->
+
+            <div class="contact-form-card">
+
+                <div class="form-header">
+
+                    <h2>Send us a message</h2>
+
+                    <p>
+                        Please provide enough information for our team
+                        to understand your enquiry.
+                    </p>
+
+                </div>
+
+
+                <form id="contactForm" novalidate>
+
+                    <div class="form-row">
+
+                        <div class="form-group" id="nameGroup">
+
+                            <label for="name">
+                                Full name <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-control"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                            >
+
+                            <div class="form-error">
+                                Please enter your name.
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group" id="emailGroup">
+
+                            <label for="email">
+                                Email address <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                            >
+
+                            <div class="form-error">
+                                Please enter a valid email address.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group" id="phoneGroup">
+
+                            <label for="phone">
+                                Phone number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                class="form-control"
+                                placeholder="Enter phone number"
+                                autocomplete="tel"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group" id="topicGroup">
+
+                            <label for="topic">
+                                Enquiry type <span class="required">*</span>
+                            </label>
+
+                            <select
+                                id="topic"
+                                name="topic"
+                                class="form-control"
+                            >
+
+                                <option value="">
+                                    Select enquiry type
+                                </option>
+
+                                <option value="customer-support">
+                                    Customer Support
+                                </option>
+
+                                <option value="order">
+                                    Order / Delivery
+                                </option>
+
+                                <option value="marketplace">
+                                    Marketplace
+                                </option>
+
+                                <option value="food">
+                                    Food
+                                </option>
+
+                                <option value="services">
+                                    Services
+                                </option>
+
+                                <option value="business">
+                                    Business Partnership
+                                </option>
+
+                                <option value="rider">
+                                    Rider Enquiry
+                                </option>
+
+                                <option value="seller">
+                                    Seller Enquiry
+                                </option>
+
+                                <option value="service-provider">
+                                    Service Provider
+                                </option>
+
+                                <option value="restaurant">
+                                    Restaurant
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                            <div class="form-error">
+                                Please select an enquiry type.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group" id="subjectGroup">
+
+                        <label for="subject">
+                            Subject <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="subject"
+                            name="subject"
+                            class="form-control"
+                            placeholder="What is your enquiry about?"
+                        >
+
+                        <div class="form-error">
+                            Please enter a subject.
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group" id="messageGroup">
+
+                        <label for="message">
+                            Message <span class="required">*</span>
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            class="form-control"
+                            placeholder="Tell us how we can help..."
+                        ></textarea>
+
+                        <div class="form-error">
+                            Please enter your message.
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-footer">
+
+                        <div class="privacy-text">
+
+                            By submitting this form, you agree that FAGA
+                            may use the information provided to respond
+                            to your enquiry.
+
+                            <a href="privacy.html">
+                                Privacy Policy
+                            </a>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-dark"
+                            id="submitButton"
+                        >
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Send Message
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CONTACT TOPICS
+========================================== -->
+
+<section class="topics">
+
+    <div class="container">
+
+        <div class="section-head center">
+
+            <div class="eyebrow">
+                FAGA Support
+            </div>
+
+            <h2>What can we help with?</h2>
+
+            <p>
+                Select the area that best matches your question.
+            </p>
+
+        </div>
+
+
+        <div class="topics-grid">
+
+            <article class="topic-card">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <h3>Marketplace</h3>
+
+                <p>
+                    Questions about products, sellers, purchases,
+                    orders or marketplace transactions.
+                </p>
+
+            </article>
+
+
+            <article class="topic-card">
+
+                <i class="fa-solid fa-utensils"></i>
+
+                <h3>Food</h3>
+
+                <p>
+                    Help with restaurants, menus, food orders,
+                    deliveries or related issues.
+                </p>
+
+            </article>
+
+
+            <article class="topic-card">
+
+                <i class="fa-solid fa-truck-fast"></i>
+
+                <h3>Logistics</h3>
+
+                <p>
+                    Questions about deliveries, shipments,
+                    dispatch and order tracking.
+                </p>
+
+            </article>
+
+
+            <article class="topic-card">
+
+                <i class="fa-solid fa-user-gear"></i>
+
+                <h3>Account</h3>
+
+                <p>
+                    Account access, profile information, roles,
+                    security and authentication support.
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FAQ
+========================================== -->
+
+<section class="faq">
+
+    <div class="container">
+
+        <div class="section-head center">
+
+            <div class="eyebrow">
+                Quick Answers
+            </div>
+
+            <h2>Before you contact us</h2>
+
+            <p>
+                You may find the answer to your question here.
+            </p>
+
+        </div>
+
+
+        <div class="faq-list">
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Where can I track my order?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    You can use the FAGA
+                    <a href="track-order.html">
+                        Track Order
+                    </a>
+                    page to check the status of an eligible delivery.
+
+                </div>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Do I need an account to use FAGA?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    You can browse many areas of the public FAGA
+                    website without an account. Certain actions,
+                    such as placing orders or accessing account
+                    features, require you to sign in or register.
+
+                </div>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Can one FAGA account have multiple roles?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    Yes. FAGA is designed around one user account
+                    that can support multiple eligible roles, such
+                    as customer, rider, seller, service provider
+                    or restaurant.
+
+                </div>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Where can I get help with an existing order?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    For an existing order, sign in to your FAGA
+                    account and use the available order and support
+                    tools. You can also visit the
+                    <a href="help.html">
+                        Help Center
+                    </a>
+                    for additional guidance.
+
+                </div>
+
+            </div>
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        How can my business work with FAGA?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+                <div class="faq-answer">
+
+                    Businesses can explore the relevant FAGA ecosystem
+                    and submit a business enquiry using the contact
+                    form on this page.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CTA
+========================================== -->
+
+<section class="cta">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <div>
+
+                <h2>Need immediate help?</h2>
+
+                <p>
+                    Visit the FAGA Help Center for FAQs, order
+                    assistance, account support and useful guides.
+                </p>
+
+            </div>
+
+            <a href="help.html" class="btn btn-dark">
+                Open Help Center
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FOOTER
+========================================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">F</span>
+                    <span>FAGA</span>
+                </a>
+
+                <p>
+                    A connected platform for logistics, marketplace,
+                    food and professional services.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Explore
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="logistics.html">
+                        Logistics
+                    </a>
+
+                    <a href="marketplace.html">
+                        Marketplace
+                    </a>
+
+                    <a href="food.html">
+                        Food
+                    </a>
+
+                    <a href="services.html">
+                        Services
+                    </a>
+
+                    <a href="track-order.html">
+                        Track Order
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Company
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="about.html">
+                        About FAGA
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="help.html">
+                        Help Center
+                    </a>
+
+                    <a href="safety.html">
+                        Safety
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Account
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="../user portal/login.html">
+                        Login
+                    </a>
+
+                    <a href="../user portal/register.html">
+                        Create Account
+                    </a>
+
+                    <a href="privacy.html">
+                        Privacy
+                    </a>
+
+                    <a href="terms.html">
+                        Terms
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © <span id="year"></span> FAGA. All rights reserved.
+            </span>
+
+            <div class="socials">
+
+                <a href="#" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="#" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="#" aria-label="X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+
+                <a href="#" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     TOAST
+========================================== -->
+
+<div class="toast" id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <div>
+        <strong id="toastTitle">Message Sent</strong>
+        <span id="toastMessage">
+            Your message has been received.
+        </span>
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     BACK TO TOP
+========================================== -->
+
+<button
+    class="back-top"
+    id="backTop"
+    aria-label="Back to top"
+>
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+
+<script>
+
+    /* =========================================
+       MOBILE NAVIGATION
+    ========================================== */
+
+    const navbar = document.getElementById("navbar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    menuToggle.addEventListener("click", function () {
+
+        navbar.classList.toggle("nav-mobile-open");
+
+        const icon = menuToggle.querySelector("i");
+
+        if (navbar.classList.contains("nav-mobile-open")) {
+
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-xmark");
+
+        } else {
+
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+
+        }
+
+    });
+
+
+    document.querySelectorAll(".nav-links a").forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            navbar.classList.remove("nav-mobile-open");
+
+            const icon = menuToggle.querySelector("i");
+
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+
+        });
+
+    });
+
+
+    /* =========================================
+       FAQ ACCORDION
+    ========================================== */
+
+    const faqQuestions =
+        document.querySelectorAll(".faq-question");
+
+    faqQuestions.forEach(function (question) {
+
+        question.addEventListener("click", function () {
+
+            const currentItem =
+                question.closest(".faq-item");
+
+            document.querySelectorAll(".faq-item").forEach(function (item) {
+
+                if (item !== currentItem) {
+                    item.classList.remove("open");
+                }
+
+            });
+
+            currentItem.classList.toggle("open");
+
+        });
+
+    });
+
+
+    /* =========================================
+       FORM VALIDATION
+    ========================================== */
+
+    const contactForm =
+        document.getElementById("contactForm");
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+
+    function setError(groupId, hasError) {
+
+        const group =
+            document.getElementById(groupId);
+
+        if (!group) return;
+
+        if (hasError) {
+            group.classList.add("error");
+        } else {
+            group.classList.remove("error");
+        }
+
+    }
+
+
+    function validEmail(email) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    }
+
+
+    contactForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("name").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const topic =
+            document.getElementById("topic").value;
+
+        const subject =
+            document.getElementById("subject").value.trim();
+
+        const message =
+            document.getElementById("message").value.trim();
+
+
+        let valid = true;
+
+
+        /* Name */
+
+        if (name.length < 2) {
+
+            setError("nameGroup", true);
+            valid = false;
+
+        } else {
+
+            setError("nameGroup", false);
+
+        }
+
+
+        /* Email */
+
+        if (!validEmail(email)) {
+
+            setError("emailGroup", true);
+            valid = false;
+
+        } else {
+
+            setError("emailGroup", false);
+
+        }
+
+
+        /* Topic */
+
+        if (!topic) {
+
+            setError("topicGroup", true);
+            valid = false;
+
+        } else {
+
+            setError("topicGroup", false);
+
+        }
+
+
+        /* Subject */
+
+        if (subject.length < 3) {
+
+            setError("subjectGroup", true);
+            valid = false;
+
+        } else {
+
+            setError("subjectGroup", false);
+
+        }
+
+
+        /* Message */
+
+        if (message.length < 10) {
+
+            setError("messageGroup", true);
+            valid = false;
+
+        } else {
+
+            setError("messageGroup", false);
+
+        }
+
+
+        if (!valid) {
+
+            showToast(
+                "Check your message",
+                "Please complete the required fields.",
+                false
+            );
+
+            return;
+
+        }
+
+
+        /* =========================================
+           BACKEND SUBMISSION
+        ==========================================
+
+           Replace this demo section with:
+
+           POST /api/contact
+
+           Example payload:
+
+           {
+               name,
+               email,
+               phone,
+               topic,
+               subject,
+               message
+           }
+
+           The backend should:
+           - Validate all fields again
+           - Apply rate limiting
+           - Store the enquiry
+           - Generate a support ticket ID
+           - Notify the appropriate team
+           - Prevent spam/abuse
+           - Sanitize stored content
+        ========================================== */
+
+
+        const originalText =
+            submitButton.innerHTML;
+
+        submitButton.disabled = true;
+
+        submitButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+
+        /*
+         * DEMO DELAY
+         *
+         * Remove this and use fetch() against the real
+         * backend API when the backend is connected.
+         */
+
+        await new Promise(function (resolve) {
+            setTimeout(resolve, 1000);
+        });
+
+
+        submitButton.disabled = false;
+
+        submitButton.innerHTML = originalText;
+
+
+        contactForm.reset();
+
+
+        showToast(
+            "Message received",
+            "Thank you. Your enquiry has been submitted successfully.",
+            true
+        );
+
+    });
+
+
+    /* =========================================
+       TOAST
+    ========================================== */
+
+    const toast =
+        document.getElementById("toast");
+
+    const toastTitle =
+        document.getElementById("toastTitle");
+
+    const toastMessage =
+        document.getElementById("toastMessage");
+
+    let toastTimer;
+
+
+    function showToast(title, message, success = true) {
+
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+
+        const icon = toast.querySelector("i");
+
+        if (success) {
+
+            icon.className =
+                "fa-solid fa-circle-check";
+
+            icon.style.color =
+                "#f7931e";
+
+        } else {
+
+            icon.className =
+                "fa-solid fa-circle-exclamation";
+
+            icon.style.color =
+                "#ff6b6b";
+
+        }
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(function () {
+
+            toast.classList.remove("show");
+
+        }, 4500);
+
+    }
+
+
+    /* =========================================
+       BACK TO TOP
+    ========================================== */
+
+    const backTop =
+        document.getElementById("backTop");
+
+    window.addEventListener("scroll", function () {
+
+        if (window.scrollY > 450) {
+
+            backTop.classList.add("show");
+
+        } else {
+
+            backTop.classList.remove("show");
+
+        }
+
+    });
+
+
+    backTop.addEventListener("click", function () {
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+
+    /* =========================================
+       CURRENT YEAR
+    ========================================== */
+
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+
+
+    /* =========================================
+       BACKEND INTEGRATION NOTES
+    ==========================================
+
+       Recommended API:
+
+       POST /api/contact
+
+       GET /api/contact/categories
+
+       POST /api/contact/attachments
+
+       GET /api/support/tickets/:id
+
+       Recommended backend behaviour:
+
+       1. Validate all submitted data server-side.
+       2. Apply rate limiting.
+       3. Add spam protection.
+       4. Create a support ticket.
+       5. Assign the enquiry to the correct department.
+       6. Send confirmation to the user.
+       7. Notify the appropriate FAGA team.
+       8. Record audit information.
+       9. Never expose private API credentials in this file.
+
+    ========================================== */
+
+</script>
+
+</body>
+</html>

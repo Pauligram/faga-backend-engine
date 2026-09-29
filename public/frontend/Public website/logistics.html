@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Logistics | FAGA</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .faga-header {
+      background: #0f172a;
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .faga-topbar {
+      max-width: 1500px;
+      margin: auto;
+      padding: 15px 5%;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .faga-logo {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+    }
+
+    .faga-logo span {
+      color: #f97316;
+    }
+
+    .faga-search {
+      flex: 1;
+      max-width: 700px;
+      height: 44px;
+      display: flex;
+      background: #ffffff;
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .faga-search select {
+      width: 145px;
+      border: none;
+      border-right: 1px solid #e2e8f0;
+      padding: 0 12px;
+      color: #475569;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .faga-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0 15px;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .faga-search button {
+      width: 52px;
+      border: none;
+      background: #f97316;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .faga-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      white-space: nowrap;
+    }
+
+    .faga-header-action {
+      color: #ffffff;
+      font-size: 13px;
+    }
+
+    .faga-header-action small {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+
+    .faga-cart {
+      position: relative;
+      font-size: 21px;
+    }
+
+    .faga-cart-count {
+      position: absolute;
+      top: -9px;
+      right: -10px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #ffffff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* NAVIGATION */
+
+    .faga-nav {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .faga-nav-inner {
+      max-width: 1500px;
+      margin: auto;
+      padding: 0 5%;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .faga-nav a {
+      color: #cbd5e1;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .faga-nav a:hover,
+    .faga-nav a.active {
+      color: #f97316;
+    }
+
+    .faga-nav-category {
+      color: #ffffff !important;
+    }
+
+    /* =========================
+       BREADCRUMB
+    ========================= */
+
+    .faga-breadcrumb {
+      max-width: 1400px;
+      margin: auto;
+      padding: 20px 5% 10px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .faga-breadcrumb a {
+      color: #64748b;
+    }
+
+    .faga-breadcrumb a:hover {
+      color: #f97316;
+    }
+
+    .faga-breadcrumb span {
+      margin: 0 7px;
+      color: #cbd5e1;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .logistics-hero {
+      padding: 45px 5% 70px;
+      background: #ffffff;
+    }
+
+    .logistics-hero-container {
+      max-width: 1400px;
+      margin: auto;
+      min-height: 430px;
+      border-radius: 24px;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.98) 0%,
+          rgba(15, 23, 42, 0.92) 42%,
+          rgba(15, 23, 42, 0.55) 100%
+        ),
+        url("./assets/logistics-banner.jpg") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      padding: 60px;
+      position: relative;
+    }
+
+    .logistics-hero-content {
+      max-width: 680px;
+      color: #ffffff;
+    }
+
+    .logistics-hero-tag {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      color: #fb923c;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .logistics-hero h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      font-weight: 850;
+    }
+
+    .logistics-hero h1 span {
+      color: #f97316;
+    }
+
+    .logistics-hero p {
+      color: #cbd5e1;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 610px;
+      margin-bottom: 30px;
+    }
+
+    .logistics-hero-buttons {
+      display: flex;
+      gap: 13px;
+      flex-wrap: wrap;
+    }
+
+    .logistics-btn {
+      padding: 14px 24px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logistics-btn-primary {
+      background: #f97316;
+      color: #ffffff;
+    }
+
+    .logistics-btn-primary:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+    }
+
+    .logistics-btn-outline {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .logistics-btn-outline:hover {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    /* =========================
+       QUICK BOOKING
+    ========================= */
+
+    .logistics-booking {
+      margin-top: -35px;
+      position: relative;
+      z-index: 5;
+      padding: 0 5%;
+    }
+
+    .logistics-booking-card {
+      max-width: 1200px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+      padding: 25px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .logistics-booking-title {
+      margin-bottom: 18px;
+    }
+
+    .logistics-booking-title h2 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .logistics-booking-title p {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 12px;
+    }
+
+    .booking-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 7px;
+    }
+
+    .booking-field input,
+    .booking-field select {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 13px;
+      outline: none;
+      background: #ffffff;
+      color: #334155;
+      font-size: 13px;
+    }
+
+    .booking-field input:focus,
+    .booking-field select:focus {
+      border-color: #f97316;
+    }
+
+    .booking-submit {
+      height: 46px;
+      margin-top: 19px;
+      border: none;
+      padding: 0 23px;
+      border-radius: 8px;
+      background: #f97316;
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .booking-submit:hover {
+      background: #ea580c;
+    }
+
+    /* =========================
+       SERVICES
+    ========================= */
+
+    .logistics-services {
+      padding: 90px 5% 70px;
+      background: #f8fafc;
+    }
+
+    .logistics-container {
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .section-heading .tag {
+      color: #f97316;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: block;
+      margin-bottom: 9px;
+    }
+
+    .section-heading h2 {
+      font-size: 34px;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
+
+    .section-heading p {
+      color: #64748b;
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .logistics-service-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .logistics-service-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px 23px;
+      transition: all 0.25s;
+    }
+
+    .logistics-service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+      border-color: #fed7aa;
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      background: #fff7ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .logistics-service-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .logistics-service-card p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .service-link {
+      color: #f97316;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+
+    .logistics-how {
+      padding: 75px 5%;
+      background: #ffffff;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      position: relative;
+    }
+
+    .how-card {
+      text-align: center;
+      position: relative;
+    }
+
+    .how-number {
+      width: 52px;
+      height: 52px;
+      margin: auto auto 20px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      position: relative;
+      z-index: 2;
+    }
+
+    .how-card:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      left: calc(50% + 35px);
+      width: calc(100% - 70px);
+      border-top: 2px dashed #fed7aa;
+    }
+
+    .how-card-icon {
+      width: 72px;
+      height: 72px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto auto 18px;
+      font-size: 30px;
+    }
+
+    .how-card h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .how-card p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       WHY FAGA
+    ========================= */
+
+    .logistics-why {
+      padding: 75px 5%;
+      background: #f8fafc;
+    }
+
+    .why-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .why-image {
+      min-height: 420px;
+      border-radius: 20px;
+      background:
+        linear-gradient(
+          rgba(15, 23, 42, 0.15),
+          rgba(15, 23, 42, 0.15)
+        ),
+        url("./assets/logistics-delivery.jpg") center/cover no-repeat;
+    }
+
+    .why-content .tag {
+      color: #f97316;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .why-content h2 {
+      font-size: 35px;
+      margin: 10px 0 15px;
+      line-height: 1.2;
+    }
+
+    .why-content > p {
+      color: #64748b;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .why-list {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+    }
+
+    .why-list-item {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+    }
+
+    .why-check {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: #fff7ed;
+      color: #f97316;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .why-list-item h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .why-list-item p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       RIDER CTA
+    ========================= */
+
+    .rider-section {
+      padding: 75px 5%;
+      background: #ffffff;
+    }
+
+    .rider-box {
+      max-width: 1400px;
+      margin: auto;
+      padding: 50px 60px;
+      border-radius: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .rider-content {
+      max-width: 750px;
+    }
+
+    .rider-content .tag {
+      color: #fb923c;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .rider-content h2 {
+      font-size: 32px;
+      margin: 10px 0 12px;
+    }
+
+    .rider-content p {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .rider-btn {
+      flex-shrink: 0;
+      padding: 14px 25px;
+      border-radius: 9px;
+      background: #f97316;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .rider-btn:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .faga-footer {
+      background: #0b1120;
+      color: #ffffff;
+    }
+
+    .faga-footer-main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 60px 5% 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 45px;
+    }
+
+    .footer-logo {
+      font-size: 31px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo span {
+      color: #f97316;
+    }
+
+    .footer-about {
+      max-width: 340px;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .footer-column h3 {
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 11px;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: #f97316;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .footer-contact div {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer-contact a {
+      color: #94a3b8;
+    }
+
+    .footer-contact a:hover {
+      color: #f97316;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-bottom-inner {
+      max-width: 1400px;
+      margin: auto;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-bottom p,
+    .footer-bottom a {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+      .faga-header-actions {
+        gap: 12px;
+      }
+
+      .faga-nav-inner {
+        gap: 20px;
+      }
+
+      .logistics-service-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .booking-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .booking-submit {
+        margin-top: 0;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 850px) {
+      .faga-topbar {
+        flex-wrap: wrap;
+      }
+
+      .faga-search {
+        order: 3;
+        max-width: none;
+        flex-basis: 100%;
+      }
+
+      .faga-nav {
+        overflow-x: auto;
+      }
+
+      .faga-nav-inner {
+        width: max-content;
+      }
+
+      .logistics-hero-container {
+        padding: 45px 35px;
+      }
+
+      .logistics-hero h1 {
+        font-size: 38px;
+      }
+
+      .why-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .how-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+      }
+
+      .how-card::after {
+        display: none !important;
+      }
+
+      .rider-box {
+        padding: 40px 35px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .faga-topbar {
+        padding: 13px 20px;
+      }
+
+      .faga-logo {
+        font-size: 27px;
+      }
+
+      .faga-header-actions {
+        margin-left: auto;
+      }
+
+      .faga-header-action {
+        display: none;
+      }
+
+      .faga-nav-inner {
+        padding: 0 20px;
+      }
+
+      .faga-breadcrumb {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .logistics-hero {
+        padding: 25px 20px 60px;
+      }
+
+      .logistics-hero-container {
+        min-height: 500px;
+        padding: 35px 25px;
+        border-radius: 18px;
+      }
+
+      .logistics-hero h1 {
+        font-size: 32px;
+      }
+
+      .logistics-hero p {
+        font-size: 15px;
+      }
+
+      .logistics-booking {
+        padding: 0 20px;
+      }
+
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-submit {
+        width: 100%;
+      }
+
+      .logistics-services,
+      .logistics-how,
+      .logistics-why,
+      .rider-section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .logistics-service-grid,
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading h2,
+      .why-content h2 {
+        font-size: 28px;
+      }
+
+      .why-image {
+        min-height: 300px;
+      }
+
+      .rider-content h2 {
+        font-size: 27px;
+      }
+
+      .rider-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: column;
+      }
+
+      .footer-bottom-links {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header class="faga-header">
+
+    <div class="faga-topbar">
+
+      <a href="index.html" class="faga-logo">
+        FA<span>GA</span>
+      </a>
+
+      <form class="faga-search" onsubmit="return false;">
+
+        <select>
+          <option>All Categories</option>
+          <option>Logistics</option>
+          <option>Services</option>
+          <option>Buy & Sell</option>
+          <option>Food</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder="Search FAGA..."
+        >
+
+        <button type="submit">
+          🔍
+        </button>
+
+      </form>
+
+      <div class="faga-header-actions">
+
+        <a href="../user portal/dashboard.html" class="faga-header-action">
+          <small>Hello, Guest</small>
+          Account
+        </a>
+
+        <a href="marketplace.html" class="faga-header-action">
+          ♡ Wishlist
+        </a>
+
+        <a href="marketplace.html" class="faga-cart">
+          🛒
+          <span class="faga-cart-count">0</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <nav class="faga-nav">
+
+      <div class="faga-nav-inner">
+
+        <a href="#" class="faga-nav-category">
+          ☰ All Categories
+        </a>
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="logistics.html" class="active">
+          Logistics
+        </a>
+
+        <a href="services.html">
+          Services
+        </a>
+
+        <a href="marketplace.html">
+          Buy & Sell
+        </a>
+
+        <a href="food.html">
+          Food
+        </a>
+
+        <a href="help.html">
+          Help
+        </a>
+
+        <a href="track-order.html">
+          Track Order
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================
+       BREADCRUMB
+  ========================= -->
+
+  <div class="faga-breadcrumb">
+
+    <a href="index.html">Home</a>
+
+    <span>›</span>
+
+    Logistics
+
+  </div>
+
+
+  <!-- =========================
+       LOGISTICS HERO
+  ========================= -->
+
+  <section class="logistics-hero">
+
+    <div class="logistics-hero-container">
+
+      <div class="logistics-hero-content">
+
+        <span class="logistics-hero-tag">
+          FAGA LOGISTICS
+        </span>
+
+        <h1>
+          Send It Fast.<br>
+          <span>We'll Get It There.</span>
+        </h1>
+
+        <p>
+          Reliable package delivery made simple. Send documents,
+          parcels, food, and other items with trusted FAGA riders.
+          Whether it's across town or to another location, we've got
+          your delivery covered.
+        </p>
+
+        <div class="logistics-hero-buttons">
+
+          <a href="#book-delivery" class="logistics-btn logistics-btn-primary">
+            Send a Package
+          </a>
+
+          <a href="track-order.html" class="logistics-btn logistics-btn-outline">
+            Track a Delivery
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       QUICK BOOKING
+  ========================= -->
+
+  <section class="logistics-booking" id="book-delivery">
+
+    <div class="logistics-booking-card">
+
+      <div class="logistics-booking-title">
+
+        <h2>Get a Delivery Quote</h2>
+
+        <p>
+          Enter your pickup and delivery details to get started.
+        </p>
+
+      </div>
+
+      <form id="deliveryQuoteForm">
+
+        <div class="booking-grid">
+
+          <div class="booking-field">
+
+            <label for="pickup">
+              Pickup Location
+            </label>
+
+            <input
+              type="text"
+              id="pickup"
+              placeholder="Where should we pick it up?"
+              required
+            >
+
+          </div>
+
+
+          <div class="booking-field">
+
+            <label for="delivery">
+              Delivery Location
+            </label>
+
+            <input
+              type="text"
+              id="delivery"
+              placeholder="Where should we deliver?"
+              required
+            >
+
+          </div>
+
+
+          <div class="booking-field">
+
+            <label for="packageType">
+              Package Type
+            </label>
+
+            <select id="packageType">
+
+              <option value="">
+                Select package type
+              </option>
+
+              <option>
+                Document
+              </option>
+
+              <option>
+                Small Package
+              </option>
+
+              <option>
+                Medium Package
+              </option>
+
+              <option>
+                Large Package
+              </option>
+
+              <option>
+                Food
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="booking-submit"
+          >
+            Get Quote
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       LOGISTICS SERVICES
+  ========================= -->
+
+  <section class="logistics-services">
+
+    <div class="logistics-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Our Logistics Services
+        </span>
+
+        <h2>
+          Delivery Solutions For Every Need
+        </h2>
+
+        <p>
+          From urgent documents to larger packages, choose the
+          delivery option that works best for you.
+        </p>
+
+      </div>
+
+
+      <div class="logistics-service-grid">
+
+        <!-- Same Day -->
+        <div class="logistics-service-card">
+
+          <div class="service-icon">
+            🚚
+          </div>
+
+          <h3>
+            Same-Day Delivery
+          </h3>
+
+          <p>
+            Need something delivered today? Our riders can pick up
+            and deliver your package within the same day.
+          </p>
+
+          <a href="#book-delivery" class="service-link">
+            Book Delivery →
+          </a>
+
+        </div>
+
+
+        <!-- Express -->
+        <div class="logistics-service-card">
+
+          <div class="service-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Express Delivery
+          </h3>
+
+          <p>
+            For urgent deliveries that need priority handling and
+            faster transportation.
+          </p>
+
+          <a href="#book-delivery" class="service-link">
+            Book Delivery →
+          </a>
+
+        </div>
+
+
+        <!-- Scheduled -->
+        <div class="logistics-service-card">
+
+          <div class="service-icon">
+            📅
+          </div>
+
+          <h3>
+            Scheduled Delivery
+          </h3>
+
+          <p>
+            Choose when you want your package picked up and
+            delivered according to your schedule.
+          </p>
+
+          <a href="#book-delivery" class="service-link">
+            Schedule Delivery →
+          </a>
+
+        </div>
+
+
+        <!-- Business -->
+        <div class="logistics-service-card">
+
+          <div class="service-icon">
+            🏢
+          </div>
+
+          <h3>
+            Business Delivery
+          </h3>
+
+          <p>
+            Flexible logistics solutions for businesses that
+            regularly send packages to customers.
+          </p>
+
+          <a href="#book-delivery" class="service-link">
+            Get Started →
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       HOW LOGISTICS WORKS
+  ========================= -->
+
+  <section class="logistics-how">
+
+    <div class="logistics-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Simple Process
+        </span>
+
+        <h2>
+          How FAGA Delivery Works
+        </h2>
+
+        <p>
+          Sending a package through FAGA takes only a few simple steps.
+        </p>
+
+      </div>
+
+
+      <div class="how-grid">
+
+        <!-- 1 -->
+        <div class="how-card">
+
+          <div class="how-number">
+            1
+          </div>
+
+          <div class="how-card-icon">
+            📦
+          </div>
+
+          <h3>
+            Request a Delivery
+          </h3>
+
+          <p>
+            Tell us where your package should be picked up and
+            where it needs to go.
+          </p>
+
+        </div>
+
+
+        <!-- 2 -->
+        <div class="how-card">
+
+          <div class="how-number">
+            2
+          </div>
+
+          <div class="how-card-icon">
+            🛵
+          </div>
+
+          <h3>
+            Rider Assigned
+          </h3>
+
+          <p>
+            A nearby FAGA rider receives your delivery request
+            and heads to the pickup location.
+          </p>
+
+        </div>
+
+
+        <!-- 3 -->
+        <div class="how-card">
+
+          <div class="how-number">
+            3
+          </div>
+
+          <div class="how-card-icon">
+            📍
+          </div>
+
+          <h3>
+            Track Your Package
+          </h3>
+
+          <p>
+            Follow your delivery status while your package is
+            being transported.
+          </p>
+
+        </div>
+
+
+        <!-- 4 -->
+        <div class="how-card">
+
+          <div class="how-number">
+            4
+          </div>
+
+          <div class="how-card-icon">
+            ✅
+          </div>
+
+          <h3>
+            Delivered
+          </h3>
+
+          <p>
+            Your package arrives at its destination and your
+            delivery is completed.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       WHY FAGA LOGISTICS
+  ========================= -->
+
+  <section class="logistics-why">
+
+    <div class="logistics-container">
+
+      <div class="why-layout">
+
+        <div class="why-image"></div>
+
+
+        <div class="why-content">
+
+          <span class="tag">
+            Why Choose FAGA
+          </span>
+
+          <h2>
+            Logistics You Can Count On
+          </h2>
+
+          <p>
+            We make sending and receiving packages easier by
+            connecting customers with delivery partners through
+            one simple platform.
+          </p>
+
+
+          <div class="why-list">
+
+            <div class="why-list-item">
+
+              <div class="why-check">
+                ✓
+              </div>
+
+              <div>
+
+                <h4>
+                  Reliable Delivery Partners
+                </h4>
+
+                <p>
+                  Connect with riders available to handle your
+                  delivery requests.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="why-list-item">
+
+              <div class="why-check">
+                ✓
+              </div>
+
+              <div>
+
+                <h4>
+                  Delivery Tracking
+                </h4>
+
+                <p>
+                  Stay informed about the status of your package
+                  from pickup to delivery.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="why-list-item">
+
+              <div class="why-check">
+                ✓
+              </div>
+
+              <div>
+
+                <h4>
+                  Convenient Booking
+                </h4>
+
+                <p>
+                  Request deliveries directly from your FAGA
+                  account whenever you need them.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="why-list-item">
+
+              <div class="why-check">
+                ✓
+              </div>
+
+              <div>
+
+                <h4>
+                  One FAGA Account
+                </h4>
+
+                <p>
+                  Manage your deliveries alongside your shopping,
+                  services, food orders, and other FAGA activities.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       BECOME A RIDER
+  ========================= -->
+
+  <section class="rider-section">
+
+    <div class="rider-box">
+
+      <div class="rider-content">
+
+        <span class="tag">
+          Earn With FAGA
+        </span>
+
+        <h2>
+          Become a FAGA Rider
+        </h2>
+
+        <p>
+          Turn your vehicle into an earning opportunity. Join the
+          FAGA rider network and receive delivery requests through
+          your rider account.
+        </p>
+
+      </div>
+
+      <a href="../user portal/register.html?role=rider" class="rider-btn">
+        Become a Rider →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer class="faga-footer">
+
+    <div class="faga-footer-main">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <div class="footer-logo">
+            FA<span>GA</span>
+          </div>
+
+          <p class="footer-about">
+            Everything you need, all in one place. Send packages,
+            discover services, shop for products, and order food
+            through FAGA.
+          </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Quick Links</h3>
+
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="logistics.html">Logistics</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="marketplace.html">Buy & Sell</a></li>
+            <li><a href="food.html">Food</a></li>
+          </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Support</h3>
+
+          <ul class="footer-links">
+            <li><a href="help.html">Help Center</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="../user portal/register.html">Create Account</a></li>
+          </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Contact</h3>
+
+          <div class="footer-contact">
+
+            <div>
+              📍 Lagos, Nigeria
+            </div>
+
+            <div>
+              ✉
+              <a href="mailto:support@faga.com">
+                support@faga.com
+              </a>
+            </div>
+
+            <div>
+              ☎
+              <a href="tel:+2340000000000">
+                +234 000 000 0000
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <div class="footer-bottom-inner">
+
+        <p>
+          © 2026 FAGA. All rights reserved.
+        </p>
+
+        <div class="footer-bottom-links">
+
+          <a href="#">
+            Privacy Policy
+          </a>
+
+          <a href="#">
+            Terms & Conditions
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+    document
+      .getElementById("deliveryQuoteForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const pickup =
+          document.getElementById("pickup").value.trim();
+
+        const delivery =
+          document.getElementById("delivery").value.trim();
+
+        const packageType =
+          document.getElementById("packageType").value;
+
+        if (!pickup || !delivery || !packageType) {
+          alert("Please complete all delivery details.");
+          return;
+        }
+
+        /*
+          Later, connect this to your backend API.
+
+          Example:
+          POST /api/logistics/quote
+
+          {
+            pickup,
+            delivery,
+            packageType
+          }
+        */
+
+        alert(
+          "Your delivery request has been received. " +
+          "The next step will be to calculate your delivery quote."
+        );
+
+      });
+  </script>
+
+</body>
+</html>

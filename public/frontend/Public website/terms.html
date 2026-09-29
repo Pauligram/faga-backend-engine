@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FAGA Terms of Service - Terms and conditions governing the use of FAGA logistics, marketplace, food delivery, and service platform." />
+  <title>Terms of Service | FAGA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #0b2547;
+      --navy-3: #102f56;
+      --orange: #f7931e;
+      --orange-dark: #df7f0b;
+      --orange-light: #fff3e2;
+      --white: #ffffff;
+      --bg: #f6f8fb;
+      --text: #172033;
+      --muted: #667085;
+      --border: #e5e9f0;
+      --success: #18864b;
+      --danger: #d64545;
+      --shadow: 0 12px 35px rgba(7, 26, 51, .08);
+      --radius: 16px;
+      --container: 1180px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 26, 51, .98);
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      font-weight: 800;
+      font-size: 25px;
+      letter-spacing: -.5px;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--orange);
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-links a {
+      color: #dce5f1;
+      padding: 10px 11px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: rgba(255,255,255,.08);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 17px;
+      cursor: pointer;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .2s;
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,.35);
+      background: transparent;
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: white;
+    }
+
+    .btn-orange:hover {
+      background: var(--orange-dark);
+      transform: translateY(-1px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: white;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(247,147,30,.2), transparent 32%),
+        linear-gradient(135deg, var(--navy), #0c2c52);
+      color: white;
+      padding: 75px 0 80px;
+    }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--orange);
+      background: rgba(247,147,30,.12);
+      border: 1px solid rgba(247,147,30,.25);
+      padding: 7px 13px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.08;
+      letter-spacing: -1.8px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: var(--orange);
+    }
+
+    .hero p {
+      color: #c9d5e4;
+      font-size: 17px;
+      max-width: 720px;
+    }
+
+    .updated {
+      margin-top: 25px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #b8c8dc;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .legal-layout {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 35px;
+      align-items: start;
+      padding: 55px 0 80px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 100px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .toc-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      color: var(--navy);
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      transition: .2s;
+      border-left: 2px solid transparent;
+    }
+
+    .toc a:hover,
+    .toc a.active {
+      color: var(--navy);
+      background: var(--orange-light);
+      border-left-color: var(--orange);
+    }
+
+    .legal-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .legal-intro {
+      padding: 30px;
+      background: linear-gradient(135deg, #fffaf4, #ffffff);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-intro strong {
+      color: var(--navy);
+    }
+
+    .legal-section {
+      padding: 35px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-section:last-child {
+      border-bottom: 0;
+    }
+
+    .legal-section h2 {
+      color: var(--navy);
+      font-size: 22px;
+      margin-bottom: 13px;
+      letter-spacing: -.4px;
+    }
+
+    .legal-section h3 {
+      color: var(--navy-2);
+      font-size: 16px;
+      margin: 23px 0 8px;
+    }
+
+    .legal-section p {
+      color: #4d596b;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .legal-section ul,
+    .legal-section ol {
+      margin: 10px 0 15px 22px;
+      color: #4d596b;
+      font-size: 14px;
+    }
+
+    .legal-section li {
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+
+    .notice {
+      margin: 18px 0;
+      padding: 17px 18px;
+      border-left: 4px solid var(--orange);
+      background: var(--orange-light);
+      border-radius: 8px;
+      color: #65451e;
+      font-size: 13px;
+    }
+
+    .warning {
+      border-left-color: var(--danger);
+      background: #fff1f1;
+      color: #713434;
+    }
+
+    .definition-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+      margin-top: 18px;
+    }
+
+    .definition {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 17px;
+      background: #fbfcfe;
+    }
+
+    .definition strong {
+      display: block;
+      color: var(--navy);
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .definition span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .check-list {
+      list-style: none !important;
+      margin-left: 0 !important;
+    }
+
+    .check-list li {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .check-list li::before {
+      content: "\f00c";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      top: 1px;
+      color: var(--success);
+    }
+
+    /* ================= CTA ================= */
+
+    .legal-cta {
+      margin-top: 25px;
+      padding: 32px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--navy), #0d315a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .legal-cta h2 {
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .legal-cta p {
+      color: #c5d3e3;
+      font-size: 13px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      background: #041326;
+      color: #aebed0;
+      padding: 55px 0 25px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 35px;
+      padding-bottom: 40px;
+    }
+
+    .footer-brand p {
+      margin-top: 13px;
+      font-size: 13px;
+      line-height: 1.8;
+      max-width: 330px;
+    }
+
+    .footer-title {
+      color: white;
+      font-weight: 800;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .footer-links a {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 9px;
+      transition: .2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 12px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+    }
+
+    .footer-social a {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      display: grid;
+      place-items: center;
+      color: #dce5f1;
+    }
+
+    .footer-social a:hover {
+      background: var(--orange);
+      color: white;
+    }
+
+    /* ================= BACK TO TOP ================= */
+
+    #backTop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,.2);
+      display: none;
+      z-index: 100;
+    }
+
+    #backTop.show {
+      display: grid;
+      place-items: center;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1080px) {
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        padding: 9px 7px;
+        font-size: 12px;
+      }
+
+      .nav-actions .btn {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .mobile-toggle {
+        display: block;
+      }
+
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .nav-inner {
+        min-height: 68px;
+      }
+
+      .mobile-menu {
+        display: none;
+        padding: 10px 0 20px;
+      }
+
+      .mobile-menu.open {
+        display: block;
+      }
+
+      .mobile-menu a {
+        display: block;
+        color: #dce5f1;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .mobile-menu a:hover {
+        background: rgba(255,255,255,.08);
+        color: white;
+      }
+
+      .mobile-menu .mobile-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .legal-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .toc-links {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 28px, var(--container));
+      }
+
+      .hero {
+        padding: 55px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .legal-layout {
+        padding: 30px 0 55px;
+      }
+
+      .legal-intro,
+      .legal-section {
+        padding: 24px 20px;
+      }
+
+      .definition-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toc-links {
+        grid-template-columns: 1fr;
+      }
+
+      .legal-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 25px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+
+  <header class="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">
+          <i class="fa-solid fa-bolt"></i>
+        </span>
+        FAGA
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="logistics.html">Logistics</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="food.html">Food</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="help.html">Help</a>
+
+      <div class="mobile-buttons">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="eyebrow">
+        <i class="fa-solid fa-file-contract"></i>
+        Legal
+      </div>
+
+      <h1>Terms of <span>Service</span></h1>
+
+      <p>
+        These Terms of Service explain the rules, responsibilities and conditions
+        that apply when you access or use the FAGA platform and its logistics,
+        marketplace, food and service offerings.
+      </p>
+
+      <div class="updated">
+        <i class="fa-regular fa-calendar"></i>
+        Last updated: September 15, 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TERMS CONTENT ================= -->
+
+  <main class="container legal-layout">
+
+    <!-- TABLE OF CONTENTS -->
+
+    <aside class="toc">
+      <div class="toc-title">
+        On this page
+      </div>
+
+      <div class="toc-links">
+        <a href="#acceptance">1. Acceptance</a>
+        <a href="#eligibility">2. Eligibility</a>
+        <a href="#account">3. Accounts</a>
+        <a href="#platform">4. Platform</a>
+        <a href="#orders">5. Orders</a>
+        <a href="#logistics">6. Logistics</a>
+        <a href="#marketplace">7. Marketplace</a>
+        <a href="#food">8. Food</a>
+        <a href="#services">9. Services</a>
+        <a href="#payments">10. Payments</a>
+        <a href="#fees">11. Fees</a>
+        <a href="#users">12. User Responsibilities</a>
+        <a href="#prohibited">13. Prohibited Use</a>
+        <a href="#content">14. Content</a>
+        <a href="#third-party">15. Third Parties</a>
+        <a href="#cancellations">16. Cancellations</a>
+        <a href="#refunds">17. Refunds</a>
+        <a href="#liability">18. Liability</a>
+        <a href="#indemnity">19. Indemnity</a>
+        <a href="#termination">20. Termination</a>
+        <a href="#changes">21. Changes</a>
+        <a href="#law">22. Governing Law</a>
+        <a href="#contact">23. Contact</a>
+      </div>
+    </aside>
+
+    <!-- LEGAL DOCUMENT -->
+
+    <article class="legal-card">
+
+      <div class="legal-intro">
+        <p>
+          Welcome to <strong>FAGA</strong>. These Terms of Service
+          ("Terms", "Terms of Service") govern your access to and use of
+          the FAGA website, applications, platform, products and services.
+        </p>
+
+        <div class="notice">
+          <strong>Important:</strong>
+          Please read these Terms carefully before using FAGA. By creating an
+          account, accessing the platform or using a FAGA service, you indicate
+          that you have read, understood and agreed to these Terms.
+        </div>
+
+        <p>
+          These Terms are intended to provide a general contractual framework
+          for the FAGA platform. Before production launch, they should be
+          reviewed and adapted by qualified legal counsel to reflect FAGA's
+          actual legal entity, operating jurisdictions, licensing requirements,
+          payment providers, insurance arrangements and applicable laws.
+        </p>
+      </div>
+
+      <!-- 1 -->
+
+      <section class="legal-section" id="acceptance">
+        <h2>1. Acceptance of These Terms</h2>
+
+        <p>
+          By accessing or using FAGA, you agree to be bound by these Terms,
+          our Privacy Policy and any additional terms or rules that apply to
+          specific products or services.
+        </p>
+
+        <p>
+          If you do not agree with these Terms, you must not access or use
+          the FAGA platform.
+        </p>
+
+        <p>
+          If you use FAGA on behalf of a company, business or other
+          organization, you represent that you have authority to bind that
+          organization to these Terms.
+        </p>
+      </section>
+
+      <!-- 2 -->
+
+      <section class="legal-section" id="eligibility">
+        <h2>2. Eligibility</h2>
+
+        <p>
+          You may use FAGA only if you are legally capable of entering into
+          a binding agreement under the laws applicable to you.
+        </p>
+
+        <p>
+          Certain services may have additional age, identification,
+          licensing, geographic or eligibility requirements.
+        </p>
+
+        <ul>
+          <li>You must provide accurate information when required.</li>
+          <li>You must comply with applicable laws and regulations.</li>
+          <li>You must not use FAGA if your use is prohibited by applicable law.</li>
+          <li>Additional verification may be required for certain roles or services.</li>
+        </ul>
+      </section>
+
+      <!-- 3 -->
+
+      <section class="legal-section" id="account">
+        <h2>3. User Accounts</h2>
+
+        <p>
+          Some FAGA features require an account. You are responsible for
+          maintaining the confidentiality and security of your account
+          credentials.
+        </p>
+
+        <div class="definition-grid">
+          <div class="definition">
+            <strong>One FAGA Account</strong>
+            <span>
+              A user may be able to access multiple FAGA roles from one account.
+            </span>
+          </div>
+
+          <div class="definition">
+            <strong>Role Access</strong>
+            <span>
+              Additional verification may be required before using certain roles.
+            </span>
+          </div>
+
+          <div class="definition">
+            <strong>Accurate Information</strong>
+            <span>
+              Account and profile information should remain accurate and current.
+            </span>
+          </div>
+
+          <div class="definition">
+            <strong>Account Security</strong>
+            <span>
+              You are responsible for activity occurring through your account.
+            </span>
+          </div>
+        </div>
+
+        <p>
+          You should notify FAGA promptly if you suspect unauthorized access,
+          credential compromise or other security issues affecting your account.
+        </p>
+      </section>
+
+      <!-- 4 -->
+
+      <section class="legal-section" id="platform">
+        <h2>4. The FAGA Platform</h2>
+
+        <p>
+          FAGA is a technology platform that may connect customers with
+          logistics providers, riders, sellers, restaurants and independent
+          service providers.
+        </p>
+
+        <p>
+          Depending on the service, FAGA may facilitate ordering, booking,
+          communication, payment, tracking, marketplace transactions or other
+          platform functions.
+        </p>
+
+        <div class="notice">
+          FAGA may not directly provide every product, delivery or service
+          listed on the platform. In some cases, the relevant product or
+          service is supplied by an independent seller, restaurant, rider or
+          service provider.
+        </div>
+      </section>
+
+      <!-- 5 -->
+
+      <section class="legal-section" id="orders">
+        <h2>5. Orders and Bookings</h2>
+
+        <p>
+          When you place an order or booking through FAGA, you are submitting
+          a request for the selected product or service.
+        </p>
+
+        <p>
+          An order may be subject to availability, confirmation, pricing,
+          location, operating hours, capacity and other conditions.
+        </p>
+
+        <ul>
+          <li>Prices and availability may change before confirmation.</li>
+          <li>An order may be rejected or cancelled where appropriate.</li>
+          <li>Estimated delivery or completion times are estimates unless expressly stated otherwise.</li>
+          <li>You should provide accurate delivery, contact and service information.</li>
+        </ul>
+      </section>
+
+      <!-- 6 -->
+
+      <section class="legal-section" id="logistics">
+        <h2>6. Logistics and Delivery Services</h2>
+
+        <p>
+          FAGA may provide or facilitate delivery and logistics services
+          through riders, drivers, logistics partners or other providers.
+        </p>
+
+        <p>
+          Delivery estimates may be affected by traffic, weather, road
+          conditions, location, availability, operational conditions,
+          security situations and other circumstances outside reasonable
+          control.
+        </p>
+
+        <h3>Customer responsibilities</h3>
+
+        <ul class="check-list">
+          <li>Provide a valid pickup or delivery location.</li>
+          <li>Provide accurate contact information.</li>
+          <li>Ensure someone authorized can receive the delivery when required.</li>
+          <li>Package information must accurately describe goods where disclosure is required.</li>
+          <li>Do not request transportation of prohibited or unlawful items.</li>
+        </ul>
+
+        <h3>Restricted items</h3>
+
+        <p>
+          Certain goods may be prohibited or restricted from transportation.
+          FAGA may refuse, cancel or report a request where necessary to comply
+          with law, safety requirements or platform policies.
+        </p>
+      </section>
+
+      <!-- 7 -->
+
+      <section class="legal-section" id="marketplace">
+        <h2>7. Marketplace Transactions</h2>
+
+        <p>
+          FAGA may operate a marketplace where independent sellers list and
+          sell products to customers.
+        </p>
+
+        <p>
+          Sellers are generally responsible for the products they list,
+          including product descriptions, availability, pricing, quality,
+          lawful sale and fulfillment obligations applicable to them.
+        </p>
+
+        <p>
+          Customers should review product information before completing a
+          purchase.
+        </p>
+
+        <div class="notice">
+          Product images, descriptions, availability and specifications may be
+          supplied by sellers. FAGA should not be assumed to independently
+          manufacture or inspect every product listed on the marketplace.
+        </div>
+      </section>
+
+      <!-- 8 -->
+
+      <section class="legal-section" id="food">
+        <h2>8. Food Ordering and Delivery</h2>
+
+        <p>
+          FAGA may allow customers to order food and beverages from
+          participating restaurants and food businesses.
+        </p>
+
+        <p>
+          Restaurants and food businesses are responsible for the preparation,
+          ingredients, quality, packaging and regulatory compliance of their
+          food products, subject to the applicable arrangement with FAGA.
+        </p>
+
+        <h3>Food information</h3>
+
+        <p>
+          Customers should review menu information and communicate relevant
+          dietary or allergy requirements before ordering. Information provided
+          through the platform may not always reflect every ingredient,
+          preparation method or cross-contact risk.
+        </p>
+
+        <div class="notice warning">
+          If you have a serious food allergy or medical dietary requirement,
+          contact the restaurant directly and obtain appropriate confirmation
+          before consuming the product.
+        </div>
+      </section>
+
+      <!-- 9 -->
+
+      <section class="legal-section" id="services">
+        <h2>9. Services Marketplace</h2>
+
+        <p>
+          FAGA may connect customers with independent professionals and
+          service providers across categories such as home services,
+          professional services, technical services and other offerings.
+        </p>
+
+        <p>
+          Service providers are responsible for performing their services in
+          accordance with applicable laws, professional requirements,
+          qualifications and the terms of their engagement.
+        </p>
+
+        <p>
+          Where qualifications, licenses or verification are required, FAGA
+          may request supporting information before allowing a provider to
+          offer certain services.
+        </p>
+      </section>
+
+      <!-- 10 -->
+
+      <section class="legal-section" id="payments">
+        <h2>10. Payments</h2>
+
+        <p>
+          FAGA may support electronic payments, wallets, cards, bank
+          transfers or other payment methods through FAGA or third-party
+          payment providers.
+        </p>
+
+        <p>
+          By providing payment information, you represent that you are
+          authorized to use the selected payment method.
+        </p>
+
+        <p>
+          Payment processing may be subject to the terms, privacy policies
+          and security requirements of the applicable payment provider.
+        </p>
+
+        <h3>Payment authorization</h3>
+
+        <p>
+          You authorize FAGA and its payment partners, where applicable, to
+          process charges associated with orders, bookings, deliveries,
+          applicable fees, cancellations, refunds or other authorized
+          transactions.
+        </p>
+      </section>
+
+      <!-- 11 -->
+
+      <section class="legal-section" id="fees">
+        <h2>11. Fees, Pricing and Charges</h2>
+
+        <p>
+          Prices and fees may include product or service prices, delivery
+          charges, platform fees, service fees, taxes, tips and other
+          applicable charges.
+        </p>
+
+        <p>
+          Where required, applicable charges should be displayed before
+          completion of a transaction.
+        </p>
+
+        <p>
+          Pricing may vary according to location, demand, distance,
+          availability, seller pricing, restaurant pricing, service type and
+          other operational factors.
+        </p>
+      </section>
+
+      <!-- 12 -->
+
+      <section class="legal-section" id="users">
+        <h2>12. User Responsibilities</h2>
+
+        <p>
+          You agree to use FAGA responsibly and lawfully.
+        </p>
+
+        <ul class="check-list">
+          <li>Provide truthful and accurate information.</li>
+          <li>Keep account credentials secure.</li>
+          <li>Use the platform only for lawful purposes.</li>
+          <li>Treat riders, sellers, restaurants, service providers and other users respectfully.</li>
+          <li>Pay amounts properly due for completed transactions.</li>
+          <li>Follow applicable pickup, delivery and service instructions.</li>
+          <li>Report suspected fraud, abuse or safety concerns through appropriate channels.</li>
+        </ul>
+      </section>
+
+      <!-- 13 -->
+
+      <section class="legal-section" id="prohibited">
+        <h2>13. Prohibited Uses</h2>
+
+        <p>
+          You must not use FAGA to engage in unlawful, fraudulent, abusive or
+          harmful activities.
+        </p>
+
+        <ul>
+          <li>Fraud, scams or deceptive transactions.</li>
+          <li>Impersonating another person or organization.</li>
+          <li>Unauthorized access to accounts, systems or data.</li>
+          <li>Interfering with platform operations or security.</li>
+          <li>Uploading malicious code or harmful software.</li>
+          <li>Using FAGA to facilitate illegal activity.</li>
+          <li>Submitting false orders or intentionally abusing promotions.</li>
+          <li>Harassing, threatening or abusing other users or FAGA personnel.</li>
+          <li>Attempting to manipulate ratings, reviews or marketplace systems.</li>
+          <li>Using automated systems to scrape or overload the platform without authorization.</li>
+        </ul>
+      </section>
+
+      <!-- 14 -->
+
+      <section class="legal-section" id="content">
+        <h2>14. User Content</h2>
+
+        <p>
+          FAGA may allow users to submit reviews, ratings, images, comments,
+          messages, listings and other content.
+        </p>
+
+        <p>
+          You retain ownership of content you lawfully own. However, by
+          submitting content to FAGA, you grant FAGA the permissions necessary
+          to host, display, reproduce, process and distribute that content for
+          operating, improving and promoting the relevant platform features,
+          subject to applicable law and our Privacy Policy.
+        </p>
+
+        <p>
+          You are responsible for ensuring that submitted content does not
+          violate another person's rights or applicable law.
+        </p>
+      </section>
+
+      <!-- 15 -->
+
+      <section class="legal-section" id="third-party">
+        <h2>15. Third-Party Services</h2>
+
+        <p>
+          FAGA may integrate with or rely on third-party services including
+          payment processors, maps, communications providers, analytics
+          platforms, identity verification providers, hosting providers and
+          other technology partners.
+        </p>
+
+        <p>
+          Third-party services may be subject to separate terms and privacy
+          policies. FAGA is not responsible for third-party services to the
+          extent permitted by applicable law.
+        </p>
+      </section>
+
+      <!-- 16 -->
+
+      <section class="legal-section" id="cancellations">
+        <h2>16. Cancellations</h2>
+
+        <p>
+          Cancellation rules may differ depending on the type of transaction,
+          its status and the relevant seller, restaurant, rider or service
+          provider.
+        </p>
+
+        <p>
+          Cancellation fees or other charges may apply where permitted and
+          disclosed.
+        </p>
+
+        <p>
+          FAGA may cancel an order or booking where necessary due to
+          unavailability, safety concerns, suspected fraud, operational
+          conditions, legal requirements or other legitimate reasons.
+        </p>
+      </section>
+
+      <!-- 17 -->
+
+      <section class="legal-section" id="refunds">
+        <h2>17. Refunds and Credits</h2>
+
+        <p>
+          Refund eligibility depends on the nature of the transaction, the
+          reason for the request, applicable policies and applicable law.
+        </p>
+
+        <p>
+          Where a refund is approved, it may be returned through the original
+          payment method or another available method.
+        </p>
+
+        <p>
+          Wallet credits, promotional credits and other non-cash credits may
+          be subject to additional conditions.
+        </p>
+      </section>
+
+      <!-- 18 -->
+
+      <section class="legal-section" id="liability">
+        <h2>18. Disclaimer and Limitation of Liability</h2>
+
+        <p>
+          To the maximum extent permitted by applicable law, FAGA provides
+          the platform and its services on an "as available" and "as is"
+          basis, except where expressly stated otherwise.
+        </p>
+
+        <p>
+          FAGA does not guarantee that the platform will always be available,
+          uninterrupted, secure, error-free or completely accurate.
+        </p>
+
+        <p>
+          To the extent permitted by law, FAGA will not be responsible for
+          indirect, incidental, special, consequential or punitive damages
+          arising from your use of the platform.
+        </p>
+
+        <div class="notice warning">
+          Nothing in these Terms is intended to exclude or limit liability
+          that cannot lawfully be excluded or limited under applicable law.
+        </div>
+      </section>
+
+      <!-- 19 -->
+
+      <section class="legal-section" id="indemnity">
+        <h2>19. Indemnification</h2>
+
+        <p>
+          To the extent permitted by applicable law, you agree to defend,
+          indemnify and hold harmless FAGA and its applicable officers,
+          employees, affiliates, partners and representatives from claims,
+          losses, liabilities, damages, costs and expenses arising from:
+        </p>
+
+        <ul>
+          <li>Your violation of these Terms.</li>
+          <li>Your unlawful or unauthorized use of the platform.</li>
+          <li>Your violation of another person's rights.</li>
+          <li>Your content, products or services where applicable.</li>
+          <li>Your negligent or intentional misconduct.</li>
+        </ul>
+      </section>
+
+      <!-- 20 -->
+
+      <section class="legal-section" id="termination">
+        <h2>20. Suspension and Termination</h2>
+
+        <p>
+          FAGA may suspend, restrict or terminate access to an account or
+          service where reasonably necessary, including in cases of suspected
+          fraud, abuse, security threats, unlawful activity, violation of
+          these Terms or legal requirements.
+        </p>
+
+        <p>
+          You may stop using FAGA at any time and may request account closure
+          subject to outstanding transactions, legal obligations and applicable
+          retention requirements.
+        </p>
+      </section>
+
+      <!-- 21 -->
+
+      <section class="legal-section" id="changes">
+        <h2>21. Changes to These Terms</h2>
+
+        <p>
+          FAGA may update these Terms from time to time to reflect changes
+          to the platform, services, business operations, legal requirements
+          or security practices.
+        </p>
+
+        <p>
+          When material changes are made, FAGA may provide notice through the
+          platform, email or other appropriate communication channels.
+        </p>
+
+        <p>
+          Continued use of FAGA after the effective date of updated Terms
+          may constitute acceptance of the revised Terms, where permitted by
+          applicable law.
+        </p>
+      </section>
+
+      <!-- 22 -->
+
+      <section class="legal-section" id="law">
+        <h2>22. Governing Law and Disputes</h2>
+
+        <p>
+          These Terms should be governed by the laws specified by the final
+          FAGA legal entity and applicable operating jurisdiction.
+        </p>
+
+        <p>
+          Any dispute-resolution procedures, jurisdiction provisions,
+          arbitration requirements or consumer protection rights should be
+          finalized according to the laws applicable to FAGA and the user.
+        </p>
+
+        <div class="notice">
+          <strong>Implementation note:</strong>
+          Before publishing this page as a binding legal document, insert
+          FAGA's actual legal entity name, registered address, jurisdiction,
+          dispute-resolution process and any mandatory statutory notices.
+        </div>
+      </section>
+
+      <!-- 23 -->
+
+      <section class="legal-section" id="contact">
+        <h2>23. Contact FAGA</h2>
+
+        <p>
+          If you have questions about these Terms, a transaction or your use
+          of the FAGA platform, please contact FAGA through the official
+          support channels.
+        </p>
+
+        <ul>
+          <li><strong>Support:</strong> support@faga.com</li>
+          <li><strong>Legal:</strong> legal@faga.com</li>
+          <li><strong>Website:</strong> FAGA official website</li>
+        </ul>
+
+        <p>
+          Please replace these contact details with FAGA's official production
+          contact information before launch.
+        </p>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- ================= CTA ================= -->
+
+  <section class="container">
+    <div class="legal-cta">
+      <div>
+        <h2>Need help understanding something?</h2>
+        <p>
+          Our support team can help with account, order, delivery and platform questions.
+        </p>
+      </div>
+
+      <a href="help.html" class="btn btn-orange">
+        <i class="fa-solid fa-circle-question"></i>
+        Visit Help Center
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="index.html" class="brand">
+            <span class="brand-mark">
+              <i class="fa-solid fa-bolt"></i>
+            </span>
+            FAGA
+          </a>
+
+          <p>
+            One platform for logistics, marketplace shopping, food delivery
+            and trusted everyday services.
+          </p>
+
+          <div class="footer-social" style="margin-top:18px;">
+            <a href="#" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#" aria-label="X">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-title">Platform</div>
+          <div class="footer-links">
+            <a href="logistics.html">Logistics</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="food.html">Food</a>
+            <a href="services.html">Services</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-title">Company</div>
+          <div class="footer-links">
+            <a href="about.html">About FAGA</a>
+            <a href="contact.html">Contact</a>
+            <a href="help.html">Help Center</a>
+            <a href="../user portal/register.html">Become a Partner</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-title">Legal</div>
+          <div class="footer-links">
+            <a href="terms.html" style="color:var(--orange);">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="safety.html">Safety</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © <span id="year"></span> FAGA. All rights reserved.
+        </div>
+
+        <div>
+          Built for simpler everyday transactions.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <button id="backTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script>
+    /* ==========================================
+       FAGA TERMS PAGE
+       Frontend only — replace demo behavior
+       with production API/authentication.
+       
+       Suggested backend:
+       GET  /api/legal/terms
+       GET  /api/legal/terms/version
+       GET  /api/legal/documents
+       ========================================== */
+
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+
+      const icon = mobileToggle.querySelector("i");
+
+      if (mobileMenu.classList.contains("open")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+      } else {
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+
+    document.querySelectorAll("#mobileMenu a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+
+        const icon = mobileToggle.querySelector("i");
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      });
+    });
+
+    /* Back to top */
+
+    const backTop = document.getElementById("backTop");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 500) {
+        backTop.classList.add("show");
+      } else {
+        backTop.classList.remove("show");
+      }
+    });
+
+    backTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    /* Active table-of-contents section */
+
+    const sections = document.querySelectorAll(".legal-section");
+    const tocLinks = document.querySelectorAll(".toc a");
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(link => link.classList.remove("active"));
+
+            const active = document.querySelector(
+              '.toc a[href="#' + entry.target.id + '"]'
+            );
+
+            if (active) {
+              active.classList.add("active");
+            }
+          }
+        });
+      },
+      {
+        rootMargin: "-110px 0px -65% 0px",
+        threshold: 0
+      }
+    );
+
+    sections.forEach(section => observer.observe(section));
+
+    /* Close mobile menu if viewport becomes desktop */
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        mobileMenu.classList.remove("open");
+
+        const icon = mobileToggle.querySelector("i");
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+
+    /* Current year */
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>

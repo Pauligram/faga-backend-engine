@@ -1,0 +1,2908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Profile | FAGA Jobs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --navy:#071a33;
+      --navy2:#0d2748;
+      --orange:#f7931e;
+      --orange-dark:#dc7808;
+      --white:#fff;
+      --bg:#f5f7fa;
+      --text:#182334;
+      --muted:#6b7789;
+      --border:#e1e7ee;
+      --success:#16854b;
+      --success-bg:#eaf8f0;
+      --danger:#c62828;
+      --danger-bg:#fff0f0;
+      --shadow:0 12px 35px rgba(7,26,51,.08);
+      --radius:16px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    .container{
+      width:min(1180px,92%);
+      margin:auto;
+    }
+
+    /* NAVBAR */
+
+    .navbar{
+      background:var(--navy);
+      color:#fff;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 4px 18px rgba(0,0,0,.12);
+    }
+
+    .nav-inner{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:25px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:23px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .brand-mark{
+      width:38px;
+      height:38px;
+      border-radius:10px;
+      background:var(--orange);
+      color:var(--navy);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:22px;
+    }
+
+    .nav-links a{
+      color:#dbe4ef;
+      font-size:14px;
+    }
+
+    .nav-links a:hover{
+      color:var(--orange);
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .btn{
+      border:0;
+      border-radius:9px;
+      padding:11px 18px;
+      cursor:pointer;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s;
+    }
+
+    .btn-orange{
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    .btn-orange:hover{
+      background:#ff9f2e;
+      transform:translateY(-1px);
+    }
+
+    .btn-outline{
+      border:1px solid rgba(255,255,255,.3);
+      background:transparent;
+      color:#fff;
+    }
+
+    .mobile-toggle{
+      display:none;
+      background:none;
+      border:0;
+      color:#fff;
+      font-size:22px;
+      cursor:pointer;
+    }
+
+    /* HERO */
+
+    .hero{
+      background:linear-gradient(135deg,var(--navy),var(--navy2));
+      color:#fff;
+      padding:48px 0 58px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--orange);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:10px;
+    }
+
+    .hero h1{
+      font-size:clamp(30px,5vw,44px);
+      line-height:1.15;
+      margin-bottom:12px;
+    }
+
+    .hero p{
+      max-width:720px;
+      color:#d5dfeb;
+    }
+
+    /* STEPS */
+
+    .steps-wrap{
+      margin-top:-28px;
+      position:relative;
+      z-index:5;
+    }
+
+    .steps{
+      background:#fff;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      border-radius:15px;
+      padding:18px 24px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .step{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#929baa;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .step-number{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:#eef1f5;
+      color:#667286;
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .step.completed{
+      color:var(--success);
+    }
+
+    .step.completed .step-number{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .step.active{
+      color:var(--orange-dark);
+    }
+
+    .step.active .step-number{
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    /* MAIN */
+
+    .main{
+      padding:48px 0 75px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 340px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .card-header{
+      padding:23px 26px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .card-header h2{
+      font-size:20px;
+      margin-bottom:4px;
+    }
+
+    .card-header p{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .card-body{
+      padding:26px;
+    }
+
+    /* ACCESS STATUS */
+
+    .access-status{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:15px 17px;
+      background:var(--success-bg);
+      border:1px solid #cfe9d9;
+      border-radius:12px;
+      margin-bottom:25px;
+    }
+
+    .access-left{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+    }
+
+    .access-icon{
+      width:38px;
+      height:38px;
+      border-radius:10px;
+      background:#d5f1e0;
+      color:var(--success);
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .access-status strong{
+      display:block;
+      font-size:14px;
+      color:#155d39;
+    }
+
+    .access-status span{
+      display:block;
+      font-size:12px;
+      color:#527364;
+    }
+
+    .expiry{
+      font-size:12px;
+      color:#397056;
+      font-weight:700;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    /* FORM */
+
+    .section{
+      padding:24px 0;
+      border-bottom:1px solid var(--border);
+    }
+
+    .section:first-of-type{
+      padding-top:0;
+    }
+
+    .section:last-of-type{
+      border-bottom:0;
+      padding-bottom:0;
+    }
+
+    .section-title{
+      margin-bottom:16px;
+    }
+
+    .section-title h3{
+      font-size:16px;
+      margin-bottom:3px;
+    }
+
+    .section-title p{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+    label{
+      font-size:12px;
+      font-weight:700;
+      color:#4d596a;
+    }
+
+    label span{
+      color:var(--danger);
+    }
+
+    input,
+    select,
+    textarea{
+      width:100%;
+      border:1px solid #d7dee7;
+      border-radius:9px;
+      padding:11px 12px;
+      color:var(--text);
+      background:#fff;
+      outline:none;
+      transition:.2s;
+      font-size:13px;
+    }
+
+    textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(247,147,30,.1);
+    }
+
+    .help-text{
+      font-size:10px;
+      color:#8a95a4;
+    }
+
+    /* CV UPLOAD */
+
+    .upload-box{
+      border:2px dashed #cfd7e1;
+      border-radius:13px;
+      padding:28px;
+      text-align:center;
+      background:#fafbfd;
+      transition:.2s;
+      cursor:pointer;
+    }
+
+    .upload-box:hover,
+    .upload-box.dragover{
+      border-color:var(--orange);
+      background:#fffaf4;
+    }
+
+    .upload-icon{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      background:#fff0dd;
+      color:var(--orange-dark);
+      display:grid;
+      place-items:center;
+      margin:0 auto 12px;
+      font-size:20px;
+    }
+
+    .upload-box h4{
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .upload-box p{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
+    .upload-button{
+      display:inline-flex;
+      padding:9px 15px;
+      background:var(--navy);
+      color:#fff;
+      border-radius:8px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    #cvInput{
+      display:none;
+    }
+
+    .file-preview{
+      display:none;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:13px;
+      padding:12px 14px;
+      border:1px solid #d8e8df;
+      background:#f4fbf7;
+      border-radius:9px;
+    }
+
+    .file-preview.show{
+      display:flex;
+    }
+
+    .file-info{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .file-icon{
+      width:35px;
+      height:35px;
+      border-radius:8px;
+      background:#dff2e7;
+      color:var(--success);
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .file-name{
+      font-size:12px;
+      font-weight:700;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .file-size{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    .remove-file{
+      border:0;
+      background:none;
+      color:var(--danger);
+      cursor:pointer;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+      position:sticky;
+      top:98px;
+    }
+
+    .profile-card{
+      overflow:hidden;
+    }
+
+    .profile-top{
+      background:var(--navy);
+      color:#fff;
+      padding:23px;
+      text-align:center;
+    }
+
+    .avatar{
+      width:72px;
+      height:72px;
+      margin:0 auto 12px;
+      border-radius:50%;
+      background:var(--orange);
+      color:var(--navy);
+      display:grid;
+      place-items:center;
+      font-size:25px;
+      font-weight:800;
+    }
+
+    .profile-top h3{
+      font-size:17px;
+    }
+
+    .profile-top p{
+      color:#bcc9d8;
+      font-size:11px;
+      margin-top:3px;
+    }
+
+    .profile-body{
+      padding:21px;
+    }
+
+    .completion{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .progress{
+      height:8px;
+      background:#edf0f4;
+      border-radius:20px;
+      overflow:hidden;
+    }
+
+    .progress-bar{
+      height:100%;
+      width:20%;
+      background:var(--orange);
+      border-radius:20px;
+      transition:.3s;
+    }
+
+    .completion-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:7px;
+    }
+
+    .checklist{
+      list-style:none;
+      margin-top:20px;
+      display:grid;
+      gap:10px;
+    }
+
+    .checklist li{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+      font-size:12px;
+      color:#657184;
+    }
+
+    .checklist i{
+      margin-top:3px;
+      color:#b2bac5;
+    }
+
+    .checklist li.done{
+      color:#35684d;
+    }
+
+    .checklist li.done i{
+      color:var(--success);
+    }
+
+    .job-box{
+      margin-top:18px;
+      padding:15px;
+      border-radius:11px;
+      background:#f7f9fb;
+      border:1px solid var(--border);
+    }
+
+    .job-box small{
+      color:#8994a2;
+      font-size:10px;
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .job-box strong{
+      font-size:13px;
+      display:block;
+    }
+
+    .job-box span{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .sidebar-note{
+      margin-top:15px;
+      padding:14px;
+      border-radius:10px;
+      background:#fff8ed;
+      border:1px solid #f4dfbd;
+      color:#79572c;
+      font-size:10px;
+      line-height:1.6;
+    }
+
+    /* BUTTON AREA */
+
+    .form-actions{
+      margin-top:25px;
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      padding-top:20px;
+      border-top:1px solid var(--border);
+    }
+
+    .btn-secondary{
+      background:#eef1f5;
+      color:#4d596a;
+    }
+
+    .btn-secondary:hover{
+      background:#e4e8ed;
+    }
+
+    .btn-submit{
+      min-width:210px;
+      padding:13px 20px;
+    }
+
+    /* ALERT */
+
+    .alert{
+      display:none;
+      padding:13px 15px;
+      border-radius:9px;
+      margin-bottom:18px;
+      font-size:12px;
+    }
+
+    .alert.show{
+      display:block;
+    }
+
+    .alert.error{
+      background:var(--danger-bg);
+      border:1px solid #efcaca;
+      color:#8d2525;
+    }
+
+    .alert.success{
+      background:var(--success-bg);
+      border:1px solid #cfe9d9;
+      color:#246342;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:var(--navy);
+      color:#fff;
+      padding:50px 0 25px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:40px;
+    }
+
+    .footer-brand p{
+      color:#b9c7d8;
+      max-width:390px;
+      font-size:13px;
+      margin-top:13px;
+    }
+
+    footer h4{
+      margin-bottom:14px;
+      font-size:14px;
+    }
+
+    footer ul{
+      list-style:none;
+      display:grid;
+      gap:9px;
+    }
+
+    footer li a{
+      color:#b9c7d8;
+      font-size:13px;
+    }
+
+    footer li a:hover{
+      color:var(--orange);
+    }
+
+    .copyright{
+      border-top:1px solid rgba(255,255,255,.1);
+      margin-top:35px;
+      padding-top:20px;
+      color:#8fa0b4;
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1000px){
+
+      .nav-links{
+        display:none;
+      }
+
+      .mobile-toggle{
+        display:block;
+      }
+
+      .nav-links.open{
+        display:flex;
+        position:absolute;
+        top:74px;
+        left:0;
+        right:0;
+        background:var(--navy);
+        padding:20px;
+        flex-direction:column;
+        align-items:flex-start;
+        border-top:1px solid rgba(255,255,255,.08);
+      }
+
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:650px){
+
+      .nav-actions .btn-outline{
+        display:none;
+      }
+
+      .steps{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .field.full{
+        grid-column:auto;
+      }
+
+      .access-status{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .expiry{
+        text-align:left;
+        margin-left:49px;
+      }
+
+      .form-actions{
+        flex-direction:column-reverse;
+      }
+
+      .form-actions .btn{
+        width:100%;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .copyright{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--
+    ============================================================
+    FAGA JOB APPLICANT PROFILE
+    ============================================================
+
+    SECURITY:
+    This page must NOT trust the browser to determine whether
+    the applicant has paid.
+
+    Production should call:
+
+      GET /api/jobs/application-access/status
+
+    The backend should verify the authenticated applicant's
+    payment entitlement.
+
+    CV uploads should go through a protected backend endpoint,
+    for example:
+
+      POST /api/jobs/applicants/cv
+
+    The server must:
+    - authenticate the applicant
+    - verify active application access
+    - validate file type
+    - validate file size
+    - scan uploaded files
+    - generate safe storage names
+    - store files outside public web directories
+    - prevent executable file uploads
+    - enforce access controls
+    - log upload activity
+  -->
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">F</span>
+        FAGA
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/dashboard.html" class="btn btn-orange">My Account</a>
+
+        <button
+          class="mobile-toggle"
+          id="mobileToggle"
+          aria-label="Open menu"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+
+      <div class="eyebrow">
+        <i class="fa-solid fa-user"></i>
+        Applicant profile
+      </div>
+
+      <h1>Complete Your Applicant Profile</h1>
+
+      <p>
+        Add your personal information, education, experience, skills and CV
+        so you can apply for jobs through FAGA.
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- STEPS -->
+  <div class="steps-wrap">
+
+    <div class="container">
+
+      <div class="steps">
+
+        <div class="step completed">
+          <span class="step-number">
+            <i class="fa-solid fa-check"></i>
+          </span>
+          Registration
+        </div>
+
+        <div class="step completed">
+          <span class="step-number">
+            <i class="fa-solid fa-check"></i>
+          </span>
+          Payment
+        </div>
+
+        <div class="step active">
+          <span class="step-number">3</span>
+          Profile & CV
+        </div>
+
+        <div class="step">
+          <span class="step-number">4</span>
+          Apply
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="container">
+
+      <div class="layout">
+
+        <!-- PROFILE FORM -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Your Applicant Information</h2>
+            <p>
+              Keep your profile accurate and up to date to improve the
+              information employers see when reviewing applications.
+            </p>
+          </div>
+
+          <div class="card-body">
+
+            <div
+              class="alert error"
+              id="errorAlert"
+            ></div>
+
+            <div
+              class="alert success"
+              id="successAlert"
+            ></div>
+
+
+            <!-- ACCESS -->
+            <div class="access-status">
+
+              <div class="access-left">
+
+                <div class="access-icon">
+                  <i class="fa-solid fa-shield-check"></i>
+                </div>
+
+                <div>
+                  <strong>Application access is active</strong>
+
+                  <span>
+                    Your applicant platform access has been verified.
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="expiry">
+                Expires:
+                <span id="expiryDate">15 Sep 2027</span>
+              </div>
+
+            </div>
+
+
+            <!-- PERSONAL INFORMATION -->
+            <div class="section">
+
+              <div class="section-title">
+                <h3>Personal Information</h3>
+                <p>
+                  Provide the information employers may need when reviewing
+                  your application.
+                </p>
+              </div>
+
+              <div class="form-grid">
+
+                <div class="field">
+                  <label>
+                    First Name <span>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="firstName"
+                    placeholder="Enter first name"
+                    autocomplete="given-name"
+                    required
+                  >
+                </div>
+
+
+                <div class="field">
+                  <label>
+                    Last Name <span>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Enter last name"
+                    autocomplete="family-name"
+                    required
+                  >
+                </div>
+
+
+                <div class="field">
+                  <label>
+                    Email Address <span>*</span>
+                  </label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                  >
+                </div>
+
+
+                <div class="field">
+                  <label>
+                    Phone Number <span>*</span>
+                  </label>
+
+                  <input
+                    type="tel"
+                    id="phone"
+                    placeholder="0800 000 0000"
+                    autocomplete="tel"
+                    required
+                  >
+                </div>
+
+
+                <div class="field">
+                  <label>Date of Birth</label>
+
+                  <input
+                    type="date"
+                    id="dob"
+                    autocomplete="bday"
+                  >
+                </div>
+
+
+                <div class="field">
+                  <label>Gender</label>
+
+                  <select id="gender">
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="prefer_not_to_say">
+                      Prefer not to say
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- LOCATION -->
+            <div class="section">
+
+              <div class="section-title">
+                <h3>Location</h3>
+                <p>
+                  Tell employers where you are currently based.
+                </p>
+              </div>
+
+              <div class="form-grid">
+
+                <div class="field">
+                  <label>
+                    State <span>*</span>
+                  </label>
+
+                  <select id="state" required>
+
+                    <option value="">
+                      Select state
+                    </option>
+
+                    <option>Lagos</option>
+                    <option>Abuja (FCT)</option>
+                    <option>Rivers</option>
+                    <option>Oyo</option>
+                    <option>Kano</option>
+                    <option>Kaduna</option>
+                    <option>Delta</option>
+                    <option>Edo</option>
+                    <option>Enugu</option>
+                    <option>Ogun</option>
+                    <option>Anambra</option>
+                    <option>Other</option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    City <span>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="city"
+                    placeholder="Enter city"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label>
+                    Address
+                  </label>
+
+                  <input
+                    type="text"
+                    id="address"
+                    placeholder="Enter your area or address"
+                    autocomplete="street-address"
+                  >
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- EDUCATION -->
+            <div class="section">
+
+              <div class="section-title">
+                <h3>Education & Experience</h3>
+                <p>
+                  Help employers understand your professional background.
+                </p>
+              </div>
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Highest Education <span>*</span>
+                  </label>
+
+                  <select id="education" required>
+
+                    <option value="">
+                      Select education level
+                    </option>
+
+                    <option>Secondary School</option>
+                    <option>OND</option>
+                    <option>NCE</option>
+                    <option>HND</option>
+                    <option>Bachelor's Degree</option>
+                    <option>Master's Degree</option>
+                    <option>Doctorate</option>
+                    <option>Professional Qualification</option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Years of Experience <span>*</span>
+                  </label>
+
+                  <select id="experience" required>
+
+                    <option value="">
+                      Select experience
+                    </option>
+
+                    <option value="0">No experience</option>
+                    <option value="1">Less than 1 year</option>
+                    <option value="1-2">1–2 years</option>
+                    <option value="3-5">3–5 years</option>
+                    <option value="6-10">6–10 years</option>
+                    <option value="10+">10+ years</option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label>
+                    Current / Previous Job
+                  </label>
+
+                  <input
+                    type="text"
+                    id="currentJob"
+                    placeholder="e.g. Customer Support Officer"
+                  >
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label>
+                    Skills <span>*</span>
+                  </label>
+
+                  <textarea
+                    id="skills"
+                    placeholder="List your key skills, separated by commas"
+                    required
+                  ></textarea>
+
+                  <div class="help-text">
+                    Example: JavaScript, Customer Service, Excel,
+                    Graphic Design, Sales
+                  </div>
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label>
+                    Certifications
+                  </label>
+
+                  <textarea
+                    id="certifications"
+                    placeholder="List relevant certifications or professional qualifications"
+                  ></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- CV -->
+            <div class="section">
+
+              <div class="section-title">
+                <h3>Upload Your CV</h3>
+
+                <p>
+                  Upload your most recent CV. Accepted formats:
+                  PDF, DOC or DOCX.
+                </p>
+              </div>
+
+
+              <div
+                class="upload-box"
+                id="uploadBox"
+              >
+
+                <div class="upload-icon">
+                  <i class="fa-solid fa-file-arrow-up"></i>
+                </div>
+
+                <h4>
+                  Drag & drop your CV here
+                </h4>
+
+                <p>
+                  Maximum file size: 5 MB
+                </p>
+
+                <label
+                  for="cvInput"
+                  class="upload-button"
+                >
+                  Choose CV
+                </label>
+
+                <input
+                  type="file"
+                  id="cvInput"
+                  accept=".pdf,.doc,.docx"
+                >
+
+              </div>
+
+
+              <div
+                class="file-preview"
+                id="filePreview"
+              >
+
+                <div class="file-info">
+
+                  <div class="file-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                  </div>
+
+                  <div>
+                    <div
+                      class="file-name"
+                      id="fileName"
+                    ></div>
+
+                    <div
+                      class="file-size"
+                      id="fileSize"
+                    ></div>
+                  </div>
+
+                </div>
+
+                <button
+                  type="button"
+                  class="remove-file"
+                  id="removeFile"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- BIO -->
+            <div class="section">
+
+              <div class="section-title">
+                <h3>Professional Summary</h3>
+
+                <p>
+                  A short summary can help employers quickly understand
+                  your background and career interests.
+                </p>
+              </div>
+
+              <div class="field">
+
+                <label>
+                  About You
+                </label>
+
+                <textarea
+                  id="summary"
+                  maxlength="1000"
+                  placeholder="Write a short professional summary..."
+                  style="min-height:140px"
+                ></textarea>
+
+                <div
+                  class="help-text"
+                  id="summaryCount"
+                >
+                  0 / 1000 characters
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+            <div class="form-actions">
+
+              <a
+                href="jobs.html"
+                class="btn btn-secondary"
+              >
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Jobs
+              </a>
+
+              <button
+                type="button"
+                class="btn btn-orange btn-submit"
+                id="saveProfile"
+              >
+                <i class="fa-solid fa-floppy-disk"></i>
+                Save Profile & Continue
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+          <div class="card profile-card">
+
+            <div class="profile-top">
+
+              <div
+                class="avatar"
+                id="avatar"
+              >
+                A
+              </div>
+
+              <h3 id="profileName">
+                Applicant Profile
+              </h3>
+
+              <p>
+                Job applicant
+              </p>
+
+            </div>
+
+
+            <div class="profile-body">
+
+              <div class="completion">
+
+                <span>
+                  Profile completion
+                </span>
+
+                <span id="completionPercent">
+                  20%
+                </span>
+
+              </div>
+
+              <div class="progress">
+
+                <div
+                  class="progress-bar"
+                  id="progressBar"
+                ></div>
+
+              </div>
+
+              <div class="completion-note">
+                Complete your profile before submitting applications.
+              </div>
+
+
+              <ul class="checklist">
+
+                <li id="checkPersonal">
+                  <i class="fa-regular fa-circle"></i>
+                  Personal information
+                </li>
+
+                <li id="checkLocation">
+                  <i class="fa-regular fa-circle"></i>
+                  Location
+                </li>
+
+                <li id="checkEducation">
+                  <i class="fa-regular fa-circle"></i>
+                  Education & experience
+                </li>
+
+                <li id="checkSkills">
+                  <i class="fa-regular fa-circle"></i>
+                  Skills
+                </li>
+
+                <li id="checkCV">
+                  <i class="fa-regular fa-circle"></i>
+                  CV uploaded
+                </li>
+
+                <li id="checkSummary">
+                  <i class="fa-regular fa-circle"></i>
+                  Professional summary
+                </li>
+
+              </ul>
+
+
+              <div class="job-box">
+
+                <small>
+                  APPLYING FOR
+                </small>
+
+                <strong id="sidebarJob">
+                  Frontend Developer
+                </strong>
+
+                <span id="sidebarCompany">
+                  FAGA Technologies
+                </span>
+
+              </div>
+
+
+              <div class="sidebar-note">
+
+                <strong>
+                  <i class="fa-solid fa-circle-info"></i>
+                  Important
+                </strong>
+
+                <br>
+
+                Completing your profile does not guarantee an interview,
+                shortlisting or employment. Employers make their own
+                recruitment decisions.
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+
+          <div class="brand">
+            <span class="brand-mark">F</span>
+            FAGA
+          </div>
+
+          <p>
+            Connecting people, businesses and opportunities through
+            logistics, services, marketplace, food and career solutions.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h4>Platform</h4>
+
+          <ul>
+            <li><a href="logistics.html">Logistics</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+          </ul>
+
+        </div>
+
+
+        <div>
+
+          <h4>Company</h4>
+
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="safety.html">Safety</a></li>
+          </ul>
+
+        </div>
+
+
+        <div>
+
+          <h4>Legal</h4>
+
+          <ul>
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="../user portal/login.html">Login</a></li>
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <div class="copyright">
+
+        <span>
+          © 2026 FAGA. All rights reserved.
+        </span>
+
+        <span>
+          Career opportunities are subject to employer decisions.
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+    /*
+      ============================================================
+      FAGA JOB PROFILE JAVASCRIPT
+      ============================================================
+
+      PRODUCTION API FLOW
+
+      1. Verify authenticated applicant:
+
+         GET /api/jobs/applicants/me
+
+      2. Verify application access:
+
+         GET /api/jobs/application-access/status
+
+      3. Load profile:
+
+         GET /api/jobs/applicants/profile
+
+      4. Save profile:
+
+         PUT /api/jobs/applicants/profile
+
+      5. Upload CV:
+
+         POST /api/jobs/applicants/cv
+
+      6. Submit application from:
+
+         job-details.html
+
+         or:
+
+         job-applications.html
+
+      SECURITY
+
+      The browser must NOT determine whether the applicant has
+      paid.
+
+      Backend must independently verify:
+
+        applicant authenticated
+        application access active
+        access not expired
+        applicant owns profile
+        applicant owns uploaded CV
+        uploaded file is valid
+
+      CV files should be stored privately and served through
+      an authorized download endpoint.
+    */
+
+
+    /* ----------------------------------------------------------
+       DEMO JOB DATA
+    ---------------------------------------------------------- */
+
+    const jobs = {
+
+      "JOB-1001":{
+        title:"Frontend Developer",
+        company:"FAGA Technologies"
+      },
+
+      "JOB-1002":{
+        title:"Delivery Rider",
+        company:"FAGA Logistics"
+      },
+
+      "JOB-1003":{
+        title:"Customer Support Officer",
+        company:"FAGA"
+      },
+
+      "JOB-1004":{
+        title:"Restaurant Operations Assistant",
+        company:"FAGA Food"
+      }
+
+    };
+
+
+    /* ----------------------------------------------------------
+       QUERY PARAMETERS
+    ---------------------------------------------------------- */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const jobId =
+      params.get("job") ||
+      sessionStorage.getItem("fagaJobId") ||
+      "JOB-1001";
+
+
+    const job =
+      jobs[jobId] ||
+      jobs["JOB-1001"];
+
+
+    document.getElementById(
+      "sidebarJob"
+    ).textContent =
+      job.title;
+
+
+    document.getElementById(
+      "sidebarCompany"
+    ).textContent =
+      job.company;
+
+
+    /* ----------------------------------------------------------
+       DEMO PAYMENT ACCESS
+    ----------------------------------------------------------
+
+       In production this must come from:
+
+       GET /api/jobs/application-access/status
+
+       Never trust sessionStorage for payment verification.
+    ---------------------------------------------------------- */
+
+    let accessActive = true;
+
+    let accessExpiry =
+      new Date(
+        Date.now() +
+        365 * 24 * 60 * 60 * 1000
+      );
+
+
+    function formatDate(date){
+
+      return date.toLocaleDateString(
+        "en-NG",
+        {
+          day:"2-digit",
+          month:"short",
+          year:"numeric"
+        }
+      );
+
+    }
+
+
+    document.getElementById(
+      "expiryDate"
+    ).textContent =
+      formatDate(accessExpiry);
+
+
+    /* ----------------------------------------------------------
+       FORM ELEMENTS
+    ---------------------------------------------------------- */
+
+    const fields = {
+
+      firstName:
+        document.getElementById("firstName"),
+
+      lastName:
+        document.getElementById("lastName"),
+
+      email:
+        document.getElementById("email"),
+
+      phone:
+        document.getElementById("phone"),
+
+      dob:
+        document.getElementById("dob"),
+
+      gender:
+        document.getElementById("gender"),
+
+      state:
+        document.getElementById("state"),
+
+      city:
+        document.getElementById("city"),
+
+      address:
+        document.getElementById("address"),
+
+      education:
+        document.getElementById("education"),
+
+      experience:
+        document.getElementById("experience"),
+
+      currentJob:
+        document.getElementById("currentJob"),
+
+      skills:
+        document.getElementById("skills"),
+
+      certifications:
+        document.getElementById("certifications"),
+
+      summary:
+        document.getElementById("summary")
+
+    };
+
+
+    /* ----------------------------------------------------------
+       CV
+    ---------------------------------------------------------- */
+
+    let selectedCV = null;
+
+
+    const cvInput =
+      document.getElementById("cvInput");
+
+    const uploadBox =
+      document.getElementById("uploadBox");
+
+    const filePreview =
+      document.getElementById("filePreview");
+
+    const fileName =
+      document.getElementById("fileName");
+
+    const fileSize =
+      document.getElementById("fileSize");
+
+
+    const MAX_CV_SIZE =
+      5 * 1024 * 1024;
+
+
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
+
+    function handleCV(file){
+
+      if(!file){
+        return;
+      }
+
+
+      if(file.size > MAX_CV_SIZE){
+
+        showError(
+          "Your CV is larger than 5 MB. Please choose a smaller file."
+        );
+
+        cvInput.value = "";
+
+        return;
+      }
+
+
+      const extension =
+        file.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+
+      const allowedExtensions = [
+        "pdf",
+        "doc",
+        "docx"
+      ];
+
+
+      if(
+        !allowedExtensions.includes(
+          extension
+        )
+      ){
+
+        showError(
+          "Please upload your CV as a PDF, DOC or DOCX file."
+        );
+
+        cvInput.value = "";
+
+        return;
+      }
+
+
+      selectedCV = file;
+
+
+      fileName.textContent =
+        file.name;
+
+
+      fileSize.textContent =
+        formatFileSize(file.size);
+
+
+      filePreview.classList.add(
+        "show"
+      );
+
+
+      updateCompletion();
+
+    }
+
+
+    cvInput.addEventListener(
+      "change",
+      function(){
+
+        handleCV(
+          this.files[0]
+        );
+
+      }
+    );
+
+
+    uploadBox.addEventListener(
+      "dragover",
+      function(event){
+
+        event.preventDefault();
+
+        uploadBox.classList.add(
+          "dragover"
+        );
+
+      }
+    );
+
+
+    uploadBox.addEventListener(
+      "dragleave",
+      function(){
+
+        uploadBox.classList.remove(
+          "dragover"
+        );
+
+      }
+    );
+
+
+    uploadBox.addEventListener(
+      "drop",
+      function(event){
+
+        event.preventDefault();
+
+        uploadBox.classList.remove(
+          "dragover"
+        );
+
+        const file =
+          event.dataTransfer.files[0];
+
+        handleCV(file);
+
+      }
+    );
+
+
+    document
+      .getElementById("removeFile")
+      .addEventListener(
+        "click",
+        function(){
+
+          selectedCV = null;
+
+          cvInput.value = "";
+
+          filePreview.classList.remove(
+            "show"
+          );
+
+          updateCompletion();
+
+        }
+      );
+
+
+    function formatFileSize(bytes){
+
+      if(bytes < 1024){
+
+        return bytes + " B";
+
+      }
+
+      if(bytes < 1024 * 1024){
+
+        return (
+          (bytes / 1024).toFixed(1) +
+          " KB"
+        );
+
+      }
+
+      return (
+        (bytes / (1024 * 1024)).toFixed(1) +
+        " MB"
+      );
+
+    }
+
+
+    /* ----------------------------------------------------------
+       SUMMARY COUNTER
+    ---------------------------------------------------------- */
+
+    fields.summary.addEventListener(
+      "input",
+      function(){
+
+        document.getElementById(
+          "summaryCount"
+        ).textContent =
+          this.value.length +
+          " / 1000 characters";
+
+        updateCompletion();
+
+      }
+    );
+
+
+    /* ----------------------------------------------------------
+       LIVE COMPLETION
+    ---------------------------------------------------------- */
+
+    Object.values(fields)
+      .forEach(field => {
+
+        field.addEventListener(
+          "input",
+          updateCompletion
+        );
+
+        field.addEventListener(
+          "change",
+          updateCompletion
+        );
+
+      });
+
+
+    function setChecklist(
+      id,
+      completed
+    ){
+
+      const item =
+        document.getElementById(id);
+
+      const icon =
+        item.querySelector("i");
+
+
+      if(completed){
+
+        item.classList.add("done");
+
+        icon.className =
+          "fa-solid fa-circle-check";
+
+      }else{
+
+        item.classList.remove("done");
+
+        icon.className =
+          "fa-regular fa-circle";
+
+      }
+
+    }
+
+
+    function updateCompletion(){
+
+      const personal =
+        fields.firstName.value.trim() &&
+        fields.lastName.value.trim() &&
+        fields.email.value.trim() &&
+        fields.phone.value.trim();
+
+
+      const location =
+        fields.state.value &&
+        fields.city.value.trim();
+
+
+      const education =
+        fields.education.value &&
+        fields.experience.value;
+
+
+      const skills =
+        fields.skills.value.trim();
+
+
+      const summary =
+        fields.summary.value.trim();
+
+
+      setChecklist(
+        "checkPersonal",
+        !!personal
+      );
+
+
+      setChecklist(
+        "checkLocation",
+        !!location
+      );
+
+
+      setChecklist(
+        "checkEducation",
+        !!education
+      );
+
+
+      setChecklist(
+        "checkSkills",
+        !!skills
+      );
+
+
+      setChecklist(
+        "checkCV",
+        !!selectedCV
+      );
+
+
+      setChecklist(
+        "checkSummary",
+        !!summary
+      );
+
+
+      const checks = [
+
+        personal,
+        location,
+        education,
+        skills,
+        selectedCV,
+        summary
+
+      ];
+
+
+      const completed =
+        checks.filter(Boolean).length;
+
+
+      const percent =
+        Math.round(
+          (completed / checks.length) *
+          100
+        );
+
+
+      document.getElementById(
+        "completionPercent"
+      ).textContent =
+        percent + "%";
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        percent + "%";
+
+
+      if(
+        fields.firstName.value ||
+        fields.lastName.value
+      ){
+
+        const first =
+          fields.firstName.value
+            .trim();
+
+        const last =
+          fields.lastName.value
+            .trim();
+
+        const initials =
+          (
+            (first[0] || "") +
+            (last[0] || "")
+          ).toUpperCase();
+
+
+        document.getElementById(
+          "avatar"
+        ).textContent =
+          initials || "A";
+
+
+        document.getElementById(
+          "profileName"
+        ).textContent =
+          [first,last]
+            .filter(Boolean)
+            .join(" ") ||
+          "Applicant Profile";
+
+      }
+
+    }
+
+
+    /* ----------------------------------------------------------
+       ALERTS
+    ---------------------------------------------------------- */
+
+    function showError(message){
+
+      const alert =
+        document.getElementById(
+          "errorAlert"
+        );
+
+      alert.textContent =
+        message;
+
+      alert.classList.add(
+        "show"
+      );
+
+      document.getElementById(
+        "successAlert"
+      ).classList.remove(
+        "show"
+      );
+
+
+      window.scrollTo({
+        top:alert.offsetTop - 110,
+        behavior:"smooth"
+      });
+
+    }
+
+
+    function showSuccess(message){
+
+      const alert =
+        document.getElementById(
+          "successAlert"
+        );
+
+      alert.textContent =
+        message;
+
+      alert.classList.add(
+        "show"
+      );
+
+      document.getElementById(
+        "errorAlert"
+      ).classList.remove(
+        "show"
+      );
+
+    }
+
+
+    /* ----------------------------------------------------------
+       VALIDATION
+    ---------------------------------------------------------- */
+
+    function validateProfile(){
+
+      if(!accessActive){
+
+        showError(
+          "Your application access is not active. Please activate a plan before continuing."
+        );
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.firstName.value.trim()
+      ){
+
+        showError(
+          "Please enter your first name."
+        );
+
+        fields.firstName.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.lastName.value.trim()
+      ){
+
+        showError(
+          "Please enter your last name."
+        );
+
+        fields.lastName.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.email.value.trim()
+      ){
+
+        showError(
+          "Please enter your email address."
+        );
+
+        fields.email.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.phone.value.trim()
+      ){
+
+        showError(
+          "Please enter your phone number."
+        );
+
+        fields.phone.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.state.value
+      ){
+
+        showError(
+          "Please select your state."
+        );
+
+        fields.state.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.city.value.trim()
+      ){
+
+        showError(
+          "Please enter your city."
+        );
+
+        fields.city.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.education.value
+      ){
+
+        showError(
+          "Please select your highest education level."
+        );
+
+        fields.education.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.experience.value
+      ){
+
+        showError(
+          "Please select your years of experience."
+        );
+
+        fields.experience.focus();
+
+        return false;
+
+      }
+
+
+      if(
+        !fields.skills.value.trim()
+      ){
+
+        showError(
+          "Please enter your key skills."
+        );
+
+        fields.skills.focus();
+
+        return false;
+
+      }
+
+
+      if(!selectedCV){
+
+        showError(
+          "Please upload your CV before continuing."
+        );
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* ----------------------------------------------------------
+       SAVE PROFILE
+    ---------------------------------------------------------- */
+
+    document
+      .getElementById("saveProfile")
+      .addEventListener(
+        "click",
+        async function(){
+
+          if(!validateProfile()){
+
+            return;
+
+          }
+
+
+          const button =
+            this;
+
+
+          button.disabled =
+            true;
+
+
+          button.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+
+          /*
+            ======================================================
+            PRODUCTION API
+
+            First save text profile:
+
+            PUT /api/jobs/applicants/profile
+
+            Example JSON:
+
+            {
+              "first_name": "...",
+              "last_name": "...",
+              "email": "...",
+              "phone": "...",
+              "dob": "...",
+              "gender": "...",
+              "state": "...",
+              "city": "...",
+              "address": "...",
+              "education": "...",
+              "experience": "...",
+              "current_job": "...",
+              "skills": "...",
+              "certifications": "...",
+              "summary": "..."
+            }
+
+            Then upload CV:
+
+            POST /api/jobs/applicants/cv
+
+            Content-Type:
+            multipart/form-data
+
+            Field:
+            cv
+
+            The server must verify that the applicant's
+            application-access entitlement is active before
+            accepting the upload.
+
+            ======================================================
+          */
+
+
+          try{
+
+            /*
+              DEMO ONLY
+
+              Simulate backend processing.
+            */
+
+            await new Promise(
+              resolve =>
+                setTimeout(
+                  resolve,
+                  1200
+                )
+            );
+
+
+            /*
+              Store only non-sensitive demo state.
+
+              Production should NOT rely on this.
+            */
+
+            sessionStorage.setItem(
+              "fagaProfileComplete",
+              "true"
+            );
+
+
+            sessionStorage.setItem(
+              "fagaApplicantName",
+              (
+                fields.firstName.value +
+                " " +
+                fields.lastName.value
+              ).trim()
+            );
+
+
+            showSuccess(
+              "Your profile has been saved successfully. You can now apply for jobs."
+            );
+
+
+            button.innerHTML =
+              '<i class="fa-solid fa-check"></i> Profile Saved';
+
+
+            /*
+              Give the user a moment to see the confirmation,
+              then continue to the applications area.
+            */
+
+            setTimeout(
+              function(){
+
+                window.location.href="job-applications.html";
+
+              },
+              1200
+            );
+
+
+          }catch(error){
+
+            console.error(error);
+
+            button.disabled =
+              false;
+
+            button.innerHTML =
+              '<i class="fa-solid fa-floppy-disk"></i> Save Profile & Continue';
+
+
+            showError(
+              "We could not save your profile. Please try again."
+            );
+
+          }
+
+        }
+      );
+
+
+    /* ----------------------------------------------------------
+       LOAD DEMO PROFILE
+    ---------------------------------------------------------- */
+
+    /*
+      In production:
+
+      fetch("/api/jobs/applicants/me", {
+        credentials:"include"
+      })
+
+      Then populate the fields.
+
+      The backend should return only information the authenticated
+      applicant is authorized to access.
+    */
+
+
+    function loadDemoProfile(){
+
+      /*
+        Intentionally leave most fields blank so the applicant
+        completes the profile.
+
+        Example prefill can be enabled when a real authenticated
+        account is connected.
+      */
+
+      const savedName =
+        sessionStorage.getItem(
+          "fagaApplicantName"
+        );
+
+
+      if(savedName){
+
+        const parts =
+          savedName.split(" ");
+
+
+        fields.firstName.value =
+          parts.shift() || "";
+
+
+        fields.lastName.value =
+          parts.join(" ");
+
+      }
+
+
+      updateCompletion();
+
+    }
+
+
+    loadDemoProfile();
+
+
+    /* ----------------------------------------------------------
+       MOBILE NAVIGATION
+    ---------------------------------------------------------- */
+
+    document
+      .getElementById("mobileToggle")
+      .addEventListener(
+        "click",
+        function(){
+
+          document
+            .getElementById("navLinks")
+            .classList.toggle(
+              "open"
+            );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll("#navLinks a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          function(){
+
+            document
+              .getElementById("navLinks")
+              .classList.remove(
+                "open"
+              );
+
+          }
+        );
+
+      });
+
+
+    /* ----------------------------------------------------------
+       PRODUCTION CHECKLIST
+    ----------------------------------------------------------
+
+    Backend endpoints:
+
+      GET
+      /api/jobs/applicants/me
+
+      GET
+      /api/jobs/application-access/status
+
+      GET
+      /api/jobs/applicants/profile
+
+      PUT
+      /api/jobs/applicants/profile
+
+      POST
+      /api/jobs/applicants/cv
+
+      DELETE
+      /api/jobs/applicants/cv
+
+      GET
+      /api/jobs/applicants/cv/status
+
+    Applicant profile database fields:
+
+      applicant_id
+      user_id
+      first_name
+      last_name
+      email
+      phone
+      dob
+      gender
+      state
+      city
+      address
+      education
+      experience
+      current_job
+      skills
+      certifications
+      professional_summary
+      cv_file_id
+      profile_completion
+      created_at
+      updated_at
+
+    CV storage:
+
+      DO NOT store CV files as:
+
+        /public/uploads/cv/name.pdf
+
+      Prefer private object/file storage.
+
+      Example logical storage:
+
+        applicants/{applicant_id}/cv/{file_id}
+
+      Serve through an authenticated endpoint:
+
+        GET /api/jobs/applicants/cv
+
+    Security:
+
+      - Authentication required
+      - Server-side authorization
+      - Active payment entitlement required
+      - File MIME validation
+      - File extension validation
+      - File size limits
+      - Malware scanning
+      - Random storage filenames
+      - Private storage
+      - Audit logging
+      - CSRF protection where applicable
+      - Rate limiting
+      - Input sanitization
+      - Output encoding
+      - Do not expose internal file paths
+      - Do not expose other applicants' information
+
+    ---------------------------------------------------------- */
+
+  </script>
+
+</body>
+</html>

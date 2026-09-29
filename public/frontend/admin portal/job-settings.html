@@ -1,0 +1,3762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Settings | FAGA Admin</title>
+
+  <style>
+    :root{
+      --navy:#071a33;
+      --navy-2:#0b2343;
+      --navy-3:#102d52;
+      --orange:#f7931e;
+      --orange-dark:#df7f0b;
+      --white:#ffffff;
+      --bg:#f4f7fb;
+      --border:#e4e9f0;
+      --text:#172033;
+      --muted:#6d7788;
+      --success:#16834b;
+      --success-bg:#e9f8f0;
+      --danger:#d33c3c;
+      --danger-bg:#fff0f0;
+      --warning:#a66b00;
+      --warning-bg:#fff7df;
+      --info:#2467c8;
+      --info-bg:#edf5ff;
+      --shadow:0 10px 30px rgba(7,26,51,.07);
+      --radius:14px;
+      --sidebar-width:250px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================== */
+
+    .topbar{
+      height:68px;
+      background:var(--navy);
+      color:#fff;
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      box-shadow:0 3px 15px rgba(0,0,0,.15);
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .menu-toggle{
+      width:40px;
+      height:40px;
+      border:0;
+      background:transparent;
+      color:#fff;
+      border-radius:9px;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+    }
+
+    .menu-toggle:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      font-size:21px;
+      letter-spacing:.2px;
+    }
+
+    .brand-mark{
+      width:35px;
+      height:35px;
+      background:var(--orange);
+      border-radius:9px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--navy);
+      font-weight:900;
+      font-size:17px;
+    }
+
+    .admin-label{
+      font-size:12px;
+      color:#aebbd0;
+      padding-left:14px;
+      border-left:1px solid rgba(255,255,255,.15);
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .top-icon{
+      width:40px;
+      height:40px;
+      border:0;
+      background:transparent;
+      color:#d9e2ef;
+      border-radius:9px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:17px;
+      position:relative;
+    }
+
+    .top-icon:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .notification-dot{
+      position:absolute;
+      top:7px;
+      right:7px;
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--orange);
+      border:2px solid var(--navy);
+    }
+
+    .admin-profile{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-left:10px;
+      margin-left:4px;
+      border-left:1px solid rgba(255,255,255,.12);
+    }
+
+    .avatar{
+      width:37px;
+      height:37px;
+      border-radius:50%;
+      background:var(--orange);
+      color:var(--navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .admin-info strong{
+      display:block;
+      font-size:13px;
+    }
+
+    .admin-info span{
+      display:block;
+      font-size:11px;
+      color:#aebbd0;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    .sidebar{
+      position:fixed;
+      top:68px;
+      left:0;
+      bottom:0;
+      width:var(--sidebar-width);
+      background:var(--navy);
+      color:#dce5f1;
+      padding:18px 12px;
+      overflow-y:auto;
+      z-index:900;
+      transition:transform .25s ease;
+    }
+
+    .sidebar-section{
+      margin-bottom:20px;
+    }
+
+    .sidebar-title{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:#73849c;
+      padding:0 12px 8px;
+      font-weight:700;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:43px;
+      padding:10px 12px;
+      border-radius:9px;
+      color:#bfcbdc;
+      margin-bottom:3px;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .nav-link:hover{
+      color:#fff;
+      background:rgba(255,255,255,.07);
+    }
+
+    .nav-link.active{
+      background:var(--orange);
+      color:var(--navy);
+      font-weight:800;
+    }
+
+    .nav-icon{
+      width:21px;
+      text-align:center;
+      font-size:15px;
+      flex:none;
+    }
+
+    .nav-badge{
+      margin-left:auto;
+      font-size:10px;
+      padding:2px 7px;
+      border-radius:20px;
+      background:rgba(255,255,255,.1);
+      color:#c8d4e5;
+    }
+
+    .nav-link.active .nav-badge{
+      background:rgba(7,26,51,.15);
+      color:var(--navy);
+    }
+
+    /* =========================
+       MAIN
+    ========================== */
+
+    .main{
+      margin-left:var(--sidebar-width);
+      padding:92px 28px 40px;
+      min-height:100vh;
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:25px;
+    }
+
+    .breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:7px;
+    }
+
+    .breadcrumb span:last-child{
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .page-title{
+      font-size:27px;
+      line-height:1.2;
+      margin-bottom:5px;
+      color:var(--navy);
+    }
+
+    .page-description{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .header-actions{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      border-radius:9px;
+      padding:10px 15px;
+      min-height:40px;
+      font-size:12px;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      border-color:#cbd4e1;
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      background:var(--orange);
+      border-color:var(--orange);
+      color:var(--navy);
+    }
+
+    .btn-primary:hover{
+      background:var(--orange-dark);
+      border-color:var(--orange-dark);
+    }
+
+    .btn-dark{
+      background:var(--navy);
+      border-color:var(--navy);
+      color:#fff;
+    }
+
+    .btn-danger{
+      color:var(--danger);
+      border-color:#f0cccc;
+      background:#fff;
+    }
+
+    /* =========================
+       SUMMARY
+    ========================== */
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:15px;
+      margin-bottom:22px;
+    }
+
+    .summary-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:17px;
+      box-shadow:var(--shadow);
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .summary-icon{
+      width:43px;
+      height:43px;
+      border-radius:11px;
+      background:#f0f4f9;
+      color:var(--navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex:none;
+    }
+
+    .summary-icon.orange{
+      background:#fff1df;
+      color:var(--orange-dark);
+    }
+
+    .summary-icon.green{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .summary-icon.blue{
+      background:var(--info-bg);
+      color:var(--info);
+    }
+
+    .summary-label{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:2px;
+    }
+
+    .summary-value{
+      font-size:17px;
+      font-weight:800;
+      color:var(--navy);
+    }
+
+    .summary-sub{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    /* =========================
+       SETTINGS LAYOUT
+    ========================== */
+
+    .settings-layout{
+      display:grid;
+      grid-template-columns:220px minmax(0,1fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .settings-nav{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:9px;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:88px;
+    }
+
+    .settings-nav-title{
+      padding:10px 10px 9px;
+      color:var(--muted);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-weight:800;
+    }
+
+    .settings-tab{
+      width:100%;
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      text-align:left;
+      border-radius:8px;
+      padding:10px;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:2px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .settings-tab:hover{
+      background:#f5f7fa;
+      color:var(--navy);
+    }
+
+    .settings-tab.active{
+      background:#fff1df;
+      color:#a95f00;
+    }
+
+    .settings-tab .tab-count{
+      margin-left:auto;
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    .settings-content{
+      min-width:0;
+    }
+
+    .settings-section{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+      overflow:hidden;
+      scroll-margin-top:88px;
+    }
+
+    .settings-section.hidden{
+      display:none;
+    }
+
+    .section-header{
+      padding:18px 20px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .section-heading{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .section-icon{
+      width:38px;
+      height:38px;
+      border-radius:9px;
+      background:#f0f4f9;
+      color:var(--navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+    }
+
+    .section-title{
+      color:var(--navy);
+      font-size:15px;
+      font-weight:800;
+      margin-bottom:2px;
+    }
+
+    .section-description{
+      color:var(--muted);
+      font-size:11px;
+      max-width:700px;
+    }
+
+    .section-body{
+      padding:20px;
+    }
+
+    /* =========================
+       FORM
+    ========================== */
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:17px;
+    }
+
+    .form-grid.three{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+    .form-group{
+      min-width:0;
+    }
+
+    .form-group.full{
+      grid-column:1/-1;
+    }
+
+    .label{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+      font-size:11px;
+      font-weight:800;
+      color:#354054;
+    }
+
+    .label-note{
+      color:#9aa4b3;
+      font-weight:500;
+      font-size:10px;
+    }
+
+    input,
+    select,
+    textarea{
+      width:100%;
+      border:1px solid #dce2ea;
+      background:#fff;
+      color:var(--text);
+      border-radius:8px;
+      outline:none;
+      padding:10px 11px;
+      font-size:12px;
+      transition:.2s;
+    }
+
+    input,
+    select{
+      height:41px;
+    }
+
+    textarea{
+      min-height:95px;
+      resize:vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(247,147,30,.11);
+    }
+
+    .field-help{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:5px;
+    }
+
+    .input-prefix{
+      display:flex;
+    }
+
+    .input-prefix span{
+      height:41px;
+      padding:0 12px;
+      display:flex;
+      align-items:center;
+      background:#f4f6f9;
+      border:1px solid #dce2ea;
+      border-right:0;
+      border-radius:8px 0 0 8px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .input-prefix input{
+      border-radius:0 8px 8px 0;
+    }
+
+    /* =========================
+       TOGGLES
+    ========================== */
+
+    .toggle-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:13px 0;
+      border-bottom:1px solid #eef1f5;
+    }
+
+    .toggle-row:first-child{
+      padding-top:0;
+    }
+
+    .toggle-row:last-child{
+      border-bottom:0;
+      padding-bottom:0;
+    }
+
+    .toggle-content{
+      min-width:0;
+    }
+
+    .toggle-title{
+      font-size:12px;
+      font-weight:800;
+      color:var(--text);
+      margin-bottom:2px;
+    }
+
+    .toggle-description{
+      font-size:10px;
+      color:var(--muted);
+      max-width:650px;
+    }
+
+    .switch{
+      width:42px;
+      height:23px;
+      background:#cfd6df;
+      border-radius:30px;
+      padding:3px;
+      border:0;
+      flex:none;
+      transition:.2s;
+    }
+
+    .switch::after{
+      content:"";
+      display:block;
+      width:17px;
+      height:17px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 1px 3px rgba(0,0,0,.2);
+      transition:.2s;
+    }
+
+    .switch.on{
+      background:var(--orange);
+    }
+
+    .switch.on::after{
+      transform:translateX(19px);
+    }
+
+    /* =========================
+       PLANS
+    ========================== */
+
+    .plans-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:15px;
+    }
+
+    .plan-card{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:17px;
+      position:relative;
+      background:#fff;
+    }
+
+    .plan-card.recommended{
+      border-color:rgba(247,147,30,.6);
+      box-shadow:0 6px 20px rgba(247,147,30,.08);
+    }
+
+    .recommended-badge{
+      position:absolute;
+      top:13px;
+      right:13px;
+      background:#fff1df;
+      color:#a95f00;
+      padding:4px 7px;
+      border-radius:20px;
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    .plan-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      padding-right:80px;
+    }
+
+    .plan-name{
+      font-size:14px;
+      font-weight:800;
+      color:var(--navy);
+    }
+
+    .plan-status{
+      font-size:9px;
+      padding:4px 7px;
+      border-radius:20px;
+      background:var(--success-bg);
+      color:var(--success);
+      font-weight:800;
+    }
+
+    .plan-price{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      margin-bottom:14px;
+    }
+
+    .plan-currency{
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .plan-price input{
+      width:105px;
+      height:44px;
+      font-size:20px;
+      font-weight:800;
+      color:var(--navy);
+    }
+
+    .plan-duration{
+      font-size:10px;
+      color:var(--muted);
+      margin-left:4px;
+    }
+
+    .plan-fields{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .plan-actions{
+      display:flex;
+      justify-content:flex-end;
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid #eef1f5;
+    }
+
+    .mini-btn{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:7px;
+      padding:7px 9px;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    /* =========================
+       CHECKBOXES
+    ========================== */
+
+    .check-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:9px;
+    }
+
+    .check-card{
+      border:1px solid var(--border);
+      border-radius:9px;
+      padding:12px;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .check-card:hover{
+      border-color:#cdd6e2;
+      background:#fafbfd;
+    }
+
+    .check-card input{
+      width:16px;
+      height:16px;
+      margin-top:1px;
+      accent-color:var(--orange);
+    }
+
+    .check-title{
+      font-size:11px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .check-desc{
+      font-size:9px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    /* =========================
+       NOTICE
+    ========================== */
+
+    .notice{
+      border:1px solid #dbe7f6;
+      background:var(--info-bg);
+      color:#24528b;
+      border-radius:9px;
+      padding:12px 13px;
+      font-size:10px;
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+      margin-bottom:17px;
+    }
+
+    .notice.warning{
+      background:var(--warning-bg);
+      border-color:#f0dfaa;
+      color:#775000;
+    }
+
+    .notice strong{
+      display:block;
+      font-size:11px;
+      margin-bottom:2px;
+    }
+
+    .notice-icon{
+      font-size:15px;
+      flex:none;
+    }
+
+    /* =========================
+       CHANNELS
+    ========================== */
+
+    .channel-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .channel-card{
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:13px;
+      text-align:center;
+    }
+
+    .channel-icon{
+      width:35px;
+      height:35px;
+      margin:0 auto 8px;
+      border-radius:9px;
+      background:#f1f4f8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--navy);
+      font-size:15px;
+    }
+
+    .channel-name{
+      font-size:11px;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    /* =========================
+       SECURITY
+    ========================== */
+
+    .security-list{
+      display:grid;
+      gap:0;
+    }
+
+    .security-item{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:center;
+      padding:13px 0;
+      border-bottom:1px solid #eef1f5;
+    }
+
+    .security-item:last-child{
+      border-bottom:0;
+      padding-bottom:0;
+    }
+
+    .security-item:first-child{
+      padding-top:0;
+    }
+
+    .security-main{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+    }
+
+    .security-symbol{
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      background:#eef5ff;
+      color:var(--info);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+    }
+
+    .security-title{
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .security-text{
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    /* =========================
+       ROLE TABLE
+    ========================== */
+
+    .role-table-wrap{
+      overflow-x:auto;
+    }
+
+    .role-table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:620px;
+    }
+
+    .role-table th{
+      background:#f7f9fb;
+      text-align:left;
+      padding:10px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .role-table td{
+      padding:12px 10px;
+      border-top:1px solid #eef1f5;
+      font-size:11px;
+    }
+
+    .role-name{
+      font-weight:800;
+      color:var(--navy);
+    }
+
+    .permission{
+      width:17px;
+      height:17px;
+      accent-color:var(--orange);
+    }
+
+    /* =========================
+       LEGAL
+    ========================== */
+
+    .legal-preview{
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fafbfd;
+      padding:15px;
+      color:#4b5667;
+      font-size:11px;
+      line-height:1.7;
+    }
+
+    .legal-preview strong{
+      color:var(--navy);
+    }
+
+    /* =========================
+       SAVE BAR
+    ========================== */
+
+    .save-bar{
+      position:sticky;
+      bottom:15px;
+      z-index:20;
+      background:rgba(255,255,255,.96);
+      backdrop-filter:blur(12px);
+      border:1px solid var(--border);
+      box-shadow:0 12px 30px rgba(7,26,51,.12);
+      border-radius:12px;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .save-state{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .save-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--success);
+    }
+
+    .save-dot.unsaved{
+      background:var(--orange);
+    }
+
+    .save-actions{
+      display:flex;
+      gap:8px;
+    }
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    .toast{
+      position:fixed;
+      right:25px;
+      bottom:25px;
+      background:var(--navy);
+      color:#fff;
+      border-radius:10px;
+      padding:13px 16px;
+      box-shadow:0 15px 35px rgba(0,0,0,.2);
+      font-size:11px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      transform:translateY(120px);
+      opacity:0;
+      pointer-events:none;
+      transition:.3s;
+      z-index:3000;
+    }
+
+    .toast.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .toast-icon{
+      color:var(--orange);
+    }
+
+    /* =========================
+       OVERLAY
+    ========================== */
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:850;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1100px){
+      .summary-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .settings-layout{
+        grid-template-columns:190px minmax(0,1fr);
+      }
+
+      .channel-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:850px){
+      .menu-toggle{
+        display:flex;
+      }
+
+      .admin-label,
+      .admin-info{
+        display:none;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .overlay.show{
+        display:block;
+      }
+
+      .main{
+        margin-left:0;
+        padding:88px 17px 30px;
+      }
+
+      .settings-layout{
+        grid-template-columns:1fr;
+      }
+
+      .settings-nav{
+        position:static;
+        display:flex;
+        gap:5px;
+        overflow-x:auto;
+        padding:7px;
+      }
+
+      .settings-nav-title{
+        display:none;
+      }
+
+      .settings-tab{
+        width:auto;
+        white-space:nowrap;
+        margin:0;
+      }
+    }
+
+    @media(max-width:650px){
+      .topbar{
+        padding:0 12px;
+      }
+
+      .brand{
+        font-size:18px;
+      }
+
+      .brand-mark{
+        width:32px;
+        height:32px;
+      }
+
+      .top-actions .top-icon:nth-child(1){
+        display:none;
+      }
+
+      .page-header{
+        flex-direction:column;
+      }
+
+      .header-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr;
+      }
+
+      .form-grid,
+      .form-grid.three,
+      .plans-grid,
+      .check-grid{
+        grid-template-columns:1fr;
+      }
+
+      .section-header,
+      .section-body{
+        padding:15px;
+      }
+
+      .channel-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .save-bar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .save-actions{
+        width:100%;
+      }
+
+      .save-actions .btn{
+        flex:1;
+      }
+
+      .toast{
+        left:15px;
+        right:15px;
+        bottom:15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       TOPBAR
+  ========================== -->
+
+  <header class="topbar">
+
+    <div class="top-left">
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        ☰
+      </button>
+
+      <a href="../Public website/index.html" class="brand">
+        <span class="brand-mark">F</span>
+        <span>FAGA</span>
+      </a>
+
+      <span class="admin-label">Administration Portal</span>
+
+    </div>
+
+    <div class="top-actions">
+
+      <button class="top-icon" title="Search">
+        ⌕
+      </button>
+
+      <button class="top-icon" title="Notifications" onclick="window.location.href='notifications.html'">
+        ♢
+        <span class="notification-dot"></span>
+      </button>
+
+      <div class="admin-profile">
+        <div class="avatar">AD</div>
+
+        <div class="admin-info">
+          <strong>Admin User</strong>
+          <span>Super Administrator</span>
+        </div>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">Overview</div>
+
+      <a href="../Public website/index.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Dashboard
+      </a>
+
+      <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Users
+        <span class="nav-badge">12.4k</span>
+      </a>
+
+      <a href="orders.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Orders
+        <span class="nav-badge">284</span>
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">Operations</div>
+
+      <a href="../Public website/logistics.html" class="nav-link">
+        <span class="nav-icon">▱</span>
+        Logistics
+      </a>
+
+      <a href="riders.html" class="nav-link">
+        <span class="nav-icon">♟</span>
+        Riders
+      </a>
+
+      <a href="../Public website/marketplace.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Marketplace
+      </a>
+
+      <a href="sellers.html" class="nav-link">
+        <span class="nav-icon">◫</span>
+        Sellers
+      </a>
+
+      <a href="../Public website/services.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Services
+      </a>
+
+      <a href="service-providers.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Service Providers
+      </a>
+
+      <a href="../Public website/food.html" class="nav-link">
+        <span class="nav-icon">◉</span>
+        Food
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">Finance</div>
+
+      <a href="payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Payments
+      </a>
+
+      <a href="wallets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Wallets
+      </a>
+
+      <a href="payouts.html" class="nav-link">
+        <span class="nav-icon">↗</span>
+        Payouts
+      </a>
+
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Reports
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">Jobs</div>
+
+      <a href="../Public website/jobs.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Jobs
+      </a>
+
+      <a href="job-applicants.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Applicants
+      </a>
+
+      <a href="../Public website/job-applications.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Applications
+      </a>
+
+      <a href="job-payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Job Payments
+      </a>
+
+      <a href="job-settings.html" class="nav-link active">
+        <span class="nav-icon">⚙</span>
+        Job Settings
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">Administration</div>
+
+      <a href="support.html" class="nav-link">
+        <span class="nav-icon">?</span>
+        Support
+      </a>
+
+      <a href="disputes.html" class="nav-link">
+        <span class="nav-icon">!</span>
+        Disputes
+      </a>
+
+      <a href="notifications.html" class="nav-link">
+        <span class="nav-icon">♢</span>
+        Notifications
+      </a>
+
+      <a href="audit-logs.html" class="nav-link">
+        <span class="nav-icon">≡</span>
+        Audit Logs
+      </a>
+
+      <a href="settings.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        System Settings
+      </a>
+
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <div class="page-header">
+
+      <div>
+
+        <div class="breadcrumb">
+          <span>Admin</span>
+          <span>›</span>
+          <span>Jobs</span>
+          <span>›</span>
+          <span>Settings</span>
+        </div>
+
+        <h1 class="page-title">Job Settings</h1>
+
+        <p class="page-description">
+          Configure the FAGA jobs marketplace, applicant access plans,
+          application rules, CV requirements, notifications and security.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button class="btn" onclick="previewJobs()">
+          ↗ Preview Public Jobs
+        </button>
+
+        <button class="btn" onclick="restoreDefaults()">
+          ↺ Restore Defaults
+        </button>
+
+        <button class="btn btn-primary" onclick="saveSettings()">
+          ✓ Save Changes
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         SUMMARY
+    ========================== -->
+
+    <section class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-icon green">✓</div>
+
+        <div>
+          <div class="summary-label">Jobs Module</div>
+          <div class="summary-value">Enabled</div>
+          <div class="summary-sub">Public job browsing active</div>
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-icon orange">₦</div>
+
+        <div>
+          <div class="summary-label">Active Plans</div>
+          <div class="summary-value">2</div>
+          <div class="summary-sub">3-month & 1-year access</div>
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-icon blue">CV</div>
+
+        <div>
+          <div class="summary-label">CV Max Size</div>
+          <div class="summary-value">5 MB</div>
+          <div class="summary-sub">PDF, DOC, DOCX</div>
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-icon">✓</div>
+
+        <div>
+          <div class="summary-label">Job Approval</div>
+          <div class="summary-value">Required</div>
+          <div class="summary-sub">Before public publishing</div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SETTINGS
+    ========================== -->
+
+    <div class="settings-layout">
+
+      <!-- SETTINGS NAV -->
+
+      <nav class="settings-nav">
+
+        <div class="settings-nav-title">Settings</div>
+
+        <button class="settings-tab active" data-target="general">
+          ⚙ General
+        </button>
+
+        <button class="settings-tab" data-target="plans">
+          ₦ Access Plans
+          <span class="tab-count">2</span>
+        </button>
+
+        <button class="settings-tab" data-target="rules">
+          ✓ Application Rules
+        </button>
+
+        <button class="settings-tab" data-target="documents">
+          ▣ CV & Documents
+        </button>
+
+        <button class="settings-tab" data-target="publishing">
+          ◉ Publishing
+        </button>
+
+        <button class="settings-tab" data-target="notifications">
+          ♢ Notifications
+        </button>
+
+        <button class="settings-tab" data-target="security">
+          ◈ Security
+        </button>
+
+        <button class="settings-tab" data-target="legal">
+          § Legal Notice
+        </button>
+
+      </nav>
+
+
+      <!-- SETTINGS CONTENT -->
+
+      <div class="settings-content">
+
+
+        <!-- =========================
+             GENERAL
+        ========================== -->
+
+        <section class="settings-section" id="general">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">⚙</div>
+
+              <div>
+                <div class="section-title">General Job Settings</div>
+
+                <div class="section-description">
+                  Configure the basic behavior and public presentation
+                  of the FAGA Jobs module.
+                </div>
+              </div>
+
+            </div>
+
+            <button
+              class="switch on"
+              data-setting="jobsEnabled"
+              aria-label="Jobs module enabled">
+            </button>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="notice">
+
+              <div class="notice-icon">ⓘ</div>
+
+              <div>
+                <strong>Jobs module is currently enabled</strong>
+                Applicants can browse published jobs and access the
+                application workflow according to the configured rules.
+              </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label class="label">
+                  Public Jobs Page Title
+                </label>
+
+                <input
+                  type="text"
+                  id="jobsTitle"
+                  value="Find Your Next Opportunity">
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Default Location
+                </label>
+
+                <input
+                  type="text"
+                  id="defaultLocation"
+                  value="Nigeria">
+              </div>
+
+
+              <div class="form-group full">
+
+                <label class="label">
+                  Public Jobs Page Subtitle
+                </label>
+
+                <textarea id="jobsSubtitle">Browse verified job opportunities from employers and organizations using the FAGA platform.</textarea>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Jobs Per Page
+                </label>
+
+                <select id="jobsPerPage">
+                  <option>12</option>
+                  <option selected>24</option>
+                  <option>36</option>
+                  <option>48</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Applicant Support Email
+                </label>
+
+                <input
+                  type="email"
+                  value="jobs@faga.com"
+                  id="supportEmail">
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <div class="toggle-row">
+
+                  <div class="toggle-content">
+
+                    <div class="toggle-title">
+                      Display employer/company name
+                    </div>
+
+                    <div class="toggle-description">
+                      Show the employer or company name on public job
+                      listings and job detail pages.
+                    </div>
+
+                  </div>
+
+                  <button
+                    class="switch on"
+                    data-setting="showEmployer">
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             ACCESS PLANS
+        ========================== -->
+
+        <section class="settings-section hidden" id="plans">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">₦</div>
+
+              <div>
+                <div class="section-title">Application Access Plans</div>
+
+                <div class="section-description">
+                  Configure the temporary access plans applicants purchase
+                  before they can upload a CV and submit applications.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="notice warning">
+
+              <div class="notice-icon">!</div>
+
+              <div>
+                <strong>Price changes require financial authorization</strong>
+                Changes to plan amounts should be audited and must not
+                retroactively change the entitlement of existing purchases.
+              </div>
+
+            </div>
+
+
+            <div class="plans-grid">
+
+
+              <!-- 3 MONTH PLAN -->
+
+              <div class="plan-card">
+
+                <div class="plan-top">
+
+                  <div class="plan-name">
+                    3 Months
+                  </div>
+
+                  <span class="plan-status">
+                    Active
+                  </span>
+
+                </div>
+
+
+                <div class="plan-price">
+
+                  <span class="plan-currency">₦</span>
+
+                  <input
+                    type="number"
+                    id="planThreeAmount"
+                    value="300"
+                    min="0">
+
+                  <span class="plan-duration">
+                    / 3 months
+                  </span>
+
+                </div>
+
+
+                <div class="plan-fields">
+
+                  <div>
+
+                    <label class="label">
+                      Duration
+                    </label>
+
+                    <input
+                      type="number"
+                      value="3"
+                      id="planThreeDuration">
+
+                  </div>
+
+                  <div>
+
+                    <label class="label">
+                      Currency
+                    </label>
+
+                    <select>
+                      <option selected>NGN</option>
+                    </select>
+
+                  </div>
+
+                </div>
+
+
+                <div class="plan-actions">
+
+                  <button
+                    class="mini-btn"
+                    onclick="togglePlan(this)">
+                    Deactivate Plan
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <!-- ANNUAL PLAN -->
+
+              <div class="plan-card recommended">
+
+                <span class="recommended-badge">
+                  Recommended
+                </span>
+
+                <div class="plan-top">
+
+                  <div class="plan-name">
+                    1 Year
+                  </div>
+
+                  <span class="plan-status">
+                    Active
+                  </span>
+
+                </div>
+
+
+                <div class="plan-price">
+
+                  <span class="plan-currency">₦</span>
+
+                  <input
+                    type="number"
+                    id="planAnnualAmount"
+                    value="500"
+                    min="0">
+
+                  <span class="plan-duration">
+                    / 1 year
+                  </span>
+
+                </div>
+
+
+                <div class="plan-fields">
+
+                  <div>
+
+                    <label class="label">
+                      Duration
+                    </label>
+
+                    <input
+                      type="number"
+                      value="12"
+                      id="planAnnualDuration">
+
+                  </div>
+
+                  <div>
+
+                    <label class="label">
+                      Currency
+                    </label>
+
+                    <select>
+                      <option selected>NGN</option>
+                    </select>
+
+                  </div>
+
+                </div>
+
+
+                <div class="plan-actions">
+
+                  <button
+                    class="mini-btn"
+                    onclick="togglePlan(this)">
+                    Deactivate Plan
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div style="height:18px"></div>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label class="label">
+                  Default Plan
+                </label>
+
+                <select id="defaultPlan">
+
+                  <option value="3-month">
+                    3 Months — ₦300
+                  </option>
+
+                  <option value="annual" selected>
+                    1 Year — ₦500
+                  </option>
+
+                </select>
+
+                <div class="field-help">
+                  Preselected plan shown to new applicants.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Payment Currency
+                </label>
+
+                <select>
+                  <option selected>NGN — Nigerian Naira</option>
+                </select>
+
+                <div class="field-help">
+                  Payment amounts are validated server-side.
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             APPLICATION RULES
+        ========================== -->
+
+        <section class="settings-section hidden" id="rules">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">✓</div>
+
+              <div>
+                <div class="section-title">Application Rules</div>
+
+                <div class="section-description">
+                  Control the requirements applicants must satisfy before
+                  submitting a job application.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require applicant login
+                </div>
+
+                <div class="toggle-description">
+                  Applicants must have an authenticated FAGA account
+                  before accessing application functionality.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require active application access
+                </div>
+
+                <div class="toggle-description">
+                  An active paid application-access entitlement is required
+                  before CV upload and application submission.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require completed applicant profile
+                </div>
+
+                <div class="toggle-description">
+                  Applicants must complete required personal, education,
+                  experience and contact information.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require CV before application
+                </div>
+
+                <div class="toggle-description">
+                  Applications cannot be submitted without a valid CV
+                  associated with the applicant's account.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  One application per applicant per job
+                </div>
+
+                <div class="toggle-description">
+                  Prevent duplicate active applications for the same job.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Allow applicants to withdraw
+                </div>
+
+                <div class="toggle-description">
+                  Applicants may withdraw submitted applications while the
+                  application is still eligible for withdrawal.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Allow reapplication after rejection
+                </div>
+
+                <div class="toggle-description">
+                  Allow an applicant to submit a new application for a
+                  future posting of the same role.
+                </div>
+
+              </div>
+
+              <button class="switch"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Enforce application deadlines
+                </div>
+
+                <div class="toggle-description">
+                  Applications are automatically blocked after the job's
+                  configured closing date and time.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             DOCUMENTS
+        ========================== -->
+
+        <section class="settings-section hidden" id="documents">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">▣</div>
+
+              <div>
+                <div class="section-title">CV & Document Requirements</div>
+
+                <div class="section-description">
+                  Configure CV formats, file size limits and supporting
+                  application documents.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label class="label">
+                  Maximum CV File Size
+                </label>
+
+                <div class="input-prefix">
+
+                  <span>MB</span>
+
+                  <input
+                    type="number"
+                    value="5"
+                    min="1"
+                    max="20"
+                    id="maxCvSize">
+
+                </div>
+
+                <div class="field-help">
+                  Recommended maximum: 5 MB.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Maximum Supporting Document Size
+                </label>
+
+                <div class="input-prefix">
+
+                  <span>MB</span>
+
+                  <input
+                    type="number"
+                    value="5"
+                    min="1"
+                    max="20">
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  CV Storage Retention
+                </label>
+
+                <select>
+                  <option>30 days after account closure</option>
+                  <option>90 days after account closure</option>
+                  <option selected>180 days after account closure</option>
+                  <option>365 days after account closure</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Maximum Cover Letter Length
+                </label>
+
+                <div class="input-prefix">
+
+                  <span>Chars</span>
+
+                  <input
+                    type="number"
+                    value="3000"
+                    min="500"
+                    max="10000">
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div style="height:20px"></div>
+
+
+            <div class="check-grid">
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">PDF</div>
+                  <div class="check-desc">
+                    Portable Document Format
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">DOC</div>
+                  <div class="check-desc">
+                    Microsoft Word document
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">DOCX</div>
+                  <div class="check-desc">
+                    Modern Word document
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox">
+
+                <div>
+                  <div class="check-title">Profile Photo</div>
+                  <div class="check-desc">
+                    Optional applicant profile image
+                  </div>
+                </div>
+
+              </label>
+
+            </div>
+
+
+            <div style="height:16px"></div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require cover letter
+                </div>
+
+                <div class="toggle-description">
+                  Applicants must provide a cover letter before submitting
+                  an application.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require private document storage
+                </div>
+
+                <div class="toggle-description">
+                  CVs and supporting documents must not be publicly
+                  accessible through permanent URLs.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             PUBLISHING
+        ========================== -->
+
+        <section class="settings-section hidden" id="publishing">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">◉</div>
+
+              <div>
+                <div class="section-title">Job Publishing & Moderation</div>
+
+                <div class="section-description">
+                  Configure how jobs move from creation to public
+                  availability and closure.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require admin approval before publishing
+                </div>
+
+                <div class="toggle-description">
+                  New jobs remain unpublished until an authorized admin
+                  approves them.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Auto-close jobs at deadline
+                </div>
+
+                <div class="toggle-description">
+                  Automatically change jobs to closed when their
+                  application deadline passes.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Display salary when provided
+                </div>
+
+                <div class="toggle-description">
+                  Show salary or compensation information on public
+                  job listings when entered by the employer/admin.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Display employer contact information
+                </div>
+
+                <div class="toggle-description">
+                  Allow employer contact information to appear publicly.
+                  Keep disabled unless there is a specific reason to expose it.
+                </div>
+
+              </div>
+
+              <button class="switch"></button>
+
+            </div>
+
+
+            <div style="height:17px"></div>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label class="label">
+                  Default Job Status
+                </label>
+
+                <select>
+                  <option selected>Draft</option>
+                  <option>Pending Review</option>
+                  <option>Published</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Default Vacancy Display
+                </label>
+
+                <select>
+                  <option selected>Show number of vacancies</option>
+                  <option>Show "Multiple positions"</option>
+                  <option>Do not display</option>
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             NOTIFICATIONS
+        ========================== -->
+
+        <section class="settings-section hidden" id="notifications">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">♢</div>
+
+              <div>
+                <div class="section-title">Job Notifications</div>
+
+                <div class="section-description">
+                  Configure applicant and administrator notification events
+                  and delivery channels.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="channel-grid">
+
+              <div class="channel-card">
+
+                <div class="channel-icon">✉</div>
+
+                <div class="channel-name">Email</div>
+
+                <button class="switch on" style="margin:auto"></button>
+
+              </div>
+
+
+              <div class="channel-card">
+
+                <div class="channel-icon">▣</div>
+
+                <div class="channel-name">SMS</div>
+
+                <button class="switch on" style="margin:auto"></button>
+
+              </div>
+
+
+              <div class="channel-card">
+
+                <div class="channel-icon">♢</div>
+
+                <div class="channel-name">In-App</div>
+
+                <button class="switch on" style="margin:auto"></button>
+
+              </div>
+
+
+              <div class="channel-card">
+
+                <div class="channel-icon">⌁</div>
+
+                <div class="channel-name">Push</div>
+
+                <button class="switch"></button>
+
+              </div>
+
+            </div>
+
+
+            <div style="height:20px"></div>
+
+
+            <div class="check-grid">
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    Application Submitted
+                  </div>
+
+                  <div class="check-desc">
+                    Notify applicant after successful submission.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    Payment Successful
+                  </div>
+
+                  <div class="check-desc">
+                    Confirm application-access payment.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    Access Expiring
+                  </div>
+
+                  <div class="check-desc">
+                    Warn applicants before access expires.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    Application Status Change
+                  </div>
+
+                  <div class="check-desc">
+                    Notify applicant when status changes.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    Interview Scheduled
+                  </div>
+
+                  <div class="check-desc">
+                    Notify applicants about interviews.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    New Application — Admin
+                  </div>
+
+                  <div class="check-desc">
+                    Notify authorized admins about new applications.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox" checked>
+
+                <div>
+                  <div class="check-title">
+                    New Payment — Finance
+                  </div>
+
+                  <div class="check-desc">
+                    Notify finance users of job-access payments.
+                  </div>
+                </div>
+
+              </label>
+
+
+              <label class="check-card">
+
+                <input type="checkbox">
+
+                <div>
+                  <div class="check-title">
+                    Job Closing Reminder
+                  </div>
+
+                  <div class="check-desc">
+                    Notify employers/admins before a job closes.
+                  </div>
+                </div>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             SECURITY
+        ========================== -->
+
+        <section class="settings-section hidden" id="security">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">◈</div>
+
+              <div>
+                <div class="section-title">Security & Access Control</div>
+
+                <div class="section-description">
+                  Protect applicant information, payment configuration,
+                  CV files and administrative actions.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="security-list">
+
+              <div class="security-item">
+
+                <div class="security-main">
+
+                  <div class="security-symbol">✓</div>
+
+                  <div>
+                    <div class="security-title">
+                      Server-side authorization
+                    </div>
+
+                    <div class="security-text">
+                      Admin permissions must be verified by the backend.
+                    </div>
+                  </div>
+
+                </div>
+
+                <span class="plan-status">
+                  Required
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-main">
+
+                  <div class="security-symbol">₦</div>
+
+                  <div>
+                    <div class="security-title">
+                      Payment configuration protection
+                    </div>
+
+                    <div class="security-text">
+                      Only authorized finance/admin roles can modify
+                      access-plan pricing.
+                    </div>
+                  </div>
+
+                </div>
+
+                <span class="plan-status">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-main">
+
+                  <div class="security-symbol">▣</div>
+
+                  <div>
+                    <div class="security-title">
+                      Private CV storage
+                    </div>
+
+                    <div class="security-text">
+                      CV files require authenticated or signed access.
+                    </div>
+                  </div>
+
+                </div>
+
+                <span class="plan-status">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-main">
+
+                  <div class="security-symbol">≡</div>
+
+                  <div>
+                    <div class="security-title">
+                      Audit logging
+                    </div>
+
+                    <div class="security-text">
+                      Settings, pricing, refunds and application actions
+                      are recorded in the administrative audit trail.
+                    </div>
+                  </div>
+
+                </div>
+
+                <span class="plan-status">
+                  Enabled
+                </span>
+
+              </div>
+
+
+              <div class="security-item">
+
+                <div class="security-main">
+
+                  <div class="security-symbol">◉</div>
+
+                  <div>
+                    <div class="security-title">
+                      Rate limiting
+                    </div>
+
+                    <div class="security-text">
+                      Application, payment and messaging endpoints should
+                      enforce server-side rate limits.
+                    </div>
+                  </div>
+
+                </div>
+
+                <span class="plan-status">
+                  Enabled
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div style="height:20px"></div>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label class="label">
+                  Applicant Data Visibility
+                </label>
+
+                <select>
+                  <option selected>Authorized staff only</option>
+                  <option>Jobs administrators only</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label class="label">
+                  Application Rate Limit
+                </label>
+
+                <select>
+                  <option>5 applications / hour</option>
+                  <option selected>10 applications / hour</option>
+                  <option>20 applications / hour</option>
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             LEGAL
+        ========================== -->
+
+        <section class="settings-section hidden" id="legal">
+
+          <div class="section-header">
+
+            <div class="section-heading">
+
+              <div class="section-icon">§</div>
+
+              <div>
+                <div class="section-title">Applicant Legal Notice</div>
+
+                <div class="section-description">
+                  Configure the notice displayed during registration,
+                  payment and application submission.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-body">
+
+            <div class="notice warning">
+
+              <div class="notice-icon">!</div>
+
+              <div>
+                <strong>Important</strong>
+                The access fee must never be represented as payment for
+                employment or as a guarantee of a job opportunity.
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label class="label">
+                Applicant Access Notice
+                <span class="label-note">
+                  Shown during registration/application
+                </span>
+              </label>
+
+              <textarea id="legalNotice" style="min-height:155px;">FAGA does not guarantee employment, interviews, shortlisting or selection. Application access fees provide access to the FAGA applicant platform and related application features. Individual employers make their own hiring decisions.</textarea>
+
+            </div>
+
+
+            <div style="height:16px"></div>
+
+
+            <div class="legal-preview">
+
+              <strong>Preview</strong><br><br>
+
+              FAGA does not guarantee employment, interviews,
+              shortlisting or selection. Application access fees provide
+              access to the FAGA applicant platform and related application
+              features. Individual employers make their own hiring decisions.
+
+            </div>
+
+
+            <div style="height:18px"></div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Require applicant acknowledgement
+                </div>
+
+                <div class="toggle-description">
+                  Applicants must actively confirm the notice before
+                  submitting an application.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+
+            <div class="toggle-row">
+
+              <div class="toggle-content">
+
+                <div class="toggle-title">
+                  Show terms/privacy links during application
+                </div>
+
+                <div class="toggle-description">
+                  Display links to the applicable FAGA terms and privacy
+                  information beside the acknowledgement.
+                </div>
+
+              </div>
+
+              <button class="switch on"></button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             SAVE BAR
+        ========================== -->
+
+        <div class="save-bar">
+
+          <div class="save-state">
+
+            <span class="save-dot" id="saveDot"></span>
+
+            <span id="saveText">
+              All changes saved
+            </span>
+
+          </div>
+
+
+          <div class="save-actions">
+
+            <button class="btn" onclick="discardChanges()">
+              Discard
+            </button>
+
+            <button class="btn btn-primary" onclick="saveSettings()">
+              ✓ Save Settings
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+
+  <div class="toast" id="toast">
+
+    <span class="toast-icon">✓</span>
+
+    <span id="toastMessage">
+      Settings saved successfully.
+    </span>
+
+  </div>
+
+
+  <script>
+
+    /*
+      ===========================================
+      FAGA JOB SETTINGS — PRODUCTION API
+      ===========================================
+
+      GET
+      /api/admin/jobs/settings
+
+      PATCH
+      /api/admin/jobs/settings
+
+      POST
+      /api/admin/jobs/settings/restore-defaults
+
+      GET
+      /api/admin/jobs/settings/audit
+
+      GET
+      /api/jobs/settings/public
+
+
+      IMPORTANT SECURITY REQUIREMENTS
+      --------------------------------
+
+      1. Admin authorization MUST be enforced server-side.
+
+      2. Never trust values submitted by this page.
+
+      3. Pricing, duration and currency must be validated
+         by the backend.
+
+      4. Only authorized finance/admin roles should be allowed
+         to change application-access pricing.
+
+      5. Existing purchases MUST preserve their historical
+         plan amount, duration and entitlement.
+
+      6. A price change must not modify existing active access.
+
+      7. Store a snapshot of the purchased plan on every
+         payment/access record.
+
+      8. Use optimistic locking/versioning when updating settings
+         so two administrators cannot silently overwrite each other.
+
+      9. Every settings change should create an audit-log entry.
+
+      10. Payment provider secrets must never be placed in this
+          HTML or sent to the browser.
+
+      11. Public text fields must be sanitized server-side.
+
+      12. CVs and applicant documents must remain private.
+
+      13. Role-based access should distinguish:
+          - Jobs administrator
+          - Finance administrator
+          - Super administrator
+
+      14. Destructive actions such as restoring defaults should
+          require server-side authorization and ideally confirmation.
+
+      15. Backend should validate all application rules rather than
+          relying on frontend toggles.
+    */
+
+
+    /* =========================
+       STATE
+    ========================== */
+
+    let hasUnsavedChanges = false;
+
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    menuToggle.addEventListener("click", () => {
+
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
+
+    });
+
+
+    overlay.addEventListener("click", () => {
+
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+
+    });
+
+
+    /* =========================
+       SETTINGS TABS
+    ========================== */
+
+    const tabs = document.querySelectorAll(".settings-tab");
+    const sections = document.querySelectorAll(".settings-section");
+
+    tabs.forEach(tab => {
+
+      tab.addEventListener("click", () => {
+
+        const target = tab.dataset.target;
+
+        tabs.forEach(item => {
+          item.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        sections.forEach(section => {
+
+          if(section.id === target){
+
+            section.classList.remove("hidden");
+
+          }else{
+
+            section.classList.add("hidden");
+
+          }
+
+        });
+
+        window.scrollTo({
+          top: 80,
+          behavior: "smooth"
+        });
+
+      });
+
+    });
+
+
+    /* =========================
+       TOGGLES
+    ========================== */
+
+    document.querySelectorAll(".switch").forEach(toggle => {
+
+      toggle.addEventListener("click", () => {
+
+        toggle.classList.toggle("on");
+
+        markUnsaved();
+
+      });
+
+    });
+
+
+    /* =========================
+       FORM CHANGE DETECTION
+    ========================== */
+
+    document.querySelectorAll(
+      "input, select, textarea"
+    ).forEach(field => {
+
+      field.addEventListener("input", markUnsaved);
+      field.addEventListener("change", markUnsaved);
+
+    });
+
+
+    function markUnsaved(){
+
+      hasUnsavedChanges = true;
+
+      const dot = document.getElementById("saveDot");
+      const text = document.getElementById("saveText");
+
+      dot.classList.add("unsaved");
+      text.textContent = "You have unsaved changes";
+
+    }
+
+
+    /* =========================
+       SAVE SETTINGS
+    ========================== */
+
+    async function saveSettings(){
+
+      /*
+        Production example:
+
+        const payload = {
+          jobs_enabled: true,
+          title: document.getElementById("jobsTitle").value,
+          subtitle: document.getElementById("jobsSubtitle").value,
+          default_location:
+            document.getElementById("defaultLocation").value,
+
+          access_plans: [
+            {
+              id: "3-month",
+              amount: 300,
+              duration_months: 3,
+              currency: "NGN",
+              active: true
+            },
+            {
+              id: "annual",
+              amount: 500,
+              duration_months: 12,
+              currency: "NGN",
+              active: true
+            }
+          ],
+
+          application_rules: {
+            login_required: true,
+            access_required: true,
+            profile_required: true,
+            cv_required: true,
+            one_application_per_job: true,
+            allow_withdrawal: true,
+            allow_reapply: false,
+            enforce_deadline: true
+          }
+        };
+
+        const response = await fetch(
+          "/api/admin/jobs/settings",
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if(!response.ok){
+          throw new Error("Unable to save settings");
+        }
+      */
+
+
+      const saveButtons = document.querySelectorAll(
+        ".btn-primary"
+      );
+
+      saveButtons.forEach(button => {
+        button.disabled = true;
+        button.style.opacity = ".65";
+      });
+
+
+      setTimeout(() => {
+
+        hasUnsavedChanges = false;
+
+        const dot = document.getElementById("saveDot");
+        const text = document.getElementById("saveText");
+
+        dot.classList.remove("unsaved");
+        text.textContent = "All changes saved";
+
+        saveButtons.forEach(button => {
+          button.disabled = false;
+          button.style.opacity = "1";
+        });
+
+        showToast(
+          "Job settings saved successfully."
+        );
+
+      }, 700);
+
+    }
+
+
+    /* =========================
+       DISCARD
+    ========================== */
+
+    function discardChanges(){
+
+      if(!hasUnsavedChanges){
+
+        showToast("There are no unsaved changes.");
+        return;
+
+      }
+
+      /*
+        Production implementation should reload the latest
+        settings from:
+
+        GET /api/admin/jobs/settings
+
+        and restore the server values.
+      */
+
+      const confirmed = confirm(
+        "Discard all unsaved changes?"
+      );
+
+      if(!confirmed) return;
+
+      location.reload();
+
+    }
+
+
+    /* =========================
+       RESTORE DEFAULTS
+    ========================== */
+
+    function restoreDefaults(){
+
+      const confirmed = confirm(
+        "Restore the default Jobs settings? This will replace the current form values."
+      );
+
+      if(!confirmed) return;
+
+
+      /*
+        Production:
+
+        POST
+        /api/admin/jobs/settings/restore-defaults
+
+        This must be authorized server-side and audited.
+      */
+
+
+      document.getElementById("jobsTitle").value =
+        "Find Your Next Opportunity";
+
+      document.getElementById("defaultLocation").value =
+        "Nigeria";
+
+      document.getElementById("jobsPerPage").value =
+        "24";
+
+      document.getElementById("supportEmail").value =
+        "jobs@faga.com";
+
+      document.getElementById("planThreeAmount").value =
+        "300";
+
+      document.getElementById("planThreeDuration").value =
+        "3";
+
+      document.getElementById("planAnnualAmount").value =
+        "500";
+
+      document.getElementById("planAnnualDuration").value =
+        "12";
+
+      document.getElementById("defaultPlan").value =
+        "annual";
+
+      document.getElementById("maxCvSize").value =
+        "5";
+
+      document.getElementById("legalNotice").value =
+        "FAGA does not guarantee employment, interviews, shortlisting or selection. Application access fees provide access to the FAGA applicant platform and related application features. Individual employers make their own hiring decisions.";
+
+
+      document.querySelectorAll(".switch").forEach(
+        toggle => toggle.classList.add("on")
+      );
+
+
+      /*
+        Reapply intentionally disabled default.
+      */
+
+      const reapplySwitch =
+        document.querySelector(
+          "#rules .toggle-row:nth-child(7) .switch"
+        );
+
+      if(reapplySwitch){
+        reapplySwitch.classList.remove("on");
+      }
+
+
+      markUnsaved();
+
+      showToast(
+        "Default settings restored. Save to apply them."
+      );
+
+    }
+
+
+    /* =========================
+       PLAN TOGGLE
+    ========================== */
+
+    function togglePlan(button){
+
+      const card = button.closest(".plan-card");
+      const status = card.querySelector(".plan-status");
+
+      if(status.textContent.trim() === "Active"){
+
+        status.textContent = "Inactive";
+        status.style.background = "var(--danger-bg)";
+        status.style.color = "var(--danger)";
+        button.textContent = "Activate Plan";
+
+      }else{
+
+        status.textContent = "Active";
+        status.style.background = "var(--success-bg)";
+        status.style.color = "var(--success)";
+        button.textContent = "Deactivate Plan";
+
+      }
+
+      markUnsaved();
+
+    }
+
+
+    /* =========================
+       PREVIEW
+    ========================== */
+
+    function previewJobs(){
+
+      /*
+        Production:
+
+        window.open(
+          "/jobs.html",
+          "_blank"
+        );
+      */
+
+      window.open(
+        "../jobs.html",
+        "_blank"
+      );
+
+    }
+
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    let toastTimer;
+
+    function showToast(message){
+
+      const toast =
+        document.getElementById("toast");
+
+      const toastMessage =
+        document.getElementById("toastMessage");
+
+      toastMessage.textContent = message;
+
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+      }, 3000);
+
+    }
+
+
+    /* =========================
+       UNSAVED WARNING
+    ========================== */
+
+    window.addEventListener("beforeunload", event => {
+
+      if(!hasUnsavedChanges){
+        return;
+      }
+
+      event.preventDefault();
+      event.returnValue = "";
+
+    });
+
+
+    /* =========================
+       INITIALIZATION
+    ========================== */
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /*
+        Production page initialization:
+
+        GET /api/admin/jobs/settings
+
+        Populate all controls using server-authoritative
+        settings rather than hard-coded demo values.
+      */
+
+    });
+
+  </script>
+
+</body>
+</html>

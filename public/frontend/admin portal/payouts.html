@@ -1,0 +1,4213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payouts | FAGA Admin</title>
+
+    <style>
+        :root {
+            --navy: #071a33;
+            --navy2: #0b2342;
+            --navy3: #102d50;
+            --orange: #f7931e;
+            --orange-dark: #df7d0d;
+            --bg: #f4f6f9;
+            --white: #fff;
+            --text: #172033;
+            --muted: #697586;
+            --border: #e2e7ee;
+            --success: #16a34a;
+            --success-bg: #eaf8ef;
+            --warning: #d97706;
+            --warning-bg: #fff7e6;
+            --danger: #dc2626;
+            --danger-bg: #fef0f0;
+            --info: #2563eb;
+            --info-bg: #edf4ff;
+            --purple: #7c3aed;
+            --purple-bg: #f3edff;
+            --shadow: 0 4px 18px rgba(7,26,51,.07);
+            --sidebar: 250px;
+            --topbar: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topbar);
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 22px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .mobile-menu {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(255,255,255,.1);
+            background: var(--navy2);
+            color: white;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+
+        .brand {
+            width: var(--sidebar);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand-fa {
+            color: white;
+        }
+
+        .brand-ga {
+            color: var(--orange);
+        }
+
+        .admin-badge {
+            font-size: 9px;
+            background: var(--orange);
+            padding: 4px 7px;
+            border-radius: 4px;
+            letter-spacing: .6px;
+        }
+
+        .top-search {
+            flex: 1;
+            max-width: 560px;
+            position: relative;
+        }
+
+        .top-search input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            outline: none;
+            border-radius: 7px;
+            background: var(--navy2);
+            color: white;
+            padding: 0 42px 0 15px;
+        }
+
+        .top-search input::placeholder {
+            color: #9eacc0;
+        }
+
+        .top-search span {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: #aab7c9;
+        }
+
+        .top-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-action {
+            height: 40px;
+            padding: 0 11px;
+            border: 1px solid rgba(255,255,255,.09);
+            background: var(--navy2);
+            color: white;
+            border-radius: 7px;
+        }
+
+        .notification {
+            position: relative;
+            min-width: 40px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            right: -3px;
+            top: -5px;
+            width: 17px;
+            height: 17px;
+            background: var(--orange);
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding-left: 13px;
+            margin-left: 5px;
+            border-left: 1px solid rgba(255,255,255,.1);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .profile-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-role {
+            color: #9eacc0;
+            font-size: 9px;
+            margin-top: 2px;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: var(--topbar);
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar);
+            background: var(--navy);
+            color: white;
+            overflow-y: auto;
+            z-index: 900;
+            padding: 15px 10px;
+        }
+
+        .sidebar-title {
+            color: #718198;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 12px 7px;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 12px;
+            margin-bottom: 2px;
+            border-radius: 7px;
+            color: #c6d0dd;
+            font-size: 12px;
+        }
+
+        .side-link:hover {
+            background: var(--navy2);
+            color: white;
+        }
+
+        .side-link.active {
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+        }
+
+        .side-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .side-count {
+            margin-left: auto;
+            padding: 2px 7px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.1);
+            font-size: 9px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: var(--sidebar);
+            padding-top: var(--topbar);
+            min-height: 100vh;
+        }
+
+        .content {
+            padding: 28px;
+            max-width: 1800px;
+            margin: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 23px;
+        }
+
+        .page-title {
+            color: var(--navy);
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .page-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            border-radius: 7px;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .btn:hover {
+            background: #f8fafc;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+        }
+
+        /* KPI */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .kpi {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 17px;
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-top {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .kpi-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: var(--info-bg);
+            color: var(--info);
+            font-size: 18px;
+        }
+
+        .kpi:nth-child(2) .kpi-icon {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .kpi:nth-child(3) .kpi-icon {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .kpi:nth-child(4) .kpi-icon {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+        .kpi:nth-child(5) .kpi-icon {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .kpi:nth-child(6) .kpi-icon {
+            background: #fff5e8;
+            color: var(--orange);
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 13px;
+        }
+
+        .kpi-value {
+            color: var(--navy);
+            font-size: 21px;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+
+        .kpi-change {
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        /* PANELS */
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .panel-subtitle {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        /* PAYOUT SUMMARY */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .payout-card {
+            min-height: 235px;
+            background: linear-gradient(135deg, var(--navy), #10345c);
+            color: white;
+            border-radius: 10px;
+            padding: 23px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payout-card::after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            border: 38px solid rgba(247,147,30,.12);
+            right: -75px;
+            bottom: -90px;
+        }
+
+        .payout-label {
+            color: #aebdce;
+            font-size: 10px;
+        }
+
+        .payout-amount {
+            font-size: 31px;
+            font-weight: 800;
+            margin-top: 9px;
+        }
+
+        .payout-change {
+            font-size: 10px;
+            margin-top: 6px;
+        }
+
+        .payout-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 27px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .payout-action {
+            border: 1px solid rgba(255,255,255,.16);
+            background: rgba(255,255,255,.08);
+            color: white;
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .payout-action:hover {
+            background: rgba(255,255,255,.15);
+        }
+
+        .mini-stats {
+            min-height: 235px;
+            padding: 18px;
+        }
+
+        .mini-stat {
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mini-stat:last-child {
+            border-bottom: none;
+        }
+
+        .mini-label {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .mini-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        /* FILTER */
+
+        .filter-panel {
+            padding: 15px;
+            margin-bottom: 18px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 2fr repeat(5, 1fr) auto;
+            gap: 9px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 39px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            padding: 0 10px;
+            font-size: 10px;
+            background: white;
+            color: var(--text);
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--orange);
+        }
+
+        .search-field {
+            padding-left: 34px !important;
+        }
+
+        .search-symbol {
+            position: absolute;
+            left: 11px;
+            top: 11px;
+            color: #8793a4;
+        }
+
+        /* TABS */
+
+        .tabs {
+            display: flex;
+            gap: 3px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab {
+            border: none;
+            background: none;
+            padding: 13px 14px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: var(--orange);
+            border-bottom-color: var(--orange);
+        }
+
+        /* BULK */
+
+        .bulk-toolbar {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #fff8ef;
+            border-bottom: 1px solid #f7dfbf;
+        }
+
+        .bulk-toolbar.show {
+            display: flex;
+        }
+
+        .selected-count {
+            font-size: 10px;
+            font-weight: 800;
+            margin-right: 8px;
+        }
+
+        .small-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 7px 10px;
+            border-radius: 5px;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .small-btn:hover {
+            background: #f5f7fa;
+        }
+
+        .small-btn.warning {
+            color: var(--warning);
+        }
+
+        .small-btn.danger {
+            color: var(--danger);
+        }
+
+        /* TABLE */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #697586;
+            text-transform: uppercase;
+            letter-spacing: .45px;
+            font-size: 9px;
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px 14px;
+            font-size: 10px;
+            border-bottom: 1px solid #edf0f4;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #fbfcfd;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #eaf0f7;
+            color: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .user-name {
+            font-weight: 800;
+        }
+
+        .user-contact {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 2px;
+        }
+
+        .payout-id {
+            color: var(--info);
+            font-weight: 700;
+        }
+
+        .amount {
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .role-badge,
+        .status,
+        .method-badge {
+            display: inline-flex;
+            padding: 4px 7px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .role-rider {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .role-seller {
+            background: #fff4e7;
+            color: #d97706;
+        }
+
+        .role-provider {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+        .role-restaurant {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        .status-paid {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .status-processing {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        .status-failed {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .status-held {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+        .method-badge {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .action-menu {
+            position: relative;
+        }
+
+        .action-btn {
+            border: none;
+            background: #f2f4f7;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 35px;
+            width: 175px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.13);
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .dropdown button {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            background: white;
+            text-align: left;
+            font-size: 9px;
+        }
+
+        .dropdown button:hover {
+            background: #f5f7fa;
+        }
+
+        .dropdown .danger-action {
+            color: var(--danger);
+        }
+
+        .table-footer {
+            padding: 14px 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .showing {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-btn {
+            min-width: 29px;
+            height: 29px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 5px;
+            font-size: 9px;
+        }
+
+        .page-btn.active {
+            color: white;
+            background: var(--orange);
+            border-color: var(--orange);
+            font-weight: 800;
+        }
+
+        /* LOWER GRID */
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .summary-list {
+            padding: 8px 18px 14px;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 7px;
+            background: #f3f5f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .summary-info {
+            flex: 1;
+        }
+
+        .summary-name {
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .summary-detail {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .summary-value {
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .progress {
+            height: 5px;
+            background: #edf0f4;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 7px;
+        }
+
+        .progress span {
+            display: block;
+            height: 100%;
+            background: var(--orange);
+            border-radius: 10px;
+        }
+
+        /* BAR CHART */
+
+        .chart {
+            height: 170px;
+            padding: 18px;
+            display: flex;
+            align-items: flex-end;
+            gap: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bar-item {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bar {
+            width: 100%;
+            max-width: 32px;
+            background: var(--orange);
+            border-radius: 4px 4px 0 0;
+            min-height: 15px;
+        }
+
+        .bar-label {
+            font-size: 8px;
+            color: var(--muted);
+        }
+
+        /* ALERTS */
+
+        .alert-item {
+            display: flex;
+            gap: 10px;
+            padding: 13px 18px;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--orange);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .alert-dot.red {
+            background: var(--danger);
+        }
+
+        .alert-dot.green {
+            background: var(--success);
+        }
+
+        .alert-title {
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .alert-text {
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+            margin-top: 3px;
+        }
+
+        /* MODAL */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2,12,25,.68);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.25);
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            color: var(--navy);
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .close-modal {
+            width: 31px;
+            height: 31px;
+            border: none;
+            border-radius: 6px;
+            background: #f1f4f7;
+            font-size: 16px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .payout-profile {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 20px;
+        }
+
+        .large-avatar {
+            width: 52px;
+            height: 52px;
+            background: var(--navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .profile-name-large {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .profile-id {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .amount-box {
+            padding: 18px;
+            background: var(--navy);
+            color: white;
+            border-radius: 9px;
+            margin-bottom: 17px;
+        }
+
+        .amount-box-label {
+            color: #aebdce;
+            font-size: 9px;
+        }
+
+        .amount-box-value {
+            font-size: 27px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-box {
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 12px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .detail-value {
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* TOAST */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: var(--navy);
+            color: white;
+            padding: 13px 17px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1300px) {
+
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters .field:first-child {
+                grid-column: span 3;
+            }
+
+        }
+
+        @media (max-width: 1050px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .summary-grid .payout-card {
+                grid-column: span 2;
+            }
+
+            .lower-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .brand {
+                width: auto;
+            }
+
+            .top-search {
+                display: none;
+            }
+
+            .profile-name,
+            .profile-role {
+                display: none;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .content {
+                padding: 17px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .filters .field:first-child {
+                grid-column: span 1;
+            }
+
+            .summary-grid,
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid .payout-card {
+                grid-column: span 1;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .support-btn {
+                display: none;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <button class="mobile-menu"
+                onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <div class="brand">
+            <span>
+                <span class="brand-fa">FA</span><span class="brand-ga">GA</span>
+            </span>
+
+            <span class="admin-badge">
+                ADMIN
+            </span>
+        </div>
+
+        <div class="top-search">
+
+            <input
+                id="globalSearch"
+                type="text"
+                placeholder="Search payouts, users, payout IDs..."
+                onkeydown="globalSearch(event)"
+            >
+
+            <span>⌕</span>
+
+        </div>
+
+        <div class="top-actions">
+
+            <button class="top-action support-btn"
+                    onclick="showToast('Opening support center...')">
+                💬 Support
+            </button>
+
+            <button class="top-action notification"
+                    onclick="showToast('You have 7 payout alerts')">
+                🔔
+                <span class="notification-badge">7</span>
+            </button>
+
+            <div class="admin-profile">
+
+                <div class="avatar">
+                    SA
+                </div>
+
+                <div>
+                    <div class="profile-name">
+                        Super Admin
+                    </div>
+
+                    <div class="profile-role">
+                        Administrator
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-title">
+            Overview
+        </div>
+
+        <a class="side-link"
+           href="../Public website/index.html">
+            <span class="side-icon">▦</span>
+            Dashboard
+        </a>
+
+
+        <div class="sidebar-title">
+            Management
+        </div>
+
+        <a class="side-link"
+           href="users.html">
+            <span class="side-icon">♙</span>
+            Users
+            <span class="side-count">48K</span>
+        </a>
+
+        <a class="side-link"
+           href="orders.html">
+            <span class="side-icon">▤</span>
+            Orders
+        </a>
+
+        <a class="side-link"
+           href="../Public website/logistics.html">
+            <span class="side-icon">▰</span>
+            Logistics
+        </a>
+
+        <a class="side-link"
+           href="riders.html">
+            <span class="side-icon">♟</span>
+            Riders
+        </a>
+
+        <a class="side-link"
+           href="../Public website/marketplace.html">
+            <span class="side-icon">▥</span>
+            Marketplace
+        </a>
+
+        <a class="side-link"
+           href="sellers.html">
+            <span class="side-icon">◫</span>
+            Sellers
+        </a>
+
+        <a class="side-link"
+           href="../Public website/services.html">
+            <span class="side-icon">⚒</span>
+            Services
+        </a>
+
+        <a class="side-link"
+           href="service-providers.html">
+            <span class="side-icon">♙</span>
+            Service Providers
+        </a>
+
+        <a class="side-link"
+           href="../Public website/food.html">
+            <span class="side-icon">♨</span>
+            Food & Restaurants
+        </a>
+
+
+        <div class="sidebar-title">
+            Finance
+        </div>
+
+        <a class="side-link"
+           href="payments.html">
+            <span class="side-icon">₦</span>
+            Payments
+        </a>
+
+        <a class="side-link"
+           href="wallets.html">
+            <span class="side-icon">▣</span>
+            Wallets
+        </a>
+
+        <a class="side-link active"
+           href="payouts.html">
+            <span class="side-icon">⇧</span>
+            Payouts
+            <span class="side-count">214</span>
+        </a>
+
+        <a class="side-link"
+           href="reports.html">
+            <span class="side-icon">▥</span>
+            Reports
+        </a>
+
+
+        <div class="sidebar-title">
+            Operations
+        </div>
+
+        <a class="side-link"
+           href="support.html">
+            <span class="side-icon">?</span>
+            Support
+        </a>
+
+        <a class="side-link"
+           href="disputes.html">
+            <span class="side-icon">⚠</span>
+            Disputes
+            <span class="side-count">12</span>
+        </a>
+
+        <a class="side-link"
+           href="settings.html">
+            <span class="side-icon">⚙</span>
+            Settings
+        </a>
+
+        <a class="side-link"
+           href="audit-logs.html">
+            <span class="side-icon">◷</span>
+            Audit Logs
+        </a>
+
+
+        <div class="sidebar-title">
+            Portal
+        </div>
+
+        <a class="side-link"
+           href="../user portal/dashboard.html">
+            <span class="side-icon">↗</span>
+            User Portal
+        </a>
+
+        <a class="side-link"
+           href="#"
+           onclick="logout(event)">
+            <span class="side-icon">⇥</span>
+            Sign Out
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="content">
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1 class="page-title">
+                        Payout Management
+                    </h1>
+
+                    <p class="page-subtitle">
+                        Manage payouts to riders, sellers, service providers
+                        and restaurant partners.
+                    </p>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <button class="btn"
+                            onclick="exportPayouts()">
+                        ↓ Export Payouts
+                    </button>
+
+                    <button class="btn"
+                            onclick="showToast('Opening payout reconciliation...')">
+                        ⇄ Reconcile
+                    </button>
+
+                    <button class="btn btn-primary"
+                            onclick="processPending()">
+                        Process Pending
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- KPI CARDS -->
+
+            <section class="kpi-grid">
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">₦</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Payouts Today
+                    </div>
+
+                    <div class="kpi-value">
+                        ₦6.82M
+                    </div>
+
+                    <div class="kpi-change positive">
+                        ↑ 12.4% from yesterday
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">✓</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Paid Today
+                    </div>
+
+                    <div class="kpi-value">
+                        ₦5.94M
+                    </div>
+
+                    <div class="kpi-change positive">
+                        1,028 successful payouts
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">◷</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Pending Payouts
+                    </div>
+
+                    <div class="kpi-value">
+                        ₦1.92M
+                    </div>
+
+                    <div class="kpi-change">
+                        214 requests
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">⇄</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Processing
+                    </div>
+
+                    <div class="kpi-value">
+                        ₦742K
+                    </div>
+
+                    <div class="kpi-change">
+                        86 transactions
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">!</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Failed Payouts
+                    </div>
+
+                    <div class="kpi-value">
+                        29
+                    </div>
+
+                    <div class="kpi-change negative">
+                        ₦184K affected
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-top">
+                        <div class="kpi-icon">%</div>
+                    </div>
+
+                    <div class="kpi-label">
+                        Payout Fees
+                    </div>
+
+                    <div class="kpi-value">
+                        ₦128K
+                    </div>
+
+                    <div class="kpi-change positive">
+                        1.87% average
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+
+            <section class="summary-grid">
+
+                <div class="payout-card">
+
+                    <div class="payout-label">
+                        Available for Payout
+                    </div>
+
+                    <div class="payout-amount">
+                        ₦18,742,910
+                    </div>
+
+                    <div class="payout-change positive">
+                        Platform settlement balance
+                    </div>
+
+                    <div class="payout-actions">
+
+                        <button class="payout-action"
+                                onclick="processPending()">
+                            Process Pending
+                        </button>
+
+                        <button class="payout-action"
+                                onclick="showToast('Opening payout reconciliation...')">
+                            Reconcile
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel mini-stats">
+
+                    <div class="panel-title">
+                        Today's Payout Movement
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Rider Payouts
+                        </span>
+
+                        <span class="mini-value">
+                            ₦2.84M
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Seller Payouts
+                        </span>
+
+                        <span class="mini-value">
+                            ₦2.17M
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Service Providers
+                        </span>
+
+                        <span class="mini-value">
+                            ₦1.28M
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Restaurants
+                        </span>
+
+                        <span class="mini-value">
+                            ₦532K
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel mini-stats">
+
+                    <div class="panel-title">
+                        Payout Processing
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Automatic
+                        </span>
+
+                        <span class="mini-value">
+                            82%
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Manual Review
+                        </span>
+
+                        <span class="mini-value">
+                            14%
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            On Hold
+                        </span>
+
+                        <span class="mini-value">
+                            4%
+                        </span>
+
+                    </div>
+
+                    <div class="mini-stat">
+
+                        <span class="mini-label">
+                            Average Time
+                        </span>
+
+                        <span class="mini-value">
+                            8 min
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FILTERS -->
+
+            <section class="panel filter-panel">
+
+                <div class="filters">
+
+                    <div class="field">
+
+                        <span class="search-symbol">
+                            ⌕
+                        </span>
+
+                        <input
+                            id="payoutSearch"
+                            class="search-field"
+                            type="text"
+                            placeholder="Search payout ID, recipient, phone..."
+                            oninput="filterPayouts()"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <select id="payoutRole"
+                                onchange="filterPayouts()">
+
+                            <option value="">
+                                All Recipients
+                            </option>
+
+                            <option value="Rider">
+                                Riders
+                            </option>
+
+                            <option value="Seller">
+                                Sellers
+                            </option>
+
+                            <option value="Provider">
+                                Service Providers
+                            </option>
+
+                            <option value="Restaurant">
+                                Restaurants
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <select id="payoutStatus"
+                                onchange="filterPayouts()">
+
+                            <option value="">
+                                All Statuses
+                            </option>
+
+                            <option value="Paid">
+                                Paid
+                            </option>
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Processing">
+                                Processing
+                            </option>
+
+                            <option value="Failed">
+                                Failed
+                            </option>
+
+                            <option value="Held">
+                                Held
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <select onchange="showToast('Payout method filter applied')">
+
+                            <option>
+                                All Methods
+                            </option>
+
+                            <option>
+                                Bank Transfer
+                            </option>
+
+                            <option>
+                                FAGA Wallet
+                            </option>
+
+                            <option>
+                                Instant Transfer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <select onchange="showToast('Date filter applied')">
+
+                            <option>
+                                All Dates
+                            </option>
+
+                            <option>
+                                Today
+                            </option>
+
+                            <option>
+                                Yesterday
+                            </option>
+
+                            <option>
+                                This Week
+                            </option>
+
+                            <option>
+                                This Month
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <select onchange="showToast('Amount filter applied')">
+
+                            <option>
+                                Any Amount
+                            </option>
+
+                            <option>
+                                Under ₦10K
+                            </option>
+
+                            <option>
+                                ₦10K - ₦50K
+                            </option>
+
+                            <option>
+                                ₦50K - ₦100K
+                            </option>
+
+                            <option>
+                                Over ₦100K
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button class="btn"
+                            onclick="resetFilters()">
+                        Reset
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- PAYOUT TABLE -->
+
+            <section class="panel">
+
+                <div class="tabs">
+
+                    <button class="tab active"
+                            onclick="changeTab(this,'all')">
+                        All Payouts (1,362)
+                    </button>
+
+                    <button class="tab"
+                            onclick="changeTab(this,'paid')">
+                        Paid (1,028)
+                    </button>
+
+                    <button class="tab"
+                            onclick="changeTab(this,'pending')">
+                        Pending (214)
+                    </button>
+
+                    <button class="tab"
+                            onclick="changeTab(this,'processing')">
+                        Processing (86)
+                    </button>
+
+                    <button class="tab"
+                            onclick="changeTab(this,'failed')">
+                        Failed (29)
+                    </button>
+
+                    <button class="tab"
+                            onclick="changeTab(this,'held')">
+                        Held (5)
+                    </button>
+
+                </div>
+
+
+                <div class="bulk-toolbar"
+                     id="bulkToolbar">
+
+                    <span class="selected-count"
+                          id="selectedCount">
+                        0 selected
+                    </span>
+
+                    <button class="small-btn"
+                            onclick="bulkAction('process')">
+                        ▶ Process
+                    </button>
+
+                    <button class="small-btn"
+                            onclick="bulkAction('approve')">
+                        ✓ Approve
+                    </button>
+
+                    <button class="small-btn"
+                            onclick="bulkAction('export')">
+                        ↓ Export
+                    </button>
+
+                    <button class="small-btn warning"
+                            onclick="bulkAction('hold')">
+                        ⚠ Hold
+                    </button>
+
+                    <button class="small-btn danger"
+                            onclick="bulkAction('cancel')">
+                        × Cancel
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table id="payoutTable">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    <input
+                                        type="checkbox"
+                                        id="selectAll"
+                                        onchange="toggleSelectAll(this)"
+                                    >
+                                </th>
+
+                                <th>Payout ID</th>
+                                <th>Recipient</th>
+                                <th>Role</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Reference</th>
+                                <th>Status</th>
+                                <th>Requested</th>
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <!-- ROW 1 -->
+
+                            <tr data-role="Rider"
+                                data-status="Paid">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984521
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            BA
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Bashir Ahmed
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0814 *** 7602
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-rider">
+                                        Rider
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦31,500
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        Bank Transfer
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-RD-8821
+                                </td>
+
+                                <td>
+                                    <span class="status status-paid">
+                                        Paid
+                                    </span>
+                                </td>
+
+                                <td>
+                                    3 min ago
+                                </td>
+
+                                <td>
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984521')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="downloadReceipt('PAY-984521')">
+                                                Download Receipt
+                                            </button>
+
+                                            <button onclick="showToast('Opening recipient wallet...')">
+                                                View Wallet
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="flagPayout('PAY-984521')">
+                                                Flag Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 2 -->
+
+                            <tr data-role="Seller"
+                                data-status="Paid">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984520
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            CN
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Chiamaka Nwosu
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0812 *** 7610
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-seller">
+                                        Seller
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦76,000
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        Bank Transfer
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-SL-7719
+                                </td>
+
+                                <td>
+                                    <span class="status status-paid">
+                                        Paid
+                                    </span>
+                                </td>
+
+                                <td>
+                                    8 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984520')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="downloadReceipt('PAY-984520')">
+                                                Download Receipt
+                                            </button>
+
+                                            <button onclick="showToast('Opening seller wallet...')">
+                                                View Wallet
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="flagPayout('PAY-984520')">
+                                                Flag Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 3 -->
+
+                            <tr data-role="Provider"
+                                data-status="Pending">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984519
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            FA
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Fatima Abdullahi
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0901 *** 8821
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-provider">
+                                        Provider
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦42,000
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        FAGA Wallet
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-SP-4402
+                                </td>
+
+                                <td>
+                                    <span class="status status-pending">
+                                        Pending
+                                    </span>
+                                </td>
+
+                                <td>
+                                    14 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984519')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="approvePayout('PAY-984519')">
+                                                Approve Payout
+                                            </button>
+
+                                            <button onclick="holdPayout('PAY-984519')">
+                                                Put On Hold
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="cancelPayout('PAY-984519')">
+                                                Cancel Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 4 -->
+
+                            <tr data-role="Restaurant"
+                                data-status="Processing">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984518
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            UT
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Urban Taste
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0809 *** 5104
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-restaurant">
+                                        Restaurant
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦118,500
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        Bank Transfer
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-FD-2910
+                                </td>
+
+                                <td>
+                                    <span class="status status-processing">
+                                        Processing
+                                    </span>
+                                </td>
+
+                                <td>
+                                    22 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984518')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="showToast('Checking bank transfer status...')">
+                                                Check Transfer
+                                            </button>
+
+                                            <button onclick="showToast('Opening restaurant wallet...')">
+                                                View Wallet
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="cancelPayout('PAY-984518')">
+                                                Cancel Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 5 -->
+
+                            <tr data-role="Rider"
+                                data-status="Pending">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984517
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            YO
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Yusuf Ojo
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0814 *** 2044
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-rider">
+                                        Rider
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦27,800
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        Bank Transfer
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-RD-8818
+                                </td>
+
+                                <td>
+                                    <span class="status status-pending">
+                                        Pending
+                                    </span>
+                                </td>
+
+                                <td>
+                                    29 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984517')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="approvePayout('PAY-984517')">
+                                                Approve Payout
+                                            </button>
+
+                                            <button onclick="holdPayout('PAY-984517')">
+                                                Put On Hold
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="cancelPayout('PAY-984517')">
+                                                Cancel Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 6 -->
+
+                            <tr data-role="Seller"
+                                data-status="Failed">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984516
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            BO
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Blessing Okoro
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0806 *** 4450
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-seller">
+                                        Seller
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦92,000
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        Bank Transfer
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-SL-7712
+                                </td>
+
+                                <td>
+                                    <span class="status status-failed">
+                                        Failed
+                                    </span>
+                                </td>
+
+                                <td>
+                                    41 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984516')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="retryPayout('PAY-984516')">
+                                                Retry Payout
+                                            </button>
+
+                                            <button onclick="showToast('Opening recipient bank details...')">
+                                                Bank Details
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="flagPayout('PAY-984516')">
+                                                Flag Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROW 7 -->
+
+                            <tr data-role="Provider"
+                                data-status="Held">
+
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        class="payout-check"
+                                        onchange="updateSelected()"
+                                    >
+                                </td>
+
+                                <td>
+                                    <span class="payout-id">
+                                        PAY-984515
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="user-avatar">
+                                            KM
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                Kunle Martins
+                                            </div>
+
+                                            <div class="user-contact">
+                                                0702 *** 1182
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="role-badge role-provider">
+                                        Provider
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="amount">
+                                        ₦64,500
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="method-badge">
+                                        FAGA Wallet
+                                    </span>
+                                </td>
+
+                                <td>
+                                    FAGA-SP-4398
+                                </td>
+
+                                <td>
+                                    <span class="status status-held">
+                                        Held
+                                    </span>
+                                </td>
+
+                                <td>
+                                    52 min ago
+                                </td>
+
+                                <td>
+
+                                    <div class="action-menu">
+
+                                        <button class="action-btn"
+                                                onclick="toggleDropdown(this)">
+                                            ⋮
+                                        </button>
+
+                                        <div class="dropdown">
+
+                                            <button onclick="viewPayout('PAY-984515')">
+                                                View Details
+                                            </button>
+
+                                            <button onclick="releasePayout('PAY-984515')">
+                                                Release Payout
+                                            </button>
+
+                                            <button onclick="showToast('Opening dispute information...')">
+                                                View Dispute
+                                            </button>
+
+                                            <button class="danger-action"
+                                                    onclick="cancelPayout('PAY-984515')">
+                                                Cancel Payout
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="table-footer">
+
+                    <div class="showing">
+                        Showing 1–7 of 1,362 payouts
+                    </div>
+
+                    <div class="pagination">
+
+                        <button class="page-btn"
+                                onclick="changePage('prev')">
+                            ‹
+                        </button>
+
+                        <button class="page-btn active">
+                            1
+                        </button>
+
+                        <button class="page-btn"
+                                onclick="changePage(2)">
+                            2
+                        </button>
+
+                        <button class="page-btn"
+                                onclick="changePage(3)">
+                            3
+                        </button>
+
+                        <button class="page-btn"
+                                onclick="changePage(4)">
+                            4
+                        </button>
+
+                        <button class="page-btn">
+                            ...
+                        </button>
+
+                        <button class="page-btn"
+                                onclick="changePage(195)">
+                            195
+                        </button>
+
+                        <button class="page-btn"
+                                onclick="changePage('next')">
+                            ›
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- LOWER SECTION -->
+
+            <section class="lower-grid">
+
+                <!-- PAYOUT BY ROLE -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Payouts by Recipient
+                            </div>
+
+                            <div class="panel-subtitle">
+                                Today's distribution
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-list">
+
+                        <div class="summary-row">
+
+                            <div class="summary-icon">
+                                ♟
+                            </div>
+
+                            <div class="summary-info">
+
+                                <div class="summary-name">
+                                    Riders
+                                </div>
+
+                                <div class="summary-detail">
+                                    428 payouts
+                                </div>
+
+                                <div class="progress">
+                                    <span style="width:72%;"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="summary-value">
+                                ₦2.84M
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <div class="summary-icon">
+                                ◫
+                            </div>
+
+                            <div class="summary-info">
+
+                                <div class="summary-name">
+                                    Sellers
+                                </div>
+
+                                <div class="summary-detail">
+                                    286 payouts
+                                </div>
+
+                                <div class="progress">
+                                    <span style="width:58%;"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="summary-value">
+                                ₦2.17M
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <div class="summary-icon">
+                                ⚒
+                            </div>
+
+                            <div class="summary-info">
+
+                                <div class="summary-name">
+                                    Service Providers
+                                </div>
+
+                                <div class="summary-detail">
+                                    214 payouts
+                                </div>
+
+                                <div class="progress">
+                                    <span style="width:41%;"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="summary-value">
+                                ₦1.28M
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <div class="summary-icon">
+                                ♨
+                            </div>
+
+                            <div class="summary-info">
+
+                                <div class="summary-name">
+                                    Restaurants
+                                </div>
+
+                                <div class="summary-detail">
+                                    100 payouts
+                                </div>
+
+                                <div class="progress">
+                                    <span style="width:19%;"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="summary-value">
+                                ₦532K
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WEEKLY PAYOUT CHART -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Weekly Payout Volume
+                            </div>
+
+                            <div class="panel-subtitle">
+                                Total payout value
+                            </div>
+
+                        </div>
+
+                        <strong style="font-size:12px;">
+                            ₦41.8M
+                        </strong>
+
+                    </div>
+
+
+                    <div class="chart">
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:48%;"></div>
+
+                            <div class="bar-label">
+                                Mon
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:64%;"></div>
+
+                            <div class="bar-label">
+                                Tue
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:53%;"></div>
+
+                            <div class="bar-label">
+                                Wed
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:78%;"></div>
+
+                            <div class="bar-label">
+                                Thu
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:70%;"></div>
+
+                            <div class="bar-label">
+                                Fri
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:91%;"></div>
+
+                            <div class="bar-label">
+                                Sat
+                            </div>
+
+                        </div>
+
+                        <div class="bar-item">
+
+                            <div class="bar"
+                                 style="height:62%;"></div>
+
+                            <div class="bar-label">
+                                Sun
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYOUT ALERTS -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Payout Alerts
+                            </div>
+
+                            <div class="panel-subtitle">
+                                Items requiring attention
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="alert-item">
+
+                            <div class="alert-dot red"></div>
+
+                            <div>
+
+                                <div class="alert-title">
+                                    29 failed payouts
+                                </div>
+
+                                <div class="alert-text">
+                                    ₦184K in payouts failed and may need
+                                    retry or recipient verification.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="alert-item">
+
+                            <div class="alert-dot"></div>
+
+                            <div>
+
+                                <div class="alert-title">
+                                    214 pending payouts
+                                </div>
+
+                                <div class="alert-text">
+                                    ₦1.92M is waiting for payout processing.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="alert-item">
+
+                            <div class="alert-dot red"></div>
+
+                            <div>
+
+                                <div class="alert-title">
+                                    5 payouts on hold
+                                </div>
+
+                                <div class="alert-text">
+                                    These payouts require manual review
+                                    before release.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="alert-item">
+
+                            <div class="alert-dot green"></div>
+
+                            <div>
+
+                                <div class="alert-title">
+                                    Bank gateway operational
+                                </div>
+
+                                <div class="alert-text">
+                                    Payout processing services are currently
+                                    operational.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- PAYOUT DETAIL MODAL -->
+
+    <div class="modal-overlay"
+         id="payoutModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div class="modal-title">
+                    Payout Details
+                </div>
+
+                <button class="close-modal"
+                        onclick="closeModal()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="payout-profile">
+
+                    <div class="large-avatar"
+                         id="modalAvatar">
+                        BA
+                    </div>
+
+                    <div>
+
+                        <div class="profile-name-large"
+                             id="modalRecipient">
+                            Bashir Ahmed
+                        </div>
+
+                        <div class="profile-id"
+                             id="modalPayoutId">
+                            PAY-984521
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="amount-box">
+
+                    <div class="amount-box-label">
+                        Payout Amount
+                    </div>
+
+                    <div class="amount-box-value">
+                        ₦31,500
+                    </div>
+
+                </div>
+
+
+                <div class="detail-grid">
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Recipient Type
+                        </div>
+
+                        <div class="detail-value">
+                            Rider
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Status
+                        </div>
+
+                        <div class="detail-value positive">
+                            Paid
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Payout Method
+                        </div>
+
+                        <div class="detail-value">
+                            Bank Transfer
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Bank
+                        </div>
+
+                        <div class="detail-value">
+                            Access Bank
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Reference
+                        </div>
+
+                        <div class="detail-value">
+                            FAGA-RD-8821
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Requested
+                        </div>
+
+                        <div class="detail-value">
+                            Today, 09:14 AM
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button class="btn"
+                        onclick="downloadReceipt(
+                            document.getElementById('modalPayoutId').textContent
+                        )">
+                    ↓ Receipt
+                </button>
+
+                <button class="btn"
+                        onclick="showToast('Opening recipient wallet...')">
+                    View Wallet
+                </button>
+
+                <button class="btn btn-primary"
+                        onclick="closeModal()">
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST -->
+
+    <div class="toast"
+         id="toast"></div>
+
+
+    <script>
+
+        /* SIDEBAR */
+
+        function toggleSidebar() {
+
+            document.getElementById("sidebar")
+                .classList.toggle("open");
+
+        }
+
+
+        /* TOAST */
+
+        let toastTimer;
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById("toast");
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+            clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 2800);
+
+        }
+
+
+        /* DROPDOWN */
+
+        function toggleDropdown(button) {
+
+            document.querySelectorAll(".dropdown")
+                .forEach(menu => {
+
+                    if (menu !== button.nextElementSibling) {
+                        menu.classList.remove("show");
+                    }
+
+                });
+
+            button.nextElementSibling
+                .classList.toggle("show");
+
+        }
+
+
+        document.addEventListener("click", function(event) {
+
+            if (!event.target.closest(".action-menu")) {
+
+                document.querySelectorAll(".dropdown")
+                    .forEach(menu => {
+
+                        menu.classList.remove("show");
+
+                    });
+
+            }
+
+        });
+
+
+        /* FILTER */
+
+        function filterPayouts() {
+
+            const search =
+                document.getElementById("payoutSearch")
+                    .value.toLowerCase();
+
+            const role =
+                document.getElementById("payoutRole")
+                    .value;
+
+            const status =
+                document.getElementById("payoutStatus")
+                    .value;
+
+            const rows =
+                document.querySelectorAll(
+                    "#payoutTable tbody tr"
+                );
+
+            let visible = 0;
+
+            rows.forEach(row => {
+
+                const text =
+                    row.innerText.toLowerCase();
+
+                const rowRole =
+                    row.dataset.role;
+
+                const rowStatus =
+                    row.dataset.status;
+
+                const matchesSearch =
+                    !search ||
+                    text.includes(search);
+
+                const matchesRole =
+                    !role ||
+                    rowRole === role;
+
+                const matchesStatus =
+                    !status ||
+                    rowStatus === status;
+
+                const show =
+                    matchesSearch &&
+                    matchesRole &&
+                    matchesStatus;
+
+                row.style.display =
+                    show ? "" : "none";
+
+                if (show) {
+                    visible++;
+                }
+
+            });
+
+            showToast(
+                visible +
+                " payout(s) found"
+            );
+
+        }
+
+
+        /* RESET FILTERS */
+
+        function resetFilters() {
+
+            document.getElementById("payoutSearch")
+                .value = "";
+
+            document.getElementById("payoutRole")
+                .value = "";
+
+            document.getElementById("payoutStatus")
+                .value = "";
+
+            document.querySelectorAll(
+                "#payoutTable tbody tr"
+            ).forEach(row => {
+
+                row.style.display = "";
+
+            });
+
+            showToast(
+                "Payout filters reset"
+            );
+
+        }
+
+
+        /* TABS */
+
+        function changeTab(button, tab) {
+
+            document.querySelectorAll(".tab")
+                .forEach(item => {
+
+                    item.classList.remove("active");
+
+                });
+
+            button.classList.add("active");
+
+            const rows =
+                document.querySelectorAll(
+                    "#payoutTable tbody tr"
+                );
+
+            rows.forEach(row => {
+
+                if (tab === "all") {
+
+                    row.style.display = "";
+
+                    return;
+
+                }
+
+                const status =
+                    row.dataset.status.toLowerCase();
+
+                row.style.display =
+                    status === tab ? "" : "none";
+
+            });
+
+            showToast(
+                "Showing " +
+                tab +
+                " payouts"
+            );
+
+        }
+
+
+        /* SELECT ALL */
+
+        function toggleSelectAll(master) {
+
+            document.querySelectorAll(".payout-check")
+                .forEach(check => {
+
+                    check.checked =
+                        master.checked;
+
+                });
+
+            updateSelected();
+
+        }
+
+
+        function updateSelected() {
+
+            const selected =
+                document.querySelectorAll(
+                    ".payout-check:checked"
+                ).length;
+
+            document.getElementById(
+                "selectedCount"
+            ).textContent =
+                selected +
+                " selected";
+
+            document.getElementById(
+                "bulkToolbar"
+            ).classList.toggle(
+                "show",
+                selected > 0
+            );
+
+        }
+
+
+        /* BULK ACTION */
+
+        function bulkAction(action) {
+
+            const selected =
+                document.querySelectorAll(
+                    ".payout-check:checked"
+                ).length;
+
+            if (!selected) {
+
+                showToast(
+                    "Select at least one payout"
+                );
+
+                return;
+
+            }
+
+            if (
+                action === "cancel" ||
+                action === "hold"
+            ) {
+
+                if (!confirm(
+                    "Apply " +
+                    action +
+                    " to " +
+                    selected +
+                    " selected payout(s)?"
+                )) {
+
+                    return;
+
+                }
+
+            }
+
+            showToast(
+                selected +
+                " payout(s): " +
+                action
+            );
+
+        }
+
+
+        /* VIEW */
+
+        function viewPayout(payoutId) {
+
+            document.getElementById(
+                "modalPayoutId"
+            ).textContent = payoutId;
+
+            document.getElementById(
+                "payoutModal"
+            ).classList.add("show");
+
+        }
+
+
+        function closeModal() {
+
+            document.getElementById(
+                "payoutModal"
+            ).classList.remove("show");
+
+        }
+
+
+        document.getElementById("payoutModal")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (event.target === this) {
+                        closeModal();
+                    }
+
+                }
+            );
+
+
+        /* APPROVE */
+
+        function approvePayout(payoutId) {
+
+            if (!confirm(
+                "Approve payout " +
+                payoutId +
+                "?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " approved for processing"
+            );
+
+        }
+
+
+        /* PROCESS */
+
+        function processPending() {
+
+            if (!confirm(
+                "Process all eligible pending payouts?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                "Pending payout batch submitted"
+            );
+
+        }
+
+
+        /* HOLD */
+
+        function holdPayout(payoutId) {
+
+            if (!confirm(
+                "Put " +
+                payoutId +
+                " on hold?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " placed on hold"
+            );
+
+        }
+
+
+        /* RELEASE */
+
+        function releasePayout(payoutId) {
+
+            if (!confirm(
+                "Release payout " +
+                payoutId +
+                "?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " released for processing"
+            );
+
+        }
+
+
+        /* CANCEL */
+
+        function cancelPayout(payoutId) {
+
+            if (!confirm(
+                "Cancel payout " +
+                payoutId +
+                "?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " cancellation initiated"
+            );
+
+        }
+
+
+        /* RETRY */
+
+        function retryPayout(payoutId) {
+
+            if (!confirm(
+                "Retry failed payout " +
+                payoutId +
+                "?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " retry submitted"
+            );
+
+        }
+
+
+        /* FLAG */
+
+        function flagPayout(payoutId) {
+
+            if (!confirm(
+                "Flag " +
+                payoutId +
+                " for investigation?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                payoutId +
+                " flagged for review"
+            );
+
+        }
+
+
+        /* RECEIPT */
+
+        function downloadReceipt(payoutId) {
+
+            showToast(
+                "Preparing receipt for " +
+                payoutId
+            );
+
+        }
+
+
+        /* EXPORT */
+
+        function exportPayouts() {
+
+            showToast(
+                "Preparing payout export..."
+            );
+
+        }
+
+
+        /* PAGINATION */
+
+        function changePage(page) {
+
+            if (page === "prev") {
+
+                showToast(
+                    "Previous payout page"
+                );
+
+                return;
+
+            }
+
+            if (page === "next") {
+
+                showToast(
+                    "Next payout page"
+                );
+
+                return;
+
+            }
+
+            showToast(
+                "Loading payout page " +
+                page
+            );
+
+        }
+
+
+        /* GLOBAL SEARCH */
+
+        function globalSearch(event) {
+
+            if (event.key !== "Enter") {
+                return;
+            }
+
+            const value =
+                event.target.value.trim();
+
+            if (!value) {
+                return;
+            }
+
+            document.getElementById(
+                "payoutSearch"
+            ).value = value;
+
+            filterPayouts();
+
+        }
+
+
+        /* LOGOUT */
+
+        function logout(event) {
+
+            event.preventDefault();
+
+            if (!confirm(
+                "Sign out of FAGA Admin?"
+            )) {
+
+                return;
+
+            }
+
+            showToast(
+                "Signing out..."
+            );
+
+            setTimeout(() => {
+
+                window.location.href="../user portal/login.html";
+
+            }, 700);
+
+        }
+
+
+        /*
+        =====================================================
+        BACKEND INTEGRATION
+        =====================================================
+
+        GET:
+
+        /api/admin/payouts
+        /api/admin/payouts/:id
+        /api/admin/payouts/summary
+        /api/admin/payouts/statistics
+        /api/admin/payouts/export
+
+        GET:
+
+        /api/admin/payouts/pending
+        /api/admin/payouts/failed
+        /api/admin/payouts/held
+
+        POST:
+
+        /api/admin/payouts/:id/approve
+        /api/admin/payouts/:id/process
+        /api/admin/payouts/:id/retry
+        /api/admin/payouts/:id/hold
+        /api/admin/payouts/:id/release
+        /api/admin/payouts/:id/cancel
+        /api/admin/payouts/:id/flag
+
+        POST:
+
+        /api/admin/payouts/bulk-approve
+        /api/admin/payouts/bulk-process
+        /api/admin/payouts/bulk-hold
+        /api/admin/payouts/bulk-cancel
+
+        GET:
+
+        /api/admin/settlements
+        /api/admin/payout-gateways/status
+        /api/admin/payouts/reconciliation
+
+        POST:
+
+        /api/admin/payouts/reconcile
+
+        =====================================================
+        PAYOUT BUSINESS RULES
+        =====================================================
+
+        1. Never process payouts using browser-side
+           balances as the source of truth.
+
+        2. Verify recipient ownership of the destination
+           bank account or wallet before processing.
+
+        3. Every payout must have a unique payout ID.
+
+        4. Every payout should have a transaction/ledger
+           reference.
+
+        5. Paid payouts should become immutable.
+
+        6. Failed payouts should retain the gateway response,
+           failure reason and retry history.
+
+        7. Held payouts require an audit record explaining
+           why the payout was held.
+
+        8. Cancelled payouts should never silently disappear.
+
+        9. Admin approval, processing, cancellation and
+           release actions must be recorded in audit logs.
+
+        10. High-value payouts can require additional
+            authorization depending on FAGA's configured
+            business rules.
+
+        11. The backend must enforce admin authorization.
+            Hiding buttons in JavaScript is NOT security.
+
+        12. Payouts should normally originate from earned
+            balances belonging to the same FAGA account.
+
+        13. Customer, rider, seller, service provider and
+            restaurant are roles attached to a single FAGA
+            user account. They should not require separate
+            login accounts.
+
+        =====================================================
+        */
+
+    </script>
+
+</body>
+</html>

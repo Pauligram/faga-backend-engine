@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food & Restaurants | FAGA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #172033;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .top-header {
+            background: #071a33;
+            color: #fff;
+        }
+
+        .header-main {
+            max-width: 1450px;
+            margin: auto;
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            padding: 12px 24px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff7a18;
+        }
+
+        .location-box {
+            font-size: 12px;
+            color: #d8dfeb;
+            white-space: nowrap;
+        }
+
+        .location-box strong {
+            display: block;
+            color: #fff;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .main-search {
+            flex: 1;
+            height: 44px;
+            display: flex;
+            background: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            max-width: 700px;
+        }
+
+        .search-category {
+            width: 145px;
+            border: none;
+            border-right: 1px solid #ddd;
+            background: #f3f3f3;
+            padding: 0 12px;
+            outline: none;
+        }
+
+        .main-search input {
+            flex: 1;
+            border: none;
+            padding: 0 15px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .main-search button {
+            width: 54px;
+            border: none;
+            background: #ff7a18;
+            color: #fff;
+            cursor: pointer;
+            font-size: 19px;
+        }
+
+        .header-account {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .header-account strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .header-link {
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .cart {
+            position: relative;
+            font-size: 25px;
+            white-space: nowrap;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -9px;
+            right: -10px;
+            background: #ff7a18;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .nav-bar {
+            background: #102b4c;
+            color: #fff;
+        }
+
+        .nav-inner {
+            max-width: 1450px;
+            margin: auto;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-inner a:hover {
+            color: #ff9a4b;
+        }
+
+        /* =========================
+           BREADCRUMB
+        ========================= */
+
+        .breadcrumb {
+            max-width: 1450px;
+            margin: auto;
+            padding: 18px 24px 8px;
+            font-size: 13px;
+            color: #687386;
+        }
+
+        .breadcrumb span {
+            color: #172033;
+            font-weight: 600;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .food-hero {
+            max-width: 1450px;
+            margin: 10px auto 30px;
+            padding: 0 24px;
+        }
+
+        .food-hero-inner {
+            min-height: 370px;
+            border-radius: 14px;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(5,18,37,.96) 0%, rgba(5,18,37,.82) 42%, rgba(5,18,37,.25) 100%),
+                url("./assets/food-hero.jpg") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 55px;
+        }
+
+        .hero-content {
+            max-width: 620px;
+            color: #fff;
+        }
+
+        .hero-label {
+            color: #ff8a32;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            line-height: 1.03;
+            margin-bottom: 18px;
+        }
+
+        .hero-content h1 span {
+            color: #ff7a18;
+        }
+
+        .hero-content p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #e1e7f0;
+            margin-bottom: 26px;
+        }
+
+        .hero-search {
+            background: #fff;
+            max-width: 590px;
+            height: 54px;
+            border-radius: 30px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .hero-search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0 22px;
+            font-size: 15px;
+        }
+
+        .hero-search button {
+            border: none;
+            background: #ff7a18;
+            color: #fff;
+            padding: 0 28px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* =========================
+           GENERAL
+        ========================= */
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            margin-bottom: 42px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 27px;
+        }
+
+        .section-header p {
+            color: #697386;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .view-all {
+            color: #e96508;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* =========================
+           FOOD CATEGORIES
+        ========================= */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 10px;
+            text-align: center;
+            border: 1px solid #e5e8ee;
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        }
+
+        .category-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #fff1e7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto auto 12px;
+            font-size: 29px;
+        }
+
+        .category-card h3 {
+            font-size: 14px;
+        }
+
+        /* =========================
+           DEAL STRIP
+        ========================= */
+
+        .deal-strip {
+            background: #071a33;
+            color: #fff;
+            border-radius: 12px;
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .deal-strip h2 {
+            font-size: 23px;
+            margin-bottom: 5px;
+        }
+
+        .deal-strip p {
+            color: #cbd5e3;
+            font-size: 14px;
+        }
+
+        .deal-button {
+            background: #ff7a18;
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           RESTAURANTS
+        ========================= */
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .restaurant-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e4e7ec;
+            transition: .2s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        }
+
+        .restaurant-image {
+            height: 185px;
+            position: relative;
+            background: #ddd;
+        }
+
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff7a18;
+            color: #fff;
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .restaurant-info {
+            padding: 16px;
+        }
+
+        .restaurant-info h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .restaurant-meta {
+            color: #697386;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .rating strong {
+            background: #087443;
+            color: #fff;
+            padding: 4px 7px;
+            border-radius: 4px;
+        }
+
+        .delivery-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #687386;
+        }
+
+        /* =========================
+           FOOD PRODUCTS
+        ========================= */
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .food-card {
+            background: #fff;
+            border: 1px solid #e4e7ec;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            transition: .2s;
+        }
+
+        .food-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+            transform: translateY(-3px);
+        }
+
+        .food-image {
+            height: 210px;
+            position: relative;
+            background: #eee;
+        }
+
+        .food-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .discount {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            background: #e85d04;
+            color: #fff;
+            padding: 6px 9px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .wishlist {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            border: none;
+            background: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.12);
+        }
+
+        .wishlist.active {
+            color: #e63946;
+        }
+
+        .food-info {
+            padding: 15px;
+        }
+
+        .food-category {
+            color: #7a8495;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .food-info h3 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .food-description {
+            color: #6d7788;
+            font-size: 12px;
+            line-height: 1.5;
+            min-height: 37px;
+        }
+
+        .food-restaurant {
+            margin-top: 9px;
+            font-size: 12px;
+            color: #555f70;
+        }
+
+        .food-rating {
+            margin-top: 9px;
+            font-size: 12px;
+        }
+
+        .food-bottom {
+            margin-top: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #101828;
+        }
+
+        .old-price {
+            color: #98a1af;
+            text-decoration: line-through;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .add-button {
+            background: #ff7a18;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 9px 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* =========================
+           WHY FAGA FOOD
+        ========================= */
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .why-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e5e8ee;
+        }
+
+        .why-icon {
+            font-size: 30px;
+            margin-bottom: 13px;
+        }
+
+        .why-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .why-card p {
+            color: #697386;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           PARTNER CTA
+        ========================= */
+
+        .partner-cta {
+            background:
+                linear-gradient(90deg, rgba(7,26,51,.97), rgba(7,26,51,.78)),
+                url("./assets/food-partner.jpg") center/cover;
+            border-radius: 14px;
+            padding: 50px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .partner-cta h2 {
+            font-size: 31px;
+            margin-bottom: 10px;
+        }
+
+        .partner-cta p {
+            color: #d6deea;
+            max-width: 650px;
+            line-height: 1.7;
+        }
+
+        .partner-button {
+            background: #ff7a18;
+            color: #fff;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 50px;
+            background: #071a33;
+            color: #fff;
+        }
+
+        .footer-main {
+            max-width: 1450px;
+            margin: auto;
+            padding: 50px 24px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 45px;
+        }
+
+        .footer-brand p {
+            color: #b8c3d4;
+            line-height: 1.7;
+            font-size: 14px;
+            max-width: 400px;
+            margin-top: 15px;
+        }
+
+        .footer-col h3 {
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #b8c3d4;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: #ff7a18;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.12);
+            text-align: center;
+            padding: 18px;
+            color: #9daabd;
+            font-size: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .header-main {
+                flex-wrap: wrap;
+            }
+
+            .main-search {
+                order: 5;
+                flex-basis: 100%;
+                max-width: none;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .restaurant-grid,
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .location-box,
+            .header-account,
+            .header-link {
+                display: none;
+            }
+
+            .nav-inner {
+                overflow-x: auto;
+                gap: 20px;
+                white-space: nowrap;
+            }
+
+            .food-hero-inner {
+                padding: 35px 25px;
+                min-height: 420px;
+            }
+
+            .hero-content h1 {
+                font-size: 40px;
+            }
+
+            .hero-search {
+                height: auto;
+                flex-direction: column;
+                border-radius: 8px;
+            }
+
+            .hero-search input {
+                height: 50px;
+            }
+
+            .hero-search button {
+                height: 48px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .restaurant-grid,
+            .food-grid,
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .deal-strip,
+            .partner-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .footer-main {
+                grid-template-columns: 1fr;
+            }
+
+            .header-main,
+            .container,
+            .food-hero,
+            .breadcrumb {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="top-header">
+
+        <div class="header-main">
+
+            <a href="index.html" class="logo">
+                FA<span>GA</span>
+            </a>
+
+            <div class="location-box">
+                Deliver to
+                <strong>📍 Your Location</strong>
+            </div>
+
+            <div class="main-search">
+
+                <select class="search-category">
+                    <option>Food</option>
+                    <option>Restaurants</option>
+                    <option>Meals</option>
+                    <option>Groceries</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="headerSearch"
+                    placeholder="Search for food, restaurants or meals..."
+                >
+
+                <button onclick="searchFood()">🔍</button>
+
+            </div>
+
+            <div class="header-account">
+                Hello, Guest
+                <strong>Account</strong>
+            </div>
+
+            <a href="#" class="header-link">
+                Wishlist
+            </a>
+
+            <a href="#" class="cart">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+
+        </div>
+
+        <nav class="nav-bar">
+
+            <div class="nav-inner">
+
+                <a href="index.html">All Categories</a>
+                <a href="index.html">Home</a>
+                <a href="logistics.html">Logistics</a>
+                <a href="services.html">Services</a>
+                <a href="marketplace.html">Buy & Sell</a>
+                <a href="food.html">Food</a>
+                <a href="help.html">Help</a>
+                <a href="track-order.html">Track Order</a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         BREADCRUMB
+    ========================== -->
+
+    <div class="breadcrumb">
+        Home / <span>Food & Restaurants</span>
+    </div>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="food-hero">
+
+        <div class="food-hero-inner">
+
+            <div class="hero-content">
+
+                <div class="hero-label">
+                    FAGA FOOD & RESTAURANTS
+                </div>
+
+                <h1>
+                    Good Food.<br>
+                    <span>Delivered Fast.</span>
+                </h1>
+
+                <p>
+                    Discover restaurants around you, order your favourite meals,
+                    and have fresh food delivered directly to your door.
+                </p>
+
+                <div class="hero-search">
+
+                    <input
+                        type="text"
+                        id="foodSearch"
+                        placeholder="Search meals, restaurants or cuisine..."
+                    >
+
+                    <button onclick="searchFoodPage()">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOD CATEGORIES
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Explore Food Categories</h2>
+                    <p>What are you craving today?</p>
+                </div>
+
+                <a href="#" class="view-all">View All</a>
+
+            </div>
+
+
+            <div class="category-grid">
+
+                <div class="category-card" onclick="selectCategory('Rice')">
+                    <div class="category-icon">🍚</div>
+                    <h3>Rice & Meals</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Fast Food')">
+                    <div class="category-icon">🍔</div>
+                    <h3>Fast Food</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Pizza')">
+                    <div class="category-icon">🍕</div>
+                    <h3>Pizza</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Chicken')">
+                    <div class="category-icon">🍗</div>
+                    <h3>Chicken</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('African Food')">
+                    <div class="category-icon">🥘</div>
+                    <h3>African Food</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Drinks')">
+                    <div class="category-icon">🥤</div>
+                    <h3>Drinks</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Desserts')">
+                    <div class="category-icon">🍰</div>
+                    <h3>Desserts</h3>
+                </div>
+
+                <div class="category-card" onclick="selectCategory('Groceries')">
+                    <div class="category-icon">🛒</div>
+                    <h3>Groceries</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DEAL STRIP
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="deal-strip">
+
+                <div>
+                    <h2>🔥 Today's Food Deals</h2>
+                    <p>
+                        Save more on selected meals and restaurants.
+                    </p>
+                </div>
+
+                <button class="deal-button" onclick="showDeals()">
+                    View Deals
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         POPULAR RESTAURANTS
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Popular Restaurants</h2>
+                    <p>Top restaurants customers are ordering from</p>
+                </div>
+
+                <a href="#" class="view-all">View All Restaurants</a>
+
+            </div>
+
+
+            <div class="restaurant-grid">
+
+                <div class="restaurant-card">
+
+                    <div class="restaurant-image">
+                        <span class="restaurant-badge">
+                            20% OFF
+                        </span>
+
+                        <img
+                            src="./assets/food-1.svg"
+                            alt="Restaurant food"
+                        >
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <h3>FAGA Kitchen</h3>
+
+                        <div class="restaurant-meta">
+                            Nigerian • African • Local Meals
+                        </div>
+
+                        <div class="rating">
+                            <strong>4.8 ★</strong>
+                            <span>1,200+ ratings</span>
+                        </div>
+
+                        <div class="delivery-info">
+                            <span>🚴 25–35 min</span>
+                            <span>₦800 delivery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="restaurant-card">
+
+                    <div class="restaurant-image">
+                        <span class="restaurant-badge">
+                            POPULAR
+                        </span>
+
+                        <img
+                            src="./assets/food-2.svg"
+                            alt="Restaurant food"
+                        >
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <h3>Urban Bites</h3>
+
+                        <div class="restaurant-meta">
+                            Burgers • Chicken • Fast Food
+                        </div>
+
+                        <div class="rating">
+                            <strong>4.7 ★</strong>
+                            <span>850+ ratings</span>
+                        </div>
+
+                        <div class="delivery-info">
+                            <span>🚴 20–30 min</span>
+                            <span>₦700 delivery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="restaurant-card">
+
+                    <div class="restaurant-image">
+
+                        <img
+                            src="./assets/food-3.svg"
+                            alt="Restaurant food"
+                        >
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <h3>Naija Taste</h3>
+
+                        <div class="restaurant-meta">
+                            Jollof • Soups • Rice • Local Food
+                        </div>
+
+                        <div class="rating">
+                            <strong>4.9 ★</strong>
+                            <span>2,100+ ratings</span>
+                        </div>
+
+                        <div class="delivery-info">
+                            <span>🚴 30–40 min</span>
+                            <span>₦600 delivery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="restaurant-card">
+
+                    <div class="restaurant-image">
+                        <span class="restaurant-badge">
+                            NEW
+                        </span>
+
+                        <img
+                            src="./assets/food-4.svg"
+                            alt="Restaurant food"
+                        >
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <h3>Food House</h3>
+
+                        <div class="restaurant-meta">
+                            Meals • Drinks • Desserts
+                        </div>
+
+                        <div class="rating">
+                            <strong>4.6 ★</strong>
+                            <span>500+ ratings</span>
+                        </div>
+
+                        <div class="delivery-info">
+                            <span>🚴 25–40 min</span>
+                            <span>₦750 delivery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         POPULAR MEALS
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Popular Meals</h2>
+                    <p>Customer favourites available for delivery</p>
+                </div>
+
+                <a href="#" class="view-all">View All</a>
+
+            </div>
+
+
+            <div class="food-grid">
+
+
+                <div class="food-card">
+
+                    <div class="food-image">
+
+                        <span class="discount">
+                            15% OFF
+                        </span>
+
+                        <button class="wishlist" onclick="toggleWishlist(this)">
+                            ♡
+                        </button>
+
+                        <img
+                            src="./assets/food-1.svg"
+                            alt="Jollof rice and chicken"
+                        >
+
+                    </div>
+
+                    <div class="food-info">
+
+                        <div class="food-category">
+                            Nigerian Food
+                        </div>
+
+                        <h3>Jollof Rice & Chicken</h3>
+
+                        <div class="food-description">
+                            Smoky party jollof rice served with grilled chicken.
+                        </div>
+
+                        <div class="food-restaurant">
+                            FAGA Kitchen
+                        </div>
+
+                        <div class="food-rating">
+                            ⭐ 4.9 (340)
+                        </div>
+
+                        <div class="food-bottom">
+
+                            <div class="price">
+                                ₦4,500
+                                <span class="old-price">₦5,300</span>
+                            </div>
+
+                            <button
+                                class="add-button"
+                                onclick="addToCart('Jollof Rice & Chicken')"
+                            >
+                                + Add
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="food-card">
+
+                    <div class="food-image">
+
+                        <span class="discount">
+                            10% OFF
+                        </span>
+
+                        <button class="wishlist" onclick="toggleWishlist(this)">
+                            ♡
+                        </button>
+
+                        <img
+                            src="./assets/food-2.svg"
+                            alt="Burger"
+                        >
+
+                    </div>
+
+                    <div class="food-info">
+
+                        <div class="food-category">
+                            Fast Food
+                        </div>
+
+                        <h3>Classic Beef Burger</h3>
+
+                        <div class="food-description">
+                            Juicy beef burger with cheese, vegetables and special sauce.
+                        </div>
+
+                        <div class="food-restaurant">
+                            Urban Bites
+                        </div>
+
+                        <div class="food-rating">
+                            ⭐ 4.7 (215)
+                        </div>
+
+                        <div class="food-bottom">
+
+                            <div class="price">
+                                ₦5,000
+                            </div>
+
+                            <button
+                                class="add-button"
+                                onclick="addToCart('Classic Beef Burger')"
+                            >
+                                + Add
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="food-card">
+
+                    <div class="food-image">
+
+                        <button class="wishlist" onclick="toggleWishlist(this)">
+                            ♡
+                        </button>
+
+                        <img
+                            src="./assets/food-3.svg"
+                            alt="Fried rice"
+                        >
+
+                    </div>
+
+                    <div class="food-info">
+
+                        <div class="food-category">
+                            Rice
+                        </div>
+
+                        <h3>Fried Rice Special</h3>
+
+                        <div class="food-description">
+                            Nigerian-style fried rice served with chicken and plantain.
+                        </div>
+
+                        <div class="food-restaurant">
+                            Naija Taste
+                        </div>
+
+                        <div class="food-rating">
+                            ⭐ 4.8 (410)
+                        </div>
+
+                        <div class="food-bottom">
+
+                            <div class="price">
+                                ₦4,200
+                            </div>
+
+                            <button
+                                class="add-button"
+                                onclick="addToCart('Fried Rice Special')"
+                            >
+                                + Add
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="food-card">
+
+                    <div class="food-image">
+
+                        <span class="discount">
+                            DEAL
+                        </span>
+
+                        <button class="wishlist" onclick="toggleWishlist(this)">
+                            ♡
+                        </button>
+
+                        <img
+                            src="./assets/food-4.svg"
+                            alt="Chicken meal"
+                        >
+
+                    </div>
+
+                    <div class="food-info">
+
+                        <div class="food-category">
+                            Chicken
+                        </div>
+
+                        <h3>Spicy Grilled Chicken</h3>
+
+                        <div class="food-description">
+                            Tender grilled chicken with spicy sauce and fries.
+                        </div>
+
+                        <div class="food-restaurant">
+                            Food House
+                        </div>
+
+                        <div class="food-rating">
+                            ⭐ 4.6 (188)
+                        </div>
+
+                        <div class="food-bottom">
+
+                            <div class="price">
+                                ₦4,800
+                            </div>
+
+                            <button
+                                class="add-button"
+                                onclick="addToCart('Spicy Grilled Chicken')"
+                            >
+                                + Add
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         WHY FAGA FOOD
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Why Order Food With FAGA?</h2>
+                    <p>A simple way to get your favourite meals delivered.</p>
+                </div>
+
+            </div>
+
+
+            <div class="why-grid">
+
+                <div class="why-card">
+
+                    <div class="why-icon">🍽️</div>
+
+                    <h3>Lots of Choices</h3>
+
+                    <p>
+                        Browse restaurants, meals and cuisines in one convenient
+                        marketplace.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">🚴</div>
+
+                    <h3>Fast Delivery</h3>
+
+                    <p>
+                        Our delivery network helps restaurants get your order
+                        moving quickly.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">🔒</div>
+
+                    <h3>Secure Ordering</h3>
+
+                    <p>
+                        Your FAGA account keeps your orders and delivery information
+                        in one place.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">⭐</div>
+
+                    <h3>Trusted Restaurants</h3>
+
+                    <p>
+                        Discover highly rated restaurants and see customer ratings
+                        before ordering.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         RESTAURANT PARTNER CTA
+    ========================== -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="partner-cta">
+
+                <div>
+
+                    <h2>Own a Restaurant?</h2>
+
+                    <p>
+                        Join FAGA and reach more customers. List your restaurant,
+                        receive orders and use FAGA's delivery network to serve
+                        customers.
+                    </p>
+
+                </div>
+
+                <button
+                    class="partner-button"
+                    onclick="becomeRestaurantPartner()"
+                >
+                    Partner With FAGA
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <div class="logo">
+                    FA<span>GA</span>
+                </div>
+
+                <p>
+                    FAGA brings logistics, services, shopping and food delivery
+                    together in one platform.
+                </p>
+
+            </div>
+
+
+            <div class="footer-col">
+
+                <h3>FAGA</h3>
+
+                <a href="index.html">Home</a>
+                <a href="logistics.html">Logistics</a>
+                <a href="services.html">Services</a>
+                <a href="marketplace.html">Buy & Sell</a>
+                <a href="food.html">Food</a>
+
+            </div>
+
+
+            <div class="footer-col">
+
+                <h3>Customer Service</h3>
+
+                <a href="help.html">Help Centre</a>
+                <a href="track-order.html">Track Order</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Safety</a>
+
+            </div>
+
+
+            <div class="footer-col">
+
+                <h3>Join FAGA</h3>
+
+                <a href="#">Become a Rider</a>
+                <a href="#">Sell on FAGA</a>
+                <a href="#">Offer Services</a>
+                <a href="#">Restaurant Partner</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+            © 2026 FAGA. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        let cartCount = 0;
+
+
+        function addToCart(foodName) {
+
+            cartCount++;
+
+            document.getElementById("cartCount").textContent = cartCount;
+
+            alert(foodName + " has been added to your cart.");
+
+        }
+
+
+        function toggleWishlist(button) {
+
+            button.classList.toggle("active");
+
+            if (button.classList.contains("active")) {
+
+                button.innerHTML = "♥";
+
+            } else {
+
+                button.innerHTML = "♡";
+
+            }
+
+        }
+
+
+        function searchFood() {
+
+            const value =
+                document.getElementById("headerSearch").value.trim();
+
+            if (!value) {
+
+                alert("Please enter a food or restaurant to search.");
+
+                return;
+
+            }
+
+            alert("Searching FAGA Food for: " + value);
+
+        }
+
+
+        function searchFoodPage() {
+
+            const value =
+                document.getElementById("foodSearch").value.trim();
+
+            if (!value) {
+
+                alert("Please enter a meal, restaurant or cuisine.");
+
+                return;
+
+            }
+
+            alert("Searching for: " + value);
+
+        }
+
+
+        function selectCategory(category) {
+
+            alert("Showing " + category + " on FAGA Food.");
+
+        }
+
+
+        function showDeals() {
+
+            alert("Food deals will appear here when connected to the FAGA backend.");
+
+        }
+
+
+        function becomeRestaurantPartner() {
+
+            /*
+                This should eventually open the same FAGA account registration/
+                onboarding flow.
+
+                Example:
+                /register.html?role=restaurant
+
+                It should NOT create a separate restaurant account.
+                The restaurant role is activated on the user's existing FAGA account.
+            */
+
+            window.location.href="../user portal/register.html?role=restaurant";
+
+        }
+
+    </script>
+
+</body>
+</html>

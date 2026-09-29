@@ -1,0 +1,3058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send a Package | FAGA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0d2748;
+            --orange: #f7931e;
+            --orange-dark: #df7f0d;
+            --white: #ffffff;
+            --light: #f5f7fa;
+            --text: #172033;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --green: #16a34a;
+            --red: #dc2626;
+            --blue: #2563eb;
+            --shadow: 0 10px 30px rgba(7, 26, 51, 0.10);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            height: 72px;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--orange);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #dbe4ef;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.35);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            border: none;
+            color: var(--navy);
+            font-weight: 700;
+            padding: 11px 20px;
+            border-radius: 8px;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 27px;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        .page-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            color: white;
+            padding: 45px 6% 85px;
+        }
+
+        .page-header-inner {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            color: #b8c7d9;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .breadcrumb a {
+            color: var(--orange);
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #cbd5e1;
+            max-width: 700px;
+            font-size: 16px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .booking-wrapper {
+            max-width: 1250px;
+            margin: -50px auto 70px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 390px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border-radius: 17px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+        }
+
+        .card + .card {
+            margin-top: 18px;
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .card-title h2 {
+            font-size: 20px;
+        }
+
+        .card-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        /* =========================
+           STEP HEADER
+        ========================== */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 31px;
+            height: 31px;
+            margin: 0 auto 7px;
+            border-radius: 50%;
+            background: #edf1f5;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .step.active .step-number,
+        .step.completed .step-number {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .step-label {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-section {
+            margin-top: 27px;
+        }
+
+        .form-section:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 13px;
+        }
+
+        .section-number {
+            width: 25px;
+            height: 25px;
+            background: #fff3e2;
+            color: var(--orange-dark);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--red);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            padding: 12px 13px;
+            background: white;
+            color: var(--text);
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(247,147,30,.10);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .field-note {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* =========================
+           LOCATION BOX
+        ========================== */
+
+        .location-box {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .location-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 13px;
+        }
+
+        .location-row + .location-row {
+            border-top: 1px solid var(--border);
+        }
+
+        .location-dot {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            border-radius: 50%;
+        }
+
+        .pickup-dot {
+            background: var(--green);
+        }
+
+        .delivery-dot {
+            background: var(--red);
+            border-radius: 4px;
+        }
+
+        .location-content {
+            flex: 1;
+        }
+
+        .location-content label {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .location-content input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        .current-location {
+            border: none;
+            background: transparent;
+            color: var(--orange-dark);
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           PACKAGE TYPE
+        ========================== */
+
+        .package-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 9px;
+        }
+
+        .package-type {
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 10px;
+            padding: 13px 5px;
+            text-align: center;
+            transition: .2s;
+        }
+
+        .package-type:hover {
+            border-color: #f7c27d;
+        }
+
+        .package-type.selected {
+            border-color: var(--orange);
+            background: #fff8ef;
+        }
+
+        .package-icon {
+            font-size: 25px;
+            margin-bottom: 4px;
+        }
+
+        .package-name {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           DISPATCH TYPE
+        ========================== */
+
+        .dispatch-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .dispatch-option {
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            transition: .2s;
+        }
+
+        .dispatch-option.selected {
+            border-color: var(--orange);
+            background: #fff8ef;
+        }
+
+        .dispatch-top {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 7px;
+        }
+
+        .dispatch-icon {
+            font-size: 27px;
+        }
+
+        .dispatch-name {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .dispatch-option p {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* =========================
+           ADDITIONAL OPTIONS
+        ========================== */
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .checkbox-option {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 11px;
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .checkbox-option input {
+            accent-color: var(--orange);
+        }
+
+        .checkbox-option span {
+            font-size: 11px;
+        }
+
+        /* =========================
+           SUMMARY
+        ========================== */
+
+        .summary-card {
+            position: sticky;
+            top: 90px;
+        }
+
+        .summary-title {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 17px;
+        }
+
+        .summary-route {
+            background: #f8fafc;
+            border-radius: 11px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .summary-point {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 17px;
+        }
+
+        .summary-point:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-point-dot {
+            width: 11px;
+            height: 11px;
+            margin-top: 4px;
+            border-radius: 50%;
+            background: var(--green);
+            flex-shrink: 0;
+        }
+
+        .summary-point:last-child .summary-point-dot {
+            background: var(--red);
+            border-radius: 3px;
+        }
+
+        .summary-point small {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .summary-point strong {
+            font-size: 12px;
+            display: block;
+        }
+
+        .summary-line {
+            position: absolute;
+            left: 19px;
+            top: 32px;
+            height: 30px;
+            width: 1px;
+            border-left: 1px dashed #aeb6c1;
+        }
+
+        /* =========================
+           PRICE
+        ========================== */
+
+        .price-section {
+            margin-top: 20px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .price-row span:first-child {
+            color: var(--muted);
+        }
+
+        .price-total {
+            border-top: 1px solid var(--border);
+            margin-top: 14px;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-total span:first-child {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .total-price {
+            font-size: 25px;
+            font-weight: 900;
+            color: var(--orange-dark);
+        }
+
+        .estimate-note {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 8px;
+        }
+
+        /* =========================
+           PAYMENT
+        ========================== */
+
+        .payment-box {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .payment-icon {
+            width: 39px;
+            height: 39px;
+            background: #eef2f7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-info strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .payment-info span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .change-payment {
+            color: var(--orange-dark);
+            background: transparent;
+            border: none;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           BOOK BUTTON
+        ========================== */
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            background: var(--orange);
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 900;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 18px;
+            transition: .2s;
+        }
+
+        .submit-button:hover {
+            background: var(--orange-dark);
+            color: white;
+        }
+
+        .submit-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .secure-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 10px;
+        }
+
+        /* =========================
+           INFO CARDS
+        ========================== */
+
+        .info-section {
+            max-width: 1250px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .info-section h2 {
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid var(--border);
+        }
+
+        .info-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 11px;
+            background: #fff4e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 13px;
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: var(--navy);
+            color: white;
+            padding: 55px 6% 25px;
+        }
+
+        .footer-grid {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 35px;
+        }
+
+        .footer-brand p {
+            color: #aebdce;
+            font-size: 13px;
+            max-width: 350px;
+            margin-top: 14px;
+        }
+
+        footer h4 {
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer li {
+            margin-bottom: 9px;
+        }
+
+        footer li a {
+            color: #aebdce;
+            font-size: 13px;
+        }
+
+        footer li a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            max-width: 1250px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.1);
+            display: flex;
+            justify-content: space-between;
+            color: #91a2b7;
+            font-size: 12px;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 17px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,.25);
+        }
+
+        .modal-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #fff4e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 28px;
+        }
+
+        .modal-box h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .modal-box p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 9px;
+        }
+
+        .modal-cancel {
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .modal-confirm {
+            background: var(--orange);
+            border: none;
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        /* =========================
+           TOAST
+        ========================== */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: var(--navy);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 9px;
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 4000;
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1000px) {
+
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .nav-actions .btn-outline {
+                display: none;
+            }
+
+            .nav-actions .btn-orange {
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+
+            .page-header {
+                padding: 35px 20px 75px;
+            }
+
+            .page-header h1 {
+                font-size: 29px;
+            }
+
+            .booking-wrapper {
+                margin-top: -38px;
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 19px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .package-types {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dispatch-types {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-brand {
+                grid-column: auto;
+            }
+
+            .steps {
+                gap: 3px;
+            }
+
+            .step-label {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <span class="logo-mark">F</span>
+            FAGA
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="index.html">Home</a>
+
+            <a href="logistics.html" class="active">
+                Logistics
+            </a>
+
+            <a href="marketplace.html">
+                Marketplace
+            </a>
+
+            <a href="services.html">
+                Services
+            </a>
+
+            <a href="food.html">
+                Food
+            </a>
+
+            <a href="jobs.html">
+                Jobs
+            </a>
+
+            <a href="help.html">
+                Help
+            </a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="../user portal/login.html" class="btn-outline">
+                Login
+            </a>
+
+            <a href="../user portal/dashboard.html" class="btn-orange">
+                My Account
+            </a>
+
+            <button
+                type="button"
+                class="mobile-menu"
+                id="mobileMenu"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-inner">
+
+            <div class="breadcrumb">
+
+                <a href="index.html">Home</a>
+                &nbsp; / &nbsp;
+
+                <a href="logistics.html">Logistics</a>
+                &nbsp; / &nbsp;
+
+                Send a Package
+
+            </div>
+
+            <h1>Send a Package</h1>
+
+            <p>
+                Send packages across town with a trusted FAGA
+                dispatch rider. Enter your pickup and delivery details,
+                get an estimated fee and request a rider.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN BOOKING AREA
+    ========================== -->
+
+    <main class="booking-wrapper">
+
+        <div class="booking-grid">
+
+
+            <!-- =====================
+                 FORM
+            ====================== -->
+
+            <section>
+
+
+                <!-- STEPS -->
+
+                <div class="card">
+
+                    <div class="steps">
+
+                        <div class="step active">
+
+                            <div class="step-number">
+                                1
+                            </div>
+
+                            <div class="step-label">
+                                Locations
+                            </div>
+
+                        </div>
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                2
+                            </div>
+
+                            <div class="step-label">
+                                Package
+                            </div>
+
+                        </div>
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                3
+                            </div>
+
+                            <div class="step-label">
+                                Delivery
+                            </div>
+
+                        </div>
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                4
+                            </div>
+
+                            <div class="step-label">
+                                Confirm
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCATIONS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="section-number">
+                                1
+                            </span>
+
+                            Pickup & delivery locations
+
+                        </div>
+
+
+                        <div class="location-box">
+
+                            <div class="location-row">
+
+                                <span class="location-dot pickup-dot"></span>
+
+                                <div class="location-content">
+
+                                    <label>
+                                        PICKUP LOCATION
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="pickup"
+                                        placeholder="Where should the rider collect the package?"
+                                    >
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="current-location"
+                                    id="useLocation"
+                                >
+                                    Use current
+                                </button>
+
+                            </div>
+
+
+                            <div class="location-row">
+
+                                <span class="location-dot delivery-dot"></span>
+
+                                <div class="location-content">
+
+                                    <label>
+                                        DELIVERY LOCATION
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="delivery"
+                                        placeholder="Where should the rider deliver it?"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SENDER / RECEIVER -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="section-number">
+                                2
+                            </span>
+
+                            Sender & receiver
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Sender name
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="senderName"
+                                    placeholder="Full name"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Sender phone
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="senderPhone"
+                                    placeholder="0800 000 0000"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Receiver name
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="receiverName"
+                                    placeholder="Full name"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Receiver phone
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="receiverPhone"
+                                    placeholder="0800 000 0000"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PACKAGE -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="section-number">
+                                3
+                            </span>
+
+                            Package information
+
+                        </div>
+
+
+                        <div class="package-types">
+
+
+                            <button
+                                type="button"
+                                class="package-type selected"
+                                data-package="Document"
+                            >
+
+                                <div class="package-icon">
+                                    📄
+                                </div>
+
+                                <div class="package-name">
+                                    Document
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="package-type"
+                                data-package="Small Parcel"
+                            >
+
+                                <div class="package-icon">
+                                    📦
+                                </div>
+
+                                <div class="package-name">
+                                    Small Parcel
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="package-type"
+                                data-package="Food"
+                            >
+
+                                <div class="package-icon">
+                                    🍱
+                                </div>
+
+                                <div class="package-name">
+                                    Food
+                                </div>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="package-type"
+                                data-package="Other"
+                            >
+
+                                <div class="package-icon">
+                                    🛍️
+                                </div>
+
+                                <div class="package-name">
+                                    Other
+                                </div>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="form-grid" style="margin-top:14px;">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Package description
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="packageDescription"
+                                    placeholder="e.g. Clothes, laptop, documents"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Approx. weight
+                                </label>
+
+                                <select id="packageWeight">
+
+                                    <option value="1">
+                                        Up to 1 kg
+                                    </option>
+
+                                    <option value="3">
+                                        1 - 3 kg
+                                    </option>
+
+                                    <option value="5">
+                                        3 - 5 kg
+                                    </option>
+
+                                    <option value="10">
+                                        5 - 10 kg
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Special instructions
+                                </label>
+
+                                <textarea
+                                    id="instructions"
+                                    placeholder="Tell the rider anything important about the package..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISPATCH TYPE -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="section-number">
+                                4
+                            </span>
+
+                            Delivery option
+
+                        </div>
+
+
+                        <div class="dispatch-types">
+
+
+                            <button
+                                type="button"
+                                class="dispatch-option selected"
+                                data-dispatch="standard"
+                                data-price="1800"
+                            >
+
+                                <div class="dispatch-top">
+
+                                    <span class="dispatch-icon">
+                                        🛵
+                                    </span>
+
+                                    <div>
+
+                                        <div class="dispatch-name">
+                                            Standard Dispatch
+                                        </div>
+
+                                        <p>
+                                            Affordable local delivery
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <p>
+                                    Rider pickup within approximately
+                                    10–20 minutes.
+                                </p>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="dispatch-option"
+                                data-dispatch="priority"
+                                data-price="2800"
+                            >
+
+                                <div class="dispatch-top">
+
+                                    <span class="dispatch-icon">
+                                        ⚡
+                                    </span>
+
+                                    <div>
+
+                                        <div class="dispatch-name">
+                                            Priority Dispatch
+                                        </div>
+
+                                        <p>
+                                            Faster pickup and delivery
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <p>
+                                    Prioritized rider matching for
+                                    time-sensitive deliveries.
+                                </p>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OPTIONS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="section-number">
+                                5
+                            </span>
+
+                            Additional options
+
+                        </div>
+
+
+                        <div class="checkbox-grid">
+
+                            <label class="checkbox-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="fragile"
+                                >
+
+                                <span>
+                                    Handle as fragile
+                                </span>
+
+                            </label>
+
+
+                            <label class="checkbox-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="callReceiver"
+                                >
+
+                                <span>
+                                    Rider should call receiver
+                                </span>
+
+                            </label>
+
+
+                            <label class="checkbox-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="signature"
+                                >
+
+                                <span>
+                                    Require delivery confirmation
+                                </span>
+
+                            </label>
+
+
+                            <label class="checkbox-option">
+
+                                <input
+                                    type="checkbox"
+                                    id="photoProof"
+                                >
+
+                                <span>
+                                    Photo proof of delivery
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EXTRA NOTES -->
+
+                    <div class="form-section">
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Preferred pickup time
+                                </label>
+
+                                <select id="pickupTime">
+
+                                    <option>
+                                        As soon as possible
+                                    </option>
+
+                                    <option>
+                                        Within 30 minutes
+                                    </option>
+
+                                    <option>
+                                        Within 1 hour
+                                    </option>
+
+                                    <option>
+                                        Schedule for later
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Payment method
+                                </label>
+
+                                <select id="paymentMethod">
+
+                                    <option value="wallet">
+                                        FAGA Wallet
+                                    </option>
+
+                                    <option value="card">
+                                        Debit / Credit Card
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================
+                 SUMMARY
+            ====================== -->
+
+            <aside>
+
+                <div class="card summary-card">
+
+                    <div class="summary-title">
+                        Delivery summary
+                    </div>
+
+
+                    <div class="summary-route">
+
+                        <div class="summary-point">
+
+                            <span class="summary-point-dot"></span>
+
+                            <div>
+
+                                <small>
+                                    Pickup
+                                </small>
+
+                                <strong id="summaryPickup">
+                                    Pickup location
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-line"></div>
+
+
+                        <div class="summary-point">
+
+                            <span class="summary-point-dot"></span>
+
+                            <div>
+
+                                <small>
+                                    Delivery
+                                </small>
+
+                                <strong id="summaryDelivery">
+                                    Delivery location
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="price-section">
+
+                        <div class="price-row">
+
+                            <span>
+                                Base delivery
+                            </span>
+
+                            <strong id="basePrice">
+                                ₦1,800
+                            </strong>
+
+                        </div>
+
+
+                        <div class="price-row">
+
+                            <span>
+                                Distance estimate
+                            </span>
+
+                            <strong>
+                                ₦600
+                            </strong>
+
+                        </div>
+
+
+                        <div class="price-row">
+
+                            <span>
+                                Package handling
+                            </span>
+
+                            <strong id="handlingPrice">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="price-row">
+
+                            <span>
+                                Priority fee
+                            </span>
+
+                            <strong id="priorityPrice">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="price-total">
+
+                            <span>
+                                Estimated total
+                            </span>
+
+                            <span
+                                class="total-price"
+                                id="totalPrice"
+                            >
+                                ₦2,400
+                            </span>
+
+                        </div>
+
+
+                        <p class="estimate-note">
+                            Final delivery price is calculated and
+                            confirmed by FAGA's backend before payment.
+                        </p>
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="payment-box">
+
+                        <div class="payment-icon">
+                            💳
+                        </div>
+
+                        <div class="payment-info">
+
+                            <strong>
+                                FAGA Wallet
+                            </strong>
+
+                            <span>
+                                Payment will be processed securely.
+                            </span>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="change-payment"
+                            id="changePayment"
+                        >
+                            Change
+                        </button>
+
+                    </div>
+
+
+                    <!-- REQUEST -->
+
+                    <button
+                        type="button"
+                        class="submit-button"
+                        id="requestRider"
+                    >
+                        Request Dispatch Rider
+                    </button>
+
+
+                    <div class="secure-note">
+                        🔒 Secure payment · Package tracking included
+                    </div>
+
+                </div>
+
+
+                <!-- DELIVERY NOTE -->
+
+                <div class="card">
+
+                    <div style="font-size:15px;font-weight:800;margin-bottom:9px;">
+                        📍 Track your package
+                    </div>
+
+                    <p style="font-size:12px;color:var(--muted);">
+                        Once a dispatch rider accepts your request,
+                        FAGA will provide a tracking number and allow
+                        you to follow the rider's location in real time.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         INFO
+    ========================== -->
+
+    <section class="info-section">
+
+        <h2>
+            How FAGA dispatch works
+        </h2>
+
+        <div class="info-grid">
+
+
+            <article class="info-card">
+
+                <div class="info-icon">
+                    📦
+                </div>
+
+                <h3>
+                    1. Create your delivery
+                </h3>
+
+                <p>
+                    Enter the pickup, receiver and package details.
+                    FAGA gives you an estimated delivery cost.
+                </p>
+
+            </article>
+
+
+            <article class="info-card">
+
+                <div class="info-icon">
+                    🛵
+                </div>
+
+                <h3>
+                    2. Rider is assigned
+                </h3>
+
+                <p>
+                    FAGA matches your package with an available
+                    dispatch rider near the pickup location.
+                </p>
+
+            </article>
+
+
+            <article class="info-card">
+
+                <div class="info-icon">
+                    📍
+                </div>
+
+                <h3>
+                    3. Track your delivery
+                </h3>
+
+                <p>
+                    After pickup, you can track the dispatch rider
+                    and delivery progress until the package arrives.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <span class="logo-mark">
+                        F
+                    </span>
+
+                    FAGA
+
+                </div>
+
+                <p>
+                    FAGA brings logistics, rides, marketplace,
+                    food and on-demand services together in one platform.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>
+                    Explore
+                </h4>
+
+                <ul>
+
+                    <li>
+                        <a href="logistics.html">
+                            Logistics
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="marketplace.html">
+                            Marketplace
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="services.html">
+                            Services
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="food.html">
+                            Food
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>
+                    Logistics
+                </h4>
+
+                <ul>
+
+                    <li>
+                        <a href="ride-booking.html">
+                            Book a Ride
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ride-tracking.html">
+                            Track Ride
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="delivery-booking.html">
+                            Send Package
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="delivery-tracking.html">
+                            Track Dispatch
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>
+                    Support
+                </h4>
+
+                <ul>
+
+                    <li>
+                        <a href="help.html">
+                            Help Center
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="safety.html">
+                            Safety
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="privacy.html">
+                            Privacy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="terms.html">
+                            Terms
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 FAGA. All rights reserved.
+            </span>
+
+            <span>
+                Reliable delivery across your city.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         CONFIRM MODAL
+    ========================== -->
+
+    <div
+        class="modal"
+        id="confirmModal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-icon">
+                🛵
+            </div>
+
+            <h2>
+                Request a dispatch rider?
+            </h2>
+
+            <p id="modalMessage">
+                FAGA will search for an available dispatch rider
+                near your pickup location.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-cancel"
+                    id="closeConfirm"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-confirm"
+                    id="confirmRequest"
+                >
+                    Request Rider
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         TOAST
+    ========================== -->
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+
+    <script>
+
+        /* =========================================
+           FAGA DELIVERY BOOKING
+           PUBLIC CUSTOMER FRONTEND
+        ========================================= */
+
+
+        const pickupInput =
+            document.getElementById("pickup");
+
+        const deliveryInput =
+            document.getElementById("delivery");
+
+        const summaryPickup =
+            document.getElementById("summaryPickup");
+
+        const summaryDelivery =
+            document.getElementById("summaryDelivery");
+
+        const packageTypes =
+            document.querySelectorAll(".package-type");
+
+        const dispatchOptions =
+            document.querySelectorAll(".dispatch-option");
+
+        const basePriceElement =
+            document.getElementById("basePrice");
+
+        const handlingPriceElement =
+            document.getElementById("handlingPrice");
+
+        const priorityPriceElement =
+            document.getElementById("priorityPrice");
+
+        const totalPriceElement =
+            document.getElementById("totalPrice");
+
+        const fragileCheckbox =
+            document.getElementById("fragile");
+
+        const requestRider =
+            document.getElementById("requestRider");
+
+        const confirmModal =
+            document.getElementById("confirmModal");
+
+        const toast =
+            document.getElementById("toast");
+
+
+        let selectedPackage = "Document";
+
+        let selectedDispatch = "standard";
+
+        let dispatchBasePrice = 1800;
+
+
+        /* =========================================
+           PACKAGE SELECTION
+        ========================================= */
+
+        packageTypes.forEach(option => {
+
+            option.addEventListener("click", () => {
+
+                packageTypes.forEach(item => {
+
+                    item.classList.remove("selected");
+
+                });
+
+                option.classList.add("selected");
+
+                selectedPackage =
+                    option.dataset.package;
+
+                updatePrice();
+
+            });
+
+        });
+
+
+        /* =========================================
+           DISPATCH SELECTION
+        ========================================= */
+
+        dispatchOptions.forEach(option => {
+
+            option.addEventListener("click", () => {
+
+                dispatchOptions.forEach(item => {
+
+                    item.classList.remove("selected");
+
+                });
+
+                option.classList.add("selected");
+
+                selectedDispatch =
+                    option.dataset.dispatch;
+
+                dispatchBasePrice =
+                    Number(option.dataset.price);
+
+                updatePrice();
+
+            });
+
+        });
+
+
+        /* =========================================
+           LOCATION SUMMARY
+        ========================================= */
+
+        pickupInput.addEventListener("input", () => {
+
+            summaryPickup.textContent =
+                pickupInput.value.trim() ||
+                "Pickup location";
+
+        });
+
+
+        deliveryInput.addEventListener("input", () => {
+
+            summaryDelivery.textContent =
+                deliveryInput.value.trim() ||
+                "Delivery location";
+
+        });
+
+
+        /* =========================================
+           PRICE CALCULATION
+        ========================================= */
+
+        function updatePrice() {
+
+            let distanceFee = 600;
+
+            let handlingFee = 0;
+
+            let priorityFee =
+                selectedDispatch === "priority"
+                    ? 1000
+                    : 0;
+
+
+            if (fragileCheckbox.checked) {
+
+                handlingFee = 300;
+
+            }
+
+
+            /*
+             * Demo calculation only.
+             *
+             * Production:
+             * The backend must calculate the actual fare
+             * using verified route distance, package data,
+             * dispatch type, demand, pricing rules, etc.
+             */
+
+            const total =
+                dispatchBasePrice +
+                distanceFee +
+                handlingFee +
+                priorityFee;
+
+
+            basePriceElement.textContent =
+                "₦" + dispatchBasePrice.toLocaleString();
+
+            handlingPriceElement.textContent =
+                "₦" + handlingFee.toLocaleString();
+
+            priorityPriceElement.textContent =
+                "₦" + priorityFee.toLocaleString();
+
+            totalPriceElement.textContent =
+                "₦" + total.toLocaleString();
+
+        }
+
+
+        fragileCheckbox.addEventListener(
+            "change",
+            updatePrice
+        );
+
+
+        /* =========================================
+           CURRENT LOCATION
+        ========================================= */
+
+        document.getElementById("useLocation")
+            .addEventListener("click", () => {
+
+                if (!navigator.geolocation) {
+
+                    showToast(
+                        "Location services are not supported by this browser."
+                    );
+
+                    return;
+
+                }
+
+
+                const button =
+                    document.getElementById("useLocation");
+
+                button.textContent =
+                    "Locating...";
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    position => {
+
+                        /*
+                         * Demo only.
+                         *
+                         * Production:
+                         * Send coordinates to your backend/geocoding
+                         * service and return a verified address.
+                         */
+
+                        console.log(
+                            "Latitude:",
+                            position.coords.latitude
+                        );
+
+                        console.log(
+                            "Longitude:",
+                            position.coords.longitude
+                        );
+
+
+                        pickupInput.value =
+                            "Current location";
+
+
+                        summaryPickup.textContent =
+                            "Current location";
+
+
+                        button.textContent =
+                            "Located";
+
+
+                        showToast(
+                            "Pickup location detected."
+                        );
+
+                    },
+
+                    error => {
+
+                        console.error(error);
+
+                        button.textContent =
+                            "Use current";
+
+                        showToast(
+                            "Unable to detect your location."
+                        );
+
+                    }
+
+                );
+
+            });
+
+
+        /* =========================================
+           REQUEST RIDER
+        ========================================= */
+
+        requestRider.addEventListener("click", () => {
+
+            const pickup =
+                pickupInput.value.trim();
+
+            const delivery =
+                deliveryInput.value.trim();
+
+            const sender =
+                document.getElementById("senderName")
+                    .value.trim();
+
+            const senderPhone =
+                document.getElementById("senderPhone")
+                    .value.trim();
+
+            const receiver =
+                document.getElementById("receiverName")
+                    .value.trim();
+
+            const receiverPhone =
+                document.getElementById("receiverPhone")
+                    .value.trim();
+
+            const packageDescription =
+                document.getElementById("packageDescription")
+                    .value.trim();
+
+
+            if (!pickup) {
+
+                showToast(
+                    "Please enter the pickup location."
+                );
+
+                pickupInput.focus();
+
+                return;
+
+            }
+
+
+            if (!delivery) {
+
+                showToast(
+                    "Please enter the delivery location."
+                );
+
+                deliveryInput.focus();
+
+                return;
+
+            }
+
+
+            if (!sender) {
+
+                showToast(
+                    "Please enter the sender's name."
+                );
+
+                return;
+
+            }
+
+
+            if (!senderPhone) {
+
+                showToast(
+                    "Please enter the sender's phone number."
+                );
+
+                return;
+
+            }
+
+
+            if (!receiver) {
+
+                showToast(
+                    "Please enter the receiver's name."
+                );
+
+                return;
+
+            }
+
+
+            if (!receiverPhone) {
+
+                showToast(
+                    "Please enter the receiver's phone number."
+                );
+
+                return;
+
+            }
+
+
+            if (!packageDescription) {
+
+                showToast(
+                    "Please describe the package."
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById("modalMessage")
+                .textContent =
+                `FAGA will find a dispatch rider to collect your ${selectedPackage.toLowerCase()} from ${pickup} and deliver it to ${delivery}.`;
+
+
+            confirmModal.classList.add("show");
+
+        });
+
+
+        /* =========================================
+           CLOSE MODAL
+        ========================================= */
+
+        document.getElementById("closeConfirm")
+            .addEventListener("click", () => {
+
+                confirmModal.classList.remove("show");
+
+            });
+
+
+        confirmModal.addEventListener("click", event => {
+
+            if (event.target === confirmModal) {
+
+                confirmModal.classList.remove("show");
+
+            }
+
+        });
+
+
+        /* =========================================
+           CONFIRM REQUEST
+        ========================================= */
+
+        document.getElementById("confirmRequest")
+            .addEventListener("click", async () => {
+
+                const button =
+                    document.getElementById("confirmRequest");
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Finding Rider...";
+
+
+                /*
+                =========================================
+                PRODUCTION API
+
+                POST /api/deliveries
+
+                Example request:
+
+                {
+                    "pickup": {
+                        "address": "...",
+                        "latitude": 0,
+                        "longitude": 0
+                    },
+
+                    "delivery": {
+                        "address": "...",
+                        "latitude": 0,
+                        "longitude": 0
+                    },
+
+                    "sender": {
+                        "name": "...",
+                        "phone": "..."
+                    },
+
+                    "receiver": {
+                        "name": "...",
+                        "phone": "..."
+                    },
+
+                    "package": {
+                        "type": "document",
+                        "description": "...",
+                        "weight": 1
+                    },
+
+                    "dispatch_type": "standard",
+
+                    "options": {
+                        "fragile": false,
+                        "call_receiver": true,
+                        "signature_required": true,
+                        "photo_proof": true
+                    }
+                }
+
+
+                Backend must:
+
+                1. Authenticate the customer.
+                2. Validate addresses.
+                3. Calculate the authoritative delivery fee.
+                4. Verify package restrictions.
+                5. Check available dispatch riders.
+                6. Create a delivery.
+                7. Generate a tracking number.
+                8. Start rider matching.
+                9. Return delivery ID.
+                10. Return payment instructions/status.
+
+
+                The frontend must NEVER determine
+                whether payment is actually successful.
+                =========================================
+                */
+
+
+                setTimeout(() => {
+
+                    confirmModal.classList.remove("show");
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "Request Rider";
+
+
+                    showToast(
+                        "Delivery request created. Finding a dispatch rider..."
+                    );
+
+
+                    /*
+                     * Demo redirect.
+                     *
+                     * Production:
+                     *
+                     * const deliveryId = response.delivery_id;
+                     *
+                     * window.location.href =
+                     * "delivery-tracking.html?deliveryId="
+                     * + encodeURIComponent(deliveryId);
+                     */
+
+                    setTimeout(() => {
+
+                        window.location.href="delivery-tracking.html";
+
+                    }, 1300);
+
+                }, 1800);
+
+            });
+
+
+        /* =========================================
+           PAYMENT METHOD
+        ========================================= */
+
+        document.getElementById("changePayment")
+            .addEventListener("click", () => {
+
+                const paymentMethod =
+                    document.getElementById("paymentMethod");
+
+                paymentMethod.focus();
+
+                showToast(
+                    "Choose your preferred payment method."
+                );
+
+            });
+
+
+        document.getElementById("paymentMethod")
+            .addEventListener("change", event => {
+
+                const paymentBox =
+                    document.querySelector(".payment-info strong");
+
+                if (event.target.value === "card") {
+
+                    paymentBox.textContent =
+                        "Debit / Credit Card";
+
+                } else {
+
+                    paymentBox.textContent =
+                        "FAGA Wallet";
+
+                }
+
+            });
+
+
+        /* =========================================
+           TOAST
+        ========================================= */
+
+        function showToast(message) {
+
+            toast.textContent =
+                message;
+
+            toast.classList.add("show");
+
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 3000);
+
+        }
+
+
+        /* =========================================
+           MOBILE MENU
+        ========================================= */
+
+        document.getElementById("mobileMenu")
+            .addEventListener("click", () => {
+
+                const nav =
+                    document.querySelector(".nav-links");
+
+
+                if (nav.style.display === "flex") {
+
+                    nav.style.display = "none";
+
+                } else {
+
+                    nav.style.display = "flex";
+
+                    nav.style.position = "absolute";
+                    nav.style.top = "72px";
+                    nav.style.left = "0";
+                    nav.style.right = "0";
+                    nav.style.background = "#071a33";
+                    nav.style.padding = "20px";
+                    nav.style.flexDirection = "column";
+                    nav.style.alignItems = "flex-start";
+
+                }
+
+            });
+
+
+        /* =========================================
+           PRODUCTION DELIVERY TRACKING
+        ==========================================
+
+        After the dispatch request is created,
+        the customer should be redirected to:
+
+        delivery-tracking.html?deliveryId=XXXX
+
+
+        Tracking APIs:
+
+        GET
+        /api/deliveries/:deliveryId
+
+        GET
+        /api/deliveries/:deliveryId/rider
+
+        GET
+        /api/deliveries/:deliveryId/tracking
+
+        POST
+        /api/deliveries/:deliveryId/cancel
+
+        POST
+        /api/deliveries/:deliveryId/share
+
+        POST
+        /api/deliveries/:deliveryId/safety-report
+
+
+        Real-time tracking:
+
+        WebSocket:
+
+        wss://api.faga.com/deliveries/:deliveryId
+
+
+        OR:
+
+        GET
+        /api/deliveries/:deliveryId/tracking/stream
+
+
+        The dispatch rider's mobile app sends GPS
+        coordinates to FAGA's backend.
+
+        Customer receives authorized location updates
+        from the backend.
+
+        The browser must NOT directly trust GPS
+        coordinates supplied by another client.
+
+
+        =========================================
+           SECURITY
+        ==========================================
+
+        Backend must protect:
+
+        - Customer PII
+        - Receiver phone number
+        - Sender phone number
+        - Rider location
+        - Delivery address
+        - Payment information
+        - Delivery history
+        - Tracking links
+
+
+        Use:
+
+        - Authentication
+        - Authorization
+        - Server-side validation
+        - Rate limiting
+        - Audit logs
+        - Encrypted transport
+        - Short-lived tracking links
+        - Private rider/customer information
+        - Secure payment verification
+
+
+        Never put:
+
+        - Payment secrets
+        - Database credentials
+        - Private API keys
+        - Authentication secrets
+
+        inside this HTML file.
+
+        ========================================= */
+
+        updatePrice();
+
+    </script>
+<!-- ==========================================================
+     FRONTEND DELIVERY BOOKING PIPELINE CONTROLLER
+     ========================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const bookingForm = document.getElementById('delivery-booking-form') || document.querySelector('form');
+    const pickupInput = document.getElementById('pickup-address') || document.getElementById('pickup_address');
+    const deliveryInput = document.getElementById('delivery-address') || document.getElementById('delivery_address');
+    
+    if (!bookingForm) return;
+
+    bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const calculatedTestFare = 4000.00; 
+
+        const payload = {
+            pickup_address: pickupInput ? pickupInput.value : 'Default Warehouse Pickup',
+            delivery_address: deliveryInput ? deliveryInput.value : 'Default Customer Dropoff',
+            total_cost: calculatedTestFare
+        };
+
+        try {
+            const token = localStorage.getItem('faga_auth_token');
+            const response = await fetch('/api/deliveries/book', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                alert(`🎉 Order Placed! ₦${calculatedTestFare} has been secured inside the transaction vault. Current State: SEARCHING_FOR_RIDER...`);
+                localStorage.setItem('active_tracking_delivery_id', result.data.id);
+                window.location.href = 'delivery-tracking.html';
+            } else {
+                alert(`Booking Restriction: ${result.message || 'Check balance settings.'}`);
+            }
+        } catch (error) {
+            console.error("FAGA UI Delivery transmission error:", error);
+        }
+    });
+});
+</script>
+
+
+</body>
+</html>

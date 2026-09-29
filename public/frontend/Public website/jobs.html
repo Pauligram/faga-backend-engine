@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jobs & Careers | FAGA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #0c2748;
+      --navy-3: #12375f;
+      --orange: #f7931e;
+      --orange-dark: #df7d0d;
+      --light: #f5f7fa;
+      --border: #e4e9ef;
+      --text: #17202a;
+      --muted: #687586;
+      --white: #ffffff;
+      --success: #16834b;
+      --danger: #c73535;
+      --shadow: 0 12px 35px rgba(7, 26, 51, .09);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+    .navbar {
+      background: var(--navy);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 3px 18px rgba(0,0,0,.12);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 24px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--orange);
+      color: white;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      padding: 9px 11px;
+      color: #e8edf3;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 7px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+      background: rgba(247,147,30,.16);
+    }
+
+    .nav-links a.active {
+      color: var(--orange);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.35);
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--navy);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      color: white;
+      border: 0;
+      font-size: 23px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(247,147,30,.22), transparent 28%),
+        linear-gradient(135deg, var(--navy), #0b3158);
+      color: white;
+      padding: 75px 0 82px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      right: -180px;
+      bottom: -220px;
+      border: 65px solid rgba(255,255,255,.04);
+      border-radius: 50%;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 50px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 60px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: var(--orange);
+    }
+
+    .hero p {
+      color: #d8e2ed;
+      max-width: 680px;
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 26px;
+    }
+
+    .hero-card h3 {
+      margin-bottom: 18px;
+      font-size: 19px;
+    }
+
+    .hero-stat {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .hero-stat:last-child {
+      border-bottom: 0;
+    }
+
+    .hero-stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(247,147,30,.15);
+      color: var(--orange);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .hero-stat span {
+      color: #b8c6d4;
+      font-size: 12px;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+    .search-section {
+      margin-top: -35px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .search-box {
+      background: white;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
+      gap: 10px;
+    }
+
+    .field {
+      position: relative;
+    }
+
+    .field i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8a96a4;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+      padding: 0 13px 0 40px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field select {
+      padding-left: 13px;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(247,147,30,.1);
+    }
+
+    .search-btn {
+      height: 48px;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+    .section {
+      padding: 70px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 25px;
+      margin-bottom: 28px;
+    }
+
+    .section-header h2 {
+      color: var(--navy);
+      font-size: 30px;
+      letter-spacing: -.7px;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .job-count {
+      font-size: 14px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .jobs-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* =========================
+       FILTER SIDEBAR
+    ========================= */
+    .filter-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-head h3 {
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .clear-filter {
+      border: 0;
+      background: transparent;
+      color: var(--orange-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .filter-group {
+      margin-bottom: 23px;
+    }
+
+    .filter-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-group h4 {
+      color: var(--navy);
+      font-size: 13px;
+      margin-bottom: 11px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 9px 0;
+      color: #5e6a78;
+      font-size: 13px;
+    }
+
+    .check-row input {
+      accent-color: var(--orange);
+    }
+
+    /* =========================
+       JOB CARDS
+    ========================= */
+    .jobs-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .job-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      background: white;
+      transition: .2s;
+    }
+
+    .job-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      border-color: #d9dfe6;
+    }
+
+    .job-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .job-title-wrap {
+      display: flex;
+      gap: 13px;
+    }
+
+    .company-logo {
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf2f7;
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .job-card h3 {
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 2px;
+    }
+
+    .company {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .featured-badge {
+      color: #a65c00;
+      background: #fff3df;
+      border-radius: 20px;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+      height: fit-content;
+    }
+
+    .job-meta {
+      display: flex;
+      gap: 17px;
+      flex-wrap: wrap;
+      margin: 17px 0 15px 61px;
+      color: #687586;
+      font-size: 12px;
+    }
+
+    .job-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .job-meta i {
+      color: var(--orange);
+    }
+
+    .job-description {
+      margin-left: 61px;
+      color: #687586;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 15px;
+    }
+
+    .job-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-left: 61px;
+    }
+
+    .job-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      background: #f2f5f8;
+      color: #526171;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .salary {
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .salary small {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .view-job {
+      margin-top: 17px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .posted {
+      font-size: 11px;
+      color: #8994a0;
+    }
+
+    .details-link {
+      color: var(--orange-dark);
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .details-link:hover {
+      color: var(--navy);
+    }
+
+    .no-results {
+      display: none;
+      padding: 50px 20px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+    }
+
+    .no-results i {
+      font-size: 35px;
+      color: #c8d0d9;
+      margin-bottom: 12px;
+    }
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+    .how-section {
+      background: var(--light);
+    }
+
+    .center-heading {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 40px;
+    }
+
+    .center-heading h2 {
+      color: var(--navy);
+      font-size: 31px;
+      margin-bottom: 8px;
+    }
+
+    .center-heading p {
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .step-number {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      background: var(--orange);
+      color: white;
+      border-radius: 50%;
+      font-weight: 800;
+    }
+
+    .step h3 {
+      color: var(--navy);
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       ACCESS PLAN
+    ========================= */
+    .access-banner {
+      background: linear-gradient(135deg, var(--navy), var(--navy-3));
+      color: white;
+      border-radius: 22px;
+      padding: 35px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .access-banner h2 {
+      font-size: 26px;
+      margin-bottom: 7px;
+    }
+
+    .access-banner p {
+      color: #c8d6e5;
+      font-size: 13px;
+      max-width: 650px;
+    }
+
+    .plans {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .plan {
+      background: white;
+      color: var(--navy);
+      border-radius: 12px;
+      padding: 14px 17px;
+      min-width: 130px;
+    }
+
+    .plan strong {
+      display: block;
+      color: var(--orange-dark);
+      font-size: 19px;
+    }
+
+    .plan span {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+    footer {
+      background: var(--navy);
+      color: white;
+      margin-top: 0;
+    }
+
+    .footer-main {
+      padding: 55px 0 35px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 35px;
+    }
+
+    .footer-brand p {
+      color: #aebdcd;
+      font-size: 13px;
+      max-width: 330px;
+      margin-top: 13px;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: #aebdcd;
+      font-size: 12px;
+      margin: 9px 0;
+    }
+
+    .footer-col a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 18px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #92a4b7;
+      font-size: 11px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 17px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 3000;
+      font-size: 13px;
+      max-width: 320px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn .25s ease;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+    @media (max-width: 1100px) {
+      .nav-links a {
+        padding: 8px 7px;
+        font-size: 12px;
+      }
+
+      .nav-actions .btn {
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+
+      .search-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-mobile-open .nav-links {
+        display: flex;
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 68px;
+        background: var(--navy);
+        padding: 15px;
+        border-radius: 0 0 13px 13px;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow: var(--shadow);
+      }
+
+      .nav-mobile-open .nav-links a {
+        padding: 12px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        max-width: 550px;
+      }
+
+      .jobs-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-card {
+        position: static;
+      }
+
+      .filter-groups {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .access-banner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-main {
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .hero {
+        padding: 55px 0 65px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .search-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-groups {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 52px 0;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .job-top {
+        flex-direction: column;
+      }
+
+      .job-meta,
+      .job-description,
+      .job-bottom {
+        margin-left: 0;
+      }
+
+      .job-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .access-banner {
+        padding: 25px 20px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--
+    FAGA JOBS MARKETPLACE
+
+    FRONTEND DEMO:
+    Job listings below are sample records.
+
+    EXPECTED BACKEND ENDPOINTS:
+      GET  /api/jobs
+      GET  /api/jobs/:id
+      GET  /api/jobs/categories
+      GET  /api/jobs/locations
+
+    APPLICATION FLOW:
+      jobs.html
+          -> job-details.html?id=JOB_ID
+          -> job-register.html?job=JOB_ID
+          -> job-payment.html
+          -> job-profile.html
+          -> job-applications.html
+
+    IMPORTANT:
+    The browser must NOT determine whether an applicant has paid.
+    The backend must verify the payment provider transaction and return
+    the applicant's active application-access status.
+
+    PAYMENT IS FOR:
+    Access to FAGA's applicant platform and application features.
+
+    PAYMENT DOES NOT GUARANTEE:
+    Employment, interview, shortlisting, selection or a job offer.
+  -->
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">F</span>
+        FAGA
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html" class="active">Jobs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-primary">Get Started</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+
+      <div>
+        <div class="eyebrow">
+          <i class="fa-solid fa-briefcase"></i>
+          FAGA Careers
+        </div>
+
+        <h1>
+          Find your next<br>
+          <span>opportunity.</span>
+        </h1>
+
+        <p>
+          Discover jobs from businesses and organisations looking for
+          talented people. Search opportunities by role, location,
+          category and employment type.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#jobs" class="btn btn-primary">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Browse Jobs
+          </a>
+
+          <a href="#how-it-works" class="btn btn-outline">
+            How It Works
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <h3>Why use FAGA Jobs?</h3>
+
+        <div class="hero-stat">
+          <div class="hero-stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <div>
+            <strong>Verified opportunities</strong>
+            <span>Browse published job listings</span>
+          </div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-icon">
+            <i class="fa-solid fa-file-arrow-up"></i>
+          </div>
+          <div>
+            <strong>One CV profile</strong>
+            <span>Keep your application information ready</span>
+          </div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-icon">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <div>
+            <strong>Multiple applications</strong>
+            <span>Apply to suitable opportunities</span>
+          </div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <strong>Track applications</strong>
+            <span>Monitor your application status</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SEARCH -->
+  <section class="search-section">
+    <div class="container">
+
+      <div class="search-box">
+
+        <div class="search-grid">
+
+          <div class="field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Job title, skill or keyword"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="field">
+            <select id="locationFilter">
+              <option value="">All locations</option>
+              <option value="Lagos">Lagos</option>
+              <option value="Abuja">Abuja</option>
+              <option value="Port Harcourt">Port Harcourt</option>
+              <option value="Ibadan">Ibadan</option>
+              <option value="Kano">Kano</option>
+              <option value="Remote">Remote</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <select id="categoryFilter">
+              <option value="">All categories</option>
+              <option value="Technology">Technology</option>
+              <option value="Sales & Marketing">Sales & Marketing</option>
+              <option value="Logistics">Logistics</option>
+              <option value="Customer Service">Customer Service</option>
+              <option value="Finance">Finance</option>
+              <option value="Hospitality">Hospitality</option>
+              <option value="Administration">Administration</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <select id="typeFilter">
+              <option value="">All job types</option>
+              <option value="Full Time">Full Time</option>
+              <option value="Part Time">Part Time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+              <option value="Remote">Remote</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary search-btn" id="searchBtn">
+            Search
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- JOBS -->
+  <main id="jobs" class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <div>
+          <h2>Latest Job Opportunities</h2>
+          <p>Explore current opportunities and find a role that matches your skills.</p>
+        </div>
+
+        <div class="job-count" id="jobCount">
+          Showing 0 jobs
+        </div>
+      </div>
+
+
+      <div class="jobs-layout">
+
+        <!-- FILTERS -->
+        <aside class="filter-card">
+
+          <div class="filter-head">
+            <h3>Filter Jobs</h3>
+            <button class="clear-filter" id="clearFilters">
+              Clear all
+            </button>
+          </div>
+
+          <div class="filter-groups">
+
+            <div class="filter-group">
+              <h4>Experience</h4>
+
+              <label class="check-row">
+                <input type="checkbox" class="experience-filter" value="Entry Level">
+                Entry Level
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="experience-filter" value="1-2 Years">
+                1–2 Years
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="experience-filter" value="3-5 Years">
+                3–5 Years
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="experience-filter" value="5+ Years">
+                5+ Years
+              </label>
+            </div>
+
+            <div class="filter-group">
+              <h4>Salary</h4>
+
+              <label class="check-row">
+                <input type="checkbox" class="salary-filter" value="100000">
+                ₦100k+
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="salary-filter" value="200000">
+                ₦200k+
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="salary-filter" value="300000">
+                ₦300k+
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="salary-filter" value="500000">
+                ₦500k+
+              </label>
+            </div>
+
+            <div class="filter-group">
+              <h4>Posted</h4>
+
+              <label class="check-row">
+                <input type="checkbox" class="posted-filter" value="1">
+                Last 24 hours
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="posted-filter" value="7">
+                Last 7 days
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="posted-filter" value="30">
+                Last 30 days
+              </label>
+            </div>
+
+          </div>
+
+        </aside>
+
+
+        <!-- JOB RESULTS -->
+        <section>
+
+          <div class="jobs-list" id="jobsList"></div>
+
+          <div class="no-results" id="noResults">
+            <i class="fa-regular fa-folder-open"></i>
+            <h3>No jobs found</h3>
+            <p>Try changing your search terms or filters.</p>
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- HOW IT WORKS -->
+  <section class="section how-section" id="how-it-works">
+    <div class="container">
+
+      <div class="center-heading">
+        <h2>How FAGA Jobs Works</h2>
+        <p>
+          Get access to job opportunities and manage your applications
+          from one applicant profile.
+        </p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Find a Job</h3>
+          <p>
+            Search and browse jobs based on your skills, location and
+            preferred employment type.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Create Your Profile</h3>
+          <p>
+            Register your applicant profile with your personal,
+            educational and professional information.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Choose Access</h3>
+          <p>
+            Select the application access plan that works for you and
+            complete payment.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Apply & Track</h3>
+          <p>
+            Upload your CV, submit applications and monitor application
+            statuses from your dashboard.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- APPLICATION ACCESS -->
+  <section class="section">
+    <div class="container">
+
+      <div class="access-banner">
+
+        <div>
+          <h2>Ready to start applying?</h2>
+          <p>
+            FAGA provides applicant platform access for job applications.
+            Choose an access period, complete payment, build your profile
+            and apply to available opportunities.
+          </p>
+        </div>
+
+        <div class="plans">
+
+          <div class="plan">
+            <strong>₦300</strong>
+            <span>3 Months Access</span>
+          </div>
+
+          <div class="plan">
+            <strong>₦500</strong>
+            <span>1 Year Access</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-main">
+
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <span class="brand-mark">F</span>
+          FAGA
+        </a>
+
+        <p>
+          Connecting people, businesses, services, opportunities and
+          communities through one trusted platform.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help Center</a>
+        <a href="safety.html">Safety</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="../user portal/login.html">Login</a>
+        <a href="../user portal/register.html">Create Account</a>
+      </div>
+
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 FAGA. All rights reserved.</span>
+      <span>Jobs listed on FAGA are subject to employer requirements.</span>
+    </div>
+  </footer>
+
+
+  <div class="toast" id="toast"></div>
+
+
+  <script>
+    /*
+      ==========================================
+      FAGA JOBS - FRONTEND DATA
+      ==========================================
+
+      Replace this demo array with:
+
+      GET /api/jobs
+
+      Example expected response:
+
+      [
+        {
+          id: "JOB-1001",
+          title: "Frontend Developer",
+          company: "Example Technologies",
+          location: "Lagos",
+          type: "Full Time",
+          category: "Technology",
+          experience: "3-5 Years",
+          salaryMin: 350000,
+          salaryMax: 500000,
+          description: "...",
+          skills: ["HTML", "CSS", "JavaScript"],
+          featured: true,
+          postedDays: 2,
+          logo: "ET"
+        }
+      ]
+
+      Never trust salary, company, job status or application
+      eligibility values from the browser. Validate them server-side.
+    */
+
+    const jobs = [
+      {
+        id: "JOB-1001",
+        title: "Frontend Developer",
+        company: "FAGA Technologies",
+        location: "Lagos",
+        type: "Full Time",
+        category: "Technology",
+        experience: "2 Years",
+        experienceGroup: "1-2 Years",
+        salaryMin: 350000,
+        salaryMax: 500000,
+        description: "Build responsive web interfaces and collaborate with product and engineering teams to deliver reliable digital experiences.",
+        skills: ["HTML", "CSS", "JavaScript", "Git"],
+        featured: true,
+        postedDays: 2,
+        logo: "FT"
+      },
+
+      {
+        id: "JOB-1002",
+        title: "Customer Support Officer",
+        company: "Swift Retail Nigeria",
+        location: "Lagos",
+        type: "Full Time",
+        category: "Customer Service",
+        experience: "1 Year",
+        experienceGroup: "1-2 Years",
+        salaryMin: 180000,
+        salaryMax: 250000,
+        description: "Support customers across phone, chat and email while helping resolve service issues quickly and professionally.",
+        skills: ["Communication", "CRM", "Customer Care"],
+        featured: false,
+        postedDays: 1,
+        logo: "SR"
+      },
+
+      {
+        id: "JOB-1003",
+        title: "Operations & Logistics Coordinator",
+        company: "Prime Distribution Ltd",
+        location: "Abuja",
+        type: "Full Time",
+        category: "Logistics",
+        experience: "3 Years",
+        experienceGroup: "3-5 Years",
+        salaryMin: 300000,
+        salaryMax: 420000,
+        description: "Coordinate delivery operations, dispatch activities, inventory movements and logistics partners.",
+        skills: ["Logistics", "Operations", "Planning"],
+        featured: true,
+        postedDays: 4,
+        logo: "PD"
+      },
+
+      {
+        id: "JOB-1004",
+        title: "Digital Marketing Specialist",
+        company: "GrowthHub Africa",
+        location: "Remote",
+        type: "Remote",
+        category: "Sales & Marketing",
+        experience: "2 Years",
+        experienceGroup: "1-2 Years",
+        salaryMin: 250000,
+        salaryMax: 400000,
+        description: "Develop campaigns, manage digital channels and analyse marketing performance across multiple platforms.",
+        skills: ["Marketing", "SEO", "Analytics"],
+        featured: false,
+        postedDays: 6,
+        logo: "GH"
+      },
+
+      {
+        id: "JOB-1005",
+        title: "Accountant",
+        company: "Westbridge Services",
+        location: "Port Harcourt",
+        type: "Full Time",
+        category: "Finance",
+        experience: "4 Years",
+        experienceGroup: "3-5 Years",
+        salaryMin: 400000,
+        salaryMax: 600000,
+        description: "Manage accounting records, reconciliations, financial reporting and internal financial controls.",
+        skills: ["Accounting", "Excel", "Reporting"],
+        featured: false,
+        postedDays: 9,
+        logo: "WS"
+      },
+
+      {
+        id: "JOB-1006",
+        title: "Restaurant Supervisor",
+        company: "TastePoint Kitchen",
+        location: "Ibadan",
+        type: "Full Time",
+        category: "Hospitality",
+        experience: "2 Years",
+        experienceGroup: "1-2 Years",
+        salaryMin: 200000,
+        salaryMax: 300000,
+        description: "Supervise daily restaurant operations, coordinate staff and maintain service quality standards.",
+        skills: ["Hospitality", "Leadership", "Operations"],
+        featured: false,
+        postedDays: 12,
+        logo: "TK"
+      },
+
+      {
+        id: "JOB-1007",
+        title: "Administrative Assistant",
+        company: "Citywide Consulting",
+        location: "Kano",
+        type: "Full Time",
+        category: "Administration",
+        experience: "Entry Level",
+        experienceGroup: "Entry Level",
+        salaryMin: 120000,
+        salaryMax: 180000,
+        description: "Provide administrative support, organise documents and assist with scheduling and office coordination.",
+        skills: ["Administration", "MS Office", "Organisation"],
+        featured: false,
+        postedDays: 18,
+        logo: "CC"
+      },
+
+      {
+        id: "JOB-1008",
+        title: "Software Engineering Intern",
+        company: "DigitalWorks",
+        location: "Lagos",
+        type: "Internship",
+        category: "Technology",
+        experience: "Entry Level",
+        experienceGroup: "Entry Level",
+        salaryMin: 100000,
+        salaryMax: 150000,
+        description: "Join an engineering team and gain practical experience building and testing software products.",
+        skills: ["Programming", "Git", "Problem Solving"],
+        featured: false,
+        postedDays: 22,
+        logo: "DW"
+      }
+    ];
+
+
+    const jobsList = document.getElementById("jobsList");
+    const noResults = document.getElementById("noResults");
+    const jobCount = document.getElementById("jobCount");
+
+    const searchInput = document.getElementById("searchInput");
+    const locationFilter = document.getElementById("locationFilter");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const typeFilter = document.getElementById("typeFilter");
+
+    const experienceFilters =
+      document.querySelectorAll(".experience-filter");
+
+    const salaryFilters =
+      document.querySelectorAll(".salary-filter");
+
+    const postedFilters =
+      document.querySelectorAll(".posted-filter");
+
+
+    function formatMoney(amount) {
+      return "₦" + Number(amount).toLocaleString("en-NG");
+    }
+
+
+    function formatSalary(job) {
+      if (!job.salaryMin && !job.salaryMax) {
+        return "Salary not disclosed";
+      }
+
+      if (job.salaryMin && job.salaryMax) {
+        return `${formatMoney(job.salaryMin)} - ${formatMoney(job.salaryMax)}`;
+      }
+
+      return formatMoney(job.salaryMin || job.salaryMax);
+    }
+
+
+    function renderJobs(data) {
+      jobsList.innerHTML = "";
+
+      jobCount.textContent =
+        `Showing ${data.length} job${data.length === 1 ? "" : "s"}`;
+
+      if (!data.length) {
+        noResults.style.display = "block";
+        return;
+      }
+
+      noResults.style.display = "none";
+
+      data.forEach(job => {
+
+        const article = document.createElement("article");
+        article.className = "job-card";
+
+        article.innerHTML = `
+          <div class="job-top">
+
+            <div class="job-title-wrap">
+
+              <div class="company-logo">
+                ${escapeHTML(job.logo || "F")}
+              </div>
+
+              <div>
+                <h3>${escapeHTML(job.title)}</h3>
+                <div class="company">
+                  ${escapeHTML(job.company)}
+                </div>
+              </div>
+
+            </div>
+
+            ${
+              job.featured
+                ? `<span class="featured-badge">
+                     <i class="fa-solid fa-star"></i>
+                     Featured
+                   </span>`
+                : ""
+            }
+
+          </div>
+
+          <div class="job-meta">
+            <span>
+              <i class="fa-solid fa-location-dot"></i>
+              ${escapeHTML(job.location)}
+            </span>
+
+            <span>
+              <i class="fa-solid fa-clock"></i>
+              ${escapeHTML(job.type)}
+            </span>
+
+            <span>
+              <i class="fa-solid fa-layer-group"></i>
+              ${escapeHTML(job.category)}
+            </span>
+
+            <span>
+              <i class="fa-solid fa-user-clock"></i>
+              ${escapeHTML(job.experience)}
+            </span>
+          </div>
+
+          <div class="job-description">
+            ${escapeHTML(job.description)}
+          </div>
+
+          <div class="job-bottom">
+
+            <div class="job-tags">
+              ${job.skills.map(skill =>
+                `<span class="tag">${escapeHTML(skill)}</span>`
+              ).join("")}
+            </div>
+
+            <div class="salary">
+              ${formatSalary(job)}
+              <small>/ month</small>
+            </div>
+
+          </div>
+
+          <div class="view-job">
+
+            <span class="posted">
+              ${
+                job.postedDays === 0
+                  ? "Posted today"
+                  : `Posted ${job.postedDays} day${job.postedDays === 1 ? "" : "s"} ago`
+              }
+            </span>
+
+            <a
+              class="details-link"
+              href="job-details.html?id=${encodeURIComponent(job.id)}"
+            >
+              View Job
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+          </div>
+        `;
+
+        jobsList.appendChild(article);
+      });
+    }
+
+
+    function escapeHTML(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function getSelectedValues(nodeList) {
+      return [...nodeList]
+        .filter(input => input.checked)
+        .map(input => input.value);
+    }
+
+
+    function filterJobs() {
+
+      const query =
+        searchInput.value.trim().toLowerCase();
+
+      const location =
+        locationFilter.value;
+
+      const category =
+        categoryFilter.value;
+
+      const type =
+        typeFilter.value;
+
+      const experiences =
+        getSelectedValues(experienceFilters);
+
+      const salaries =
+        getSelectedValues(salaryFilters)
+          .map(Number);
+
+      const posted =
+        getSelectedValues(postedFilters)
+          .map(Number);
+
+
+      const filtered = jobs.filter(job => {
+
+        const searchable =
+          `${job.title}
+           ${job.company}
+           ${job.category}
+           ${job.location}
+           ${job.description}
+           ${job.skills.join(" ")}`
+          .toLowerCase();
+
+        if (query && !searchable.includes(query)) {
+          return false;
+        }
+
+        if (location && job.location !== location) {
+          return false;
+        }
+
+        if (category && job.category !== category) {
+          return false;
+        }
+
+        if (type && job.type !== type) {
+          return false;
+        }
+
+        if (
+          experiences.length &&
+          !experiences.includes(job.experienceGroup)
+        ) {
+          return false;
+        }
+
+        if (salaries.length) {
+          const salaryMatch =
+            salaries.some(min =>
+              Number(job.salaryMax || job.salaryMin || 0) >= min
+            );
+
+          if (!salaryMatch) {
+            return false;
+          }
+        }
+
+        if (posted.length) {
+          const latestDays =
+            Math.min(...posted);
+
+          if (Number(job.postedDays) > latestDays) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+
+      /*
+        Featured jobs are displayed first,
+        followed by newest jobs.
+      */
+      filtered.sort((a, b) => {
+
+        if (a.featured !== b.featured) {
+          return a.featured ? -1 : 1;
+        }
+
+        return a.postedDays - b.postedDays;
+      });
+
+      renderJobs(filtered);
+    }
+
+
+    document.getElementById("searchBtn")
+      .addEventListener("click", filterJobs);
+
+
+    searchInput.addEventListener("input", filterJobs);
+    locationFilter.addEventListener("change", filterJobs);
+    categoryFilter.addEventListener("change", filterJobs);
+    typeFilter.addEventListener("change", filterJobs);
+
+
+    [
+      ...experienceFilters,
+      ...salaryFilters,
+      ...postedFilters
+    ].forEach(input => {
+      input.addEventListener("change", filterJobs);
+    });
+
+
+    document.getElementById("clearFilters")
+      .addEventListener("click", () => {
+
+        searchInput.value = "";
+        locationFilter.value = "";
+        categoryFilter.value = "";
+        typeFilter.value = "";
+
+        [
+          ...experienceFilters,
+          ...salaryFilters,
+          ...postedFilters
+        ].forEach(input => {
+          input.checked = false;
+        });
+
+        filterJobs();
+
+        showToast("All job filters have been cleared.");
+      });
+
+
+    function showToast(message) {
+      const toast =
+        document.getElementById("toast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+
+      window.toastTimer =
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2800);
+    }
+
+
+    /* MOBILE NAVIGATION */
+    const navbar =
+      document.getElementById("navbar");
+
+    const menuToggle =
+      document.getElementById("menuToggle");
+
+    menuToggle.addEventListener("click", () => {
+      navbar.classList.toggle("nav-mobile-open");
+
+      const icon =
+        menuToggle.querySelector("i");
+
+      if (navbar.classList.contains("nav-mobile-open")) {
+        icon.className = "fa-solid fa-xmark";
+      } else {
+        icon.className = "fa-solid fa-bars";
+      }
+    });
+
+
+    /* Close mobile menu after selecting a link */
+    document.querySelectorAll(".nav-links a")
+      .forEach(link => {
+
+        link.addEventListener("click", () => {
+          navbar.classList.remove("nav-mobile-open");
+
+          const icon =
+            menuToggle.querySelector("i");
+
+          icon.className =
+            "fa-solid fa-bars";
+        });
+
+      });
+
+
+    /* INITIAL RENDER */
+    filterJobs();
+
+
+    /*
+      ==========================================
+      FUTURE API INTEGRATION
+      ==========================================
+
+      async function loadJobs() {
+        try {
+          const response = await fetch("/api/jobs", {
+            credentials: "include"
+          });
+
+          if (!response.ok) {
+            throw new Error("Unable to load jobs");
+          }
+
+          const apiJobs = await response.json();
+
+          // Validate/normalise API response before rendering.
+          renderJobs(apiJobs);
+
+        } catch (error) {
+          console.error(error);
+          showToast("Unable to load jobs right now.");
+        }
+      }
+
+      loadJobs();
+
+      SECURITY:
+      - Do not expose payment gateway secret keys.
+      - Do not determine applicant payment status in JavaScript.
+      - Do not trust employer-provided client-side values.
+      - Sanitize/validate job descriptions server-side.
+      - Only show published/active jobs.
+      - Rate-limit public job search APIs.
+      - Admin job creation/editing must use server-side RBAC.
+    */
+  </script>
+
+</body>
+</html>

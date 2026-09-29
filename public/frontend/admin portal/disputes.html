@@ -1,0 +1,4589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disputes | FAGA Admin</title>
+
+<style>
+:root{
+    --navy:#071a33;
+    --navy2:#0b2342;
+    --navy3:#102d50;
+    --orange:#f7931e;
+    --orange-dark:#df7d0d;
+    --bg:#f4f6f9;
+    --white:#fff;
+    --text:#172033;
+    --muted:#697586;
+    --border:#e2e7ee;
+    --success:#16a34a;
+    --success-bg:#eaf8ef;
+    --warning:#d97706;
+    --warning-bg:#fff7e6;
+    --danger:#dc2626;
+    --danger-bg:#fef0f0;
+    --info:#2563eb;
+    --info-bg:#edf4ff;
+    --purple:#7c3aed;
+    --purple-bg:#f3edff;
+    --shadow:0 4px 18px rgba(7,26,51,.07);
+    --sidebar:250px;
+    --topbar:70px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* TOPBAR */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:var(--topbar);
+    background:var(--navy);
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:0 22px;
+    z-index:1000;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.mobile-menu{
+    display:none;
+    width:38px;
+    height:38px;
+    border:1px solid rgba(255,255,255,.1);
+    background:var(--navy2);
+    color:white;
+    border-radius:6px;
+    margin-right:10px;
+}
+
+.brand{
+    width:var(--sidebar);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:24px;
+    font-weight:800;
+}
+
+.brand-fa{
+    color:white;
+}
+
+.brand-ga{
+    color:var(--orange);
+}
+
+.admin-badge{
+    font-size:9px;
+    background:var(--orange);
+    padding:4px 7px;
+    border-radius:4px;
+    letter-spacing:.6px;
+}
+
+.top-search{
+    flex:1;
+    max-width:560px;
+    position:relative;
+}
+
+.top-search input{
+    width:100%;
+    height:40px;
+    border:none;
+    outline:none;
+    border-radius:7px;
+    background:var(--navy2);
+    color:white;
+    padding:0 42px 0 15px;
+}
+
+.top-search input::placeholder{
+    color:#9eacc0;
+}
+
+.top-search span{
+    position:absolute;
+    right:14px;
+    top:10px;
+    color:#aab7c9;
+}
+
+.top-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.top-action{
+    height:40px;
+    padding:0 11px;
+    border:1px solid rgba(255,255,255,.09);
+    background:var(--navy2);
+    color:white;
+    border-radius:7px;
+}
+
+.notification{
+    position:relative;
+    min-width:40px;
+}
+
+.notification-badge{
+    position:absolute;
+    right:-3px;
+    top:-5px;
+    width:17px;
+    height:17px;
+    background:var(--orange);
+    border-radius:50%;
+    font-size:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding-left:13px;
+    margin-left:5px;
+    border-left:1px solid rgba(255,255,255,.1);
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+.profile-name{
+    font-size:12px;
+    font-weight:700;
+}
+
+.profile-role{
+    color:#9eacc0;
+    font-size:9px;
+    margin-top:2px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    top:var(--topbar);
+    left:0;
+    bottom:0;
+    width:var(--sidebar);
+    background:var(--navy);
+    color:white;
+    overflow-y:auto;
+    z-index:900;
+    padding:15px 10px;
+}
+
+.sidebar-title{
+    color:#718198;
+    font-size:9px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:14px 12px 7px;
+}
+
+.side-link{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 12px;
+    margin-bottom:2px;
+    border-radius:7px;
+    color:#c6d0dd;
+    font-size:12px;
+}
+
+.side-link:hover{
+    background:var(--navy2);
+    color:white;
+}
+
+.side-link.active{
+    background:var(--orange);
+    color:white;
+    font-weight:700;
+}
+
+.side-icon{
+    width:20px;
+    text-align:center;
+    font-size:14px;
+}
+
+.side-count{
+    margin-left:auto;
+    padding:2px 7px;
+    border-radius:20px;
+    background:rgba(255,255,255,.1);
+    font-size:9px;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:var(--sidebar);
+    padding-top:var(--topbar);
+    min-height:100vh;
+}
+
+.content{
+    padding:28px;
+    max-width:1800px;
+    margin:auto;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:23px;
+}
+
+.page-title{
+    color:var(--navy);
+    font-size:27px;
+    font-weight:800;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+.header-actions{
+    display:flex;
+    gap:9px;
+}
+
+.btn{
+    border:1px solid var(--border);
+    background:white;
+    color:var(--text);
+    border-radius:7px;
+    padding:10px 14px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.btn:hover{
+    background:#f8fafc;
+}
+
+.btn-primary{
+    background:var(--orange);
+    border-color:var(--orange);
+    color:white;
+}
+
+.btn-primary:hover{
+    background:var(--orange-dark);
+}
+
+/* KPI */
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.kpi{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:17px;
+    box-shadow:var(--shadow);
+}
+
+.kpi-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.kpi-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:var(--info-bg);
+    color:var(--info);
+    font-size:18px;
+}
+
+.kpi:nth-child(2) .kpi-icon{
+    background:var(--warning-bg);
+    color:var(--warning);
+}
+
+.kpi:nth-child(3) .kpi-icon{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.kpi:nth-child(4) .kpi-icon{
+    background:var(--danger-bg);
+    color:var(--danger);
+}
+
+.kpi:nth-child(5) .kpi-icon{
+    background:var(--purple-bg);
+    color:var(--purple);
+}
+
+.kpi:nth-child(6) .kpi-icon{
+    background:#fff4e7;
+    color:var(--orange);
+}
+
+.kpi-label{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:13px;
+}
+
+.kpi-value{
+    color:var(--navy);
+    font-size:21px;
+    font-weight:800;
+    margin-top:4px;
+}
+
+.kpi-change{
+    font-size:9px;
+    margin-top:5px;
+}
+
+.positive{
+    color:var(--success);
+}
+
+.negative{
+    color:var(--danger);
+}
+
+/* SUMMARY */
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+}
+
+.panel-header{
+    padding:16px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.panel-title{
+    color:var(--navy);
+    font-size:14px;
+    font-weight:800;
+}
+
+.panel-subtitle{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+/* DISPUTE OVERVIEW */
+
+.overview-body{
+    padding:18px;
+}
+
+.dispute-total{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding-bottom:17px;
+    border-bottom:1px solid var(--border);
+}
+
+.total-number{
+    font-size:31px;
+    color:var(--navy);
+    font-weight:800;
+}
+
+.total-label{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.total-progress{
+    flex:1;
+}
+
+.progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:9px;
+    margin-bottom:6px;
+}
+
+.progress{
+    height:7px;
+    border-radius:20px;
+    background:#edf0f4;
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+    height:100%;
+    background:var(--orange);
+    border-radius:20px;
+}
+
+.overview-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:16px;
+}
+
+.overview-stat{
+    background:#f8fafc;
+    border-radius:7px;
+    padding:11px;
+}
+
+.overview-stat strong{
+    display:block;
+    font-size:17px;
+    color:var(--navy);
+}
+
+.overview-stat span{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+/* BREAKDOWN */
+
+.breakdown{
+    padding:9px 18px;
+}
+
+.breakdown-row{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:9px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.breakdown-row:last-child{
+    border-bottom:none;
+}
+
+.breakdown-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+}
+
+.dot-red{
+    background:var(--danger);
+}
+
+.dot-orange{
+    background:var(--orange);
+}
+
+.dot-blue{
+    background:var(--info);
+}
+
+.dot-green{
+    background:var(--success);
+}
+
+.dot-purple{
+    background:var(--purple);
+}
+
+.breakdown-name{
+    flex:1;
+    font-size:9px;
+}
+
+.breakdown-value{
+    font-size:10px;
+    font-weight:800;
+}
+
+/* RESOLUTION */
+
+.resolution-list{
+    padding:8px 18px;
+}
+
+.resolution-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.resolution-row:last-child{
+    border-bottom:none;
+}
+
+.resolution-left{
+    display:flex;
+    flex-direction:column;
+}
+
+.resolution-left strong{
+    font-size:10px;
+}
+
+.resolution-left span{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+.resolution-value{
+    font-size:12px;
+    font-weight:800;
+}
+
+/* FILTERS */
+
+.filter-panel{
+    padding:15px;
+    margin-bottom:18px;
+}
+
+.filter-row{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr 1fr auto;
+    gap:9px;
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    height:39px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    outline:none;
+    padding:0 10px;
+    font-size:10px;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--orange);
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    padding:0 18px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+}
+
+.tab{
+    border:none;
+    background:none;
+    padding:13px 12px;
+    font-size:9px;
+    color:var(--muted);
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+}
+
+.tab.active{
+    color:var(--orange);
+    font-weight:800;
+    border-bottom-color:var(--orange);
+}
+
+/* BULK */
+
+.bulk-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 18px;
+    background:#fafbfc;
+    border-bottom:1px solid var(--border);
+}
+
+.bulk-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.bulk-left label{
+    font-size:9px;
+    color:var(--muted);
+}
+
+.bulk-actions{
+    display:flex;
+    gap:6px;
+}
+
+.bulk-btn{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    padding:6px 9px;
+    font-size:8px;
+    font-weight:700;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1100px;
+}
+
+th{
+    background:#f8fafc;
+    color:#697586;
+    text-transform:uppercase;
+    letter-spacing:.45px;
+    font-size:9px;
+    text-align:left;
+    padding:12px 14px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+}
+
+td{
+    padding:13px 14px;
+    font-size:10px;
+    border-bottom:1px solid #edf0f4;
+    vertical-align:middle;
+}
+
+tr:hover td{
+    background:#fbfcfd;
+}
+
+.dispute-id{
+    color:var(--info);
+    font-weight:800;
+}
+
+.customer{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.customer-avatar{
+    width:29px;
+    height:29px;
+    border-radius:50%;
+    background:#edf1f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:800;
+    color:var(--navy);
+}
+
+.customer-name{
+    font-size:10px;
+    font-weight:800;
+}
+
+.customer-role{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:2px;
+}
+
+.issue-title{
+    font-weight:700;
+}
+
+.issue-ref{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+.amount{
+    color:var(--navy);
+    font-weight:800;
+}
+
+.status{
+    display:inline-flex;
+    padding:4px 7px;
+    border-radius:4px;
+    font-size:8px;
+    font-weight:800;
+}
+
+.status-open{
+    background:var(--info-bg);
+    color:var(--info);
+}
+
+.status-review{
+    background:var(--warning-bg);
+    color:var(--warning);
+}
+
+.status-escalated{
+    background:var(--danger-bg);
+    color:var(--danger);
+}
+
+.status-resolved{
+    background:var(--success-bg);
+    color:var(--success);
+}
+
+.status-closed{
+    background:#eef0f3;
+    color:#667085;
+}
+
+.priority{
+    font-size:8px;
+    font-weight:800;
+}
+
+.priority-critical{
+    color:var(--danger);
+}
+
+.priority-high{
+    color:#ea580c;
+}
+
+.priority-medium{
+    color:var(--warning);
+}
+
+.priority-low{
+    color:var(--success);
+}
+
+.table-action{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    padding:6px 9px;
+    font-size:9px;
+    font-weight:700;
+}
+
+/* LOWER PANELS */
+
+.lower-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:18px;
+    margin-top:20px;
+}
+
+.activity{
+    padding:7px 18px;
+}
+
+.activity-item{
+    display:flex;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.activity-item:last-child{
+    border-bottom:none;
+}
+
+.activity-icon{
+    width:30px;
+    height:30px;
+    border-radius:7px;
+    background:var(--info-bg);
+    color:var(--info);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.activity-title{
+    font-size:9px;
+    font-weight:800;
+}
+
+.activity-text{
+    color:var(--muted);
+    font-size:8px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+.activity-time{
+    color:#9aa5b4;
+    font-size:8px;
+    margin-top:3px;
+}
+
+.escalation{
+    padding:8px 18px;
+}
+
+.escalation-item{
+    padding:11px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.escalation-item:last-child{
+    border-bottom:none;
+}
+
+.escalation-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.escalation-id{
+    color:var(--info);
+    font-size:9px;
+    font-weight:800;
+}
+
+.escalation-title{
+    font-size:9px;
+    font-weight:800;
+    margin-top:5px;
+}
+
+.escalation-meta{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+}
+
+.action-list{
+    padding:10px 18px;
+}
+
+.action-item{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.action-item:last-child{
+    border-bottom:none;
+}
+
+.action-icon{
+    width:31px;
+    height:31px;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f8fafc;
+    color:var(--navy);
+}
+
+.action-info{
+    flex:1;
+}
+
+.action-info strong{
+    display:block;
+    font-size:9px;
+}
+
+.action-info span{
+    color:var(--muted);
+    font-size:8px;
+    margin-top:3px;
+    display:block;
+}
+
+.action-item button{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    padding:6px 8px;
+    font-size:8px;
+    font-weight:700;
+}
+
+/* PAGINATION */
+
+.pagination{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+}
+
+.pagination-info{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.page-buttons{
+    display:flex;
+    gap:4px;
+}
+
+.page-btn{
+    min-width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:5px;
+    font-size:9px;
+}
+
+.page-btn.active{
+    background:var(--orange);
+    color:white;
+    border-color:var(--orange);
+}
+
+/* MODAL */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(2,12,25,.68);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:760px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-title{
+    color:var(--navy);
+    font-size:16px;
+    font-weight:800;
+}
+
+.close-modal{
+    width:31px;
+    height:31px;
+    border:none;
+    border-radius:6px;
+    background:#f1f4f7;
+    font-size:16px;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.dispute-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+    margin-bottom:17px;
+}
+
+.summary-box{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:11px;
+}
+
+.summary-box span{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+}
+
+.summary-box strong{
+    display:block;
+    color:var(--navy);
+    font-size:10px;
+    margin-top:4px;
+}
+
+.evidence-title{
+    color:var(--navy);
+    font-size:11px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.evidence{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-bottom:17px;
+}
+
+.evidence-card{
+    height:75px;
+    background:#f7f8fa;
+    border:1px dashed #cfd6df;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:var(--muted);
+    font-size:9px;
+}
+
+.evidence-card strong{
+    color:var(--navy);
+    margin-top:4px;
+    font-size:9px;
+}
+
+.section-label{
+    font-size:10px;
+    color:var(--navy);
+    font-weight:800;
+    margin:15px 0 7px;
+}
+
+.note{
+    background:#fff8eb;
+    border-left:3px solid var(--orange);
+    padding:10px;
+    color:#6f5429;
+    font-size:9px;
+    line-height:1.6;
+    margin-bottom:15px;
+}
+
+.decision-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.decision-grid select,
+.decision-grid input,
+.decision-grid textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:9px;
+    font-size:9px;
+    outline:none;
+}
+
+.decision-grid textarea{
+    min-height:70px;
+    resize:vertical;
+    grid-column:1 / -1;
+}
+
+.modal-footer{
+    padding:15px 20px;
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:var(--navy);
+    color:white;
+    padding:13px 17px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:3000;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1450px){
+
+    .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .summary-grid .panel:first-child{
+        grid-column:1 / -1;
+    }
+
+}
+
+@media(max-width:1150px){
+
+    .filter-row{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .brand{
+        width:auto;
+    }
+
+    .top-search{
+        display:none;
+    }
+
+    .profile-name,
+    .profile-role{
+        display:none;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .content{
+        padding:17px;
+    }
+
+    .page-header{
+        flex-direction:column;
+    }
+
+    .header-actions{
+        width:100%;
+    }
+
+    .header-actions .btn{
+        flex:1;
+    }
+
+    .kpi-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .summary-grid .panel:first-child{
+        grid-column:auto;
+    }
+
+    .filter-row{
+        grid-template-columns:1fr;
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr;
+    }
+
+    .overview-stats{
+        grid-template-columns:1fr;
+    }
+
+    .dispute-summary{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .evidence{
+        grid-template-columns:1fr;
+    }
+
+    .decision-grid{
+        grid-template-columns:1fr;
+    }
+
+    .decision-grid textarea{
+        grid-column:auto;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+    <button class="mobile-menu" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="brand">
+
+        <span>
+            <span class="brand-fa">FA</span><span class="brand-ga">GA</span>
+        </span>
+
+        <span class="admin-badge">
+            ADMIN
+        </span>
+
+    </div>
+
+    <div class="top-search">
+
+        <input
+            id="globalSearch"
+            type="text"
+            placeholder="Search disputes, users, orders..."
+            onkeydown="globalSearch(event)"
+        >
+
+        <span>⌕</span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <button class="top-action"
+                onclick="showToast('Opening dispute resolution console...')">
+            ⚖ Resolution Console
+        </button>
+
+        <button class="top-action notification"
+                onclick="showToast('You have 12 dispute notifications')">
+            🔔
+            <span class="notification-badge">12</span>
+        </button>
+
+        <div class="admin-profile">
+
+            <div class="avatar">
+                SA
+            </div>
+
+            <div>
+
+                <div class="profile-name">
+                    Super Admin
+                </div>
+
+                <div class="profile-role">
+                    Administrator
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-title">
+        Overview
+    </div>
+
+    <a class="side-link" href="../Public website/index.html">
+        <span class="side-icon">▦</span>
+        Dashboard
+    </a>
+
+
+    <div class="sidebar-title">
+        Management
+    </div>
+
+    <a class="side-link" href="users.html">
+        <span class="side-icon">♙</span>
+        Users
+        <span class="side-count">48K</span>
+    </a>
+
+    <a class="side-link" href="orders.html">
+        <span class="side-icon">▤</span>
+        Orders
+    </a>
+
+    <a class="side-link" href="../Public website/logistics.html">
+        <span class="side-icon">▰</span>
+        Logistics
+    </a>
+
+    <a class="side-link" href="riders.html">
+        <span class="side-icon">♟</span>
+        Riders
+    </a>
+
+    <a class="side-link" href="../Public website/marketplace.html">
+        <span class="side-icon">▥</span>
+        Marketplace
+    </a>
+
+    <a class="side-link" href="sellers.html">
+        <span class="side-icon">◫</span>
+        Sellers
+    </a>
+
+    <a class="side-link" href="../Public website/services.html">
+        <span class="side-icon">⚒</span>
+        Services
+    </a>
+
+    <a class="side-link" href="service-providers.html">
+        <span class="side-icon">♙</span>
+        Service Providers
+    </a>
+
+    <a class="side-link" href="../Public website/food.html">
+        <span class="side-icon">♨</span>
+        Food & Restaurants
+    </a>
+
+
+    <div class="sidebar-title">
+        Finance
+    </div>
+
+    <a class="side-link" href="payments.html">
+        <span class="side-icon">₦</span>
+        Payments
+    </a>
+
+    <a class="side-link" href="wallets.html">
+        <span class="side-icon">▣</span>
+        Wallets
+    </a>
+
+    <a class="side-link" href="payouts.html">
+        <span class="side-icon">⇧</span>
+        Payouts
+        <span class="side-count">214</span>
+    </a>
+
+    <a class="side-link" href="reports.html">
+        <span class="side-icon">▥</span>
+        Reports
+    </a>
+
+
+    <div class="sidebar-title">
+        Operations
+    </div>
+
+    <a class="side-link" href="support.html">
+        <span class="side-icon">?</span>
+        Support
+        <span class="side-count">36</span>
+    </a>
+
+    <a class="side-link active" href="disputes.html">
+        <span class="side-icon">⚠</span>
+        Disputes
+        <span class="side-count">12</span>
+    </a>
+
+    <a class="side-link" href="settings.html">
+        <span class="side-icon">⚙</span>
+        Settings
+    </a>
+
+    <a class="side-link" href="audit-logs.html">
+        <span class="side-icon">◷</span>
+        Audit Logs
+    </a>
+
+
+    <div class="sidebar-title">
+        Portal
+    </div>
+
+    <a class="side-link" href="../user portal/dashboard.html">
+        <span class="side-icon">↗</span>
+        User Portal
+    </a>
+
+    <a class="side-link"
+       href="#"
+       onclick="logout(event)">
+        <span class="side-icon">⇥</span>
+        Sign Out
+    </a>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<div class="content">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1 class="page-title">
+                Dispute Management
+            </h1>
+
+            <p class="page-subtitle">
+                Review customer, seller, rider, service and payment
+                disputes and manage fair resolutions across FAGA.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button class="btn"
+                    onclick="exportDisputes()">
+                ↓ Export
+            </button>
+
+            <button class="btn"
+                    onclick="showToast('Opening dispute policies...')">
+                Dispute Policies
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="createDispute()">
+                + Create Dispute
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- KPIs -->
+
+    <section class="kpi-grid">
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">⚠</div>
+            </div>
+
+            <div class="kpi-label">
+                Open Disputes
+            </div>
+
+            <div class="kpi-value">
+                186
+            </div>
+
+            <div class="kpi-change negative">
+                ↑ 8.4% this week
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">◷</div>
+            </div>
+
+            <div class="kpi-label">
+                Under Review
+            </div>
+
+            <div class="kpi-value">
+                74
+            </div>
+
+            <div class="kpi-change negative">
+                21 over SLA
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">✓</div>
+            </div>
+
+            <div class="kpi-label">
+                Resolved Today
+            </div>
+
+            <div class="kpi-value">
+                91
+            </div>
+
+            <div class="kpi-change positive">
+                ↑ 14.2%
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">!</div>
+            </div>
+
+            <div class="kpi-label">
+                Escalated
+            </div>
+
+            <div class="kpi-value">
+                12
+            </div>
+
+            <div class="kpi-change negative">
+                4 critical
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">₦</div>
+            </div>
+
+            <div class="kpi-label">
+                Amount Disputed
+            </div>
+
+            <div class="kpi-value">
+                ₦4.82M
+            </div>
+
+            <div class="kpi-change negative">
+                Across open cases
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">★</div>
+            </div>
+
+            <div class="kpi-label">
+                Resolution Rate
+            </div>
+
+            <div class="kpi-value">
+                93.6%
+            </div>
+
+            <div class="kpi-change positive">
+                ↑ 2.8%
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary-grid">
+
+        <!-- OVERVIEW -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Dispute Overview
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Current dispute workload and resolution performance
+                    </div>
+
+                </div>
+
+                <button class="btn"
+                        onclick="showToast('Opening dispute analytics...')">
+                    Analytics
+                </button>
+
+            </div>
+
+
+            <div class="overview-body">
+
+                <div class="dispute-total">
+
+                    <div>
+
+                        <div class="total-number">
+                            186
+                        </div>
+
+                        <div class="total-label">
+                            Active dispute cases
+                        </div>
+
+                    </div>
+
+                    <div class="total-progress">
+
+                        <div class="progress-label">
+
+                            <span>
+                                Resolution progress
+                            </span>
+
+                            <strong>
+                                68%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <span style="width:68%;"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-stats">
+
+                    <div class="overview-stat">
+
+                        <strong>
+                            58
+                        </strong>
+
+                        <span>
+                            Customer vs Seller
+                        </span>
+
+                    </div>
+
+                    <div class="overview-stat">
+
+                        <strong>
+                            47
+                        </strong>
+
+                        <span>
+                            Delivery disputes
+                        </span>
+
+                    </div>
+
+                    <div class="overview-stat">
+
+                        <strong>
+                            31
+                        </strong>
+
+                        <span>
+                            Payment disputes
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TYPES -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Disputes by Type
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Active cases
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="breakdown">
+
+                <div class="breakdown-row">
+
+                    <span class="breakdown-dot dot-red"></span>
+
+                    <span class="breakdown-name">
+                        Item not received
+                    </span>
+
+                    <strong class="breakdown-value">
+                        42
+                    </strong>
+
+                </div>
+
+
+                <div class="breakdown-row">
+
+                    <span class="breakdown-dot dot-orange"></span>
+
+                    <span class="breakdown-name">
+                        Damaged item
+                    </span>
+
+                    <strong class="breakdown-value">
+                        31
+                    </strong>
+
+                </div>
+
+
+                <div class="breakdown-row">
+
+                    <span class="breakdown-dot dot-blue"></span>
+
+                    <span class="breakdown-name">
+                        Payment / refund
+                    </span>
+
+                    <strong class="breakdown-value">
+                        31
+                    </strong>
+
+                </div>
+
+
+                <div class="breakdown-row">
+
+                    <span class="breakdown-dot dot-green"></span>
+
+                    <span class="breakdown-name">
+                        Delivery issue
+                    </span>
+
+                    <strong class="breakdown-value">
+                        47
+                    </strong>
+
+                </div>
+
+
+                <div class="breakdown-row">
+
+                    <span class="breakdown-dot dot-purple"></span>
+
+                    <span class="breakdown-name">
+                        Service complaint
+                    </span>
+
+                    <strong class="breakdown-value">
+                        35
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESOLUTION -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Resolution Outcomes
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Last 30 days
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="resolution-list">
+
+                <div class="resolution-row">
+
+                    <div class="resolution-left">
+
+                        <strong>
+                            Customer Refund
+                        </strong>
+
+                        <span>
+                            Full or partial refund
+                        </span>
+
+                    </div>
+
+                    <div class="resolution-value">
+                        46%
+                    </div>
+
+                </div>
+
+
+                <div class="resolution-row">
+
+                    <div class="resolution-left">
+
+                        <strong>
+                            Seller Compensation
+                        </strong>
+
+                        <span>
+                            Seller protected
+                        </span>
+
+                    </div>
+
+                    <div class="resolution-value">
+                        21%
+                    </div>
+
+                </div>
+
+
+                <div class="resolution-row">
+
+                    <div class="resolution-left">
+
+                        <strong>
+                            Shared Resolution
+                        </strong>
+
+                        <span>
+                            Cost split between parties
+                        </span>
+
+                    </div>
+
+                    <div class="resolution-value">
+                        13%
+                    </div>
+
+                </div>
+
+
+                <div class="resolution-row">
+
+                    <div class="resolution-left">
+
+                        <strong>
+                            Rejected
+                        </strong>
+
+                        <span>
+                            Claim not supported
+                        </span>
+
+                    </div>
+
+                    <div class="resolution-value">
+                        20%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+
+    <section class="panel filter-panel">
+
+        <div class="filter-row">
+
+            <div class="field">
+
+                <label>
+                    Search Disputes
+                </label>
+
+                <input
+                    id="disputeSearch"
+                    type="text"
+                    placeholder="Dispute ID, customer, order..."
+                    oninput="filterDisputes()"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Status
+                </label>
+
+                <select id="statusFilter"
+                        onchange="filterDisputes()">
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="open">
+                        Open
+                    </option>
+
+                    <option value="review">
+                        Under Review
+                    </option>
+
+                    <option value="escalated">
+                        Escalated
+                    </option>
+
+                    <option value="resolved">
+                        Resolved
+                    </option>
+
+                    <option value="closed">
+                        Closed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Dispute Type
+                </label>
+
+                <select id="typeFilter"
+                        onchange="filterDisputes()">
+
+                    <option value="all">
+                        All Types
+                    </option>
+
+                    <option value="delivery">
+                        Delivery
+                    </option>
+
+                    <option value="payment">
+                        Payment
+                    </option>
+
+                    <option value="marketplace">
+                        Marketplace
+                    </option>
+
+                    <option value="food">
+                        Food
+                    </option>
+
+                    <option value="service">
+                        Service
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Priority
+                </label>
+
+                <select id="priorityFilter"
+                        onchange="filterDisputes()">
+
+                    <option value="all">
+                        All Priorities
+                    </option>
+
+                    <option value="critical">
+                        Critical
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="low">
+                        Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Assigned To
+                </label>
+
+                <select>
+
+                    <option>
+                        All Reviewers
+                    </option>
+
+                    <option>
+                        Sarah Okafor
+                    </option>
+
+                    <option>
+                        Daniel James
+                    </option>
+
+                    <option>
+                        Grace Bello
+                    </option>
+
+                    <option>
+                        Michael Ade
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button class="btn btn-primary"
+                    onclick="resetFilters()"
+                    style="align-self:end;">
+                Reset
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- DISPUTE TABLE -->
+
+    <section class="panel">
+
+        <div class="tabs">
+
+            <button class="tab active"
+                    onclick="setTab(this,'all')">
+                All
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'open')">
+                Open
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'review')">
+                Under Review
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'escalated')">
+                Escalated
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'resolved')">
+                Resolved
+            </button>
+
+            <button class="tab"
+                    onclick="setTab(this,'closed')">
+                Closed
+            </button>
+
+        </div>
+
+
+        <div class="bulk-bar">
+
+            <div class="bulk-left">
+
+                <input
+                    type="checkbox"
+                    id="selectAll"
+                    onchange="selectAllDisputes(this)"
+                >
+
+                <label>
+                    <span id="selectedCount">0</span>
+                    selected
+                </label>
+
+            </div>
+
+
+            <div class="bulk-actions">
+
+                <button class="bulk-btn"
+                        onclick="bulkAssign()">
+                    Assign
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkReview()">
+                    Review
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkResolve()">
+                    Resolve
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="bulkEscalate()">
+                    Escalate
+                </button>
+
+                <button class="bulk-btn"
+                        onclick="exportSelected()">
+                    Export
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table id="disputeTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Dispute
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Issue
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Priority
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Reviewer
+                        </th>
+
+                        <th>
+                            Updated
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr data-status="open"
+                        data-type="delivery"
+                        data-priority="critical">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98421
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    AO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Amina Okafor
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Package not received
+                            </div>
+
+                            <div class="issue-ref">
+                                Order #ORD-48219
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Delivery
+                        </td>
+
+                        <td class="amount">
+                            ₦84,500
+                        </td>
+
+                        <td>
+                            <span class="priority priority-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Sarah Okafor
+                        </td>
+
+                        <td>
+                            8 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98421')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="review"
+                        data-type="payment"
+                        data-priority="high">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98420
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    KA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Kunle Ade
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Payment charged twice
+                            </div>
+
+                            <div class="issue-ref">
+                                Payment #PAY-98420
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Payment
+                        </td>
+
+                        <td class="amount">
+                            ₦42,000
+                        </td>
+
+                        <td>
+                            <span class="priority priority-high">
+                                HIGH
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-review">
+                                Under Review
+                            </span>
+                        </td>
+
+                        <td>
+                            Daniel James
+                        </td>
+
+                        <td>
+                            19 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98420')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="escalated"
+                        data-type="marketplace"
+                        data-priority="critical">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98419
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    CE
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Chinedu Eze
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Damaged product dispute
+                            </div>
+
+                            <div class="issue-ref">
+                                Order #ORD-48172
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Marketplace
+                        </td>
+
+                        <td class="amount">
+                            ₦128,000
+                        </td>
+
+                        <td>
+                            <span class="priority priority-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-escalated">
+                                Escalated
+                            </span>
+                        </td>
+
+                        <td>
+                            Grace Bello
+                        </td>
+
+                        <td>
+                            31 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98419')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="open"
+                        data-type="food"
+                        data-priority="medium">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98418
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    BO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Blessing Obi
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Wrong meal delivered
+                            </div>
+
+                            <div class="issue-ref">
+                                Food #FD-72198
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Food
+                        </td>
+
+                        <td class="amount">
+                            ₦18,500
+                        </td>
+
+                        <td>
+                            <span class="priority priority-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Michael Ade
+                        </td>
+
+                        <td>
+                            42 min ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98418')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="review"
+                        data-type="service"
+                        data-priority="high">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98417
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    YA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Yusuf Abdullahi
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Service not completed
+                            </div>
+
+                            <div class="issue-ref">
+                                Booking #SRV-23891
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Service
+                        </td>
+
+                        <td class="amount">
+                            ₦35,000
+                        </td>
+
+                        <td>
+                            <span class="priority priority-high">
+                                HIGH
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-review">
+                                Under Review
+                            </span>
+                        </td>
+
+                        <td>
+                            Sarah Okafor
+                        </td>
+
+                        <td>
+                            1 hr ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98417')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="resolved"
+                        data-type="marketplace"
+                        data-priority="low">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98416
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    FO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Fatima Ojo
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Seller item description dispute
+                            </div>
+
+                            <div class="issue-ref">
+                                Order #ORD-48091
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Marketplace
+                        </td>
+
+                        <td class="amount">
+                            ₦27,800
+                        </td>
+
+                        <td>
+                            <span class="priority priority-low">
+                                LOW
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-resolved">
+                                Resolved
+                            </span>
+                        </td>
+
+                        <td>
+                            Daniel James
+                        </td>
+
+                        <td>
+                            2 hrs ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98416')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="open"
+                        data-type="delivery"
+                        data-priority="medium">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98415
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    SO
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Samuel Okoro
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Rider marked order delivered
+                            </div>
+
+                            <div class="issue-ref">
+                                Delivery #DEL-77281
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Delivery
+                        </td>
+
+                        <td class="amount">
+                            ₦52,400
+                        </td>
+
+                        <td>
+                            <span class="priority priority-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-open">
+                                Open
+                            </span>
+                        </td>
+
+                        <td>
+                            Michael Ade
+                        </td>
+
+                        <td>
+                            3 hrs ago
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98415')">
+                                Review
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="closed"
+                        data-type="payment"
+                        data-priority="low">
+
+                        <td>
+                            <input class="dispute-check"
+                                   type="checkbox"
+                                   onchange="updateSelected()">
+                        </td>
+
+                        <td>
+                            <span class="dispute-id">
+                                DSP-98414
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-avatar">
+                                    IA
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        Ibrahim Ali
+                                    </div>
+
+                                    <div class="customer-role">
+                                        Customer
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="issue-title">
+                                Refund amount disagreement
+                            </div>
+
+                            <div class="issue-ref">
+                                Payment #PAY-98412
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Payment
+                        </td>
+
+                        <td class="amount">
+                            ₦16,000
+                        </td>
+
+                        <td>
+                            <span class="priority priority-low">
+                                LOW
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-closed">
+                                Closed
+                            </span>
+                        </td>
+
+                        <td>
+                            Grace Bello
+                        </td>
+
+                        <td>
+                            Yesterday
+                        </td>
+
+                        <td>
+
+                            <button class="table-action"
+                                    onclick="openDispute('DSP-98414')">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="pagination">
+
+            <div class="pagination-info">
+                Showing 1–8 of 186 disputes
+            </div>
+
+            <div class="page-buttons">
+
+                <button class="page-btn"
+                        onclick="showToast('Already on first page')">
+                    ‹
+                </button>
+
+                <button class="page-btn active">
+                    1
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 2...')">
+                    2
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 3...')">
+                    3
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading page 4...')">
+                    4
+                </button>
+
+                <button class="page-btn"
+                        onclick="showToast('Loading next page...')">
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LOWER GRID -->
+
+    <section class="lower-grid">
+
+        <!-- RECENT ACTIVITY -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Dispute Activity
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Latest resolution activity
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="activity">
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <div class="activity-title">
+                            DSP-98416 resolved
+                        </div>
+
+                        <div class="activity-text">
+                            Customer received partial refund after
+                            marketplace review.
+                        </div>
+
+                        <div class="activity-time">
+                            18 minutes ago
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ⚠
+                    </div>
+
+                    <div>
+
+                        <div class="activity-title">
+                            DSP-98419 escalated
+                        </div>
+
+                        <div class="activity-text">
+                            High-value damaged-item claim sent to
+                            senior review.
+                        </div>
+
+                        <div class="activity-time">
+                            31 minutes ago
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ₦
+                    </div>
+
+                    <div>
+
+                        <div class="activity-title">
+                            DSP-98420 evidence added
+                        </div>
+
+                        <div class="activity-text">
+                            Payment gateway transaction evidence
+                            attached to the case.
+                        </div>
+
+                        <div class="activity-time">
+                            42 minutes ago
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ⇄
+                    </div>
+
+                    <div>
+
+                        <div class="activity-title">
+                            DSP-98417 reassigned
+                        </div>
+
+                        <div class="activity-text">
+                            Case moved to Sarah Okafor for service
+                            provider review.
+                        </div>
+
+                        <div class="activity-time">
+                            1 hour ago
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ESCALATIONS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Escalated Cases
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Cases requiring senior review
+                    </div>
+
+                </div>
+
+                <span class="status status-escalated">
+                    12 Active
+                </span>
+
+            </div>
+
+
+            <div class="escalation">
+
+                <div class="escalation-item">
+
+                    <div class="escalation-top">
+
+                        <span class="escalation-id">
+                            DSP-98419
+                        </span>
+
+                        <span class="priority priority-critical">
+                            CRITICAL
+                        </span>
+
+                    </div>
+
+                    <div class="escalation-title">
+                        Damaged high-value marketplace item
+                    </div>
+
+                    <div class="escalation-meta">
+                        ₦128,000 · 31 min ago
+                    </div>
+
+                </div>
+
+
+                <div class="escalation-item">
+
+                    <div class="escalation-top">
+
+                        <span class="escalation-id">
+                            DSP-98398
+                        </span>
+
+                        <span class="priority priority-critical">
+                            CRITICAL
+                        </span>
+
+                    </div>
+
+                    <div class="escalation-title">
+                        Suspected fraudulent payment
+                    </div>
+
+                    <div class="escalation-meta">
+                        ₦320,000 · 2 hrs ago
+                    </div>
+
+                </div>
+
+
+                <div class="escalation-item">
+
+                    <div class="escalation-top">
+
+                        <span class="escalation-id">
+                            DSP-98376
+                        </span>
+
+                        <span class="priority priority-high">
+                            HIGH
+                        </span>
+
+                    </div>
+
+                    <div class="escalation-title">
+                        Repeated delivery dispute
+                    </div>
+
+                    <div class="escalation-meta">
+                        ₦94,000 · 4 hrs ago
+                    </div>
+
+                </div>
+
+
+                <div class="escalation-item">
+
+                    <div class="escalation-top">
+
+                        <span class="escalation-id">
+                            DSP-98354
+                        </span>
+
+                        <span class="priority priority-high">
+                            HIGH
+                        </span>
+
+                    </div>
+
+                    <div class="escalation-title">
+                        Service provider cancellation claim
+                    </div>
+
+                    <div class="escalation-meta">
+                        ₦67,500 · 5 hrs ago
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Resolution Tools
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Common dispute operations
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="action-list">
+
+                <div class="action-item">
+
+                    <div class="action-icon">
+                        ⚖
+                    </div>
+
+                    <div class="action-info">
+
+                        <strong>
+                            Assign Reviewer
+                        </strong>
+
+                        <span>
+                            Route cases to a dispute specialist
+                        </span>
+
+                    </div>
+
+                    <button onclick="bulkAssign()">
+                        Open
+                    </button>
+
+                </div>
+
+
+                <div class="action-item">
+
+                    <div class="action-icon">
+                        ₦
+                    </div>
+
+                    <div class="action-info">
+
+                        <strong>
+                            Process Resolution
+                        </strong>
+
+                        <span>
+                            Approve refund or compensation
+                        </span>
+
+                    </div>
+
+                    <button onclick="processResolution()">
+                        Open
+                    </button>
+
+                </div>
+
+
+                <div class="action-item">
+
+                    <div class="action-icon">
+                        ⚠
+                    </div>
+
+                    <div class="action-info">
+
+                        <strong>
+                            Escalation Queue
+                        </strong>
+
+                        <span>
+                            Review critical cases
+                        </span>
+
+                    </div>
+
+                    <button onclick="showToast('Opening escalation queue...')">
+                        Open
+                    </button>
+
+                </div>
+
+
+                <div class="action-item">
+
+                    <div class="action-icon">
+                        ↓
+                    </div>
+
+                    <div class="action-info">
+
+                        <strong>
+                            Export Case Data
+                        </strong>
+
+                        <span>
+                            Download dispute records
+                        </span>
+
+                    </div>
+
+                    <button onclick="exportDisputes()">
+                        Export
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- DISPUTE DETAIL MODAL -->
+
+<div class="modal-overlay" id="disputeModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                Dispute DSP-98421
+            </div>
+
+            <button class="close-modal"
+                    onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="dispute-summary">
+
+                <div class="summary-box">
+
+                    <span>
+                        Customer
+                    </span>
+
+                    <strong>
+                        Amina Okafor
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Order
+                    </span>
+
+                    <strong>
+                        ORD-48219
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Amount
+                    </span>
+
+                    <strong>
+                        ₦84,500
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong>
+                        Open
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Customer Role
+                    </span>
+
+                    <strong>
+                        Customer
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Other Party
+                    </span>
+
+                    <strong>
+                        FAGA Seller
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Reviewer
+                    </span>
+
+                    <strong>
+                        Sarah Okafor
+                    </strong>
+
+                </div>
+
+                <div class="summary-box">
+
+                    <span>
+                        Priority
+                    </span>
+
+                    <strong>
+                        Critical
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="evidence-title">
+                Evidence & Case Information
+            </div>
+
+            <div class="evidence">
+
+                <div class="evidence-card">
+
+                    📦
+
+                    <strong>
+                        Order Record
+                    </strong>
+
+                </div>
+
+                <div class="evidence-card">
+
+                    📍
+
+                    <strong>
+                        Delivery Timeline
+                    </strong>
+
+                </div>
+
+                <div class="evidence-card">
+
+                    ₦
+
+                    <strong>
+                        Payment Record
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-label">
+                Customer Claim
+            </div>
+
+            <div class="note">
+                Customer reports that the package was marked as
+                delivered but was not received. Delivery tracking,
+                rider activity and proof-of-delivery evidence should
+                be reviewed before any financial resolution.
+            </div>
+
+
+            <div class="section-label">
+                Resolution Decision
+            </div>
+
+            <div class="decision-grid">
+
+                <select id="resolutionSelect">
+
+                    <option value="">
+                        Select resolution
+                    </option>
+
+                    <option>
+                        Full Customer Refund
+                    </option>
+
+                    <option>
+                        Partial Customer Refund
+                    </option>
+
+                    <option>
+                        Seller Compensation
+                    </option>
+
+                    <option>
+                        Shared Resolution
+                    </option>
+
+                    <option>
+                        Reject Dispute
+                    </option>
+
+                    <option>
+                        Escalate for Senior Review
+                    </option>
+
+                </select>
+
+
+                <input
+                    id="resolutionAmount"
+                    type="text"
+                    placeholder="Resolution amount e.g. ₦50,000"
+                >
+
+
+                <textarea
+                    id="resolutionNote"
+                    placeholder="Enter the reason for this resolution..."></textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn"
+                    onclick="closeModal()">
+                Cancel
+            </button>
+
+            <button class="btn"
+                    onclick="requestEvidence()">
+                Request Evidence
+            </button>
+
+            <button class="btn"
+                    onclick="escalateCurrent()">
+                Escalate
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="saveResolution()">
+                Apply Resolution
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* SIDEBAR */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList
+        .toggle("open");
+
+}
+
+
+/* TOAST */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },2800);
+
+}
+
+
+/* TABS */
+
+function setTab(button,status){
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("statusFilter")
+        .value = status;
+
+    filterDisputes();
+
+}
+
+
+/* FILTERS */
+
+function filterDisputes(){
+
+    const search =
+        document
+            .getElementById("disputeSearch")
+            .value
+            .toLowerCase();
+
+    const status =
+        document
+            .getElementById("statusFilter")
+            .value;
+
+    const type =
+        document
+            .getElementById("typeFilter")
+            .value;
+
+    const priority =
+        document
+            .getElementById("priorityFilter")
+            .value;
+
+    const rows =
+        document.querySelectorAll(
+            "#disputeTable tbody tr"
+        );
+
+    rows.forEach(row => {
+
+        const text =
+            row.innerText.toLowerCase();
+
+        const rowStatus =
+            row.dataset.status;
+
+        const rowType =
+            row.dataset.type;
+
+        const rowPriority =
+            row.dataset.priority;
+
+        const searchMatch =
+            !search ||
+            text.includes(search);
+
+        const statusMatch =
+            status === "all" ||
+            rowStatus === status;
+
+        const typeMatch =
+            type === "all" ||
+            rowType === type;
+
+        const priorityMatch =
+            priority === "all" ||
+            rowPriority === priority;
+
+        row.style.display =
+            searchMatch &&
+            statusMatch &&
+            typeMatch &&
+            priorityMatch
+                ? ""
+                : "none";
+
+    });
+
+}
+
+
+/* RESET */
+
+function resetFilters(){
+
+    document
+        .getElementById("disputeSearch")
+        .value = "";
+
+    document
+        .getElementById("statusFilter")
+        .value = "all";
+
+    document
+        .getElementById("typeFilter")
+        .value = "all";
+
+    document
+        .getElementById("priorityFilter")
+        .value = "all";
+
+    filterDisputes();
+
+    showToast(
+        "Dispute filters reset"
+    );
+
+}
+
+
+/* SELECTION */
+
+function selectAllDisputes(master){
+
+    const rows =
+        [...document.querySelectorAll(
+            "#disputeTable tbody tr"
+        )]
+        .filter(row =>
+            row.style.display !== "none"
+        );
+
+    rows.forEach(row => {
+
+        const checkbox =
+            row.querySelector(".dispute-check");
+
+        checkbox.checked =
+            master.checked;
+
+    });
+
+    updateSelected();
+
+}
+
+
+function updateSelected(){
+
+    const count =
+        document.querySelectorAll(
+            ".dispute-check:checked"
+        ).length;
+
+    document
+        .getElementById("selectedCount")
+        .textContent = count;
+
+}
+
+
+/* BULK ACTIONS */
+
+function selectedCount(){
+
+    return document.querySelectorAll(
+        ".dispute-check:checked"
+    ).length;
+
+}
+
+
+function bulkAssign(){
+
+    const count =
+        selectedCount();
+
+    if(!count){
+
+        showToast(
+            "Select disputes first"
+        );
+
+        return;
+
+    }
+
+    showToast(
+        count +
+        " dispute(s) ready for assignment"
+    );
+
+}
+
+
+function bulkReview(){
+
+    const count =
+        selectedCount();
+
+    if(!count){
+
+        showToast(
+            "Select disputes first"
+        );
+
+        return;
+
+    }
+
+    showToast(
+        "Opening review queue for " +
+        count +
+        " dispute(s)"
+    );
+
+}
+
+
+function bulkResolve(){
+
+    const count =
+        selectedCount();
+
+    if(!count){
+
+        showToast(
+            "Select disputes first"
+        );
+
+        return;
+
+    }
+
+    if(confirm(
+        "Move " +
+        count +
+        " dispute(s) toward resolution?"
+    )){
+
+        showToast(
+            count +
+            " dispute(s) queued for resolution"
+        );
+
+    }
+
+}
+
+
+function bulkEscalate(){
+
+    const count =
+        selectedCount();
+
+    if(!count){
+
+        showToast(
+            "Select disputes first"
+        );
+
+        return;
+
+    }
+
+    if(confirm(
+        "Escalate " +
+        count +
+        " selected dispute(s)?"
+    )){
+
+        showToast(
+            count +
+            " dispute(s) escalated"
+        );
+
+    }
+
+}
+
+
+function exportSelected(){
+
+    const count =
+        selectedCount();
+
+    if(!count){
+
+        showToast(
+            "Select disputes first"
+        );
+
+        return;
+
+    }
+
+    showToast(
+        "Preparing export for " +
+        count +
+        " dispute(s)"
+    );
+
+}
+
+
+/* MODAL */
+
+function openDispute(disputeId){
+
+    document
+        .querySelector(".modal-title")
+        .textContent =
+        "Dispute " + disputeId;
+
+    document
+        .getElementById("disputeModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("disputeModal")
+        .classList
+        .remove("show");
+
+}
+
+
+document
+    .getElementById("disputeModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* RESOLUTION */
+
+function saveResolution(){
+
+    const resolution =
+        document
+            .getElementById("resolutionSelect")
+            .value;
+
+    if(!resolution){
+
+        showToast(
+            "Select a resolution first"
+        );
+
+        return;
+
+    }
+
+    const note =
+        document
+            .getElementById("resolutionNote")
+            .value
+            .trim();
+
+    if(!note){
+
+        showToast(
+            "Enter a resolution reason"
+        );
+
+        return;
+
+    }
+
+    if(!confirm(
+        "Apply this dispute resolution?"
+    )){
+
+        return;
+
+    }
+
+    showToast(
+        "Resolution submitted for authorization"
+    );
+
+    setTimeout(() => {
+
+        closeModal();
+
+    },800);
+
+}
+
+
+function requestEvidence(){
+
+    showToast(
+        "Evidence request sent to the relevant parties"
+    );
+
+}
+
+
+function escalateCurrent(){
+
+    if(confirm(
+        "Escalate this dispute to senior review?"
+    )){
+
+        showToast(
+            "Dispute escalated successfully"
+        );
+
+    }
+
+}
+
+
+function processResolution(){
+
+    showToast(
+        "Opening resolution processing queue..."
+    );
+
+}
+
+
+function createDispute(){
+
+    showToast(
+        "Opening dispute creation form..."
+    );
+
+}
+
+
+/* EXPORT */
+
+function exportDisputes(){
+
+    showToast(
+        "Preparing complete dispute export..."
+    );
+
+}
+
+
+/* GLOBAL SEARCH */
+
+function globalSearch(event){
+
+    if(event.key !== "Enter"){
+
+        return;
+
+    }
+
+    const value =
+        event.target.value.trim();
+
+    if(!value){
+
+        return;
+
+    }
+
+    showToast(
+        "Searching FAGA dispute records for: " +
+        value
+    );
+
+}
+
+
+/* LOGOUT */
+
+function logout(event){
+
+    event.preventDefault();
+
+    if(!confirm(
+        "Sign out of FAGA Admin?"
+    )){
+
+        return;
+
+    }
+
+    showToast(
+        "Signing out..."
+    );
+
+    setTimeout(() => {
+
+        window.location.href="../user portal/login.html";
+
+    },700);
+
+}
+
+
+/*
+=========================================================
+BACKEND INTEGRATION
+=========================================================
+
+DISPUTES
+
+GET:
+
+/api/admin/disputes
+/api/admin/disputes/:id
+/api/admin/disputes/summary
+/api/admin/disputes/statistics
+/api/admin/disputes/types
+/api/admin/disputes/statuses
+/api/admin/disputes/escalated
+/api/admin/disputes/export
+
+SEARCH:
+
+GET /api/admin/disputes/search?q=
+
+CASE EVIDENCE:
+
+GET /api/admin/disputes/:id/evidence
+POST /api/admin/disputes/:id/evidence/request
+POST /api/admin/disputes/:id/evidence
+
+ASSIGNMENT:
+
+POST /api/admin/disputes/:id/assign
+PUT /api/admin/disputes/:id/assignment
+
+STATUS:
+
+PUT /api/admin/disputes/:id/status
+PUT /api/admin/disputes/:id/priority
+
+ESCALATION:
+
+POST /api/admin/disputes/:id/escalate
+POST /api/admin/disputes/:id/de-escalate
+
+RESOLUTION:
+
+POST /api/admin/disputes/:id/resolve
+POST /api/admin/disputes/:id/refund
+POST /api/admin/disputes/:id/compensate
+POST /api/admin/disputes/:id/reject
+
+BULK:
+
+POST /api/admin/disputes/bulk/assign
+POST /api/admin/disputes/bulk/status
+POST /api/admin/disputes/bulk/escalate
+POST /api/admin/disputes/bulk/export
+
+POLICIES:
+
+GET /api/admin/disputes/policies
+GET /api/admin/disputes/rules
+
+AUDIT:
+
+GET /api/admin/disputes/:id/audit-log
+
+IMPORTANT SECURITY REQUIREMENTS:
+
+1. Dispute resolution MUST be authorized server-side.
+
+2. Never trust browser-side amounts, status values,
+   refund values or resolution decisions.
+
+3. Financial resolutions must call the payment/wallet
+   backend rather than directly modifying balances.
+
+4. Every resolution should create an immutable audit event.
+
+5. Every refund or compensation should reference the
+   originating dispute and transaction.
+
+6. A paid financial transaction must never be silently
+   rewritten to hide a dispute.
+
+7. Administrators should only access disputes permitted
+   by their backend role and permissions.
+
+8. Evidence must be access-controlled and securely stored.
+
+9. Customer, seller, rider and service-provider information
+   should only be exposed where necessary.
+
+10. Critical disputes should require additional authorization
+    before high-value refunds or compensation.
+
+11. Dispute communication and evidence access should be logged.
+
+12. Dispute status changes should be idempotent on the backend.
+
+13. All financial decisions should be tied to the platform
+    ledger and payment records.
+
+14. Production data must be loaded from the API rather than
+    hard-coded in this HTML.
+
+ONE FAGA ACCOUNT ARCHITECTURE:
+
+FAGA continues to use one account per person/business.
+
+A single account can have customer, rider, seller,
+service-provider or restaurant roles.
+
+A dispute therefore references the underlying user/account
+and the relevant role involved in the transaction rather
+than creating a separate account for every activity.
+
+=========================================================
+*/
+
+</script>
+<!-- ==========================================================
+     ADMIN DISPUTE ACTION POPUP (MODAL WINDOW)
+     ========================================================== -->
+<div id="resolve-dispute-modal" class="faga-modal-overlay">
+    <div class="faga-modal-content">
+        <div class="faga-modal-header">
+            <h3>Resolve Dispute Ticket</h3>
+            <button type="button" class="close-modal-btn" onclick="document.getElementById('resolve-dispute-modal').classList.remove('show-modal')">&times;</button>
+        </div>
+        <form id="resolve-dispute-form">
+            <div class="faga-modal-body">
+                <!-- 1. Select the new status -->
+                <div class="form-group">
+                    <label for="modal-status-select">Update Ticket Status:</label>
+                    <select id="modal-status-select" class="form-control" required>
+                        <option value="UNDER_REVIEW">Move to Under Review</option>
+                        <option value="RESOLVED">Mark as Resolved</option>
+                        <option value="REJECTED">Reject/Dismiss Ticket</option>
+                    </select>
+                </div>
+
+                <!-- 2. Select the financial action -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="modal-action-select">Financial Resolution Action:</label>
+                    <select id="modal-action-select" class="form-control" required>
+                        <option value="NONE">No Financial Changes (None)</option>
+                        <option value="REFUND_CUSTOMER">Full Refund to Customer Account</option>
+                        <option value="PAY_SELLER">Release Escrow Funds to Seller</option>
+                        <option value="PAY_RIDER">Release Escrow Funds to Rider/Driver</option>
+                    </select>
+                </div>
+
+                <!-- 3. Admin internal notes -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="modal-notes-textarea">Administrative Internal Case Notes:</label>
+                    <textarea id="modal-notes-textarea" class="form-control" rows="4" placeholder="Enter investigation remarks or reason for resolution decision..." required></textarea>
+                </div>
+            </div>
+            <div class="faga-modal-footer" style="margin-top: 20px; text-align: right;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('resolve-dispute-modal').classList.remove('show-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Apply Resolution</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Simple styling helper to ensure it pops up cleanly over the screen -->
+<style>
+.faga-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    justify-content: center; align-items: center;
+}
+.faga-modal-overlay.show-modal { display: flex; }
+.faga-modal-content {
+    background: #ffffff; padding: 25px;
+    border-radius: 8px; width: 100%; max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.faga-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.close-modal-btn { background: none; border: none; font-size: 24px; cursor: pointer; }
+.form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+</style>
+
+</body>
+</html>

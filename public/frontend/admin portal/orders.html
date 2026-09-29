@@ -1,0 +1,3834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAGA Admin — Orders</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+    --navy:#071a33;
+    --navy2:#0d2745;
+    --navy3:#12395f;
+    --orange:#ff7a18;
+    --orange2:#e76509;
+    --white:#fff;
+    --bg:#f4f6f9;
+    --border:#e1e7ee;
+    --text:#172033;
+    --muted:#6b7280;
+    --green:#16a34a;
+    --red:#dc2626;
+    --yellow:#d97706;
+    --blue:#2563eb;
+    --purple:#7c3aed;
+    --shadow:0 4px 18px rgba(7,26,51,.06)
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text)
+}
+
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:inherit}
+
+.topbar{
+    height:68px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
+    background:var(--navy);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:0 24px
+}
+
+.mobile-toggle{
+    display:none;
+    cursor:pointer;
+    font-size:21px
+}
+
+.logo{
+    width:215px;
+    flex-shrink:0;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:-1.5px
+}
+
+.logo span{color:var(--orange)}
+
+.admin-label{
+    color:#9aadc1!important;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-left:5px
+}
+
+.top-search{
+    max-width:550px;
+    flex:1;
+    position:relative
+}
+
+.top-search input{
+    width:100%;
+    height:39px;
+    border:0;
+    border-radius:5px;
+    outline:0;
+    padding:0 42px 0 14px;
+    font-size:12px
+}
+
+.top-search span{
+    position:absolute;
+    right:14px;
+    top:11px;
+    color:var(--muted)
+}
+
+.top-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:20px
+}
+
+.top-action{
+    cursor:pointer;
+    position:relative;
+    font-size:18px
+}
+
+.notification-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--orange);
+    position:absolute;
+    right:-4px;
+    top:-4px
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:9px
+}
+
+.admin-avatar{
+    width:37px;
+    height:37px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:800
+}
+
+.admin-profile strong{font-size:11px}
+
+.admin-profile small{
+    display:block;
+    color:#9fb0c3;
+    font-size:9px;
+    margin-top:3px
+}
+
+.sidebar{
+    position:fixed;
+    top:68px;
+    left:0;
+    bottom:0;
+    width:235px;
+    background:var(--navy2);
+    color:#fff;
+    overflow-y:auto;
+    z-index:900
+}
+
+.sidebar-section{
+    padding:22px 13px 7px;
+    color:#7d94ac;
+    font-size:9px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.8px
+}
+
+.sidebar-link{
+    margin:2px 10px;
+    padding:11px 12px;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    color:#c3cedb;
+    font-size:12px;
+    cursor:pointer;
+    transition:.2s
+}
+
+.sidebar-link:hover{
+    background:rgba(255,255,255,.07);
+    color:#fff
+}
+
+.sidebar-link.active{
+    background:var(--orange);
+    color:#fff;
+    font-weight:700
+}
+
+.sidebar-icon{
+    width:20px;
+    text-align:center;
+    font-size:15px
+}
+
+.sidebar-badge{
+    margin-left:auto;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--orange);
+    color:#fff;
+    font-size:9px
+}
+
+.sidebar-link.active .sidebar-badge{
+    background:#fff;
+    color:var(--orange)
+}
+
+.sidebar-bottom{
+    border-top:1px solid rgba(255,255,255,.08);
+    margin-top:20px;
+    padding-top:10px
+}
+
+.main{
+    margin-left:235px;
+    padding:94px 28px 35px
+}
+
+.page-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:22px
+}
+
+.page-heading h1{
+    color:var(--navy);
+    font-size:25px;
+    margin-bottom:5px
+}
+
+.page-heading p{
+    color:var(--muted);
+    font-size:12px
+}
+
+.heading-actions{
+    display:flex;
+    gap:8px
+}
+
+.btn{
+    border:0;
+    border-radius:5px;
+    padding:10px 15px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer
+}
+
+.btn-orange{
+    background:var(--orange);
+    color:#fff
+}
+
+.btn-orange:hover{background:var(--orange2)}
+
+.btn-white{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy)
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:13px;
+    margin-bottom:19px
+}
+
+.summary-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:16px;
+    box-shadow:var(--shadow)
+}
+
+.summary-card small{
+    color:var(--muted);
+    font-size:9px;
+    font-weight:700;
+    text-transform:uppercase
+}
+
+.summary-number{
+    margin-top:9px;
+    color:var(--navy);
+    font-size:22px;
+    font-weight:800
+}
+
+.summary-bottom{
+    margin-top:7px;
+    display:flex;
+    justify-content:space-between;
+    font-size:8px
+}
+
+.green{color:var(--green);font-weight:700}
+.orange{color:var(--orange2);font-weight:700}
+.red{color:var(--red);font-weight:700}
+
+.card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:7px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:18px
+}
+
+.card-header{
+    min-height:55px;
+    padding:13px 17px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.card-header h2{
+    color:var(--navy);
+    font-size:14px
+}
+
+.card-header p{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:4px
+}
+
+.filters{
+    padding:15px 17px;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;
+    gap:9px;
+    border-bottom:1px solid var(--border);
+    background:#fbfcfd
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    font-weight:700;
+    margin-bottom:5px;
+    text-transform:uppercase
+}
+
+.field input,
+.field select{
+    width:100%;
+    height:36px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    outline:0;
+    background:#fff;
+    padding:0 10px;
+    font-size:10px;
+    color:var(--text)
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--orange)
+}
+
+.filter-button{
+    align-self:end;
+    height:36px;
+    padding:0 14px;
+    border:0;
+    border-radius:4px;
+    background:var(--navy);
+    color:#fff;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer
+}
+
+.status-tabs{
+    display:flex;
+    gap:4px;
+    padding:13px 17px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto
+}
+
+.status-tab{
+    white-space:nowrap;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:#fff;
+    color:var(--muted);
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer
+}
+
+.status-tab.active{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:#fff
+}
+
+.table-toolbar{
+    padding:12px 17px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border)
+}
+
+.selected-info{
+    color:var(--muted);
+    font-size:9px
+}
+
+.toolbar-actions{
+    display:flex;
+    gap:6px
+}
+
+.small-btn{
+    height:29px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    padding:0 10px;
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer
+}
+
+.small-btn:hover{
+    border-color:var(--orange);
+    color:var(--orange2)
+}
+
+.table-wrapper{overflow-x:auto}
+
+table{
+    width:100%;
+    border-collapse:collapse
+}
+
+th{
+    padding:11px 14px;
+    text-align:left;
+    background:#f8fafc;
+    color:var(--muted);
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap
+}
+
+td{
+    padding:12px 14px;
+    font-size:9px;
+    border-bottom:1px solid #eef1f5;
+    vertical-align:middle
+}
+
+tbody tr:hover{background:#fafbfd}
+
+.checkbox{
+    width:14px;
+    height:14px;
+    accent-color:var(--orange);
+    cursor:pointer
+}
+
+.order-cell{
+    min-width:135px
+}
+
+.order-cell strong{
+    display:block;
+    color:var(--navy);
+    font-size:10px
+}
+
+.order-cell small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
+    font-size:8px
+}
+
+.type-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 8px;
+    border-radius:20px;
+    font-size:7px;
+    font-weight:700;
+    white-space:nowrap
+}
+
+.type-logistics{
+    background:#fff0e5;
+    color:#c2410c
+}
+
+.type-marketplace{
+    background:#e8f0ff;
+    color:#1d4ed8
+}
+
+.type-food{
+    background:#e8f8ed;
+    color:#15803d
+}
+
+.type-service{
+    background:#f1e9ff;
+    color:#6d28d9
+}
+
+.customer{
+    min-width:130px
+}
+
+.customer strong{
+    display:block;
+    font-size:9px
+}
+
+.customer small{
+    display:block;
+    color:var(--muted);
+    margin-top:3px;
+    font-size:8px
+}
+
+.amount{
+    color:var(--navy);
+    font-weight:800;
+    white-space:nowrap
+}
+
+.status{
+    display:inline-block;
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:7px;
+    font-weight:700;
+    white-space:nowrap
+}
+
+.status-pending{
+    color:#b45309;
+    background:#fef3c7
+}
+
+.status-confirmed{
+    color:#1d4ed8;
+    background:#dbeafe
+}
+
+.status-processing{
+    color:#6d28d9;
+    background:#ede9fe
+}
+
+.status-transit{
+    color:#c2410c;
+    background:#ffedd5
+}
+
+.status-ready{
+    color:#047857;
+    background:#d1fae5
+}
+
+.status-delivered{
+    color:#15803d;
+    background:#dcfce7
+}
+
+.status-cancelled{
+    color:#b91c1c;
+    background:#fee2e2
+}
+
+.status-dispute{
+    color:#9f1239;
+    background:#ffe4e6
+}
+
+.action-menu{
+    position:relative
+}
+
+.more-btn{
+    width:29px;
+    height:29px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    cursor:pointer;
+    font-size:14px
+}
+
+.dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:33px;
+    width:155px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:5px;
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+    z-index:100
+}
+
+.dropdown.show{display:block}
+
+.dropdown button{
+    display:block;
+    width:100%;
+    padding:9px 11px;
+    text-align:left;
+    border:0;
+    background:#fff;
+    font-size:9px;
+    cursor:pointer
+}
+
+.dropdown button:hover{background:#f6f8fa}
+
+.dropdown .danger{color:var(--red)}
+
+.pagination{
+    padding:13px 17px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-top:1px solid var(--border)
+}
+
+.pagination-info{
+    color:var(--muted);
+    font-size:8px
+}
+
+.pages{
+    display:flex;
+    gap:4px
+}
+
+.page-btn{
+    width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    font-size:8px;
+    cursor:pointer
+}
+
+.page-btn.active{
+    background:var(--orange);
+    color:#fff;
+    border-color:var(--orange)
+}
+
+.operations-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    padding:15px 17px
+}
+
+.operation{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px
+}
+
+.operation-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.operation-icon{
+    width:34px;
+    height:34px;
+    border-radius:6px;
+    background:#f5f7fa;
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+
+.operation-count{
+    color:var(--navy);
+    font-size:17px;
+    font-weight:800
+}
+
+.operation h3{
+    margin-top:11px;
+    font-size:10px;
+    color:var(--navy)
+}
+
+.operation p{
+    margin-top:4px;
+    font-size:8px;
+    color:var(--muted)
+}
+
+.operation-link{
+    margin-top:10px;
+    color:var(--orange2);
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer
+}
+
+.lower-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px
+}
+
+.timeline{
+    padding:8px 17px 16px
+}
+
+.timeline-row{
+    display:flex;
+    gap:11px;
+    padding:11px 0;
+    border-bottom:1px solid #eef1f5
+}
+
+.timeline-row:last-child{border-bottom:0}
+
+.timeline-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--orange);
+    margin-top:3px;
+    flex-shrink:0
+}
+
+.timeline-info{
+    flex:1
+}
+
+.timeline-info strong{
+    display:block;
+    font-size:9px
+}
+
+.timeline-info small{
+    display:block;
+    color:var(--muted);
+    font-size:7px;
+    margin-top:3px
+}
+
+.timeline-time{
+    color:var(--muted);
+    font-size:7px
+}
+
+.revenue-list{
+    padding:8px 17px 16px
+}
+
+.revenue-row{
+    padding:12px 0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-bottom:1px solid #eef1f5
+}
+
+.revenue-row:last-child{border-bottom:0}
+
+.revenue-icon{
+    width:32px;
+    height:32px;
+    border-radius:6px;
+    background:#f5f7fa;
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+
+.revenue-info{
+    flex:1
+}
+
+.revenue-info strong{
+    display:block;
+    font-size:9px
+}
+
+.revenue-info small{
+    display:block;
+    color:var(--muted);
+    font-size:7px;
+    margin-top:3px
+}
+
+.revenue-value{
+    color:var(--navy);
+    font-size:10px;
+    font-weight:800
+}
+
+.footer{
+    margin-left:235px;
+    background:var(--navy);
+    color:#91a2b5;
+    padding:20px 28px;
+    display:flex;
+    justify-content:space-between;
+    font-size:9px
+}
+
+.footer span{color:var(--orange)}
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:var(--navy);
+    color:#fff;
+    padding:13px 17px;
+    border-radius:6px;
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+    font-size:10px;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:5000
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1
+}
+
+@media(max-width:1250px){
+
+    .summary-grid{
+        grid-template-columns:repeat(3,1fr)
+    }
+
+    .filters{
+        grid-template-columns:1fr 1fr 1fr
+    }
+
+    .operations-grid{
+        grid-template-columns:repeat(2,1fr)
+    }
+}
+
+@media(max-width:950px){
+
+    .mobile-toggle{display:block}
+
+    .logo{width:auto}
+
+    .top-search{display:none}
+
+    .sidebar{
+        left:-235px;
+        transition:.25s
+    }
+
+    .sidebar.open{left:0}
+
+    .main{margin-left:0}
+
+    .footer{margin-left:0}
+
+    .lower-grid{
+        grid-template-columns:1fr
+    }
+}
+
+@media(max-width:650px){
+
+    .topbar{padding:0 12px}
+
+    .admin-profile>div:last-child{
+        display:none
+    }
+
+    .main{
+        padding:88px 12px 25px
+    }
+
+    .page-heading{
+        display:block
+    }
+
+    .heading-actions{
+        margin-top:14px
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr 1fr;
+        gap:8px
+    }
+
+    .summary-card{
+        padding:12px
+    }
+
+    .summary-number{
+        font-size:18px
+    }
+
+    .filters{
+        grid-template-columns:1fr
+    }
+
+    .operations-grid{
+        grid-template-columns:1fr
+    }
+
+    .table-toolbar{
+        display:block
+    }
+
+    .toolbar-actions{
+        margin-top:10px
+    }
+
+    .footer{
+        display:block;
+        line-height:1.8
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="mobile-toggle" onclick="toggleSidebar()">
+        ☰
+    </div>
+
+    <a href="../Public website/index.html" class="logo">
+        FA<span>GA</span>
+        <span class="admin-label">Admin</span>
+    </a>
+
+    <div class="top-search">
+
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Search orders, users, tracking numbers..."
+        >
+
+        <span>🔍</span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <div
+            class="top-action"
+            onclick="showToast('Notifications opened')">
+
+            🔔
+            <span class="notification-dot"></span>
+
+        </div>
+
+        <div
+            class="top-action"
+            onclick="showToast('Support center opened')">
+
+            💬
+
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                SA
+            </div>
+
+            <div>
+                <strong>Super Admin</strong>
+                <small>Administrator</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+        Overview
+    </div>
+
+    <a class="sidebar-link" href="../Public website/index.html">
+        <span class="sidebar-icon">📊</span>
+        Dashboard
+    </a>
+
+
+    <div class="sidebar-section">
+        Platform
+    </div>
+
+    <a class="sidebar-link" href="users.html">
+        <span class="sidebar-icon">👥</span>
+        Users
+        <span class="sidebar-badge">24</span>
+    </a>
+
+    <a class="sidebar-link active" href="orders.html">
+        <span class="sidebar-icon">📦</span>
+        Orders
+        <span class="sidebar-badge">18</span>
+    </a>
+
+    <a class="sidebar-link" href="../Public website/logistics.html">
+        <span class="sidebar-icon">🚚</span>
+        Logistics
+    </a>
+
+    <a class="sidebar-link" href="riders.html">
+        <span class="sidebar-icon">🏍️</span>
+        Riders
+        <span class="sidebar-badge">7</span>
+    </a>
+
+    <a class="sidebar-link" href="../Public website/marketplace.html">
+        <span class="sidebar-icon">🛍️</span>
+        Marketplace
+    </a>
+
+    <a class="sidebar-link" href="sellers.html">
+        <span class="sidebar-icon">🏪</span>
+        Sellers
+    </a>
+
+    <a class="sidebar-link" href="../Public website/services.html">
+        <span class="sidebar-icon">🛠️</span>
+        Services
+    </a>
+
+    <a class="sidebar-link" href="service-providers.html">
+        <span class="sidebar-icon">👨‍🔧</span>
+        Service Providers
+    </a>
+
+    <a class="sidebar-link" href="../Public website/food.html">
+        <span class="sidebar-icon">🍽️</span>
+        Food & Restaurants
+    </a>
+
+
+    <div class="sidebar-section">
+        Finance
+    </div>
+
+    <a class="sidebar-link" href="payments.html">
+        <span class="sidebar-icon">💳</span>
+        Payments
+    </a>
+
+    <a class="sidebar-link" href="wallets.html">
+        <span class="sidebar-icon">💰</span>
+        Wallets
+    </a>
+
+    <a class="sidebar-link" href="payouts.html">
+        <span class="sidebar-icon">🏦</span>
+        Payouts
+    </a>
+
+
+    <div class="sidebar-section">
+        Management
+    </div>
+
+    <a class="sidebar-link" href="reports.html">
+        <span class="sidebar-icon">📈</span>
+        Reports
+    </a>
+
+    <a class="sidebar-link" href="support.html">
+        <span class="sidebar-icon">🎧</span>
+        Support
+        <span class="sidebar-badge">9</span>
+    </a>
+
+    <a class="sidebar-link" href="disputes.html">
+        <span class="sidebar-icon">⚠️</span>
+        Disputes
+        <span class="sidebar-badge">3</span>
+    </a>
+
+
+    <div class="sidebar-section">
+        System
+    </div>
+
+    <a class="sidebar-link" href="settings.html">
+        <span class="sidebar-icon">⚙️</span>
+        Settings
+    </a>
+
+    <div
+        class="sidebar-link"
+        onclick="showToast('Audit logs opened')">
+
+        <span class="sidebar-icon">🔐</span>
+        Audit Logs
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+        <a class="sidebar-link" href="../user portal/dashboard.html">
+            <span class="sidebar-icon">↩</span>
+            User Portal
+        </a>
+
+        <div
+            class="sidebar-link"
+            style="color:#ff9a9a"
+            onclick="logout()">
+
+            <span class="sidebar-icon">↪</span>
+            Sign Out
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- HEADER -->
+
+    <section class="page-heading">
+
+        <div>
+
+            <h1>
+                Order Management
+            </h1>
+
+            <p>
+                Monitor and manage every FAGA order from one operations center.
+            </p>
+
+        </div>
+
+        <div class="heading-actions">
+
+            <button
+                class="btn btn-white"
+                onclick="exportOrders()">
+
+                ↓ Export Orders
+
+            </button>
+
+            <button
+                class="btn btn-orange"
+                onclick="createOrder()">
+
+                + Create Order
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <small>
+                Total Orders
+            </small>
+
+            <div class="summary-number">
+                184,726
+            </div>
+
+            <div class="summary-bottom">
+                <span class="green">↑ 14.8%</span>
+                <span style="color:var(--muted)">this month</span>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Orders Today
+            </small>
+
+            <div class="summary-number">
+                1,284
+            </div>
+
+            <div class="summary-bottom">
+                <span class="green">↑ 9.2%</span>
+                <span style="color:var(--muted)">vs yesterday</span>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                In Progress
+            </small>
+
+            <div class="summary-number">
+                428
+            </div>
+
+            <div class="summary-bottom">
+                <span class="orange">Active</span>
+                <span style="color:var(--muted)">right now</span>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Delivered Today
+            </small>
+
+            <div class="summary-number">
+                792
+            </div>
+
+            <div class="summary-bottom">
+                <span class="green">61.7%</span>
+                <span style="color:var(--muted)">completion</span>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Issues
+            </small>
+
+            <div class="summary-number">
+                36
+            </div>
+
+            <div class="summary-bottom">
+                <span class="red">Needs attention</span>
+                <span style="color:var(--muted)">open cases</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDERS
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    All Orders
+                </h2>
+
+                <p>
+                    Logistics, marketplace, food and service orders.
+                </p>
+
+            </div>
+
+            <span style="font-size:9px;color:var(--muted)">
+                Live operations
+            </span>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <div class="filters">
+
+            <div class="field">
+
+                <label>
+                    Search
+                </label>
+
+                <input
+                    id="orderSearch"
+                    type="text"
+                    placeholder="Order ID, customer, tracking..."
+                    oninput="filterOrders()"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Order Type
+                </label>
+
+                <select
+                    id="typeFilter"
+                    onchange="filterOrders()">
+
+                    <option value="all">
+                        All Types
+                    </option>
+
+                    <option value="logistics">
+                        Logistics
+                    </option>
+
+                    <option value="marketplace">
+                        Marketplace
+                    </option>
+
+                    <option value="food">
+                        Food
+                    </option>
+
+                    <option value="service">
+                        Services
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Status
+                </label>
+
+                <select
+                    id="statusFilter"
+                    onchange="filterOrders()">
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="processing">
+                        Processing
+                    </option>
+
+                    <option value="transit">
+                        In Transit
+                    </option>
+
+                    <option value="ready">
+                        Ready
+                    </option>
+
+                    <option value="delivered">
+                        Delivered
+                    </option>
+
+                    <option value="cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Payment
+                </label>
+
+                <select>
+
+                    <option>
+                        All Payments
+                    </option>
+
+                    <option>
+                        Paid
+                    </option>
+
+                    <option>
+                        Pending
+                    </option>
+
+                    <option>
+                        Failed
+                    </option>
+
+                    <option>
+                        Refunded
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Date
+                </label>
+
+                <select>
+
+                    <option>
+                        Today
+                    </option>
+
+                    <option>
+                        Yesterday
+                    </option>
+
+                    <option>
+                        Last 7 Days
+                    </option>
+
+                    <option>
+                        Last 30 Days
+                    </option>
+
+                    <option>
+                        Custom
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="filter-button"
+                onclick="resetFilters()">
+
+                Reset
+
+            </button>
+
+        </div>
+
+
+        <!-- STATUS TABS -->
+
+        <div class="status-tabs">
+
+            <button
+                class="status-tab active"
+                onclick="setStatusTab(this,'all')">
+
+                All
+                <strong>1,284</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'pending')">
+
+                Pending
+                <strong>84</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'processing')">
+
+                Processing
+                <strong>122</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'transit')">
+
+                In Transit
+                <strong>186</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'ready')">
+
+                Ready
+                <strong>36</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'delivered')">
+
+                Delivered
+                <strong>792</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setStatusTab(this,'cancelled')">
+
+                Cancelled
+                <strong>28</strong>
+
+            </button>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="table-toolbar">
+
+            <div
+                class="selected-info"
+                id="selectedInfo">
+
+                0 orders selected
+
+            </div>
+
+
+            <div class="toolbar-actions">
+
+                <button
+                    class="small-btn"
+                    onclick="bulkAssign()">
+
+                    Assign Rider
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkMessage()">
+
+                    Message
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkCancel()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox"
+                                id="selectAll"
+                                onchange="toggleAll(this)"
+                            >
+
+                        </th>
+
+                        <th>
+                            Order
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Created
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ordersTable">
+
+
+                    <!-- ORDER 1 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10284"
+                        data-search="faga ord 10284 alex okafor lagos"
+                        data-type="logistics"
+                        data-status="transit">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10284
+                                </strong>
+
+                                <small>
+                                    TRK-7849201
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-logistics">
+                                🚚 Logistics
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Alex Okafor
+                                </strong>
+
+                                <small>
+                                    Lagos, Nigeria
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="amount">
+                                ₦18,500
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <span class="status status-transit">
+                                In Transit
+                            </span>
+
+                        </td>
+
+                        <td>
+                            07:42 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        onclick="viewOrder('ORD-10284')">
+
+                                        View Order
+
+                                    </button>
+
+                                    <button
+                                        onclick="trackOrder('TRK-7849201')">
+
+                                        Track Delivery
+
+                                    </button>
+
+                                    <button
+                                        onclick="assignRider('ORD-10284')">
+
+                                        Assign Rider
+
+                                    </button>
+
+                                    <button
+                                        onclick="contactCustomer('Alex Okafor')">
+
+                                        Contact Customer
+
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="cancelOrder('ORD-10284')">
+
+                                        Cancel Order
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 2 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10283"
+                        data-search="faga ord 10283 mary kalu burger"
+                        data-type="food"
+                        data-status="processing">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10283
+                                </strong>
+
+                                <small>
+                                    Food order
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-food">
+                                🍽️ Food
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Mary Kalu
+                                </strong>
+
+                                <small>
+                                    Ikeja, Lagos
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦12,800
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-processing">
+                                Preparing
+                            </span>
+                        </td>
+
+                        <td>
+                            07:38 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10283')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="trackOrder('ORD-10283')">
+                                        Track Order
+                                    </button>
+
+                                    <button onclick="contactCustomer('Mary Kalu')">
+                                        Contact Customer
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="cancelOrder('ORD-10283')">
+
+                                        Cancel Order
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 3 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10282"
+                        data-search="faga ord 10282 david johnson laptop"
+                        data-type="marketplace"
+                        data-status="confirmed">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10282
+                                </strong>
+
+                                <small>
+                                    Marketplace
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-marketplace">
+                                🛍️ Marketplace
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    David Johnson
+                                </strong>
+
+                                <small>
+                                    Lekki, Lagos
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦245,000
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-confirmed">
+                                Confirmed
+                            </span>
+                        </td>
+
+                        <td>
+                            07:31 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10282')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="contactCustomer('David Johnson')">
+                                        Contact Customer
+                                    </button>
+
+                                    <button onclick="contactSeller('ORD-10282')">
+                                        Contact Seller
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="cancelOrder('ORD-10282')">
+
+                                        Cancel Order
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 4 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10281"
+                        data-search="faga ord 10281 grace beauty cleaner"
+                        data-type="service"
+                        data-status="pending">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10281
+                                </strong>
+
+                                <small>
+                                    Service booking
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-service">
+                                🛠️ Service
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Grace Beauty
+                                </strong>
+
+                                <small>
+                                    Victoria Island
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦35,000
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+                            07:24 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10281')">
+                                        View Booking
+                                    </button>
+
+                                    <button onclick="assignProvider('ORD-10281')">
+                                        Assign Provider
+                                    </button>
+
+                                    <button onclick="contactCustomer('Grace Beauty')">
+                                        Contact Customer
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 5 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10280"
+                        data-search="faga ord 10280 emeka okoro package"
+                        data-type="logistics"
+                        data-status="ready">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10280
+                                </strong>
+
+                                <small>
+                                    TRK-7849187
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-logistics">
+                                🚚 Logistics
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Emeka Okoro
+                                </strong>
+
+                                <small>
+                                    Surulere, Lagos
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦7,500
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-ready">
+                                Ready
+                            </span>
+                        </td>
+
+                        <td>
+                            07:17 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10280')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="assignRider('ORD-10280')">
+                                        Assign Rider
+                                    </button>
+
+                                    <button onclick="trackOrder('TRK-7849187')">
+                                        Track Delivery
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 6 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10279"
+                        data-search="faga ord 10279 sarah ade restaurant"
+                        data-type="food"
+                        data-status="delivered">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10279
+                                </strong>
+
+                                <small>
+                                    Food order
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-food">
+                                🍽️ Food
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Sarah Ade
+                                </strong>
+
+                                <small>
+                                    Yaba, Lagos
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦9,700
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Delivered
+                            </span>
+                        </td>
+
+                        <td>
+                            06:58 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10279')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="contactCustomer('Sarah Ade')">
+                                        Contact Customer
+                                    </button>
+
+                                    <button onclick="showToast('Receipt opened')">
+                                        View Receipt
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 7 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10278"
+                        data-search="faga ord 10278 tom yusuf phone"
+                        data-type="marketplace"
+                        data-status="cancelled">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10278
+                                </strong>
+
+                                <small>
+                                    Marketplace
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-marketplace">
+                                🛍️ Marketplace
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Tom Yusuf
+                                </strong>
+
+                                <small>
+                                    Ikeja, Lagos
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦86,000
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-cancelled">
+                                Refunded
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-cancelled">
+                                Cancelled
+                            </span>
+                        </td>
+
+                        <td>
+                            06:41 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10278')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="showToast('Refund details opened')">
+                                        View Refund
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 8 -->
+
+                    <tr
+                        data-order="FAGA-ORD-10277"
+                        data-search="faga ord 10277 fresh taste restaurant"
+                        data-type="food"
+                        data-status="ready">
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="checkbox order-check"
+                                onchange="updateSelected()"
+                            >
+                        </td>
+
+                        <td>
+
+                            <div class="order-cell">
+
+                                <strong>
+                                    #ORD-10277
+                                </strong>
+
+                                <small>
+                                    Food order
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="type-badge type-food">
+                                🍽️ Food
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="customer">
+
+                                <strong>
+                                    Fresh Taste
+                                </strong>
+
+                                <small>
+                                    Lekki Phase 1
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <span class="amount">
+                                ₦16,400
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-delivered">
+                                Paid
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status status-ready">
+                                Ready
+                            </span>
+                        </td>
+
+                        <td>
+                            06:34 AM
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewOrder('ORD-10277')">
+                                        View Order
+                                    </button>
+
+                                    <button onclick="assignRider('ORD-10277')">
+                                        Assign Rider
+                                    </button>
+
+                                    <button onclick="contactCustomer('Fresh Taste')">
+                                        Contact Customer
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <div class="pagination">
+
+            <div class="pagination-info">
+
+                Showing
+                <strong>1–8</strong>
+                of
+                <strong>184,726</strong>
+                orders
+
+            </div>
+
+            <div class="pages">
+
+                <button class="page-btn">
+                    ‹
+                </button>
+
+                <button class="page-btn active">
+                    1
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(2)">
+                    2
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(3)">
+                    3
+                </button>
+
+                <button class="page-btn">
+                    ...
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(2310)">
+                    2310
+                </button>
+
+                <button class="page-btn">
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OPERATIONS CENTER
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Order Operations
+                </h2>
+
+                <p>
+                    Current workload across the FAGA platform.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="operations-grid">
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🚚
+                    </div>
+
+                    <div class="operation-count">
+                        186
+                    </div>
+
+                </div>
+
+                <h3>
+                    Logistics
+                </h3>
+
+                <p>
+                    Deliveries currently in transit
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="goTo('logistics.html')">
+
+                    Open Logistics →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🛍️
+                    </div>
+
+                    <div class="operation-count">
+                        94
+                    </div>
+
+                </div>
+
+                <h3>
+                    Marketplace
+                </h3>
+
+                <p>
+                    Orders awaiting fulfillment
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="goTo('marketplace.html')">
+
+                    Open Marketplace →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🍽️
+                    </div>
+
+                    <div class="operation-count">
+                        122
+                    </div>
+
+                </div>
+
+                <h3>
+                    Food
+                </h3>
+
+                <p>
+                    Restaurant orders being prepared
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="goTo('food.html')">
+
+                    Open Food →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🛠️
+                    </div>
+
+                    <div class="operation-count">
+                        26
+                    </div>
+
+                </div>
+
+                <h3>
+                    Services
+                </h3>
+
+                <p>
+                    Active service bookings
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="goTo('services.html')">
+
+                    Open Services →
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOWER GRID
+    ====================================================== -->
+
+    <section class="lower-grid">
+
+
+        <!-- LIVE ORDER ACTIVITY -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Live Order Activity
+                    </h2>
+
+                    <p>
+                        Latest order events across FAGA.
+                    </p>
+
+                </div>
+
+                <span
+                    style="color:var(--green);font-size:8px;font-weight:700">
+
+                    ● LIVE
+
+                </span>
+
+            </div>
+
+
+            <div class="timeline">
+
+
+                <div class="timeline-row">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-info">
+
+                        <strong>
+                            Order #ORD-10284 dispatched
+                        </strong>
+
+                        <small>
+                            Rider Musa has picked up the package.
+                        </small>
+
+                    </div>
+
+                    <div class="timeline-time">
+                        2 min
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-row">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-info">
+
+                        <strong>
+                            Order #ORD-10283 being prepared
+                        </strong>
+
+                        <small>
+                            Restaurant has accepted the order.
+                        </small>
+
+                    </div>
+
+                    <div class="timeline-time">
+                        5 min
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-row">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-info">
+
+                        <strong>
+                            Order #ORD-10282 confirmed
+                        </strong>
+
+                        <small>
+                            Seller accepted the marketplace order.
+                        </small>
+
+                    </div>
+
+                    <div class="timeline-time">
+                        9 min
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-row">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-info">
+
+                        <strong>
+                            Order #ORD-10281 created
+                        </strong>
+
+                        <small>
+                            Customer requested a home cleaning service.
+                        </small>
+
+                    </div>
+
+                    <div class="timeline-time">
+                        13 min
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-row">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-info">
+
+                        <strong>
+                            Order #ORD-10280 ready
+                        </strong>
+
+                        <small>
+                            Package is waiting for rider assignment.
+                        </small>
+
+                    </div>
+
+                    <div class="timeline-time">
+                        17 min
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVENUE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Today's Order Revenue
+                    </h2>
+
+                    <p>
+                        Gross order value by platform activity.
+                    </p>
+
+                </div>
+
+                <strong
+                    style="font-size:14px;color:var(--navy)">
+
+                    ₦8.74M
+
+                </strong>
+
+            </div>
+
+
+            <div class="revenue-list">
+
+
+                <div class="revenue-row">
+
+                    <div class="revenue-icon">
+                        🚚
+                    </div>
+
+                    <div class="revenue-info">
+
+                        <strong>
+                            Logistics
+                        </strong>
+
+                        <small>
+                            364 orders
+                        </small>
+
+                    </div>
+
+                    <div class="revenue-value">
+                        ₦3.2M
+                    </div>
+
+                </div>
+
+
+                <div class="revenue-row">
+
+                    <div class="revenue-icon">
+                        🛍️
+                    </div>
+
+                    <div class="revenue-info">
+
+                        <strong>
+                            Marketplace
+                        </strong>
+
+                        <small>
+                            248 orders
+                        </small>
+
+                    </div>
+
+                    <div class="revenue-value">
+                        ₦2.4M
+                    </div>
+
+                </div>
+
+
+                <div class="revenue-row">
+
+                    <div class="revenue-icon">
+                        🍽️
+                    </div>
+
+                    <div class="revenue-info">
+
+                        <strong>
+                            Food
+                        </strong>
+
+                        <small>
+                            538 orders
+                        </small>
+
+                    </div>
+
+                    <div class="revenue-value">
+                        ₦1.9M
+                    </div>
+
+                </div>
+
+
+                <div class="revenue-row">
+
+                    <div class="revenue-icon">
+                        🛠️
+                    </div>
+
+                    <div class="revenue-info">
+
+                        <strong>
+                            Services
+                        </strong>
+
+                        <small>
+                            134 bookings
+                        </small>
+
+                    </div>
+
+                    <div class="revenue-value">
+                        ₦1.2M
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div>
+        <strong style="color:#fff">
+            FAGA Admin
+        </strong>
+        — Order Management
+    </div>
+
+    <div>
+        FAGA Platform v1.0
+        <span>●</span>
+        Secure Administration
+    </div>
+
+</footer>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(function(){
+
+            toast.classList.remove("show");
+
+        },2800);
+
+}
+
+
+/* =====================================================
+   ORDER FILTER
+===================================================== */
+
+function filterOrders(){
+
+    const search =
+        document
+            .getElementById("orderSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const type =
+        document
+            .getElementById("typeFilter")
+            .value;
+
+    const status =
+        document
+            .getElementById("statusFilter")
+            .value;
+
+    const rows =
+        document
+            .querySelectorAll("#ordersTable tr");
+
+
+    rows.forEach(function(row){
+
+        const searchable =
+            row.dataset.search
+                ? row.dataset.search.toLowerCase()
+                : "";
+
+        const rowType =
+            row.dataset.type || "";
+
+        const rowStatus =
+            row.dataset.status || "";
+
+
+        const searchMatch =
+            !search ||
+            searchable.includes(search);
+
+        const typeMatch =
+            type === "all" ||
+            rowType === type;
+
+        const statusMatch =
+            status === "all" ||
+            rowStatus === status;
+
+
+        row.style.display =
+            searchMatch &&
+            typeMatch &&
+            statusMatch
+                ? ""
+                : "none";
+
+    });
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetFilters(){
+
+    document
+        .getElementById("orderSearch")
+        .value = "";
+
+    document
+        .getElementById("typeFilter")
+        .value = "all";
+
+    document
+        .getElementById("statusFilter")
+        .value = "all";
+
+    filterOrders();
+
+    document
+        .querySelectorAll(".status-tab")
+        .forEach(function(tab){
+
+            tab.classList.remove("active");
+
+        });
+
+    document
+        .querySelector(".status-tab")
+        .classList.add("active");
+
+    showToast("Order filters reset");
+
+}
+
+
+/* =====================================================
+   STATUS TABS
+===================================================== */
+
+function setStatusTab(button,status){
+
+    document
+        .querySelectorAll(".status-tab")
+        .forEach(function(tab){
+
+            tab.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("statusFilter")
+        .value = status;
+
+    filterOrders();
+
+}
+
+
+/* =====================================================
+   SELECT ALL
+===================================================== */
+
+function toggleAll(master){
+
+    document
+        .querySelectorAll(".order-check")
+        .forEach(function(box){
+
+            const row =
+                box.closest("tr");
+
+            if(row.style.display !== "none"){
+
+                box.checked =
+                    master.checked;
+
+            }
+
+        });
+
+    updateSelected();
+
+}
+
+
+/* =====================================================
+   SELECTED COUNT
+===================================================== */
+
+function updateSelected(){
+
+    const selected =
+        document
+            .querySelectorAll(".order-check:checked")
+            .length;
+
+    document
+        .getElementById("selectedInfo")
+        .textContent =
+            selected +
+            " order" +
+            (selected === 1 ? "" : "s") +
+            " selected";
+
+}
+
+
+/* =====================================================
+   DROPDOWN
+===================================================== */
+
+function toggleMenu(button){
+
+    document
+        .querySelectorAll(".dropdown")
+        .forEach(function(menu){
+
+            if(menu !== button.nextElementSibling){
+
+                menu.classList.remove("show");
+
+            }
+
+        });
+
+    button
+        .nextElementSibling
+        .classList.toggle("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        if(!event.target.closest(".action-menu")){
+
+            document
+                .querySelectorAll(".dropdown")
+                .forEach(function(menu){
+
+                    menu.classList.remove("show");
+
+                });
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ORDER ACTIONS
+===================================================== */
+
+function viewOrder(orderId){
+
+    showToast(
+        "Opening order " + orderId
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/orders/:orderId
+    */
+
+}
+
+
+function trackOrder(trackingNumber){
+
+    showToast(
+        "Opening live tracking for " +
+        trackingNumber
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/orders/:id/tracking
+    */
+
+}
+
+
+function assignRider(orderId){
+
+    showToast(
+        "Opening rider assignment for " +
+        orderId
+    );
+
+    /*
+        BACKEND:
+
+        GET  /api/admin/riders/available
+        POST /api/admin/orders/:id/assign-rider
+    */
+
+}
+
+
+function assignProvider(orderId){
+
+    showToast(
+        "Opening provider assignment for " +
+        orderId
+    );
+
+}
+
+
+function contactCustomer(name){
+
+    showToast(
+        "Opening conversation with " +
+        name
+    );
+
+}
+
+
+function contactSeller(orderId){
+
+    showToast(
+        "Opening seller communication for " +
+        orderId
+    );
+
+}
+
+
+function cancelOrder(orderId){
+
+    const confirmed =
+        confirm(
+            "Cancel order " +
+            orderId +
+            "?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    showToast(
+        orderId +
+        " cancellation requested."
+    );
+
+    /*
+        BACKEND:
+
+        POST /api/admin/orders/:id/cancel
+
+        This should trigger:
+        - order status update
+        - payment/refund handling
+        - customer notification
+        - seller/restaurant/provider notification
+        - audit log entry
+    */
+
+}
+
+
+/* =====================================================
+   BULK ACTIONS
+===================================================== */
+
+function getSelectedOrders(){
+
+    const selected = [];
+
+    document
+        .querySelectorAll(".order-check:checked")
+        .forEach(function(box){
+
+            const row =
+                box.closest("tr");
+
+            if(row){
+
+                selected.push(
+                    row.dataset.order
+                );
+
+            }
+
+        });
+
+    return selected;
+
+}
+
+
+function bulkAssign(){
+
+    const orders =
+        getSelectedOrders();
+
+    if(!orders.length){
+
+        showToast(
+            "Select orders to assign."
+        );
+
+        return;
+
+    }
+
+    showToast(
+        orders.length +
+        " order(s) ready for rider assignment."
+    );
+
+}
+
+
+function bulkMessage(){
+
+    const orders =
+        getSelectedOrders();
+
+    if(!orders.length){
+
+        showToast(
+            "Select orders to message."
+        );
+
+        return;
+
+    }
+
+    showToast(
+        "Messaging customers for " +
+        orders.length +
+        " order(s)."
+    );
+
+}
+
+
+function bulkCancel(){
+
+    const orders =
+        getSelectedOrders();
+
+    if(!orders.length){
+
+        showToast(
+            "Select orders to cancel."
+        );
+
+        return;
+
+    }
+
+    const confirmed =
+        confirm(
+            "Cancel " +
+            orders.length +
+            " selected order(s)?"
+        );
+
+    if(confirmed){
+
+        showToast(
+            orders.length +
+            " order(s) queued for cancellation."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE ORDER
+===================================================== */
+
+function createOrder(){
+
+    showToast(
+        "Opening manual order creation."
+    );
+
+    /*
+        Useful for admin-created orders,
+        customer support orders and
+        phone-based orders.
+
+        BACKEND:
+
+        POST /api/admin/orders
+    */
+
+}
+
+
+/* =====================================================
+   EXPORT
+===================================================== */
+
+function exportOrders(){
+
+    showToast(
+        "Preparing order export..."
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/orders/export
+    */
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function goTo(page){
+
+    window.location.href = page;
+
+}
+
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+function changePage(page){
+
+    showToast(
+        "Loading order page " +
+        page +
+        "..."
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/orders?page=2
+
+        Recommended API response:
+
+        {
+            data: [],
+            current_page: 2,
+            per_page: 50,
+            total: 184726,
+            total_pages: 3695
+        }
+    */
+
+}
+
+
+/* =====================================================
+   GLOBAL SEARCH
+===================================================== */
+
+document
+    .getElementById("globalSearch")
+    .addEventListener(
+        "keypress",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                const query =
+                    this.value.trim();
+
+                if(!query){
+                    return;
+                }
+
+                document
+                    .getElementById("orderSearch")
+                    .value = query;
+
+                filterOrders();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    const confirmed =
+        confirm(
+            "Sign out of the FAGA Admin Portal?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    /*
+        BACKEND:
+
+        POST /api/admin/logout
+    */
+
+    window.location.href="../user portal/login.html";
+
+}
+
+</script>
+
+</body>
+</html>

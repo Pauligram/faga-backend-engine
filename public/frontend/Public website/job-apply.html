@@ -1,0 +1,2996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Apply for Job | FAGA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #0d2748;
+      --orange: #f7931e;
+      --orange-dark: #d97908;
+
+      --white: #ffffff;
+      --bg: #f5f7fa;
+
+      --text: #172033;
+      --muted: #687386;
+
+      --border: #e2e7ed;
+
+      --green: #159447;
+      --green-bg: #e7f7ec;
+
+      --red: #d92d20;
+      --red-bg: #fdecec;
+
+      --blue: #1769aa;
+      --blue-bg: #eaf4ff;
+
+      --shadow: 0 10px 35px rgba(7, 26, 51, .08);
+
+      --radius: 16px;
+    }
+
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
+
+
+    /* =========================================================
+       NAVBAR
+    ========================================================= */
+
+    .navbar {
+      background: var(--navy);
+      color: #fff;
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      box-shadow: 0 3px 15px rgba(0, 0, 0, .12);
+    }
+
+
+    .nav-inner {
+      min-height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+
+    .logo {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      font-size: 25px;
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 10px;
+
+      background: var(--orange);
+      color: var(--navy);
+
+      display: grid;
+      place-items: center;
+
+      font-weight: 900;
+    }
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+
+      gap: 4px;
+    }
+
+
+    .nav-links a {
+      color: #dce5ef;
+
+      padding: 9px 11px;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+    }
+
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--orange);
+      background: rgba(247, 147, 30, .13);
+    }
+
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+
+      padding: 11px 17px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      transition: .2s;
+    }
+
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+    }
+
+
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      transform: translateY(-1px);
+    }
+
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+
+    .btn-secondary {
+      background: #eef1f5;
+      color: #354052;
+    }
+
+
+    .btn-secondary:hover {
+      background: #e2e6eb;
+    }
+
+
+    .menu-btn {
+      display: none;
+
+      background: none;
+      border: 0;
+
+      color: #fff;
+
+      font-size: 23px;
+
+      cursor: pointer;
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          var(--navy),
+          var(--navy-2)
+        );
+
+      color: #fff;
+
+      padding: 55px 0 82px;
+    }
+
+
+    .eyebrow {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      color: var(--orange);
+
+      background: rgba(247,147,30,.13);
+
+      border-radius: 30px;
+
+      padding: 7px 13px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      margin-bottom: 15px;
+    }
+
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 46px);
+
+      line-height: 1.12;
+
+      margin-bottom: 12px;
+    }
+
+
+    .hero p {
+      color: #c8d4e1;
+
+      max-width: 720px;
+    }
+
+
+    /* =========================================================
+       STEPS
+    ========================================================= */
+
+    .steps-wrap {
+      margin-top: -35px;
+
+      position: relative;
+
+      z-index: 5;
+    }
+
+
+    .steps {
+      background: #fff;
+
+      box-shadow: var(--shadow);
+
+      border-radius: 15px;
+
+      padding: 20px 24px;
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 10px;
+    }
+
+
+    .step {
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      color: #9aa3b1;
+
+      font-size: 13px;
+
+      font-weight: 700;
+    }
+
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      background: #edf0f4;
+
+      color: #7b8593;
+
+      flex-shrink: 0;
+    }
+
+
+    .step.done {
+      color: var(--green);
+    }
+
+
+    .step.done .step-number {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+
+    .step.active {
+      color: var(--orange-dark);
+    }
+
+
+    .step.active .step-number {
+      background: var(--orange);
+      color: #fff;
+    }
+
+
+    /* =========================================================
+       MAIN
+    ========================================================= */
+
+    .main {
+      padding: 48px 0 75px;
+    }
+
+
+    .layout {
+      display: grid;
+
+      grid-template-columns: 1.3fr .7fr;
+
+      gap: 25px;
+
+      align-items: start;
+    }
+
+
+    .card {
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow:
+        0 5px 22px rgba(7,26,51,.045);
+    }
+
+
+    .card-header {
+      padding: 23px 25px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .card-header h2 {
+      font-size: 20px;
+
+      margin-bottom: 4px;
+    }
+
+
+    .card-header p {
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .card-body {
+      padding: 25px;
+    }
+
+
+    /* =========================================================
+       JOB SUMMARY
+    ========================================================= */
+
+    .job-summary {
+      display: flex;
+
+      gap: 15px;
+
+      align-items: flex-start;
+
+      padding: 17px;
+
+      background: #f8fafc;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      margin-bottom: 25px;
+    }
+
+
+    .job-icon {
+      width: 55px;
+      height: 55px;
+
+      border-radius: 13px;
+
+      background: #fff0dd;
+
+      color: var(--orange);
+
+      display: grid;
+      place-items: center;
+
+      font-size: 23px;
+
+      flex-shrink: 0;
+    }
+
+
+    .job-summary h3 {
+      font-size: 18px;
+
+      margin-bottom: 3px;
+    }
+
+
+    .job-company {
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .job-meta {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 10px;
+    }
+
+
+    .meta {
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: 7px;
+
+      padding: 5px 8px;
+
+      color: #647082;
+
+      font-size: 11px;
+    }
+
+
+    /* =========================================================
+       PROFILE STATUS
+    ========================================================= */
+
+    .profile-status {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 10px;
+
+      margin-bottom: 25px;
+    }
+
+
+    .status-item {
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+
+      padding: 14px;
+
+      background: #fff;
+    }
+
+
+    .status-icon {
+      width: 32px;
+      height: 32px;
+
+      border-radius: 8px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 8px;
+    }
+
+
+    .status-item.complete .status-icon {
+      background: var(--green-bg);
+
+      color: var(--green);
+    }
+
+
+    .status-item.pending .status-icon {
+      background: #fff3e3;
+
+      color: var(--orange);
+    }
+
+
+    .status-item strong {
+      display: block;
+
+      font-size: 12px;
+    }
+
+
+    .status-item span {
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    /* =========================================================
+       FORM
+    ========================================================= */
+
+    .section-title {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-size: 16px;
+
+      margin: 27px 0 16px;
+
+      padding-bottom: 10px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .section-title:first-child {
+      margin-top: 0;
+    }
+
+
+    .section-title i {
+      color: var(--orange);
+    }
+
+
+    .form-grid {
+      display: grid;
+
+      grid-template-columns: repeat(2,1fr);
+
+      gap: 17px;
+    }
+
+
+    .form-group {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 7px;
+    }
+
+
+    .form-group.full {
+      grid-column: 1/-1;
+    }
+
+
+    label {
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color: #354052;
+    }
+
+
+    .required {
+      color: var(--red);
+    }
+
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+
+      border: 1px solid #d9dfe7;
+
+      border-radius: 9px;
+
+      padding: 12px 13px;
+
+      background: #fff;
+
+      color: var(--text);
+
+      outline: none;
+
+      font-size: 13px;
+
+      transition: .2s;
+    }
+
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--orange);
+
+      box-shadow:
+        0 0 0 3px rgba(247,147,30,.1);
+    }
+
+
+    textarea {
+      min-height: 125px;
+
+      resize: vertical;
+    }
+
+
+    .hint {
+      color: #8791a0;
+
+      font-size: 11px;
+    }
+
+
+    /* =========================================================
+       CV CARD
+    ========================================================= */
+
+    .cv-card {
+      margin-top: 20px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+
+      padding: 15px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      background: #f8fafc;
+    }
+
+
+    .cv-left {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      min-width: 0;
+    }
+
+
+    .cv-icon {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 9px;
+
+      background: var(--green-bg);
+
+      color: var(--green);
+
+      display: grid;
+      place-items: center;
+
+      flex-shrink: 0;
+    }
+
+
+    .cv-left strong {
+      display: block;
+
+      font-size: 12px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+
+    .cv-left span {
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    .cv-status {
+      color: var(--green);
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       DECLARATION
+    ========================================================= */
+
+    .declaration {
+      margin-top: 22px;
+
+      padding: 15px;
+
+      border: 1px solid var(--border);
+
+      background: #f8fafc;
+
+      border-radius: 10px;
+
+      display: flex;
+
+      gap: 10px;
+
+      align-items: flex-start;
+    }
+
+
+    .declaration input {
+      width: auto;
+
+      margin-top: 4px;
+
+      accent-color: var(--orange);
+    }
+
+
+    .declaration label {
+      font-weight: 500;
+
+      color: #5e6978;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+    ========================================================= */
+
+    .form-actions {
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-top: 25px;
+
+      padding-top: 20px;
+
+      border-top: 1px solid var(--border);
+    }
+
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================= */
+
+    .sidebar-card {
+      padding: 24px;
+    }
+
+
+    .sidebar-card h3 {
+      font-size: 18px;
+
+      margin-bottom: 15px;
+    }
+
+
+    .requirement {
+      display: flex;
+
+      gap: 10px;
+
+      padding: 11px 0;
+
+      border-bottom: 1px solid var(--border);
+
+      color: #657082;
+
+      font-size: 12px;
+    }
+
+
+    .requirement i {
+      color: var(--green);
+
+      margin-top: 4px;
+    }
+
+
+    .deadline {
+      margin-top: 20px;
+
+      background: #fff8ed;
+
+      border: 1px solid #f4d5a6;
+
+      border-radius: 11px;
+
+      padding: 16px;
+
+      font-size: 12px;
+
+      color: #75521e;
+    }
+
+
+    .deadline strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: #5e4117;
+    }
+
+
+    .company-box {
+      margin-top: 20px;
+
+      padding: 18px;
+
+      background: #f8fafc;
+
+      border: 1px solid var(--border);
+
+      border-radius: 11px;
+    }
+
+
+    .company-box small {
+      display: block;
+
+      color: var(--muted);
+
+      margin-bottom: 5px;
+    }
+
+
+    .company-box strong {
+      font-size: 14px;
+    }
+
+
+    /* =========================================================
+       CONFIRMATION
+    ========================================================= */
+
+    .confirmation {
+      display: none;
+
+      text-align: center;
+
+      padding: 60px 25px;
+    }
+
+
+    .confirmation.show {
+      display: block;
+    }
+
+
+    .confirmation-icon {
+      width: 78px;
+      height: 78px;
+
+      border-radius: 50%;
+
+      background: var(--green-bg);
+
+      color: var(--green);
+
+      display: grid;
+      place-items: center;
+
+      margin: 0 auto 18px;
+
+      font-size: 32px;
+    }
+
+
+    .confirmation h2 {
+      margin-bottom: 9px;
+    }
+
+
+    .confirmation p {
+      max-width: 600px;
+
+      margin: 0 auto 23px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    .reference {
+      display: inline-block;
+
+      padding: 10px 15px;
+
+      background: #f5f7fa;
+
+      border: 1px solid var(--border);
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      margin-bottom: 22px;
+    }
+
+
+    .reference strong {
+      color: var(--navy);
+    }
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    .toast {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      background: var(--navy);
+
+      color: #fff;
+
+      padding: 13px 17px;
+
+      border-radius: 9px;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+
+      transform: translateY(120px);
+
+      opacity: 0;
+
+      transition: .3s;
+
+      z-index: 3000;
+
+      font-size: 12px;
+    }
+
+
+    .toast.show {
+      transform: translateY(0);
+
+      opacity: 1;
+    }
+
+
+    .toast.error {
+      border-left: 4px solid var(--red);
+    }
+
+
+    .toast.success {
+      border-left: 4px solid var(--green);
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer {
+      background: var(--navy);
+
+      color: #d7e0ea;
+
+      padding: 48px 0 20px;
+    }
+
+
+    .footer-grid {
+      display: grid;
+
+      grid-template-columns: 1.3fr repeat(3,1fr);
+
+      gap: 35px;
+    }
+
+
+    footer h4 {
+      color: #fff;
+
+      font-size: 14px;
+
+      margin-bottom: 15px;
+    }
+
+
+    footer ul {
+      list-style: none;
+    }
+
+
+    footer li {
+      margin-bottom: 9px;
+    }
+
+
+    footer li a {
+      color: #aeb9c7;
+
+      font-size: 13px;
+    }
+
+
+    footer li a:hover {
+      color: var(--orange);
+    }
+
+
+    .footer-brand p {
+      color: #9eacbc;
+
+      font-size: 13px;
+
+      max-width: 330px;
+
+      margin-top: 14px;
+    }
+
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,.09);
+
+      margin-top: 35px;
+
+      padding-top: 20px;
+
+      color: #8997a8;
+
+      font-size: 12px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media(max-width:1000px) {
+
+      .nav-links {
+        display: none;
+
+        position: absolute;
+
+        top: 76px;
+        left: 0;
+        right: 0;
+
+        background: var(--navy);
+
+        padding: 15px 4%;
+
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+
+      .nav-links.open {
+        display: flex;
+      }
+
+
+      .nav-links a {
+        padding: 12px;
+      }
+
+
+      .nav-actions {
+        display: none;
+      }
+
+
+      .menu-btn {
+        display: block;
+      }
+
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+
+      .footer-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+    }
+
+
+    @media(max-width:650px) {
+
+      .hero {
+        padding: 42px 0 70px;
+      }
+
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+
+        padding: 15px;
+      }
+
+
+      .step {
+        font-size: 11px;
+      }
+
+
+      .profile-status {
+        grid-template-columns: 1fr;
+      }
+
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+
+      .job-summary {
+        align-items: flex-start;
+      }
+
+
+      .cv-card {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+
+      .form-actions .btn {
+        width: 100%;
+      }
+
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .copyright {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- =========================================================
+       NAVBAR
+  ========================================================== -->
+
+  <nav class="navbar">
+
+    <div class="container nav-inner">
+
+      <a href="index.html" class="logo">
+        <span class="logo-mark">F</span>
+        FAGA
+      </a>
+
+
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        aria-label="Open menu"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+
+
+      <div class="nav-links" id="navLinks">
+
+        <a href="index.html">Home</a>
+
+        <a href="logistics.html">Logistics</a>
+
+        <a href="marketplace.html">Marketplace</a>
+
+        <a href="food.html">Food</a>
+
+        <a href="services.html">Services</a>
+
+        <a href="jobs.html" class="active">Jobs</a>
+
+        <a href="about.html">About</a>
+
+        <a href="contact.html">Contact</a>
+
+        <a href="help.html">Help</a>
+
+      </div>
+
+
+      <div class="nav-actions">
+
+        <a
+          href="../user portal/login.html"
+          class="btn btn-outline"
+        >
+          Login
+        </a>
+
+        <a
+          href="../user portal/register.html"
+          class="btn btn-primary"
+        >
+          Get Started
+        </a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =========================================================
+       HERO
+  ========================================================== -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <span class="eyebrow">
+        <i class="fas fa-paper-plane"></i>
+        Job Application
+      </span>
+
+
+      <h1>Apply for This Position</h1>
+
+
+      <p>
+        Review the job information, confirm your applicant details and
+        submit your application securely.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       PROGRESS
+  ========================================================== -->
+
+  <section class="steps-wrap">
+
+    <div class="container">
+
+      <div class="steps">
+
+        <div class="step done">
+
+          <span class="step-number">
+            <i class="fas fa-check"></i>
+          </span>
+
+          Registration
+
+        </div>
+
+
+        <div class="step done">
+
+          <span class="step-number">
+            <i class="fas fa-check"></i>
+          </span>
+
+          Payment
+
+        </div>
+
+
+        <div class="step done">
+
+          <span class="step-number">
+            <i class="fas fa-check"></i>
+          </span>
+
+          Profile & CV
+
+        </div>
+
+
+        <div class="step active">
+
+          <span class="step-number">4</span>
+
+          Apply
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       MAIN
+  ========================================================== -->
+
+  <main class="main">
+
+    <div class="container">
+
+
+      <!-- =====================================================
+           APPLICATION AREA
+      ====================================================== -->
+
+      <div
+        id="applicationLayout"
+        class="layout"
+      >
+
+
+        <!-- ===================================================
+             LEFT
+        ==================================================== -->
+
+        <section class="card">
+
+          <div class="card-header">
+
+            <h2>Submit Your Application</h2>
+
+            <p>
+              Check your information before submitting this application.
+            </p>
+
+          </div>
+
+
+          <div class="card-body">
+
+
+            <!-- JOB -->
+
+            <div class="job-summary">
+
+              <div class="job-icon">
+                <i class="fas fa-briefcase"></i>
+              </div>
+
+
+              <div>
+
+                <h3 id="jobTitle">
+                  Frontend Developer
+                </h3>
+
+
+                <div
+                  class="job-company"
+                  id="jobCompany"
+                >
+                  FAGA Technologies
+                </div>
+
+
+                <div class="job-meta">
+
+                  <span class="meta">
+                    <i class="fas fa-location-dot"></i>
+
+                    <span id="jobLocation">
+                      Lagos
+                    </span>
+                  </span>
+
+
+                  <span class="meta">
+                    <i class="fas fa-clock"></i>
+
+                    Full Time
+                  </span>
+
+
+                  <span class="meta">
+                    <i class="fas fa-building"></i>
+
+                    On-site / Hybrid
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- PROFILE STATUS -->
+
+            <div class="profile-status">
+
+
+              <div class="status-item complete">
+
+                <div class="status-icon">
+                  <i class="fas fa-user-check"></i>
+                </div>
+
+                <strong>
+                  Profile Complete
+                </strong>
+
+                <span>
+                  Applicant information available
+                </span>
+
+              </div>
+
+
+              <div class="status-item complete">
+
+                <div class="status-icon">
+                  <i class="fas fa-file-circle-check"></i>
+                </div>
+
+                <strong>
+                  CV Uploaded
+                </strong>
+
+                <span id="cvStatus">
+                  CV available for this application
+                </span>
+
+              </div>
+
+
+              <div class="status-item complete">
+
+                <div class="status-icon">
+                  <i class="fas fa-shield-check"></i>
+                </div>
+
+                <strong>
+                  Access Active
+                </strong>
+
+                <span>
+                  Application access verified
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- APPLICATION FORM -->
+
+            <form
+              id="applicationForm"
+              novalidate
+            >
+
+
+              <!-- CONTACT -->
+
+              <div class="section-title">
+
+                <i class="fas fa-address-card"></i>
+
+                Application Details
+
+              </div>
+
+
+              <div class="form-grid">
+
+
+                <div class="form-group">
+
+                  <label>
+                    Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="fullName"
+                    value="Applicant Name"
+                    readonly
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>
+                    Email Address
+                  </label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    value="applicant@example.com"
+                    readonly
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>
+                    Phone Number
+                  </label>
+
+                  <input
+                    type="tel"
+                    id="phone"
+                    value=""
+                    placeholder="Phone number"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>
+                    Location
+                  </label>
+
+                  <input
+                    type="text"
+                    id="location"
+                    value="Lagos"
+                    placeholder="Current location"
+                  >
+
+                </div>
+
+
+              </div>
+
+
+              <!-- COVER LETTER -->
+
+              <div class="section-title">
+
+                <i class="fas fa-file-lines"></i>
+
+                Cover Letter / Introduction
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Why are you suitable for this position?
+                  <span class="required">*</span>
+                </label>
+
+
+                <textarea
+                  id="coverLetter"
+                  maxlength="3000"
+                  placeholder="Introduce yourself, explain your relevant experience and tell the employer why you are interested in this role."
+                  required
+                ></textarea>
+
+
+                <span class="hint">
+                  Maximum 3,000 characters.
+                  <span id="characterCount">
+                    0
+                  </span>/3000
+                </span>
+
+              </div>
+
+
+              <!-- EXPERIENCE -->
+
+              <div class="section-title">
+
+                <i class="fas fa-briefcase"></i>
+
+                Additional Information
+
+              </div>
+
+
+              <div class="form-grid">
+
+
+                <div class="form-group">
+
+                  <label>
+                    Years of Relevant Experience
+                  </label>
+
+
+                  <select id="experience">
+
+                    <option value="">
+                      Select
+                    </option>
+
+                    <option>
+                      Less than 1 year
+                    </option>
+
+                    <option>
+                      1–2 years
+                    </option>
+
+                    <option>
+                      3–5 years
+                    </option>
+
+                    <option>
+                      6–9 years
+                    </option>
+
+                    <option>
+                      10+ years
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>
+                    Availability
+                  </label>
+
+
+                  <select id="availability">
+
+                    <option value="">
+                      Select availability
+                    </option>
+
+                    <option>
+                      Immediately
+                    </option>
+
+                    <option>
+                      Within 1 week
+                    </option>
+
+                    <option>
+                      Within 2 weeks
+                    </option>
+
+                    <option>
+                      Within 1 month
+                    </option>
+
+                    <option>
+                      More than 1 month
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                  <label>
+                    Additional Information
+                  </label>
+
+
+                  <textarea
+                    id="additionalInfo"
+                    maxlength="2000"
+                    placeholder="Anything else you would like the employer to know?"
+                  ></textarea>
+
+                  <span class="hint">
+                    Optional.
+                  </span>
+
+                </div>
+
+
+              </div>
+
+
+              <!-- CV -->
+
+              <div class="section-title">
+
+                <i class="fas fa-file-pdf"></i>
+
+                CV / Resume
+
+              </div>
+
+
+              <div class="cv-card">
+
+                <div class="cv-left">
+
+                  <div class="cv-icon">
+                    <i class="fas fa-file-circle-check"></i>
+                  </div>
+
+
+                  <div>
+
+                    <strong id="cvName">
+                      Applicant_CV.pdf
+                    </strong>
+
+                    <span>
+                      Your saved CV will be attached to this application.
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <span class="cv-status">
+                  <i class="fas fa-check"></i>
+                  Ready
+                </span>
+
+              </div>
+
+
+              <div style="margin-top:10px;">
+
+                <a
+                  href="job-profile.html"
+                  style="
+                    color:var(--orange-dark);
+                    font-size:11px;
+                    font-weight:700;
+                  "
+                >
+                  <i class="fas fa-pen"></i>
+                  Update profile or CV
+                </a>
+
+              </div>
+
+
+              <!-- DECLARATION -->
+
+              <div class="declaration">
+
+                <input
+                  type="checkbox"
+                  id="declaration"
+                >
+
+
+                <label for="declaration">
+
+                  I confirm that the information in this application is
+                  accurate and that the CV submitted belongs to me. I
+                  understand that submitting an application does not
+                  guarantee an interview, shortlisting, employment or
+                  selection.
+
+                </label>
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="form-actions">
+
+                <a
+                  href="job-details.html"
+                  id="backJob"
+                  class="btn btn-secondary"
+                >
+                  <i class="fas fa-arrow-left"></i>
+                  Back to Job
+                </a>
+
+
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="submitBtn"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                  Submit Application
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===================================================
+             SIDEBAR
+        ==================================================== -->
+
+        <aside>
+
+
+          <div class="card sidebar-card">
+
+            <h3>
+              Application Checklist
+            </h3>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-circle-check"></i>
+
+              <span>
+                Applicant account registered
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-circle-check"></i>
+
+              <span>
+                Application access payment verified
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-circle-check"></i>
+
+              <span>
+                Applicant profile completed
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-circle-check"></i>
+
+              <span>
+                CV uploaded
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-circle-check"></i>
+
+              <span>
+                Job selected
+              </span>
+
+            </div>
+
+
+            <div class="deadline">
+
+              <strong>
+                <i class="fas fa-calendar"></i>
+                Application deadline
+              </strong>
+
+              <span id="deadline">
+                September 30, 2026
+              </span>
+
+            </div>
+
+
+            <div class="company-box">
+
+              <small>
+                Hiring organisation
+              </small>
+
+              <strong id="sideCompany">
+                FAGA Technologies
+              </strong>
+
+              <small style="margin-top:5px;">
+                <i class="fas fa-location-dot"></i>
+                <span id="sideLocation">
+                  Lagos
+                </span>
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="card sidebar-card"
+            style="margin-top:20px;"
+          >
+
+            <h3>
+              Before You Submit
+            </h3>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-lightbulb"></i>
+
+              <span>
+                Make sure your contact information is correct.
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-file-lines"></i>
+
+              <span>
+                Check that your CV is current and relevant to the role.
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-spell-check"></i>
+
+              <span>
+                Review your cover letter for spelling and accuracy.
+              </span>
+
+            </div>
+
+
+            <div class="requirement">
+
+              <i class="fas fa-paper-plane"></i>
+
+              <span>
+                Once submitted, you can track the application from
+                My Applications.
+              </span>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+      <!-- =====================================================
+           SUCCESS
+      ====================================================== -->
+
+      <div
+        id="confirmation"
+        class="card confirmation"
+      >
+
+        <div class="confirmation-icon">
+
+          <i class="fas fa-check"></i>
+
+        </div>
+
+
+        <h2>
+          Application Submitted Successfully
+        </h2>
+
+
+        <p>
+
+          Your application has been submitted successfully. You can
+          monitor its status from your FAGA applicant dashboard.
+
+        </p>
+
+
+        <div class="reference">
+
+          Application Reference:
+
+          <strong id="applicationReference">
+            APP-000000
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <a
+            href="job-applications.html"
+            class="btn btn-primary"
+          >
+            View My Applications
+
+            <i class="fas fa-arrow-right"></i>
+          </a>
+
+
+          <a
+            href="jobs.html"
+            class="btn btn-secondary"
+            style="margin-left:7px;"
+          >
+            Browse More Jobs
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+
+        <div class="footer-brand">
+
+          <div class="logo">
+
+            <span class="logo-mark">
+              F
+            </span>
+
+            FAGA
+
+          </div>
+
+
+          <p>
+            A connected platform for logistics, services, marketplace,
+            food and employment opportunities.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Platform
+          </h4>
+
+          <ul>
+
+            <li>
+              <a href="logistics.html">
+                Logistics
+              </a>
+            </li>
+
+            <li>
+              <a href="marketplace.html">
+                Marketplace
+              </a>
+            </li>
+
+            <li>
+              <a href="food.html">
+                Food
+              </a>
+            </li>
+
+            <li>
+              <a href="services.html">
+                Services
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Jobs
+          </h4>
+
+          <ul>
+
+            <li>
+              <a href="jobs.html">
+                Browse Jobs
+              </a>
+            </li>
+
+            <li>
+              <a href="job-profile.html">
+                Applicant Profile
+              </a>
+            </li>
+
+            <li>
+              <a href="job-applications.html">
+                My Applications
+              </a>
+            </li>
+
+            <li>
+              <a href="help.html">
+                Job Help
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Company
+          </h4>
+
+          <ul>
+
+            <li>
+              <a href="about.html">
+                About
+              </a>
+            </li>
+
+            <li>
+              <a href="contact.html">
+                Contact
+              </a>
+            </li>
+
+            <li>
+              <a href="privacy.html">
+                Privacy
+              </a>
+            </li>
+
+            <li>
+              <a href="terms.html">
+                Terms
+              </a>
+            </li>
+
+            <li>
+              <a href="safety.html">
+                Safety
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <div class="copyright">
+
+        <span>
+          © 2026 FAGA. All rights reserved.
+        </span>
+
+        <span>
+          Secure applicant platform
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- TOAST -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script>
+
+    /*
+      ============================================================
+      FAGA JOB APPLICATION PAGE
+      ============================================================
+
+      PRODUCTION API
+
+      GET
+      /api/jobs/application-access/status
+
+      GET
+      /api/jobs/applicants/me
+
+      GET
+      /api/jobs/applicants/me/cv
+
+      GET
+      /api/jobs/:jobId
+
+      POST
+      /api/jobs/:jobId/applications
+
+      GET
+      /api/jobs/applications
+
+      IMPORTANT SECURITY:
+
+      - Authentication must be server-side.
+      - Applicant identity must come from the authenticated session.
+      - Never trust applicant_id from the browser.
+      - Server must verify active application access.
+      - Server must verify that the job is published/open.
+      - Server must prevent duplicate applications according to
+        the platform's application policy.
+      - Server must verify CV ownership.
+      - Server must validate and sanitize all submitted fields.
+      - Server must enforce application deadlines.
+      - Server must record an audit event.
+      - Server should use idempotency protection.
+      - Never expose private CV storage URLs permanently.
+    */
+
+
+    /* ============================================================
+       JOB DATA
+    ============================================================ */
+
+    const jobs = {
+
+      "JOB-1001": {
+        title: "Frontend Developer",
+        company: "FAGA Technologies",
+        location: "Lagos",
+        type: "Full Time",
+        workplace: "On-site / Hybrid",
+        deadline: "September 30, 2026"
+      },
+
+      "JOB-1002": {
+        title: "Customer Support Officer",
+        company: "FAGA",
+        location: "Lagos",
+        type: "Full Time",
+        workplace: "On-site",
+        deadline: "October 5, 2026"
+      },
+
+      "JOB-1003": {
+        title: "Restaurant Operations Assistant",
+        company: "FAGA Food",
+        location: "Abuja",
+        type: "Full Time",
+        workplace: "On-site",
+        deadline: "October 10, 2026"
+      },
+
+      "JOB-1004": {
+        title: "Delivery Operations Coordinator",
+        company: "FAGA Logistics",
+        location: "Port Harcourt",
+        type: "Full Time",
+        workplace: "On-site",
+        deadline: "October 15, 2026"
+      }
+
+    };
+
+
+    /* ============================================================
+       URL
+    ============================================================ */
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+
+    const jobId =
+      params.get("job") ||
+      sessionStorage.getItem("fagaJobId") ||
+      "JOB-1001";
+
+
+    const job =
+      jobs[jobId] ||
+      jobs["JOB-1001"];
+
+
+    /* ============================================================
+       DISPLAY JOB
+    ============================================================ */
+
+    document.getElementById("jobTitle").textContent =
+      job.title;
+
+
+    document.getElementById("jobCompany").textContent =
+      job.company;
+
+
+    document.getElementById("jobLocation").textContent =
+      job.location;
+
+
+    document.getElementById("sideCompany").textContent =
+      job.company;
+
+
+    document.getElementById("sideLocation").textContent =
+      job.location;
+
+
+    document.getElementById("deadline").textContent =
+      job.deadline;
+
+
+    document.getElementById("backJob").href="job-details.html?job=" +
+      encodeURIComponent(jobId);
+
+
+    /* ============================================================
+       APPLICANT DATA
+       ============================================================ */
+
+    /*
+      Demo values.
+
+      Production:
+
+      GET /api/jobs/applicants/me
+
+      should populate these fields from the authenticated
+      applicant account.
+    */
+
+    const storedEmail =
+      sessionStorage.getItem(
+        "fagaApplicantEmail"
+      );
+
+
+    if (storedEmail) {
+
+      document.getElementById("email").value =
+        storedEmail;
+
+    }
+
+
+    /* ============================================================
+       COVER LETTER COUNTER
+    ============================================================ */
+
+    const coverLetter =
+      document.getElementById("coverLetter");
+
+
+    const characterCount =
+      document.getElementById("characterCount");
+
+
+    coverLetter.addEventListener(
+      "input",
+      function () {
+
+        characterCount.textContent =
+          this.value.length;
+
+      }
+    );
+
+
+    /* ============================================================
+       LOAD SAVED CV
+    ============================================================ */
+
+    /*
+      Production:
+
+      GET /api/jobs/applicants/me/cv
+
+      Example:
+
+      {
+        "exists": true,
+        "filename": "John-Doe-CV.pdf",
+        "uploaded_at": "2026-09-15T12:00:00Z"
+      }
+
+      The frontend should only receive information needed to display
+      the CV status.
+
+      Do not expose unrestricted private storage URLs.
+    */
+
+
+    const demoCvName =
+      sessionStorage.getItem(
+        "fagaApplicantCvName"
+      );
+
+
+    if (demoCvName) {
+
+      document.getElementById("cvName").textContent =
+        demoCvName;
+
+    }
+
+
+    /* ============================================================
+       FORM
+    ============================================================ */
+
+    const form =
+      document.getElementById(
+        "applicationForm"
+      );
+
+
+    const submitBtn =
+      document.getElementById(
+        "submitBtn"
+      );
+
+
+    form.addEventListener(
+      "submit",
+      submitApplication
+    );
+
+
+    async function submitApplication(event) {
+
+      event.preventDefault();
+
+
+      const coverLetter =
+        document
+          .getElementById("coverLetter")
+          .value
+          .trim();
+
+
+      const declaration =
+        document
+          .getElementById("declaration")
+          .checked;
+
+
+      const experience =
+        document
+          .getElementById("experience")
+          .value;
+
+
+      const availability =
+        document
+          .getElementById("availability")
+          .value;
+
+
+      const additionalInfo =
+        document
+          .getElementById("additionalInfo")
+          .value
+          .trim();
+
+
+      /* ----------------------------------------------------------
+         VALIDATION
+      ---------------------------------------------------------- */
+
+      if (coverLetter.length < 20) {
+
+        showToast(
+          "Please provide a more detailed cover letter.",
+          "error"
+        );
+
+        document
+          .getElementById("coverLetter")
+          .focus();
+
+        return;
+
+      }
+
+
+      if (!declaration) {
+
+        showToast(
+          "Please confirm the application declaration.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      /*
+        ==========================================================
+        PRODUCTION REQUEST
+
+        POST /api/jobs/:jobId/applications
+
+        Request body:
+
+        {
+          "cover_letter": "...",
+          "years_experience": "...",
+          "availability": "...",
+          "additional_information": "..."
+        }
+
+        The backend derives:
+
+        applicant_id
+        applicant account
+        applicant CV
+        application access
+        job ownership
+
+        The backend should NOT trust:
+
+        applicant_id
+        amount
+        payment status
+        CV URL
+        employer ID
+        job company
+
+        from the browser.
+      */
+
+
+      try {
+
+        submitBtn.disabled = true;
+
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+
+        /*
+          ========================================================
+          PRODUCTION API EXAMPLE
+
+          const response = await fetch(
+            "/api/jobs/" +
+            encodeURIComponent(jobId) +
+            "/applications",
+            {
+              method: "POST",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
+                "Idempotency-Key": crypto.randomUUID()
+              },
+
+              body: JSON.stringify({
+                cover_letter: coverLetter,
+                years_experience: experience,
+                availability: availability,
+                additional_information: additionalInfo
+              })
+            }
+          );
+
+
+          const data =
+            await response.json();
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              data.message ||
+              "Unable to submit application."
+            );
+
+          }
+
+
+          showApplicationSuccess(
+            data.application_reference
+          );
+        */
+
+
+        /* ========================================================
+           DEMO MODE
+        ======================================================== */
+
+        await new Promise(resolve =>
+          setTimeout(resolve, 1500)
+        );
+
+
+        const reference =
+          "APP-" +
+          Math.floor(
+            100000 +
+            Math.random() * 899999
+          );
+
+
+        /*
+          Only demo navigation information is stored.
+
+          The real application must be stored in the backend.
+        */
+
+        sessionStorage.setItem(
+          "lastApplicationReference",
+          reference
+        );
+
+
+        showApplicationSuccess(
+          reference
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        showToast(
+          error.message ||
+          "Unable to submit application.",
+          "error"
+        );
+
+
+        submitBtn.disabled = false;
+
+        submitBtn.innerHTML =
+          '<i class="fas fa-paper-plane"></i> Submit Application';
+
+      }
+
+    }
+
+
+    /* ============================================================
+       SUCCESS
+    ============================================================ */
+
+    function showApplicationSuccess(reference) {
+
+      document.getElementById(
+        "applicationReference"
+      ).textContent =
+        reference;
+
+
+      document.getElementById(
+        "applicationLayout"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "confirmation"
+      ).classList.add("show");
+
+
+      window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+      });
+
+
+      showToast(
+        "Application submitted successfully.",
+        "success"
+      );
+
+    }
+
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+
+    function showToast(
+      message,
+      type = ""
+    ) {
+
+      const toast =
+        document.getElementById("toast");
+
+
+      toast.textContent =
+        message;
+
+
+      toast.className =
+        "toast show " + type;
+
+
+      setTimeout(() => {
+
+        toast.className =
+          "toast";
+
+      }, 4500);
+
+    }
+
+
+    /* ============================================================
+       MOBILE MENU
+    ============================================================ */
+
+    const menuBtn =
+      document.getElementById("menuBtn");
+
+
+    const navLinks =
+      document.getElementById("navLinks");
+
+
+    menuBtn.addEventListener(
+      "click",
+      function () {
+
+        navLinks.classList.toggle("open");
+
+
+        const icon =
+          menuBtn.querySelector("i");
+
+
+        if (
+          navLinks.classList.contains("open")
+        ) {
+
+          icon.classList.remove(
+            "fa-bars"
+          );
+
+          icon.classList.add(
+            "fa-xmark"
+          );
+
+        } else {
+
+          icon.classList.remove(
+            "fa-xmark"
+          );
+
+          icon.classList.add(
+            "fa-bars"
+          );
+
+        }
+
+      }
+    );
+
+
+    navLinks
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          function () {
+
+            navLinks.classList.remove(
+              "open"
+            );
+
+
+            const icon =
+              menuBtn.querySelector("i");
+
+
+            icon.classList.remove(
+              "fa-xmark"
+            );
+
+            icon.classList.add(
+              "fa-bars"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* ============================================================
+       PRODUCTION APPLICATION STATUS
+
+       GET /api/jobs/applications/:id
+
+       Example status values:
+
+       submitted
+       under_review
+       shortlisted
+       interview
+       rejected
+       withdrawn
+
+       The applicant should only be able to access applications
+       belonging to their own authenticated account.
+    ============================================================ */
+
+  </script>
+
+</body>
+</html>

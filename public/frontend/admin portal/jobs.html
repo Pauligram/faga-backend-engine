@@ -1,0 +1,5503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jobs Management | FAGA Admin</title>
+
+  <style>
+    :root{
+      --navy:#071a33;
+      --navy2:#0b2343;
+      --orange:#f7931e;
+      --orange2:#df7f0b;
+      --bg:#f4f7fb;
+      --white:#fff;
+      --text:#172033;
+      --muted:#707b8d;
+      --border:#e2e7ee;
+      --success:#16834b;
+      --success-bg:#eaf8f0;
+      --warning:#a86d00;
+      --warning-bg:#fff6dd;
+      --danger:#d23d3d;
+      --danger-bg:#fff0f0;
+      --info:#236bc8;
+      --info-bg:#edf5ff;
+      --shadow:0 8px 28px rgba(7,26,51,.07);
+      --radius:14px;
+      --sidebar:250px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================== */
+
+    .topbar{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+      height:68px;
+      padding:0 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 3px 15px rgba(0,0,0,.16);
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .menu-toggle{
+      display:none;
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:9px;
+      background:transparent;
+      color:#fff;
+      font-size:21px;
+    }
+
+    .menu-toggle:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:21px;
+      font-weight:900;
+    }
+
+    .brand-mark{
+      width:35px;
+      height:35px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:9px;
+      background:var(--orange);
+      color:var(--navy);
+      font-weight:900;
+    }
+
+    .admin-label{
+      padding-left:14px;
+      border-left:1px solid rgba(255,255,255,.15);
+      color:#aebbd0;
+      font-size:12px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .top-icon{
+      position:relative;
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:9px;
+      background:transparent;
+      color:#dbe4ef;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:17px;
+    }
+
+    .top-icon:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .notification-dot{
+      position:absolute;
+      top:7px;
+      right:7px;
+      width:7px;
+      height:7px;
+      border:2px solid var(--navy);
+      border-radius:50%;
+      background:var(--orange);
+    }
+
+    .admin-profile{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-left:11px;
+      margin-left:4px;
+      border-left:1px solid rgba(255,255,255,.12);
+    }
+
+    .avatar{
+      width:37px;
+      height:37px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:var(--orange);
+      color:var(--navy);
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .admin-info strong{
+      display:block;
+      font-size:13px;
+    }
+
+    .admin-info span{
+      display:block;
+      color:#aebbd0;
+      font-size:11px;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    .sidebar{
+      position:fixed;
+      top:68px;
+      left:0;
+      bottom:0;
+      z-index:900;
+      width:var(--sidebar);
+      padding:18px 12px;
+      overflow-y:auto;
+      background:var(--navy);
+      color:#dce5f1;
+      transition:transform .25s ease;
+    }
+
+    .sidebar-section{
+      margin-bottom:20px;
+    }
+
+    .sidebar-title{
+      padding:0 12px 8px;
+      color:#73849c;
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:43px;
+      margin-bottom:3px;
+      padding:10px 12px;
+      border-radius:9px;
+      color:#bfcbdc;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .nav-link:hover{
+      background:rgba(255,255,255,.07);
+      color:#fff;
+    }
+
+    .nav-link.active{
+      background:var(--orange);
+      color:var(--navy);
+      font-weight:900;
+    }
+
+    .nav-icon{
+      width:21px;
+      flex:none;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .nav-badge{
+      margin-left:auto;
+      padding:2px 7px;
+      border-radius:20px;
+      background:rgba(255,255,255,.1);
+      color:#c8d4e5;
+      font-size:10px;
+    }
+
+    .nav-link.active .nav-badge{
+      background:rgba(7,26,51,.14);
+      color:var(--navy);
+    }
+
+    /* =========================
+       MAIN
+    ========================== */
+
+    .main{
+      min-height:100vh;
+      margin-left:var(--sidebar);
+      padding:92px 28px 40px;
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:22px;
+    }
+
+    .breadcrumb{
+      display:flex;
+      gap:8px;
+      margin-bottom:7px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .breadcrumb span:last-child{
+      color:var(--text);
+      font-weight:800;
+    }
+
+    .page-title{
+      margin-bottom:5px;
+      color:var(--navy);
+      font-size:27px;
+      line-height:1.2;
+    }
+
+    .page-description{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .header-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:8px;
+    }
+
+    .btn{
+      min-height:40px;
+      padding:9px 14px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fff;
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      font-size:10px;
+      font-weight:900;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      border-color:#c8d2df;
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      border-color:var(--orange);
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    .btn-primary:hover{
+      border-color:var(--orange2);
+      background:var(--orange2);
+    }
+
+    .btn-dark{
+      border-color:var(--navy);
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .btn-danger{
+      color:var(--danger);
+      border-color:#efcdcd;
+      background:#fff;
+    }
+
+    .btn-small{
+      min-height:32px;
+      padding:6px 9px;
+      font-size:9px;
+    }
+
+    /* =========================
+       KPI CARDS
+    ========================== */
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+      margin-bottom:20px;
+    }
+
+    .kpi{
+      padding:16px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .kpi-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .kpi-label{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .kpi-icon{
+      width:31px;
+      height:31px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:8px;
+      background:#f1f4f8;
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .kpi-value{
+      color:var(--navy);
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .kpi-note{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .up{
+      color:var(--success);
+      font-weight:800;
+    }
+
+    /* =========================
+       MAIN CARD
+    ========================== */
+
+    .card{
+      overflow:hidden;
+      margin-bottom:18px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .card-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:16px 18px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .card-title{
+      color:var(--navy);
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .card-description{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .card-body{
+      padding:18px;
+    }
+
+    /* =========================
+       QUICK OVERVIEW
+    ========================== */
+
+    .overview-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .pipeline{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:9px;
+      margin-top:14px;
+    }
+
+    .pipeline-item{
+      padding:12px;
+      border-radius:9px;
+      background:#f7f9fb;
+      border:1px solid #edf0f4;
+    }
+
+    .pipeline-label{
+      color:var(--muted);
+      font-size:8px;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .pipeline-value{
+      margin-top:4px;
+      color:var(--navy);
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .pipeline-bar{
+      height:5px;
+      margin-top:8px;
+      overflow:hidden;
+      border-radius:10px;
+      background:#e8edf2;
+    }
+
+    .pipeline-fill{
+      height:100%;
+      border-radius:10px;
+      background:var(--orange);
+    }
+
+    .category-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .category-row{
+      display:grid;
+      grid-template-columns:125px 1fr 45px;
+      align-items:center;
+      gap:10px;
+    }
+
+    .category-name{
+      color:#536074;
+      font-size:9px;
+      font-weight:700;
+    }
+
+    .category-bar{
+      height:7px;
+      overflow:hidden;
+      border-radius:10px;
+      background:#edf0f4;
+    }
+
+    .category-fill{
+      height:100%;
+      border-radius:10px;
+      background:var(--orange);
+    }
+
+    .category-number{
+      color:var(--navy);
+      font-size:9px;
+      font-weight:900;
+      text-align:right;
+    }
+
+    /* =========================
+       FILTERS
+    ========================== */
+
+    .filter-card{
+      padding:15px;
+      margin-bottom:18px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .filter-grid{
+      display:grid;
+      grid-template-columns:2fr 1.2fr 1.2fr 1.2fr 1.2fr auto;
+      gap:9px;
+      align-items:end;
+    }
+
+    .filter-field label{
+      display:block;
+      margin-bottom:5px;
+      color:#778294;
+      font-size:8px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.35px;
+    }
+
+    .filter-field input,
+    .filter-field select{
+      width:100%;
+      height:38px;
+      padding:8px 9px;
+      outline:none;
+      border:1px solid #dce2ea;
+      border-radius:8px;
+      background:#fff;
+      color:var(--text);
+      font-size:10px;
+    }
+
+    .filter-field input:focus,
+    .filter-field select:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(247,147,30,.1);
+    }
+
+    .reset-btn{
+      height:38px;
+    }
+
+    /* =========================
+       TABS
+    ========================== */
+
+    .tabs{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      overflow-x:auto;
+      padding:0 18px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .tab{
+      position:relative;
+      flex:none;
+      padding:13px 12px;
+      border:0;
+      background:transparent;
+      color:#778294;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .tab.active{
+      color:var(--navy);
+    }
+
+    .tab.active::after{
+      content:"";
+      position:absolute;
+      right:8px;
+      bottom:-1px;
+      left:8px;
+      height:3px;
+      border-radius:5px 5px 0 0;
+      background:var(--orange);
+    }
+
+    .tab-count{
+      margin-left:4px;
+      padding:2px 5px;
+      border-radius:10px;
+      background:#eef1f5;
+      color:#788394;
+      font-size:7px;
+    }
+
+    /* =========================
+       BULK BAR
+    ========================== */
+
+    .bulk-bar{
+      display:none;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 18px;
+      border-bottom:1px solid var(--border);
+      background:#fffaf2;
+    }
+
+    .bulk-bar.show{
+      display:flex;
+    }
+
+    .bulk-count{
+      color:#7b5a24;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .bulk-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    /* =========================
+       TABLE
+    ========================== */
+
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:1080px;
+      border-collapse:collapse;
+    }
+
+    th{
+      padding:11px 12px;
+      background:#f8fafc;
+      color:#7c8796;
+      font-size:8px;
+      font-weight:900;
+      text-align:left;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      white-space:nowrap;
+    }
+
+    td{
+      padding:12px;
+      border-top:1px solid #edf0f4;
+      color:#536074;
+      font-size:9px;
+      vertical-align:middle;
+    }
+
+    tbody tr:hover{
+      background:#fbfcfd;
+    }
+
+    .check{
+      width:16px;
+      height:16px;
+      accent-color:var(--orange);
+    }
+
+    .job-cell{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      min-width:210px;
+    }
+
+    .job-icon{
+      width:35px;
+      height:35px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+      border-radius:9px;
+      background:#edf3fa;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .job-name{
+      color:var(--navy);
+      font-size:10px;
+      font-weight:900;
+    }
+
+    .job-id{
+      margin-top:1px;
+      color:#8a94a2;
+      font-size:8px;
+    }
+
+    .company{
+      color:#4e5b6d;
+      font-weight:700;
+    }
+
+    .location{
+      color:#677386;
+    }
+
+    .salary{
+      color:var(--navy);
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .date{
+      white-space:nowrap;
+      color:#677386;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:5px 8px;
+      border-radius:20px;
+      font-size:8px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .status-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .status.published{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .status.draft{
+      background:#f0f2f5;
+      color:#6f7988;
+    }
+
+    .status.pending{
+      background:var(--warning-bg);
+      color:var(--warning);
+    }
+
+    .status.closed{
+      background:var(--danger-bg);
+      color:var(--danger);
+    }
+
+    .status.scheduled{
+      background:var(--info-bg);
+      color:var(--info);
+    }
+
+    .action-buttons{
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .icon-btn{
+      width:29px;
+      height:29px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:#fff;
+      color:#657184;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+    }
+
+    .icon-btn:hover{
+      color:var(--navy);
+      border-color:#cbd4df;
+      background:#f8fafc;
+    }
+
+    .icon-btn.delete:hover{
+      color:var(--danger);
+      border-color:#efcccc;
+      background:#fff6f6;
+    }
+
+    /* =========================
+       PAGINATION
+    ========================== */
+
+    .table-footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:13px 18px;
+      border-top:1px solid var(--border);
+    }
+
+    .pagination-info{
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .pagination{
+      display:flex;
+      gap:4px;
+    }
+
+    .page-btn{
+      width:29px;
+      height:29px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:#fff;
+      color:#657184;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .page-btn.active{
+      border-color:var(--orange);
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    /* =========================
+       MODAL
+    ========================== */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:2500;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(7,26,51,.58);
+    }
+
+    .modal.show{
+      display:flex;
+    }
+
+    .modal-box{
+      width:min(760px,100%);
+      max-height:90vh;
+      overflow-y:auto;
+      border-radius:15px;
+      background:#fff;
+      box-shadow:0 25px 70px rgba(0,0,0,.28);
+    }
+
+    .modal-box.large{
+      width:min(950px,100%);
+    }
+
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:17px 20px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .modal-title{
+      color:var(--navy);
+      font-size:16px;
+      font-weight:900;
+    }
+
+    .modal-close{
+      width:32px;
+      height:32px;
+      border:0;
+      border-radius:8px;
+      background:#f1f3f6;
+      color:#657083;
+      font-size:17px;
+    }
+
+    .modal-body{
+      padding:20px;
+    }
+
+    .modal-footer{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      padding:13px 20px;
+      border-top:1px solid var(--border);
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:5px;
+      color:#687487;
+      font-size:8px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      outline:none;
+      border:1px solid #dce2ea;
+      border-radius:8px;
+      background:#fff;
+      color:var(--text);
+      padding:9px 10px;
+      font-size:10px;
+    }
+
+    .field input,
+    .field select{
+      height:39px;
+    }
+
+    .field textarea{
+      min-height:95px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(247,147,30,.1);
+    }
+
+    .form-note{
+      margin-top:5px;
+      color:#8993a1;
+      font-size:8px;
+    }
+
+    .job-preview{
+      padding:14px;
+      margin-bottom:18px;
+      border:1px solid #e6ebf1;
+      border-radius:10px;
+      background:#f8fafc;
+    }
+
+    .job-preview-title{
+      color:var(--navy);
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .job-preview-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px 14px;
+      margin-top:5px;
+      color:#6e7989;
+      font-size:9px;
+    }
+
+    /* =========================
+       DETAILS
+    ========================== */
+
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:11px;
+      margin-bottom:18px;
+    }
+
+    .detail-box{
+      padding:12px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fafbfd;
+    }
+
+    .detail-label{
+      margin-bottom:4px;
+      color:#8993a1;
+      font-size:8px;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .detail-value{
+      color:var(--navy);
+      font-size:10px;
+      font-weight:900;
+    }
+
+    .description-box{
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fff;
+    }
+
+    .description-box h4{
+      margin-bottom:8px;
+      color:var(--navy);
+      font-size:11px;
+    }
+
+    .description-box p,
+    .description-box li{
+      color:#5e697a;
+      font-size:9px;
+      line-height:1.7;
+    }
+
+    .description-box ul{
+      padding-left:18px;
+      margin-top:5px;
+    }
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    .toast{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      z-index:4000;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:13px 16px;
+      border-radius:10px;
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 15px 35px rgba(0,0,0,.22);
+      font-size:10px;
+      font-weight:800;
+      opacity:0;
+      transform:translateY(120px);
+      pointer-events:none;
+      transition:.3s;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .toast-icon{
+      color:var(--orange);
+    }
+
+    /* =========================
+       OVERLAY
+    ========================== */
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:850;
+      background:rgba(0,0,0,.45);
+    }
+
+    .overlay.show{
+      display:block;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1250px){
+
+      .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .filter-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .overview-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:950px){
+
+      .menu-toggle{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .main{
+        margin-left:0;
+        padding:88px 18px 35px;
+      }
+
+      .admin-label,
+      .admin-info{
+        display:none;
+      }
+
+      .page-header{
+        flex-direction:column;
+      }
+
+      .header-actions{
+        justify-content:flex-start;
+      }
+
+      .kpi-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:650px){
+
+      .topbar{
+        padding:0 12px;
+      }
+
+      .brand{
+        font-size:18px;
+      }
+
+      .brand-mark{
+        width:32px;
+        height:32px;
+      }
+
+      .top-icon:first-child{
+        display:none;
+      }
+
+      .kpi-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .filter-grid{
+        grid-template-columns:1fr;
+      }
+
+      .pipeline{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .category-row{
+        grid-template-columns:100px 1fr 35px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .field.full{
+        grid-column:auto;
+      }
+
+      .detail-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .table-footer{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .bulk-bar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .toast{
+        right:15px;
+        bottom:15px;
+        left:15px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       TOPBAR
+  ========================== -->
+
+  <header class="topbar">
+
+    <div class="top-left">
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation">
+        ☰
+      </button>
+
+      <a href="../Public website/index.html" class="brand">
+        <span class="brand-mark">F</span>
+        <span>FAGA</span>
+      </a>
+
+      <span class="admin-label">
+        Administration Portal
+      </span>
+
+    </div>
+
+
+    <div class="top-actions">
+
+      <button
+        class="top-icon"
+        title="Search">
+        ⌕
+      </button>
+
+      <button
+        class="top-icon"
+        title="Notifications"
+        onclick="window.location.href='notifications.html'">
+        ♢
+        <span class="notification-dot"></span>
+      </button>
+
+      <div class="admin-profile">
+
+        <div class="avatar">
+          AD
+        </div>
+
+        <div class="admin-info">
+          <strong>Admin User</strong>
+          <span>Super Administrator</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Overview
+      </div>
+
+      <a href="../Public website/index.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Dashboard
+      </a>
+
+      <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Users
+        <span class="nav-badge">12.4k</span>
+      </a>
+
+      <a href="orders.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Orders
+        <span class="nav-badge">284</span>
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Operations
+      </div>
+
+      <a href="../Public website/logistics.html" class="nav-link">
+        <span class="nav-icon">▱</span>
+        Logistics
+      </a>
+
+      <a href="riders.html" class="nav-link">
+        <span class="nav-icon">♟</span>
+        Riders
+      </a>
+
+      <a href="../Public website/marketplace.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Marketplace
+      </a>
+
+      <a href="sellers.html" class="nav-link">
+        <span class="nav-icon">◫</span>
+        Sellers
+      </a>
+
+      <a href="../Public website/services.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Services
+      </a>
+
+      <a href="service-providers.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Service Providers
+      </a>
+
+      <a href="../Public website/food.html" class="nav-link">
+        <span class="nav-icon">◉</span>
+        Food
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Finance
+      </div>
+
+      <a href="payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Payments
+      </a>
+
+      <a href="wallets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Wallets
+      </a>
+
+      <a href="payouts.html" class="nav-link">
+        <span class="nav-icon">↗</span>
+        Payouts
+      </a>
+
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Reports
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Jobs
+      </div>
+
+      <a href="../Public website/jobs.html" class="nav-link active">
+        <span class="nav-icon">▤</span>
+        Jobs
+      </a>
+
+      <a href="job-applicants.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Applicants
+        <span class="nav-badge">682</span>
+      </a>
+
+      <a href="../Public website/job-applications.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Applications
+        <span class="nav-badge">184</span>
+      </a>
+
+      <a href="job-payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Job Payments
+      </a>
+
+      <a href="job-settings.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Job Settings
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Administration
+      </div>
+
+      <a href="support.html" class="nav-link">
+        <span class="nav-icon">?</span>
+        Support
+      </a>
+
+      <a href="disputes.html" class="nav-link">
+        <span class="nav-icon">!</span>
+        Disputes
+      </a>
+
+      <a href="notifications.html" class="nav-link">
+        <span class="nav-icon">♢</span>
+        Notifications
+        <span class="nav-badge">47</span>
+      </a>
+
+      <a href="audit-logs.html" class="nav-link">
+        <span class="nav-icon">≡</span>
+        Audit Logs
+      </a>
+
+      <a href="settings.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        System Settings
+      </a>
+
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <div class="page-header">
+
+      <div>
+
+        <div class="breadcrumb">
+          <span>Admin</span>
+          <span>›</span>
+          <span>Jobs</span>
+        </div>
+
+        <h1 class="page-title">
+          Jobs Management
+        </h1>
+
+        <p class="page-description">
+          Create, review, publish and manage FAGA employment opportunities.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          class="btn"
+          onclick="exportJobs()">
+          ↓ Export Jobs
+        </button>
+
+        <button
+          class="btn"
+          onclick="window.location.href='../Public website/job-applications.html'">
+          ▧ Applications
+        </button>
+
+        <button
+          class="btn btn-primary"
+          onclick="openJobModal()">
+          + Create Job
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         KPIs
+    ========================== -->
+
+    <section class="kpi-grid">
+
+      <div class="kpi">
+
+        <div class="kpi-top">
+          <span class="kpi-label">Total Jobs</span>
+          <span class="kpi-icon">▤</span>
+        </div>
+
+        <div class="kpi-value">428</div>
+
+        <div class="kpi-note">
+          All jobs in the system
+        </div>
+
+      </div>
+
+
+      <div class="kpi">
+
+        <div class="kpi-top">
+          <span class="kpi-label">Published</span>
+          <span class="kpi-icon">✓</span>
+        </div>
+
+        <div class="kpi-value">186</div>
+
+        <div class="kpi-note">
+          Currently accepting applications
+        </div>
+
+      </div>
+
+
+      <div class="kpi">
+
+        <div class="kpi-top">
+          <span class="kpi-label">Drafts</span>
+          <span class="kpi-icon">✎</span>
+        </div>
+
+        <div class="kpi-value">74</div>
+
+        <div class="kpi-note">
+          Awaiting completion or approval
+        </div>
+
+      </div>
+
+
+      <div class="kpi">
+
+        <div class="kpi-top">
+          <span class="kpi-label">Applications</span>
+          <span class="kpi-icon">♙</span>
+        </div>
+
+        <div class="kpi-value">1,284</div>
+
+        <div class="kpi-note">
+          Across all job listings
+        </div>
+
+      </div>
+
+
+      <div class="kpi">
+
+        <div class="kpi-top">
+          <span class="kpi-label">Closing Soon</span>
+          <span class="kpi-icon">◷</span>
+        </div>
+
+        <div class="kpi-value">23</div>
+
+        <div class="kpi-note">
+          Closing within 7 days
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         OVERVIEW
+    ========================== -->
+
+    <section class="overview-grid">
+
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+
+            <div class="card-title">
+              Job Pipeline
+            </div>
+
+            <div class="card-description">
+              Current distribution of job listings by workflow stage.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="pipeline">
+
+            <div class="pipeline-item">
+
+              <div class="pipeline-label">
+                Draft
+              </div>
+
+              <div class="pipeline-value">
+                74
+              </div>
+
+              <div class="pipeline-bar">
+                <div
+                  class="pipeline-fill"
+                  style="width:38%;">
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="pipeline-item">
+
+              <div class="pipeline-label">
+                Pending
+              </div>
+
+              <div class="pipeline-value">
+                41
+              </div>
+
+              <div class="pipeline-bar">
+                <div
+                  class="pipeline-fill"
+                  style="width:22%;">
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="pipeline-item">
+
+              <div class="pipeline-label">
+                Published
+              </div>
+
+              <div class="pipeline-value">
+                186
+              </div>
+
+              <div class="pipeline-bar">
+                <div
+                  class="pipeline-fill"
+                  style="width:100%;">
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="pipeline-item">
+
+              <div class="pipeline-label">
+                Closed
+              </div>
+
+              <div class="pipeline-value">
+                127
+              </div>
+
+              <div class="pipeline-bar">
+                <div
+                  class="pipeline-fill"
+                  style="width:68%;">
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+
+            <div class="card-title">
+              Jobs by Category
+            </div>
+
+            <div class="card-description">
+              Published and active listings.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="category-list">
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Technology
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:82%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                48
+              </div>
+
+            </div>
+
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Operations
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:67%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                39
+              </div>
+
+            </div>
+
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Logistics
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:59%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                34
+              </div>
+
+            </div>
+
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Sales & Marketing
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:48%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                28
+              </div>
+
+            </div>
+
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Customer Support
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:39%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                23
+              </div>
+
+            </div>
+
+
+            <div class="category-row">
+
+              <div class="category-name">
+                Food & Hospitality
+              </div>
+
+              <div class="category-bar">
+                <div
+                  class="category-fill"
+                  style="width:23%;">
+                </div>
+              </div>
+
+              <div class="category-number">
+                14
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FILTERS
+    ========================== -->
+
+    <section class="filter-card">
+
+      <div class="filter-grid">
+
+        <div class="filter-field">
+
+          <label>
+            Search
+          </label>
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search job title, ID or company...">
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label>
+            Category
+          </label>
+
+          <select id="categoryFilter">
+
+            <option value="">All Categories</option>
+            <option value="Technology">Technology</option>
+            <option value="Operations">Operations</option>
+            <option value="Logistics">Logistics</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Customer Support">Customer Support</option>
+            <option value="Food & Hospitality">Food & Hospitality</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label>
+            Employment Type
+          </label>
+
+          <select id="typeFilter">
+
+            <option value="">All Types</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+            <option value="Temporary">Temporary</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label>
+            Location
+          </label>
+
+          <select id="locationFilter">
+
+            <option value="">All Locations</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Abuja">Abuja</option>
+            <option value="Ibadan">Ibadan</option>
+            <option value="Port Harcourt">Port Harcourt</option>
+            <option value="Kano">Kano</option>
+            <option value="Remote">Remote</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-field">
+
+          <label>
+            Status
+          </label>
+
+          <select id="statusFilter">
+
+            <option value="">All Statuses</option>
+            <option value="Published">Published</option>
+            <option value="Draft">Draft</option>
+            <option value="Pending Approval">Pending Approval</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Closed">Closed</option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          class="btn reset-btn"
+          onclick="resetFilters()">
+          Reset
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         JOBS TABLE
+    ========================== -->
+
+    <section class="card">
+
+      <div class="card-header">
+
+        <div>
+
+          <div class="card-title">
+            Job Listings
+          </div>
+
+          <div class="card-description">
+            Manage job listings, publication status, deadlines and applications.
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary btn-small"
+          onclick="openJobModal()">
+          + New Job
+        </button>
+
+      </div>
+
+
+      <div class="tabs">
+
+        <button
+          class="tab active"
+          data-tab="All">
+          All
+          <span class="tab-count">428</span>
+        </button>
+
+        <button
+          class="tab"
+          data-tab="Published">
+          Published
+          <span class="tab-count">186</span>
+        </button>
+
+        <button
+          class="tab"
+          data-tab="Draft">
+          Drafts
+          <span class="tab-count">74</span>
+        </button>
+
+        <button
+          class="tab"
+          data-tab="Pending Approval">
+          Pending
+          <span class="tab-count">41</span>
+        </button>
+
+        <button
+          class="tab"
+          data-tab="Scheduled">
+          Scheduled
+          <span class="tab-count">0</span>
+        </button>
+
+        <button
+          class="tab"
+          data-tab="Closed">
+          Closed
+          <span class="tab-count">127</span>
+        </button>
+
+      </div>
+
+
+      <div
+        class="bulk-bar"
+        id="bulkBar">
+
+        <div
+          class="bulk-count"
+          id="bulkCount">
+          0 selected
+        </div>
+
+        <div class="bulk-actions">
+
+          <button
+            class="btn btn-small"
+            onclick="bulkPublish()">
+            Publish
+          </button>
+
+          <button
+            class="btn btn-small"
+            onclick="bulkClose()">
+            Close
+          </button>
+
+          <button
+            class="btn btn-small"
+            onclick="bulkExport()">
+            Export
+          </button>
+
+          <button
+            class="btn btn-small btn-danger"
+            onclick="bulkDelete()">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th style="width:35px;">
+                <input
+                  class="check"
+                  type="checkbox"
+                  id="selectAll">
+              </th>
+
+              <th>
+                Job
+              </th>
+
+              <th>
+                Company
+              </th>
+
+              <th>
+                Category
+              </th>
+
+              <th>
+                Location
+              </th>
+
+              <th>
+                Type
+              </th>
+
+              <th>
+                Salary
+              </th>
+
+              <th>
+                Applications
+              </th>
+
+              <th>
+                Deadline
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                Actions
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="jobsTable">
+
+            <tr
+              data-status="Published"
+              data-category="Technology"
+              data-type="Full Time"
+              data-location="Lagos"
+              data-search="JOB-1001 Frontend Developer FAGA Technologies">
+
+              <td>
+                <input
+                  class="check row-check"
+                  type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    &lt;/&gt;
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Frontend Developer
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1001
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA Technologies
+                </span>
+              </td>
+
+              <td>
+                Technology
+              </td>
+
+              <td>
+                <span class="location">
+                  Lagos
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦250k–₦400k
+                </span>
+              </td>
+
+              <td>
+                284
+              </td>
+
+              <td>
+                <span class="date">
+                  30 Sep 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status published">
+                  <span class="status-dot"></span>
+                  Published
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    title="View"
+                    onclick="viewJob('JOB-1001')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    title="Edit"
+                    onclick="editJob('JOB-1001')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    title="Applications"
+                    onclick="viewApplications('JOB-1001')">
+                    ♙
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    title="Delete"
+                    onclick="deleteJob('JOB-1001')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Published"
+              data-category="Operations"
+              data-type="Full Time"
+              data-location="Lagos"
+              data-search="JOB-1002 Operations Manager FAGA">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    OP
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Operations Manager
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1002
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA
+                </span>
+              </td>
+
+              <td>
+                Operations
+              </td>
+
+              <td>
+                <span class="location">
+                  Lagos
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦350k–₦550k
+                </span>
+              </td>
+
+              <td>
+                191
+              </td>
+
+              <td>
+                <span class="date">
+                  28 Sep 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status published">
+                  <span class="status-dot"></span>
+                  Published
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1002')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1002')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewApplications('JOB-1002')">
+                    ♙
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1002')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Pending Approval"
+              data-category="Logistics"
+              data-type="Full Time"
+              data-location="Abuja"
+              data-search="JOB-1003 Logistics Coordinator FAGA Logistics">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    LG
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Logistics Coordinator
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1003
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA Logistics
+                </span>
+              </td>
+
+              <td>
+                Logistics
+              </td>
+
+              <td>
+                <span class="location">
+                  Abuja
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦220k–₦320k
+                </span>
+              </td>
+
+              <td>
+                76
+              </td>
+
+              <td>
+                <span class="date">
+                  02 Oct 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status pending">
+                  <span class="status-dot"></span>
+                  Pending Approval
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1003')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1003')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="approveJob('JOB-1003')">
+                    ✓
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1003')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Draft"
+              data-category="Sales & Marketing"
+              data-type="Full Time"
+              data-location="Lagos"
+              data-search="JOB-1004 Sales Executive FAGA">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    SM
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Sales Executive
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1004
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA
+                </span>
+              </td>
+
+              <td>
+                Sales & Marketing
+              </td>
+
+              <td>
+                <span class="location">
+                  Lagos
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦180k–₦280k
+                </span>
+              </td>
+
+              <td>
+                0
+              </td>
+
+              <td>
+                <span class="date">
+                  —
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status draft">
+                  <span class="status-dot"></span>
+                  Draft
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1004')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1004')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="publishJob('JOB-1004')">
+                    ↗
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1004')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Published"
+              data-category="Customer Support"
+              data-type="Full Time"
+              data-location="Remote"
+              data-search="JOB-1005 Customer Support Officer FAGA">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    CS
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Customer Support Officer
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1005
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA
+                </span>
+              </td>
+
+              <td>
+                Customer Support
+              </td>
+
+              <td>
+                <span class="location">
+                  Remote
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦180k–₦250k
+                </span>
+              </td>
+
+              <td>
+                143
+              </td>
+
+              <td>
+                <span class="date">
+                  05 Oct 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status published">
+                  <span class="status-dot"></span>
+                  Published
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1005')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1005')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewApplications('JOB-1005')">
+                    ♙
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1005')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Published"
+              data-category="Food & Hospitality"
+              data-type="Full Time"
+              data-location="Abuja"
+              data-search="JOB-1006 Restaurant Operations Assistant FAGA Food">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    FH
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Restaurant Operations Assistant
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1006
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA Food
+                </span>
+              </td>
+
+              <td>
+                Food & Hospitality
+              </td>
+
+              <td>
+                <span class="location">
+                  Abuja
+                </span>
+              </td>
+
+              <td>
+                Full Time
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦160k–₦230k
+                </span>
+              </td>
+
+              <td>
+                88
+              </td>
+
+              <td>
+                <span class="date">
+                  08 Oct 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status published">
+                  <span class="status-dot"></span>
+                  Published
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1006')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1006')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewApplications('JOB-1006')">
+                    ♙
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1006')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Closed"
+              data-category="Logistics"
+              data-type="Contract"
+              data-location="Kano"
+              data-search="JOB-1007 Delivery Operations Supervisor FAGA Logistics">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    DO
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Delivery Operations Supervisor
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1007
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA Logistics
+                </span>
+              </td>
+
+              <td>
+                Logistics
+              </td>
+
+              <td>
+                <span class="location">
+                  Kano
+                </span>
+              </td>
+
+              <td>
+                Contract
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦200k–₦300k
+                </span>
+              </td>
+
+              <td>
+                67
+              </td>
+
+              <td>
+                <span class="date">
+                  Closed 12 Sep 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status closed">
+                  <span class="status-dot"></span>
+                  Closed
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1007')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1007')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1007')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              data-status="Published"
+              data-category="Technology"
+              data-type="Internship"
+              data-location="Ibadan"
+              data-search="JOB-1008 Junior Software Intern FAGA Technologies">
+
+              <td>
+                <input class="check row-check" type="checkbox">
+              </td>
+
+              <td>
+
+                <div class="job-cell">
+
+                  <div class="job-icon">
+                    IT
+                  </div>
+
+                  <div>
+
+                    <div class="job-name">
+                      Junior Software Intern
+                    </div>
+
+                    <div class="job-id">
+                      JOB-1008
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <span class="company">
+                  FAGA Technologies
+                </span>
+              </td>
+
+              <td>
+                Technology
+              </td>
+
+              <td>
+                <span class="location">
+                  Ibadan
+                </span>
+              </td>
+
+              <td>
+                Internship
+              </td>
+
+              <td>
+                <span class="salary">
+                  ₦80k–₦120k
+                </span>
+              </td>
+
+              <td>
+                112
+              </td>
+
+              <td>
+                <span class="date">
+                  15 Oct 2026
+                </span>
+              </td>
+
+              <td>
+
+                <span class="status published">
+                  <span class="status-dot"></span>
+                  Published
+                </span>
+
+              </td>
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewJob('JOB-1008')">
+                    ◉
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="editJob('JOB-1008')">
+                    ✎
+                  </button>
+
+                  <button
+                    class="icon-btn"
+                    onclick="viewApplications('JOB-1008')">
+                    ♙
+                  </button>
+
+                  <button
+                    class="icon-btn delete"
+                    onclick="deleteJob('JOB-1008')">
+                    ×
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="table-footer">
+
+        <div class="pagination-info" id="paginationInfo">
+          Showing 1–8 of 428 jobs
+        </div>
+
+        <div class="pagination">
+
+          <button class="page-btn">
+            ‹
+          </button>
+
+          <button class="page-btn active">
+            1
+          </button>
+
+          <button class="page-btn">
+            2
+          </button>
+
+          <button class="page-btn">
+            3
+          </button>
+
+          <button class="page-btn">
+            4
+          </button>
+
+          <button class="page-btn">
+            5
+          </button>
+
+          <button class="page-btn">
+            ›
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUCTION NOTES
+    ========================== -->
+
+    <section class="card">
+
+      <div class="card-header">
+
+        <div>
+
+          <div class="card-title">
+            Production Integration Notes
+          </div>
+
+          <div class="card-description">
+            Backend endpoints and security requirements for this page.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="description-box">
+
+          <h4>
+            Recommended API endpoints
+          </h4>
+
+          <ul>
+
+            <li>
+              GET /api/admin/jobs
+            </li>
+
+            <li>
+              GET /api/admin/jobs/:jobId
+            </li>
+
+            <li>
+              POST /api/admin/jobs
+            </li>
+
+            <li>
+              PATCH /api/admin/jobs/:jobId
+            </li>
+
+            <li>
+              POST /api/admin/jobs/:jobId/publish
+            </li>
+
+            <li>
+              POST /api/admin/jobs/:jobId/close
+            </li>
+
+            <li>
+              POST /api/admin/jobs/:jobId/approve
+            </li>
+
+            <li>
+              DELETE /api/admin/jobs/:jobId
+            </li>
+
+            <li>
+              GET /api/admin/jobs/:jobId/applications
+            </li>
+
+            <li>
+              GET /api/admin/jobs/export
+            </li>
+
+          </ul>
+
+
+          <h4 style="margin-top:16px;">
+            Backend requirements
+          </h4>
+
+          <ul>
+
+            <li>
+              Enforce administrator authentication and RBAC server-side.
+            </li>
+
+            <li>
+              Never trust status, employer, salary, vacancy or deadline values supplied by the browser.
+            </li>
+
+            <li>
+              Validate and sanitize every job field on the server.
+            </li>
+
+            <li>
+              Record create, edit, approve, publish, close and delete operations in the audit log.
+            </li>
+
+            <li>
+              Use server-side pagination, filtering and sorting for production data.
+            </li>
+
+            <li>
+              Do not expose private applicant CV files through permanent public URLs.
+            </li>
+
+            <li>
+              Preserve historical job/application records according to the retention policy.
+            </li>
+
+            <li>
+              Require confirmation and appropriate permissions for destructive operations.
+            </li>
+
+            <li>
+              Use idempotency controls for actions that can be retried.
+            </li>
+
+            <li>
+              Employer and hiring decisions remain separate from applicant platform access.
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       CREATE / EDIT JOB MODAL
+  ========================== -->
+
+  <div
+    class="modal"
+    id="jobModal">
+
+    <div class="modal-box large">
+
+      <div class="modal-header">
+
+        <div class="modal-title" id="jobModalTitle">
+          Create New Job
+        </div>
+
+        <button
+          class="modal-close"
+          onclick="closeModal('jobModal')">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <form id="jobForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label>
+                Job Title *
+              </label>
+
+              <input
+                id="jobTitle"
+                type="text"
+                placeholder="e.g. Frontend Developer"
+                required>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Employer / Company *
+              </label>
+
+              <input
+                id="jobCompany"
+                type="text"
+                placeholder="e.g. FAGA Technologies"
+                required>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Category *
+              </label>
+
+              <select id="jobCategory" required>
+
+                <option value="">
+                  Select category
+                </option>
+
+                <option>
+                  Technology
+                </option>
+
+                <option>
+                  Operations
+                </option>
+
+                <option>
+                  Logistics
+                </option>
+
+                <option>
+                  Sales & Marketing
+                </option>
+
+                <option>
+                  Customer Support
+                </option>
+
+                <option>
+                  Food & Hospitality
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Employment Type *
+              </label>
+
+              <select id="jobType" required>
+
+                <option value="">
+                  Select type
+                </option>
+
+                <option>
+                  Full Time
+                </option>
+
+                <option>
+                  Part Time
+                </option>
+
+                <option>
+                  Contract
+                </option>
+
+                <option>
+                  Internship
+                </option>
+
+                <option>
+                  Temporary
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Location *
+              </label>
+
+              <input
+                id="jobLocation"
+                type="text"
+                placeholder="e.g. Lagos"
+                required>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Work Arrangement
+              </label>
+
+              <select id="jobArrangement">
+
+                <option>
+                  On-site
+                </option>
+
+                <option>
+                  Hybrid
+                </option>
+
+                <option>
+                  Remote
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Minimum Salary
+              </label>
+
+              <input
+                id="jobMinSalary"
+                type="number"
+                placeholder="250000">
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Maximum Salary
+              </label>
+
+              <input
+                id="jobMaxSalary"
+                type="number"
+                placeholder="400000">
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Vacancies
+              </label>
+
+              <input
+                id="jobVacancies"
+                type="number"
+                min="1"
+                value="1">
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Application Deadline
+              </label>
+
+              <input
+                id="jobDeadline"
+                type="date">
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Minimum Experience
+              </label>
+
+              <select id="jobExperience">
+
+                <option>
+                  No experience
+                </option>
+
+                <option selected>
+                  1 year
+                </option>
+
+                <option>
+                  2 years
+                </option>
+
+                <option>
+                  3 years
+                </option>
+
+                <option>
+                  5+ years
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Education
+              </label>
+
+              <select id="jobEducation">
+
+                <option>
+                  Any
+                </option>
+
+                <option>
+                  Secondary School
+                </option>
+
+                <option>
+                  OND / NCE
+                </option>
+
+                <option selected>
+                  HND / Bachelor's Degree
+                </option>
+
+                <option>
+                  Master's Degree
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field full">
+
+              <label>
+                Job Description *
+              </label>
+
+              <textarea
+                id="jobDescription"
+                placeholder="Describe the position, responsibilities and expectations..."
+                required></textarea>
+
+            </div>
+
+
+            <div class="field full">
+
+              <label>
+                Responsibilities
+              </label>
+
+              <textarea
+                id="jobResponsibilities"
+                placeholder="Enter the key responsibilities, one per line..."></textarea>
+
+            </div>
+
+
+            <div class="field full">
+
+              <label>
+                Requirements
+              </label>
+
+              <textarea
+                id="jobRequirements"
+                placeholder="Enter qualifications, skills and experience requirements..."></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Publication Status
+              </label>
+
+              <select id="jobStatus">
+
+                <option>
+                  Draft
+                </option>
+
+                <option>
+                  Pending Approval
+                </option>
+
+                <option>
+                  Published
+                </option>
+
+                <option>
+                  Scheduled
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Featured Listing
+              </label>
+
+              <select id="jobFeatured">
+
+                <option>
+                  No
+                </option>
+
+                <option>
+                  Yes
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn"
+          onclick="closeModal('jobModal')">
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-primary"
+          onclick="saveJob()">
+          Save Job
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       JOB DETAILS MODAL
+  ========================== -->
+
+  <div
+    class="modal"
+    id="detailsModal">
+
+    <div class="modal-box large">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          Job Details
+        </div>
+
+        <button
+          class="modal-close"
+          onclick="closeModal('detailsModal')">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="job-preview">
+
+          <div
+            class="job-preview-title"
+            id="detailTitle">
+            Frontend Developer
+          </div>
+
+          <div
+            class="job-preview-meta"
+            id="detailMeta">
+            JOB-1001 · FAGA Technologies · Lagos · Full Time
+          </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Category
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailCategory">
+              Technology
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Applications
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailApplications">
+              284
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Deadline
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailDeadline">
+              30 Sep 2026
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Salary
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailSalary">
+              ₦250k–₦400k
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Experience
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailExperience">
+              2 years
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <div class="detail-label">
+              Vacancies
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailVacancies">
+              3
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="description-box">
+
+          <h4>
+            Job Description
+          </h4>
+
+          <p id="detailDescription">
+            The Frontend Developer will build responsive and accessible
+            interfaces for FAGA products and services, working with product,
+            design and engineering teams.
+          </p>
+
+
+          <h4 style="margin-top:15px;">
+            Responsibilities
+          </h4>
+
+          <ul id="detailResponsibilities">
+
+            <li>
+              Build responsive web interfaces.
+            </li>
+
+            <li>
+              Work with designers and backend engineers.
+            </li>
+
+            <li>
+              Maintain frontend quality and accessibility.
+            </li>
+
+          </ul>
+
+
+          <h4 style="margin-top:15px;">
+            Requirements
+          </h4>
+
+          <ul id="detailRequirements">
+
+            <li>
+              Experience with HTML, CSS and JavaScript.
+            </li>
+
+            <li>
+              Familiarity with modern frontend frameworks.
+            </li>
+
+            <li>
+              Strong communication and problem-solving skills.
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn"
+          onclick="closeModal('detailsModal')">
+          Close
+        </button>
+
+        <button
+          class="btn"
+          onclick="editFromDetails()">
+          Edit Job
+        </button>
+
+        <button
+          class="btn btn-primary"
+          onclick="viewApplicationsFromDetails()">
+          View Applications
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       DELETE MODAL
+  ========================== -->
+
+  <div
+    class="modal"
+    id="deleteModal">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          Delete Job
+        </div>
+
+        <button
+          class="modal-close"
+          onclick="closeModal('deleteModal')">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="danger-box" style="
+          display:flex;
+          align-items:flex-start;
+          gap:10px;
+          padding:13px;
+          border:1px solid #f0cccc;
+          border-radius:9px;
+          background:#fff5f5;
+        ">
+
+          <div style="
+            color:var(--danger);
+            font-size:16px;
+          ">
+            !
+          </div>
+
+          <div>
+
+            <strong style="
+              display:block;
+              color:#a52c2c;
+              font-size:10px;
+            ">
+              Confirm job deletion
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:3px;
+              color:#956262;
+              font-size:9px;
+              line-height:1.6;
+            ">
+              This demo action removes the listing from the
+              visible table. In production, job deletion should
+              follow retention rules and should not destroy
+              application history.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn"
+          onclick="closeModal('deleteModal')">
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-danger"
+          onclick="confirmDelete()">
+          Delete Job
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+
+  <div
+    class="toast"
+    id="toast">
+
+    <span class="toast-icon">
+      ✓
+    </span>
+
+    <span id="toastMessage">
+      Action completed.
+    </span>
+
+  </div>
+
+
+  <script>
+
+    /*
+      ============================================================
+      FAGA ADMIN — JOBS MANAGEMENT
+      ============================================================
+
+      PRODUCTION API
+      ------------------------------------------------------------
+
+      GET
+      /api/admin/jobs
+
+      GET
+      /api/admin/jobs/:jobId
+
+      POST
+      /api/admin/jobs
+
+      PATCH
+      /api/admin/jobs/:jobId
+
+      POST
+      /api/admin/jobs/:jobId/publish
+
+      POST
+      /api/admin/jobs/:jobId/close
+
+      POST
+      /api/admin/jobs/:jobId/approve
+
+      DELETE
+      /api/admin/jobs/:jobId
+
+      GET
+      /api/admin/jobs/:jobId/applications
+
+      GET
+      /api/admin/jobs/export
+
+
+      SECURITY
+      ------------------------------------------------------------
+
+      - Authenticate every administrator request server-side.
+      - Enforce RBAC server-side.
+      - Never trust browser status or permission values.
+      - Validate all job fields server-side.
+      - Sanitize public job descriptions.
+      - Audit every create/edit/publish/close/delete action.
+      - Use server-side pagination and filtering.
+      - Protect applicant information and CV files.
+      - Use confirmation for destructive operations.
+      - Use idempotency for publish/close/bulk operations.
+      - Preserve application history.
+      - Never expose payment provider secrets.
+      - Validate deadline and vacancy values server-side.
+      - Ensure closed jobs cannot accept applications.
+    */
+
+
+    /* =========================
+       MOBILE SIDEBAR
+    ========================== */
+
+    const menuToggle =
+      document.getElementById("menuToggle");
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const overlay =
+      document.getElementById("overlay");
+
+
+    menuToggle.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("show");
+
+      }
+    );
+
+
+    overlay.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+
+      }
+    );
+
+
+    /* =========================
+       DEMO JOB DATA
+    ========================== */
+
+    const jobs = {
+
+      "JOB-1001":{
+        title:"Frontend Developer",
+        company:"FAGA Technologies",
+        category:"Technology",
+        type:"Full Time",
+        location:"Lagos",
+        applications:"284",
+        deadline:"30 Sep 2026",
+        salary:"₦250k–₦400k",
+        experience:"2 years",
+        vacancies:"3",
+        description:
+          "The Frontend Developer will build responsive and accessible interfaces for FAGA products and services, working with product, design and engineering teams.",
+        responsibilities:[
+          "Build responsive web interfaces.",
+          "Work with designers and backend engineers.",
+          "Maintain frontend quality and accessibility."
+        ],
+        requirements:[
+          "Experience with HTML, CSS and JavaScript.",
+          "Familiarity with modern frontend frameworks.",
+          "Strong communication and problem-solving skills."
+        ]
+      },
+
+      "JOB-1002":{
+        title:"Operations Manager",
+        company:"FAGA",
+        category:"Operations",
+        type:"Full Time",
+        location:"Lagos",
+        applications:"191",
+        deadline:"28 Sep 2026",
+        salary:"₦350k–₦550k",
+        experience:"4 years",
+        vacancies:"1",
+        description:
+          "The Operations Manager coordinates day-to-day platform operations and works across logistics, customer support and service teams.",
+        responsibilities:[
+          "Coordinate operational teams.",
+          "Monitor service delivery performance.",
+          "Develop operational processes and reports."
+        ],
+        requirements:[
+          "Operations management experience.",
+          "Strong organizational skills.",
+          "Experience working with performance metrics."
+        ]
+      },
+
+      "JOB-1003":{
+        title:"Logistics Coordinator",
+        company:"FAGA Logistics",
+        category:"Logistics",
+        type:"Full Time",
+        location:"Abuja",
+        applications:"76",
+        deadline:"02 Oct 2026",
+        salary:"₦220k–₦320k",
+        experience:"2 years",
+        vacancies:"2",
+        description:
+          "The Logistics Coordinator supports delivery operations, rider coordination and issue resolution.",
+        responsibilities:[
+          "Coordinate delivery activities.",
+          "Support rider allocation.",
+          "Monitor delivery exceptions."
+        ],
+        requirements:[
+          "Logistics experience.",
+          "Strong communication skills.",
+          "Ability to work with operational dashboards."
+        ]
+      },
+
+      "JOB-1004":{
+        title:"Sales Executive",
+        company:"FAGA",
+        category:"Sales & Marketing",
+        type:"Full Time",
+        location:"Lagos",
+        applications:"0",
+        deadline:"Not set",
+        salary:"₦180k–₦280k",
+        experience:"1 year",
+        vacancies:"4",
+        description:
+          "Sales Executive responsible for developing business relationships and supporting FAGA's growth initiatives.",
+        responsibilities:[
+          "Develop new business opportunities.",
+          "Maintain customer relationships.",
+          "Prepare sales reports."
+        ],
+        requirements:[
+          "Sales or business development experience.",
+          "Good communication skills.",
+          "Customer-focused approach."
+        ]
+      },
+
+      "JOB-1005":{
+        title:"Customer Support Officer",
+        company:"FAGA",
+        category:"Customer Support",
+        type:"Full Time",
+        location:"Remote",
+        applications:"143",
+        deadline:"05 Oct 2026",
+        salary:"₦180k–₦250k",
+        experience:"1 year",
+        vacancies:"5",
+        description:
+          "Customer Support Officers assist users with orders, payments, accounts and service-related questions.",
+        responsibilities:[
+          "Respond to customer support requests.",
+          "Resolve routine platform issues.",
+          "Escalate complex cases."
+        ],
+        requirements:[
+          "Customer support experience.",
+          "Clear written and verbal communication.",
+          "Basic computer proficiency."
+        ]
+      },
+
+      "JOB-1006":{
+        title:"Restaurant Operations Assistant",
+        company:"FAGA Food",
+        category:"Food & Hospitality",
+        type:"Full Time",
+        location:"Abuja",
+        applications:"88",
+        deadline:"08 Oct 2026",
+        salary:"₦160k–₦230k",
+        experience:"1 year",
+        vacancies:"3",
+        description:
+          "Supports restaurant operations, order preparation coordination and service quality.",
+        responsibilities:[
+          "Coordinate restaurant orders.",
+          "Support restaurant staff.",
+          "Monitor order preparation workflows."
+        ],
+        requirements:[
+          "Hospitality experience is useful.",
+          "Good communication skills.",
+          "Ability to work in a fast-paced environment."
+        ]
+      },
+
+      "JOB-1007":{
+        title:"Delivery Operations Supervisor",
+        company:"FAGA Logistics",
+        category:"Logistics",
+        type:"Contract",
+        location:"Kano",
+        applications:"67",
+        deadline:"Closed 12 Sep 2026",
+        salary:"₦200k–₦300k",
+        experience:"3 years",
+        vacancies:"1",
+        description:
+          "Supervises delivery operations and supports riders and logistics coordinators.",
+        responsibilities:[
+          "Supervise delivery operations.",
+          "Monitor rider performance.",
+          "Resolve operational exceptions."
+        ],
+        requirements:[
+          "Delivery or logistics supervision experience.",
+          "Strong operational judgment.",
+          "Good reporting skills."
+        ]
+      },
+
+      "JOB-1008":{
+        title:"Junior Software Intern",
+        company:"FAGA Technologies",
+        category:"Technology",
+        type:"Internship",
+        location:"Ibadan",
+        applications:"112",
+        deadline:"15 Oct 2026",
+        salary:"₦80k–₦120k",
+        experience:"No experience",
+        vacancies:"6",
+        description:
+          "Software internship opportunity supporting FAGA engineering teams on frontend and backend projects.",
+        responsibilities:[
+          "Assist engineering teams.",
+          "Learn development workflows.",
+          "Support testing and documentation."
+        ],
+        requirements:[
+          "Interest in software development.",
+          "Basic programming knowledge.",
+          "Willingness to learn."
+        ]
+      }
+
+    };
+
+
+    let selectedJobId = null;
+    let deleteJobIdValue = null;
+    let editMode = false;
+
+
+    /* =========================
+       FILTERS
+    ========================== */
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    const categoryFilter =
+      document.getElementById(
+        "categoryFilter"
+      );
+
+    const typeFilter =
+      document.getElementById(
+        "typeFilter"
+      );
+
+    const locationFilter =
+      document.getElementById(
+        "locationFilter"
+      );
+
+    const statusFilter =
+      document.getElementById(
+        "statusFilter"
+      );
+
+
+    function filterJobs(){
+
+      const search =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const category =
+        categoryFilter.value;
+
+      const type =
+        typeFilter.value;
+
+      const location =
+        locationFilter.value;
+
+      const status =
+        statusFilter.value;
+
+
+      document
+        .querySelectorAll(
+          "#jobsTable tr"
+        )
+        .forEach(row => {
+
+          const rowStatus =
+            row.dataset.status || "";
+
+          const rowCategory =
+            row.dataset.category || "";
+
+          const rowType =
+            row.dataset.type || "";
+
+          const rowLocation =
+            row.dataset.location || "";
+
+          const rowSearch =
+            row.dataset.search
+              ?.toLowerCase() || "";
+
+
+          const searchMatch =
+            !search ||
+            rowSearch.includes(search);
+
+          const categoryMatch =
+            !category ||
+            rowCategory === category;
+
+          const typeMatch =
+            !type ||
+            rowType === type;
+
+          const locationMatch =
+            !location ||
+            rowLocation === location;
+
+          const statusMatch =
+            !status ||
+            rowStatus === status;
+
+
+          row.style.display =
+            searchMatch &&
+            categoryMatch &&
+            typeMatch &&
+            locationMatch &&
+            statusMatch
+              ? ""
+              : "none";
+
+        });
+
+
+      updateVisibleCount();
+
+    }
+
+
+    [
+      searchInput,
+      categoryFilter,
+      typeFilter,
+      locationFilter,
+      statusFilter
+    ].forEach(element => {
+
+      element.addEventListener(
+        "input",
+        filterJobs
+      );
+
+      element.addEventListener(
+        "change",
+        filterJobs
+      );
+
+    });
+
+
+    function resetFilters(){
+
+      searchInput.value = "";
+      categoryFilter.value = "";
+      typeFilter.value = "";
+      locationFilter.value = "";
+      statusFilter.value = "";
+
+      document
+        .querySelectorAll(
+          "#jobsTable tr"
+        )
+        .forEach(row => {
+
+          row.style.display = "";
+
+        });
+
+
+      document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+          tab.classList.remove("active");
+        });
+
+
+      document
+        .querySelector(
+          '.tab[data-tab="All"]'
+        )
+        .classList.add("active");
+
+
+      updateVisibleCount();
+
+      showToast(
+        "Filters reset."
+      );
+
+    }
+
+
+    function updateVisibleCount(){
+
+      const rows =
+        [...document.querySelectorAll(
+          "#jobsTable tr"
+        )]
+        .filter(row =>
+          row.style.display !== "none"
+        );
+
+
+      document.getElementById(
+        "paginationInfo"
+      ).textContent =
+        `Showing 1–${rows.length} of 428 jobs`;
+
+    }
+
+
+    /* =========================
+       TABS
+    ========================== */
+
+    document
+      .querySelectorAll(".tab")
+      .forEach(tab => {
+
+        tab.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(".tab")
+              .forEach(item => {
+                item.classList.remove(
+                  "active"
+                );
+              });
+
+
+            tab.classList.add(
+              "active"
+            );
+
+
+            const selected =
+              tab.dataset.tab;
+
+
+            statusFilter.value =
+              selected === "All"
+                ? ""
+                : selected;
+
+
+            filterJobs();
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       SELECT ALL
+    ========================== */
+
+    const selectAll =
+      document.getElementById(
+        "selectAll"
+      );
+
+
+    selectAll.addEventListener(
+      "change",
+      () => {
+
+        document
+          .querySelectorAll(
+            ".row-check"
+          )
+          .forEach(check => {
+
+            const row =
+              check.closest("tr");
+
+            if(
+              row &&
+              row.style.display !== "none"
+            ){
+
+              check.checked =
+                selectAll.checked;
+
+            }
+
+          });
+
+
+        updateBulkBar();
+
+      }
+    );
+
+
+    document
+      .querySelectorAll(".row-check")
+      .forEach(check => {
+
+        check.addEventListener(
+          "change",
+          updateBulkBar
+        );
+
+      });
+
+
+    function updateBulkBar(){
+
+      const selected =
+        document.querySelectorAll(
+          ".row-check:checked"
+        );
+
+
+      const bulkBar =
+        document.getElementById(
+          "bulkBar"
+        );
+
+
+      document.getElementById(
+        "bulkCount"
+      ).textContent =
+        `${selected.length} selected`;
+
+
+      if(selected.length){
+        bulkBar.classList.add("show");
+      }else{
+        bulkBar.classList.remove("show");
+      }
+
+
+      const totalVisible =
+        [...document.querySelectorAll(
+          ".row-check"
+        )]
+        .filter(check =>
+          check.closest("tr").style.display !== "none"
+        );
+
+
+      selectAll.checked =
+        totalVisible.length > 0 &&
+        totalVisible.every(
+          check => check.checked
+        );
+
+    }
+
+
+    /* =========================
+       JOB MODAL
+    ========================== */
+
+    function openJobModal(){
+
+      editMode = false;
+
+      document.getElementById(
+        "jobModalTitle"
+      ).textContent =
+        "Create New Job";
+
+
+      document.getElementById(
+        "jobForm"
+      ).reset();
+
+
+      document.getElementById(
+        "jobVacancies"
+      ).value = 1;
+
+
+      document.getElementById(
+        "jobStatus"
+      ).value = "Draft";
+
+
+      openModal(
+        "jobModal"
+      );
+
+    }
+
+
+    function editJob(id){
+
+      const job =
+        jobs[id];
+
+      if(!job){
+        showToast(
+          "Job information not found."
+        );
+        return;
+      }
+
+
+      editMode = true;
+      selectedJobId = id;
+
+
+      document.getElementById(
+        "jobModalTitle"
+      ).textContent =
+        "Edit Job — " + id;
+
+
+      document.getElementById(
+        "jobTitle"
+      ).value =
+        job.title;
+
+      document.getElementById(
+        "jobCompany"
+      ).value =
+        job.company;
+
+      document.getElementById(
+        "jobCategory"
+      ).value =
+        job.category;
+
+      document.getElementById(
+        "jobType"
+      ).value =
+        job.type;
+
+      document.getElementById(
+        "jobLocation"
+      ).value =
+        job.location;
+
+      document.getElementById(
+        "jobMinSalary"
+      ).value = "";
+
+      document.getElementById(
+        "jobMaxSalary"
+      ).value = "";
+
+      document.getElementById(
+        "jobVacancies"
+      ).value =
+        job.vacancies;
+
+
+      openModal(
+        "jobModal"
+      );
+
+    }
+
+
+    function saveJob(){
+
+      const form =
+        document.getElementById(
+          "jobForm"
+        );
+
+
+      if(!form.checkValidity()){
+
+        form.reportValidity();
+
+        return;
+
+      }
+
+
+      /*
+        Production:
+
+        POST /api/admin/jobs
+
+        OR
+
+        PATCH /api/admin/jobs/:jobId
+
+        The backend must determine the actual administrator,
+        permissions, job ID and resulting status.
+
+        Do not allow the browser to directly publish a job by
+        simply sending status="Published" without server checks.
+      */
+
+
+      closeModal(
+        "jobModal"
+      );
+
+
+      showToast(
+        editMode
+          ? "Job updated successfully."
+          : "Job created successfully."
+      );
+
+
+      markDemoChanged();
+
+    }
+
+
+    /* =========================
+       VIEW JOB
+    ========================== */
+
+    function viewJob(id){
+
+      const job =
+        jobs[id];
+
+      if(!job){
+        showToast(
+          "Job not found."
+        );
+        return;
+      }
+
+
+      selectedJobId = id;
+
+
+      document.getElementById(
+        "detailTitle"
+      ).textContent =
+        job.title;
+
+
+      document.getElementById(
+        "detailMeta"
+      ).textContent =
+        `${id} · ${job.company} · ${job.location} · ${job.type}`;
+
+
+      document.getElementById(
+        "detailCategory"
+      ).textContent =
+        job.category;
+
+      document.getElementById(
+        "detailApplications"
+      ).textContent =
+        job.applications;
+
+      document.getElementById(
+        "detailDeadline"
+      ).textContent =
+        job.deadline;
+
+      document.getElementById(
+        "detailSalary"
+      ).textContent =
+        job.salary;
+
+      document.getElementById(
+        "detailExperience"
+      ).textContent =
+        job.experience;
+
+      document.getElementById(
+        "detailVacancies"
+      ).textContent =
+        job.vacancies;
+
+      document.getElementById(
+        "detailDescription"
+      ).textContent =
+        job.description;
+
+
+      renderList(
+        "detailResponsibilities",
+        job.responsibilities
+      );
+
+      renderList(
+        "detailRequirements",
+        job.requirements
+      );
+
+
+      openModal(
+        "detailsModal"
+      );
+
+    }
+
+
+    function renderList(
+      elementId,
+      items
+    ){
+
+      const element =
+        document.getElementById(
+          elementId
+        );
+
+
+      element.innerHTML =
+        items
+          .map(
+            item => `<li>${escapeHtml(item)}</li>`
+          )
+          .join("");
+
+    }
+
+
+    function escapeHtml(value){
+
+      return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+    }
+
+
+    /* =========================
+       DETAIL ACTIONS
+    ========================== */
+
+    function editFromDetails(){
+
+      closeModal(
+        "detailsModal"
+      );
+
+      editJob(
+        selectedJobId
+      );
+
+    }
+
+
+    function viewApplicationsFromDetails(){
+
+      viewApplications(
+        selectedJobId
+      );
+
+    }
+
+
+    function viewApplications(id){
+
+      /*
+        Production:
+
+        Navigate to:
+
+        job-applications.html?job=JOB-1001
+
+        Or:
+
+        /admin/job-applications.html?jobId=JOB-1001
+
+        The applications page must enforce server-side authorization.
+      */
+
+
+      window.location.href="../Public website/job-applications.html?job=" +
+        encodeURIComponent(id);
+
+    }
+
+
+    /* =========================
+       APPROVE / PUBLISH / CLOSE
+    ========================== */
+
+    function approveJob(id){
+
+      /*
+        Production:
+
+        POST
+        /api/admin/jobs/:jobId/approve
+      */
+
+      showToast(
+        `${id} approved.`
+      );
+
+    }
+
+
+    function publishJob(id){
+
+      /*
+        Production:
+
+        POST
+        /api/admin/jobs/:jobId/publish
+
+        Server should check:
+        - administrator permission
+        - job completeness
+        - deadline
+        - employer configuration
+        - moderation requirements
+      */
+
+      showToast(
+        `${id} sent for publication.`
+      );
+
+    }
+
+
+    function closeJob(id){
+
+      /*
+        Production:
+
+        POST
+        /api/admin/jobs/:jobId/close
+      */
+
+      showToast(
+        `${id} closed.`
+      );
+
+    }
+
+
+    /* =========================
+       DELETE
+    ========================== */
+
+    function deleteJob(id){
+
+      deleteJobIdValue =
+        id;
+
+      openModal(
+        "deleteModal"
+      );
+
+    }
+
+
+    function confirmDelete(){
+
+      const id =
+        deleteJobIdValue;
+
+
+      /*
+        Production:
+
+        DELETE
+        /api/admin/jobs/:jobId
+
+        Consider using an archive/soft-delete model rather
+        than physical deletion when applications exist.
+      */
+
+
+      closeModal(
+        "deleteModal"
+      );
+
+
+      showToast(
+        `${id} deletion request submitted.`
+      );
+
+
+      deleteJobIdValue =
+        null;
+
+    }
+
+
+    /* =========================
+       BULK ACTIONS
+    ========================== */
+
+    function getSelectedIds(){
+
+      return [
+        ...document.querySelectorAll(
+          ".row-check:checked"
+        )
+      ].map(
+        check =>
+          check
+            .closest("tr")
+            ?.querySelector(".job-id")
+            ?.textContent
+            ?.trim()
+      );
+
+    }
+
+
+    function bulkPublish(){
+
+      const selected =
+        document.querySelectorAll(
+          ".row-check:checked"
+        );
+
+
+      if(!selected.length){
+        return;
+      }
+
+
+      /*
+        Production:
+
+        POST
+        /api/admin/jobs/bulk-action
+
+        {
+          action:"publish",
+          job_ids:[...]
+        }
+
+        Server validates each job and permission.
+      */
+
+
+      showToast(
+        `${selected.length} job(s) queued for publication.`
+      );
+
+      clearSelection();
+
+    }
+
+
+    function bulkClose(){
+
+      const selected =
+        document.querySelectorAll(
+          ".row-check:checked"
+        );
+
+
+      if(!selected.length){
+        return;
+      }
+
+
+      showToast(
+        `${selected.length} job(s) queued for closure.`
+      );
+
+      clearSelection();
+
+    }
+
+
+    function bulkExport(){
+
+      const selected =
+        document.querySelectorAll(
+          ".row-check:checked"
+        );
+
+
+      if(!selected.length){
+        return;
+      }
+
+
+      /*
+        Production:
+
+        POST /api/admin/jobs/export
+
+        Export must be permission-controlled and audited.
+      */
+
+
+      showToast(
+        `Export prepared for ${selected.length} job(s).`
+      );
+
+    }
+
+
+    function bulkDelete(){
+
+      const selected =
+        document.querySelectorAll(
+          ".row-check:checked"
+        );
+
+
+      if(!selected.length){
+        return;
+      }
+
+
+      showToast(
+        `Deletion review required for ${selected.length} job(s).`
+      );
+
+    }
+
+
+    function clearSelection(){
+
+      document
+        .querySelectorAll(
+          ".row-check"
+        )
+        .forEach(
+          check => check.checked = false
+        );
+
+
+      selectAll.checked =
+        false;
+
+
+      updateBulkBar();
+
+    }
+
+
+    /* =========================
+       EXPORT
+    ========================== */
+
+    function exportJobs(){
+
+      /*
+        Production:
+
+        GET
+        /api/admin/jobs/export
+
+        Support server-side filters and authorization.
+
+        Export operations should also be written to the audit log.
+      */
+
+
+      showToast(
+        "Jobs export prepared."
+      );
+
+    }
+
+
+    /* =========================
+       MODALS
+    ========================== */
+
+    function openModal(id){
+
+      document
+        .getElementById(id)
+        .classList.add("show");
+
+    }
+
+
+    function closeModal(id){
+
+      document
+        .getElementById(id)
+        .classList.remove("show");
+
+    }
+
+
+    document
+      .querySelectorAll(".modal")
+      .forEach(modal => {
+
+        modal.addEventListener(
+          "click",
+          event => {
+
+            if(
+              event.target === modal
+            ){
+
+              modal.classList.remove(
+                "show"
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if(
+          event.key === "Escape"
+        ){
+
+          document
+            .querySelectorAll(
+              ".modal.show"
+            )
+            .forEach(modal => {
+
+              modal.classList.remove(
+                "show"
+              );
+
+            });
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       DEMO STATE
+    ========================== */
+
+    function markDemoChanged(){
+
+      /*
+        In production, the authoritative job list should be
+        refreshed from:
+
+        GET /api/admin/jobs
+
+        rather than modifying DOM data directly.
+      */
+
+      updateVisibleCount();
+
+    }
+
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    let toastTimer;
+
+
+    function showToast(message){
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+      const toastMessage =
+        document.getElementById(
+          "toastMessage"
+        );
+
+
+      toastMessage.textContent =
+        message;
+
+
+      toast.classList.add(
+        "show"
+      );
+
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toastTimer =
+        setTimeout(
+          () => {
+
+            toast.classList.remove(
+              "show"
+            );
+
+          },
+          3000
+        );
+
+    }
+
+
+    /* =========================
+       INITIALIZATION
+    ========================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        updateVisibleCount();
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

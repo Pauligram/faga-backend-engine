@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Services | FAGA</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .faga-header {
+      background: #0f172a;
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .faga-topbar {
+      max-width: 1500px;
+      margin: auto;
+      padding: 15px 5%;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .faga-logo {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+    }
+
+    .faga-logo span {
+      color: #f97316;
+    }
+
+    .faga-search {
+      flex: 1;
+      max-width: 700px;
+      height: 44px;
+      display: flex;
+      background: #ffffff;
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .faga-search select {
+      width: 145px;
+      border: none;
+      border-right: 1px solid #e2e8f0;
+      padding: 0 12px;
+      color: #475569;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .faga-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0 15px;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .faga-search button {
+      width: 52px;
+      border: none;
+      background: #f97316;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .faga-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      white-space: nowrap;
+    }
+
+    .faga-header-action {
+      color: #ffffff;
+      font-size: 13px;
+    }
+
+    .faga-header-action small {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+
+    .faga-cart {
+      position: relative;
+      font-size: 21px;
+    }
+
+    .faga-cart-count {
+      position: absolute;
+      top: -9px;
+      right: -10px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #ffffff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .faga-nav {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .faga-nav-inner {
+      max-width: 1500px;
+      margin: auto;
+      padding: 0 5%;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .faga-nav a {
+      color: #cbd5e1;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .faga-nav a:hover,
+    .faga-nav a.active {
+      color: #f97316;
+    }
+
+    .faga-nav-category {
+      color: #ffffff !important;
+    }
+
+    /* =========================
+       BREADCRUMB
+    ========================= */
+
+    .faga-breadcrumb {
+      max-width: 1400px;
+      margin: auto;
+      padding: 20px 5% 10px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .faga-breadcrumb span {
+      margin: 0 7px;
+      color: #cbd5e1;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .services-hero {
+      padding: 35px 5% 70px;
+      background: #ffffff;
+    }
+
+    .services-hero-container {
+      max-width: 1400px;
+      margin: auto;
+      min-height: 400px;
+      border-radius: 24px;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.98) 0%,
+          rgba(15, 23, 42, 0.90) 42%,
+          rgba(15, 23, 42, 0.45) 100%
+        ),
+        url("./assets/services-banner.jpg") center/cover no-repeat;
+
+      display: flex;
+      align-items: center;
+      padding: 60px;
+    }
+
+    .services-hero-content {
+      max-width: 680px;
+      color: #ffffff;
+    }
+
+    .services-hero-tag {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      color: #fb923c;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .services-hero h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      font-weight: 850;
+    }
+
+    .services-hero h1 span {
+      color: #f97316;
+    }
+
+    .services-hero p {
+      color: #cbd5e1;
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+
+    .services-hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      padding: 14px 24px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+    }
+
+    .hero-btn-primary {
+      background: #f97316;
+      color: #ffffff;
+    }
+
+    .hero-btn-primary:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+    }
+
+    .hero-btn-outline {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+    }
+
+    .hero-btn-outline:hover {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    /* =========================
+       SEARCH SERVICES
+    ========================= */
+
+    .services-search-wrapper {
+      margin-top: -35px;
+      padding: 0 5%;
+      position: relative;
+      z-index: 5;
+    }
+
+    .services-search-card {
+      max-width: 1050px;
+      margin: auto;
+      background: #ffffff;
+      padding: 22px;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid #e2e8f0;
+    }
+
+    .services-search-form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .services-search-form input {
+      flex: 1;
+      height: 48px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 15px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .services-search-form input:focus {
+      border-color: #f97316;
+    }
+
+    .services-search-form select {
+      width: 210px;
+      height: 48px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 13px;
+      outline: none;
+      background: #ffffff;
+      color: #475569;
+    }
+
+    .services-search-form button {
+      height: 48px;
+      border: none;
+      border-radius: 8px;
+      padding: 0 25px;
+      background: #f97316;
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .services-search-form button:hover {
+      background: #ea580c;
+    }
+
+    /* =========================
+       GENERAL SECTION
+    ========================= */
+
+    .services-section {
+      padding: 85px 5% 70px;
+    }
+
+    .services-container {
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .section-heading .tag {
+      display: block;
+      color: #f97316;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+
+    .section-heading h2 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .section-heading p {
+      max-width: 650px;
+      margin: auto;
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* =========================
+       SERVICE CATEGORIES
+    ========================= */
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .category-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px 15px;
+      text-align: center;
+      transition: all 0.25s;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+      border-color: #fdba74;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .category-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 15px;
+      border-radius: 14px;
+      background: #fff7ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+    }
+
+    .category-card h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .category-card p {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    /* =========================
+       FEATURED PROVIDERS
+    ========================= */
+
+    .providers-section {
+      background: #f8fafc;
+    }
+
+    .providers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .provider-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+
+    .provider-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .provider-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .provider-image.one {
+      background-image: url("./assets/service-provider-1.jpg");
+    }
+
+    .provider-image.two {
+      background-image: url("./assets/service-provider-2.jpg");
+    }
+
+    .provider-image.three {
+      background-image: url("./assets/service-provider-3.jpg");
+    }
+
+    .provider-image.four {
+      background-image: url("./assets/service-provider-4.jpg");
+    }
+
+    .provider-status {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ffffff;
+      color: #16a34a;
+      padding: 6px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .provider-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .provider-info {
+      padding: 20px;
+    }
+
+    .provider-category {
+      color: #f97316;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .provider-info h3 {
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .provider-description {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 13px;
+    }
+
+    .provider-rating {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stars {
+      color: #f59e0b;
+      letter-spacing: 1px;
+    }
+
+    .provider-rating span {
+      color: #64748b;
+    }
+
+    .provider-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .provider-price {
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .provider-price small {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .view-provider {
+      padding: 9px 13px;
+      border-radius: 7px;
+      background: #fff7ed;
+      color: #ea580c;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .view-provider:hover {
+      background: #f97316;
+      color: #ffffff;
+    }
+
+    /* =========================
+       POPULAR SERVICES
+    ========================= */
+
+    .popular-services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .popular-service {
+      padding: 28px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: all 0.25s;
+    }
+
+    .popular-service:hover {
+      border-color: #fdba74;
+      transform: translateY(-4px);
+    }
+
+    .popular-service-icon {
+      width: 55px;
+      height: 55px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      background: #fff7ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    .popular-service h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .popular-service p {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 9px;
+    }
+
+    .popular-service a {
+      color: #f97316;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+
+    .how-section {
+      background: #ffffff;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      position: relative;
+    }
+
+    .how-card {
+      text-align: center;
+      position: relative;
+    }
+
+    .how-number {
+      width: 52px;
+      height: 52px;
+      margin: auto auto 20px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      position: relative;
+      z-index: 2;
+    }
+
+    .how-card:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      left: calc(50% + 35px);
+      width: calc(100% - 70px);
+      border-top: 2px dashed #fed7aa;
+    }
+
+    .how-icon {
+      width: 70px;
+      height: 70px;
+      margin: auto auto 17px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 29px;
+    }
+
+    .how-card h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .how-card p {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       PROVIDER CTA
+    ========================= */
+
+    .provider-cta {
+      padding: 70px 5%;
+      background: #f8fafc;
+    }
+
+    .provider-cta-box {
+      max-width: 1400px;
+      margin: auto;
+      min-height: 280px;
+      border-radius: 22px;
+      background:
+        linear-gradient(
+          110deg,
+          rgba(15, 23, 42, 0.98),
+          rgba(15, 23, 42, 0.82)
+        ),
+        url("./assets/services-cta.jpg") center/cover no-repeat;
+
+      padding: 50px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      color: #ffffff;
+    }
+
+    .provider-cta-content {
+      max-width: 750px;
+    }
+
+    .provider-cta-content .tag {
+      color: #fb923c;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .provider-cta-content h2 {
+      font-size: 34px;
+      margin: 10px 0 13px;
+    }
+
+    .provider-cta-content p {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .provider-cta-btn {
+      flex-shrink: 0;
+      padding: 14px 24px;
+      background: #f97316;
+      color: #ffffff;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .provider-cta-btn:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .faga-footer {
+      background: #0b1120;
+      color: #ffffff;
+    }
+
+    .faga-footer-main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 60px 5% 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 45px;
+    }
+
+    .footer-logo {
+      font-size: 31px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo span {
+      color: #f97316;
+    }
+
+    .footer-about {
+      max-width: 340px;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .footer-column h3 {
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 11px;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: #f97316;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .footer-contact div {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer-contact a {
+      color: #94a3b8;
+    }
+
+    .footer-contact a:hover {
+      color: #f97316;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-bottom-inner {
+      max-width: 1400px;
+      margin: auto;
+      padding: 20px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-bottom p,
+    .footer-bottom a {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+      .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .providers-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .popular-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 850px) {
+      .faga-topbar {
+        flex-wrap: wrap;
+      }
+
+      .faga-search {
+        order: 3;
+        max-width: none;
+        flex-basis: 100%;
+      }
+
+      .faga-nav {
+        overflow-x: auto;
+      }
+
+      .faga-nav-inner {
+        width: max-content;
+      }
+
+      .services-hero-container {
+        padding: 45px 35px;
+      }
+
+      .services-hero h1 {
+        font-size: 38px;
+      }
+
+      .services-search-form {
+        flex-wrap: wrap;
+      }
+
+      .services-search-form input {
+        flex-basis: 100%;
+      }
+
+      .services-search-form select {
+        flex: 1;
+      }
+
+      .how-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+      }
+
+      .how-card::after {
+        display: none !important;
+      }
+
+      .provider-cta-box {
+        padding: 40px 35px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .faga-topbar {
+        padding: 13px 20px;
+      }
+
+      .faga-logo {
+        font-size: 27px;
+      }
+
+      .faga-header-actions {
+        margin-left: auto;
+      }
+
+      .faga-header-action {
+        display: none;
+      }
+
+      .faga-nav-inner {
+        padding: 0 20px;
+      }
+
+      .faga-breadcrumb {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .services-hero {
+        padding: 25px 20px 60px;
+      }
+
+      .services-hero-container {
+        min-height: 500px;
+        padding: 35px 25px;
+        border-radius: 18px;
+      }
+
+      .services-hero h1 {
+        font-size: 32px;
+      }
+
+      .services-hero p {
+        font-size: 15px;
+      }
+
+      .services-search-wrapper {
+        padding: 0 20px;
+      }
+
+      .services-search-form {
+        flex-direction: column;
+      }
+
+      .services-search-form select,
+      .services-search-form button {
+        width: 100%;
+      }
+
+      .services-section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .providers-grid,
+      .popular-services-grid,
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading h2 {
+        font-size: 28px;
+      }
+
+      .provider-cta {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .provider-cta-box {
+        padding: 35px 25px;
+      }
+
+      .provider-cta-content h2 {
+        font-size: 28px;
+      }
+
+      .provider-cta-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-bottom-links {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header class="faga-header">
+
+    <div class="faga-topbar">
+
+      <a href="index.html" class="faga-logo">
+        FA<span>GA</span>
+      </a>
+
+      <form class="faga-search" onsubmit="return false;">
+
+        <select>
+          <option>All Categories</option>
+          <option>Logistics</option>
+          <option>Services</option>
+          <option>Buy & Sell</option>
+          <option>Food</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder="Search FAGA..."
+        >
+
+        <button type="submit">
+          🔍
+        </button>
+
+      </form>
+
+      <div class="faga-header-actions">
+
+        <a href="../user portal/dashboard.html" class="faga-header-action">
+          <small>Hello, Guest</small>
+          Account
+        </a>
+
+        <a href="marketplace.html" class="faga-header-action">
+          ♡ Wishlist
+        </a>
+
+        <a href="marketplace.html" class="faga-cart">
+          🛒
+          <span class="faga-cart-count">0</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <nav class="faga-nav">
+
+      <div class="faga-nav-inner">
+
+        <a href="#" class="faga-nav-category">
+          ☰ All Categories
+        </a>
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="logistics.html">
+          Logistics
+        </a>
+
+        <a href="services.html" class="active">
+          Services
+        </a>
+
+        <a href="marketplace.html">
+          Buy & Sell
+        </a>
+
+        <a href="food.html">
+          Food
+        </a>
+
+        <a href="help.html">
+          Help
+        </a>
+
+        <a href="track-order.html">
+          Track Order
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================
+       BREADCRUMB
+  ========================= -->
+
+  <div class="faga-breadcrumb">
+
+    <a href="index.html">Home</a>
+
+    <span>›</span>
+
+    Services
+
+  </div>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <section class="services-hero">
+
+    <div class="services-hero-container">
+
+      <div class="services-hero-content">
+
+        <span class="services-hero-tag">
+          FAGA SERVICES
+        </span>
+
+        <h1>
+          Find Trusted People<br>
+          <span>To Get Things Done.</span>
+        </h1>
+
+        <p>
+          Discover skilled professionals and reliable service providers
+          for your everyday needs. From home repairs to beauty,
+          cleaning, technology, events, and more.
+        </p>
+
+        <div class="services-hero-buttons">
+
+          <a href="#find-service" class="hero-btn hero-btn-primary">
+            Find a Service
+          </a>
+
+          <a
+            href="../user portal/register.html?role=service-provider"
+            class="hero-btn hero-btn-outline"
+          >
+            Offer Your Services
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SEARCH
+  ========================= -->
+
+  <section class="services-search-wrapper" id="find-service">
+
+    <div class="services-search-card">
+
+      <form
+        class="services-search-form"
+        id="serviceSearchForm"
+      >
+
+        <input
+          type="text"
+          id="serviceSearch"
+          placeholder="What service do you need?"
+        >
+
+        <select id="serviceLocation">
+
+          <option value="">
+            Select location
+          </option>
+
+          <option>
+            Lagos
+          </option>
+
+          <option>
+            Abuja
+          </option>
+
+          <option>
+            Port Harcourt
+          </option>
+
+          <option>
+            Ibadan
+          </option>
+
+        </select>
+
+        <button type="submit">
+          Search Services
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SERVICE CATEGORIES
+  ========================= -->
+
+  <section class="services-section">
+
+    <div class="services-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Browse Categories
+        </span>
+
+        <h2>
+          What Service Do You Need?
+        </h2>
+
+        <p>
+          Explore popular service categories and find professionals
+          who can help you get the job done.
+        </p>
+
+      </div>
+
+
+      <div class="categories-grid">
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🧹
+          </div>
+
+          <h3>Cleaning</h3>
+
+          <p>Home & office</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🔧
+          </div>
+
+          <h3>Repairs</h3>
+
+          <p>Fix & maintenance</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            💇
+          </div>
+
+          <h3>Beauty</h3>
+
+          <p>Beauty & grooming</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            💻
+          </div>
+
+          <h3>Technology</h3>
+
+          <p>Tech support</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🎨
+          </div>
+
+          <h3>Design</h3>
+
+          <p>Creative services</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            📸
+          </div>
+
+          <h3>Events</h3>
+
+          <p>Event professionals</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🚗
+          </div>
+
+          <h3>Auto Services</h3>
+
+          <p>Vehicle services</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🏠
+          </div>
+
+          <h3>Home Services</h3>
+
+          <p>Home improvement</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            📚
+          </div>
+
+          <h3>Tutoring</h3>
+
+          <p>Learn & study</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🌳
+          </div>
+
+          <h3>Outdoor</h3>
+
+          <p>Garden & outdoor</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            🖥️
+          </div>
+
+          <h3>Business</h3>
+
+          <p>Business support</p>
+
+        </a>
+
+
+        <a href="#" class="category-card">
+
+          <div class="category-icon">
+            ✨
+          </div>
+
+          <h3>Other Services</h3>
+
+          <p>More categories</p>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FEATURED PROVIDERS
+  ========================= -->
+
+  <section class="services-section providers-section">
+
+    <div class="services-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Top Professionals
+        </span>
+
+        <h2>
+          Featured Service Providers
+        </h2>
+
+        <p>
+          Discover highly-rated professionals available to serve
+          customers through FAGA.
+        </p>
+
+      </div>
+
+
+      <div class="providers-grid">
+
+        <!-- Provider 1 -->
+        <div class="provider-card">
+
+          <div class="provider-image one">
+
+            <span class="provider-status">
+              ● Available
+            </span>
+
+            <button
+              class="provider-wishlist"
+              onclick="toggleWishlist(this)"
+            >
+              ♡
+            </button>
+
+          </div>
+
+          <div class="provider-info">
+
+            <div class="provider-category">
+              Home Cleaning
+            </div>
+
+            <h3>
+              Sparkle Home Services
+            </h3>
+
+            <p class="provider-description">
+              Professional home and office cleaning services
+              with flexible scheduling.
+            </p>
+
+            <div class="provider-rating">
+
+              <span class="stars">
+                ★★★★★
+              </span>
+
+              <span>
+                4.9 (128)
+              </span>
+
+            </div>
+
+            <div class="provider-footer">
+
+              <div class="provider-price">
+                From ₦8,000
+                <small>/service</small>
+              </div>
+
+              <a href="#" class="view-provider">
+                View
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Provider 2 -->
+        <div class="provider-card">
+
+          <div class="provider-image two">
+
+            <span class="provider-status">
+              ● Available
+            </span>
+
+            <button
+              class="provider-wishlist"
+              onclick="toggleWishlist(this)"
+            >
+              ♡
+            </button>
+
+          </div>
+
+          <div class="provider-info">
+
+            <div class="provider-category">
+              Electrical
+            </div>
+
+            <h3>
+              ProFix Electrical
+            </h3>
+
+            <p class="provider-description">
+              Electrical installation, repairs, maintenance,
+              and troubleshooting.
+            </p>
+
+            <div class="provider-rating">
+
+              <span class="stars">
+                ★★★★★
+              </span>
+
+              <span>
+                4.8 (94)
+              </span>
+
+            </div>
+
+            <div class="provider-footer">
+
+              <div class="provider-price">
+                From ₦10,000
+                <small>/service</small>
+              </div>
+
+              <a href="#" class="view-provider">
+                View
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Provider 3 -->
+        <div class="provider-card">
+
+          <div class="provider-image three">
+
+            <span class="provider-status">
+              ● Available
+            </span>
+
+            <button
+              class="provider-wishlist"
+              onclick="toggleWishlist(this)"
+            >
+              ♡
+            </button>
+
+          </div>
+
+          <div class="provider-info">
+
+            <div class="provider-category">
+              Beauty
+            </div>
+
+            <h3>
+              Glow Beauty Studio
+            </h3>
+
+            <p class="provider-description">
+              Hair styling, makeup, beauty treatments,
+              and personal grooming.
+            </p>
+
+            <div class="provider-rating">
+
+              <span class="stars">
+                ★★★★★
+              </span>
+
+              <span>
+                4.9 (211)
+              </span>
+
+            </div>
+
+            <div class="provider-footer">
+
+              <div class="provider-price">
+                From ₦7,500
+                <small>/service</small>
+              </div>
+
+              <a href="#" class="view-provider">
+                View
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Provider 4 -->
+        <div class="provider-card">
+
+          <div class="provider-image four">
+
+            <span class="provider-status">
+              ● Available
+            </span>
+
+            <button
+              class="provider-wishlist"
+              onclick="toggleWishlist(this)"
+            >
+              ♡
+            </button>
+
+          </div>
+
+          <div class="provider-info">
+
+            <div class="provider-category">
+              Technology
+            </div>
+
+            <h3>
+              TechCare Solutions
+            </h3>
+
+            <p class="provider-description">
+              Computer repairs, software installation,
+              networking, and technical support.
+            </p>
+
+            <div class="provider-rating">
+
+              <span class="stars">
+                ★★★★★
+              </span>
+
+              <span>
+                4.7 (76)
+              </span>
+
+            </div>
+
+            <div class="provider-footer">
+
+              <div class="provider-price">
+                From ₦5,000
+                <small>/service</small>
+              </div>
+
+              <a href="#" class="view-provider">
+                View
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       POPULAR SERVICES
+  ========================= -->
+
+  <section class="services-section">
+
+    <div class="services-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Popular Right Now
+        </span>
+
+        <h2>
+          Services Customers Love
+        </h2>
+
+        <p>
+          Some of the most requested services available through FAGA.
+        </p>
+
+      </div>
+
+
+      <div class="popular-services-grid">
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            🧹
+          </div>
+
+          <div>
+
+            <h3>
+              Home Cleaning
+            </h3>
+
+            <p>
+              Book reliable professionals for regular or
+              one-time home cleaning.
+            </p>
+
+            <a href="#">
+              Find Cleaners →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            🔧
+          </div>
+
+          <div>
+
+            <h3>
+              Plumbing
+            </h3>
+
+            <p>
+              Get help with leaks, installations, repairs,
+              and other plumbing needs.
+            </p>
+
+            <a href="#">
+              Find Plumbers →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            💻
+          </div>
+
+          <div>
+
+            <h3>
+              Computer Services
+            </h3>
+
+            <p>
+              Find professionals for repairs, installations,
+              networking, and technical support.
+            </p>
+
+            <a href="#">
+              Find Technicians →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            💇
+          </div>
+
+          <div>
+
+            <h3>
+              Hair & Beauty
+            </h3>
+
+            <p>
+              Discover beauty professionals for hair,
+              makeup, grooming, and more.
+            </p>
+
+            <a href="#">
+              Find Professionals →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            🎨
+          </div>
+
+          <div>
+
+            <h3>
+              Graphic Design
+            </h3>
+
+            <p>
+              Hire creative professionals for branding,
+              graphics, social media, and design.
+            </p>
+
+            <a href="#">
+              Find Designers →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="popular-service">
+
+          <div class="popular-service-icon">
+            📸
+          </div>
+
+          <div>
+
+            <h3>
+              Photography
+            </h3>
+
+            <p>
+              Find photographers for events, portraits,
+              products, and special occasions.
+            </p>
+
+            <a href="#">
+              Find Photographers →
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       HOW IT WORKS
+  ========================= -->
+
+  <section class="services-section how-section">
+
+    <div class="services-container">
+
+      <div class="section-heading">
+
+        <span class="tag">
+          Simple & Convenient
+        </span>
+
+        <h2>
+          How Booking a Service Works
+        </h2>
+
+        <p>
+          Find the right professional and get your job done
+          without the hassle.
+        </p>
+
+      </div>
+
+
+      <div class="how-grid">
+
+        <div class="how-card">
+
+          <div class="how-number">
+            1
+          </div>
+
+          <div class="how-icon">
+            🔎
+          </div>
+
+          <h3>
+            Find a Service
+          </h3>
+
+          <p>
+            Search for the service you need or browse our
+            service categories.
+          </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+          <div class="how-number">
+            2
+          </div>
+
+          <div class="how-icon">
+            👤
+          </div>
+
+          <h3>
+            Choose a Provider
+          </h3>
+
+          <p>
+            Compare professionals based on ratings,
+            services, pricing, and availability.
+          </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+          <div class="how-number">
+            3
+          </div>
+
+          <div class="how-icon">
+            📅
+          </div>
+
+          <h3>
+            Request the Service
+          </h3>
+
+          <p>
+            Select your preferred date and provide the
+            details needed for your request.
+          </p>
+
+        </div>
+
+
+        <div class="how-card">
+
+          <div class="how-number">
+            4
+          </div>
+
+          <div class="how-icon">
+            ⭐
+          </div>
+
+          <h3>
+            Get It Done
+          </h3>
+
+          <p>
+            Your service provider completes the job and
+            you can rate your experience.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       BECOME SERVICE PROVIDER
+  ========================= -->
+
+  <section class="provider-cta">
+
+    <div class="provider-cta-box">
+
+      <div class="provider-cta-content">
+
+        <span class="tag">
+          Grow With FAGA
+        </span>
+
+        <h2>
+          Turn Your Skills Into Opportunities
+        </h2>
+
+        <p>
+          Are you a professional, freelancer, technician, artisan,
+          creative, or service business? Join FAGA and connect with
+          customers looking for the services you provide.
+        </p>
+
+      </div>
+
+      <a
+        href="../user portal/register.html?role=service-provider"
+        class="provider-cta-btn"
+      >
+        Become a Service Provider →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer class="faga-footer">
+
+    <div class="faga-footer-main">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <div class="footer-logo">
+            FA<span>GA</span>
+          </div>
+
+          <p class="footer-about">
+            Everything you need, all in one place. Send packages,
+            discover services, shop for products, and order food
+            through FAGA.
+          </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Quick Links</h3>
+
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="logistics.html">Logistics</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="marketplace.html">Buy & Sell</a></li>
+            <li><a href="food.html">Food</a></li>
+          </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Support</h3>
+
+          <ul class="footer-links">
+            <li><a href="help.html">Help Center</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="../user portal/register.html">Create Account</a></li>
+          </ul>
+
+        </div>
+
+
+        <div class="footer-column">
+
+          <h3>Contact</h3>
+
+          <div class="footer-contact">
+
+            <div>
+              📍 Lagos, Nigeria
+            </div>
+
+            <div>
+              ✉
+              <a href="mailto:support@faga.com">
+                support@faga.com
+              </a>
+            </div>
+
+            <div>
+              ☎
+              <a href="tel:+2340000000000">
+                +234 000 000 0000
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <div class="footer-bottom-inner">
+
+        <p>
+          © 2026 FAGA. All rights reserved.
+        </p>
+
+        <div class="footer-bottom-links">
+
+          <a href="#">
+            Privacy Policy
+          </a>
+
+          <a href="#">
+            Terms & Conditions
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+    document
+      .getElementById("serviceSearchForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const service =
+          document.getElementById("serviceSearch").value.trim();
+
+        const location =
+          document.getElementById("serviceLocation").value;
+
+        if (!service) {
+          alert("Please enter the service you are looking for.");
+          return;
+        }
+
+        /*
+          Later connect this to your backend.
+
+          Example:
+
+          GET /api/services/search
+              ?q=service
+              &location=location
+        */
+
+        alert(
+          "Searching for " +
+          service +
+          (location ? " in " + location : "") +
+          "..."
+        );
+
+      });
+
+
+    function toggleWishlist(button) {
+
+      if (button.innerHTML.trim() === "♡") {
+        button.innerHTML = "♥";
+        button.style.color = "#f97316";
+      } else {
+        button.innerHTML = "♡";
+        button.style.color = "#0f172a";
+      }
+
+    }
+  </script>
+
+</body>
+</html>

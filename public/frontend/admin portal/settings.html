@@ -1,0 +1,4618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Settings | FAGA Admin</title>
+
+  <style>
+    :root{
+      --navy:#071a33;
+      --navy-2:#0b2343;
+      --orange:#f7931e;
+      --orange-dark:#df7f0b;
+      --white:#fff;
+      --bg:#f4f7fb;
+      --border:#e3e8ef;
+      --text:#172033;
+      --muted:#6d7788;
+      --success:#16834b;
+      --success-bg:#e9f8f0;
+      --danger:#d33c3c;
+      --danger-bg:#fff0f0;
+      --warning:#a66b00;
+      --warning-bg:#fff7df;
+      --info:#2467c8;
+      --info-bg:#edf5ff;
+      --shadow:0 10px 30px rgba(7,26,51,.07);
+      --radius:14px;
+      --sidebar-width:250px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* TOPBAR */
+
+    .topbar{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+      height:68px;
+      padding:0 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 3px 15px rgba(0,0,0,.15);
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .menu-toggle{
+      display:none;
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:9px;
+      background:transparent;
+      color:#fff;
+      font-size:21px;
+    }
+
+    .menu-toggle:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:21px;
+      font-weight:800;
+    }
+
+    .brand-mark{
+      width:35px;
+      height:35px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:9px;
+      background:var(--orange);
+      color:var(--navy);
+      font-weight:900;
+    }
+
+    .admin-label{
+      padding-left:14px;
+      border-left:1px solid rgba(255,255,255,.15);
+      color:#aebbd0;
+      font-size:12px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .top-icon{
+      position:relative;
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:9px;
+      background:transparent;
+      color:#d9e2ef;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:17px;
+    }
+
+    .top-icon:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .notification-dot{
+      position:absolute;
+      top:7px;
+      right:7px;
+      width:7px;
+      height:7px;
+      border:2px solid var(--navy);
+      border-radius:50%;
+      background:var(--orange);
+    }
+
+    .admin-profile{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-left:10px;
+      margin-left:4px;
+      border-left:1px solid rgba(255,255,255,.12);
+    }
+
+    .avatar{
+      width:37px;
+      height:37px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:var(--orange);
+      color:var(--navy);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .admin-info strong{
+      display:block;
+      font-size:13px;
+    }
+
+    .admin-info span{
+      display:block;
+      color:#aebbd0;
+      font-size:11px;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+      position:fixed;
+      top:68px;
+      left:0;
+      bottom:0;
+      z-index:900;
+      width:var(--sidebar-width);
+      padding:18px 12px;
+      overflow-y:auto;
+      background:var(--navy);
+      color:#dce5f1;
+      transition:transform .25s ease;
+    }
+
+    .sidebar-section{
+      margin-bottom:20px;
+    }
+
+    .sidebar-title{
+      padding:0 12px 8px;
+      color:#73849c;
+      font-size:10px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:43px;
+      margin-bottom:3px;
+      padding:10px 12px;
+      border-radius:9px;
+      color:#bfcbdc;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .nav-link:hover{
+      background:rgba(255,255,255,.07);
+      color:#fff;
+    }
+
+    .nav-link.active{
+      background:var(--orange);
+      color:var(--navy);
+      font-weight:800;
+    }
+
+    .nav-icon{
+      width:21px;
+      flex:none;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .nav-badge{
+      margin-left:auto;
+      padding:2px 7px;
+      border-radius:20px;
+      background:rgba(255,255,255,.1);
+      color:#c8d4e5;
+      font-size:10px;
+    }
+
+    .nav-link.active .nav-badge{
+      background:rgba(7,26,51,.15);
+      color:var(--navy);
+    }
+
+    /* MAIN */
+
+    .main{
+      min-height:100vh;
+      margin-left:var(--sidebar-width);
+      padding:92px 28px 110px;
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:22px;
+    }
+
+    .breadcrumb{
+      display:flex;
+      gap:8px;
+      margin-bottom:7px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .breadcrumb span:last-child{
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .page-title{
+      margin-bottom:5px;
+      color:var(--navy);
+      font-size:27px;
+      line-height:1.2;
+    }
+
+    .page-description{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .header-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:8px;
+    }
+
+    .btn{
+      min-height:40px;
+      padding:10px 15px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fff;
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:11px;
+      font-weight:800;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      border-color:#c9d2de;
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      border-color:var(--orange);
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    .btn-primary:hover{
+      border-color:var(--orange-dark);
+      background:var(--orange-dark);
+    }
+
+    .btn-dark{
+      border-color:var(--navy);
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .btn-danger{
+      border-color:#efcccc;
+      background:#fff;
+      color:var(--danger);
+    }
+
+    /* SUMMARY */
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:20px;
+    }
+
+    .summary-card{
+      padding:16px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .summary-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:8px;
+    }
+
+    .summary-label{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .summary-icon{
+      width:31px;
+      height:31px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:8px;
+      background:#f0f4f9;
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .summary-value{
+      color:var(--navy);
+      font-size:19px;
+      font-weight:900;
+    }
+
+    .summary-note{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    /* SETTINGS LAYOUT */
+
+    .settings-layout{
+      display:grid;
+      grid-template-columns:215px minmax(0,1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .settings-nav{
+      position:sticky;
+      top:88px;
+      padding:10px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .settings-nav-title{
+      padding:8px 10px 9px;
+      color:#8490a1;
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+    }
+
+    .settings-tab{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin-bottom:3px;
+      padding:10px;
+      border:0;
+      border-radius:8px;
+      background:transparent;
+      color:#637084;
+      text-align:left;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .settings-tab:hover{
+      background:#f5f7fa;
+      color:var(--navy);
+    }
+
+    .settings-tab.active{
+      background:#fff4e6;
+      color:#b96800;
+    }
+
+    .settings-tab-icon{
+      width:20px;
+      text-align:center;
+      font-size:13px;
+    }
+
+    .settings-content{
+      min-width:0;
+    }
+
+    .settings-section{
+      display:none;
+      margin-bottom:18px;
+    }
+
+    .settings-section.active{
+      display:block;
+    }
+
+    .section-card{
+      margin-bottom:18px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .section-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:17px 19px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .section-title{
+      color:var(--navy);
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .section-description{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .section-body{
+      padding:18px 19px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+    }
+
+    .form-grid.three{
+      grid-template-columns:repeat(3,1fr);
+    }
+
+    .field{
+      min-width:0;
+    }
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:6px;
+      color:#5d697b;
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.35px;
+    }
+
+    .field small{
+      display:block;
+      margin-top:5px;
+      color:#8993a2;
+      font-size:8px;
+      line-height:1.5;
+    }
+
+    input,
+    select,
+    textarea{
+      width:100%;
+      outline:none;
+      border:1px solid #dce2ea;
+      border-radius:8px;
+      background:#fff;
+      color:var(--text);
+      padding:9px 10px;
+      font-size:11px;
+      transition:.2s;
+    }
+
+    input,
+    select{
+      height:39px;
+    }
+
+    textarea{
+      min-height:95px;
+      resize:vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(247,147,30,.1);
+    }
+
+    .input-prefix{
+      display:flex;
+    }
+
+    .prefix{
+      width:44px;
+      height:39px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #dce2ea;
+      border-right:0;
+      border-radius:8px 0 0 8px;
+      background:#f7f9fb;
+      color:#6d7788;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .input-prefix input{
+      border-radius:0 8px 8px 0;
+    }
+
+    /* TOGGLES */
+
+    .setting-list{
+      display:grid;
+      gap:0;
+    }
+
+    .setting-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:14px 0;
+      border-bottom:1px solid #edf0f4;
+    }
+
+    .setting-row:first-child{
+      padding-top:0;
+    }
+
+    .setting-row:last-child{
+      padding-bottom:0;
+      border-bottom:0;
+    }
+
+    .setting-copy{
+      min-width:0;
+    }
+
+    .setting-name{
+      color:var(--navy);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .setting-help{
+      max-width:680px;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.55;
+    }
+
+    .switch{
+      position:relative;
+      width:42px;
+      height:23px;
+      flex:none;
+      border:0;
+      border-radius:20px;
+      background:#d5dce5;
+      transition:.2s;
+    }
+
+    .switch::after{
+      content:"";
+      position:absolute;
+      top:4px;
+      left:4px;
+      width:15px;
+      height:15px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 1px 3px rgba(0,0,0,.18);
+      transition:.2s;
+    }
+
+    .switch.on{
+      background:var(--orange);
+    }
+
+    .switch.on::after{
+      left:23px;
+    }
+
+    /* STATUS */
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 8px;
+      border-radius:20px;
+      font-size:8px;
+      font-weight:800;
+    }
+
+    .status-pill.success{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .status-pill.warning{
+      background:var(--warning-bg);
+      color:var(--warning);
+    }
+
+    .status-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    /* DANGER BOX */
+
+    .warning-box{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      margin-top:15px;
+      padding:12px;
+      border:1px solid #f0dfb4;
+      border-radius:9px;
+      background:#fffaf0;
+    }
+
+    .warning-icon{
+      color:var(--warning);
+      font-size:15px;
+    }
+
+    .warning-title{
+      color:#815600;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .warning-text{
+      margin-top:2px;
+      color:#856f47;
+      font-size:9px;
+      line-height:1.55;
+    }
+
+    .danger-box{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      margin-top:15px;
+      padding:12px;
+      border:1px solid #f0cccc;
+      border-radius:9px;
+      background:#fff5f5;
+    }
+
+    .danger-icon{
+      color:var(--danger);
+      font-size:15px;
+    }
+
+    .danger-title{
+      color:#a62c2c;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .danger-text{
+      margin-top:2px;
+      color:#956262;
+      font-size:9px;
+      line-height:1.55;
+    }
+
+    /* API / ENVIRONMENT */
+
+    .env-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:11px;
+    }
+
+    .env-card{
+      padding:12px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fafbfd;
+    }
+
+    .env-label{
+      margin-bottom:5px;
+      color:var(--muted);
+      font-size:8px;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .env-value{
+      color:var(--navy);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .env-value.success{
+      color:var(--success);
+    }
+
+    .env-value.warning{
+      color:var(--warning);
+    }
+
+    /* ADMIN ROLES */
+
+    .role-table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    .role-table th{
+      padding:10px;
+      background:#f7f9fb;
+      color:#7b8695;
+      font-size:8px;
+      text-align:left;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    .role-table td{
+      padding:11px 10px;
+      border-top:1px solid #edf0f4;
+      color:#4f5d70;
+      font-size:9px;
+    }
+
+    .role-name{
+      color:var(--navy);
+      font-weight:800;
+    }
+
+    .permission-dot{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      font-size:9px;
+      font-weight:900;
+    }
+
+    .permission-dot.yes{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .permission-dot.no{
+      background:#f0f2f5;
+      color:#9aa3af;
+    }
+
+    /* FOOTER SAVE BAR */
+
+    .save-bar{
+      position:fixed;
+      right:0;
+      bottom:0;
+      left:var(--sidebar-width);
+      z-index:800;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      min-height:65px;
+      padding:10px 28px;
+      border-top:1px solid var(--border);
+      background:rgba(255,255,255,.96);
+      box-shadow:0 -8px 25px rgba(7,26,51,.06);
+      backdrop-filter:blur(8px);
+    }
+
+    .save-status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .save-status-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--success);
+    }
+
+    .save-actions{
+      display:flex;
+      gap:8px;
+    }
+
+    /* MODAL */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:2500;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(7,26,51,.55);
+    }
+
+    .modal.show{
+      display:flex;
+    }
+
+    .modal-box{
+      width:min(620px,100%);
+      max-height:90vh;
+      overflow-y:auto;
+      border-radius:15px;
+      background:#fff;
+      box-shadow:0 25px 70px rgba(0,0,0,.25);
+    }
+
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:17px 20px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .modal-title{
+      color:var(--navy);
+      font-size:16px;
+      font-weight:900;
+    }
+
+    .modal-close{
+      width:32px;
+      height:32px;
+      border:0;
+      border-radius:8px;
+      background:#f2f4f7;
+      color:#657083;
+      font-size:16px;
+    }
+
+    .modal-body{
+      padding:20px;
+    }
+
+    .modal-footer{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      padding:13px 20px;
+      border-top:1px solid var(--border);
+    }
+
+    /* TOAST */
+
+    .toast{
+      position:fixed;
+      right:25px;
+      bottom:90px;
+      z-index:4000;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:13px 16px;
+      border-radius:10px;
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 15px 35px rgba(0,0,0,.2);
+      font-size:11px;
+      font-weight:700;
+      opacity:0;
+      transform:translateY(120px);
+      pointer-events:none;
+      transition:.3s;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .toast-icon{
+      color:var(--orange);
+    }
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:850;
+      background:rgba(0,0,0,.45);
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1200px){
+
+      .summary-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .settings-layout{
+        grid-template-columns:190px minmax(0,1fr);
+      }
+
+      .form-grid.three{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .env-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:950px){
+
+      .menu-toggle{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .overlay.show{
+        display:block;
+      }
+
+      .main{
+        margin-left:0;
+        padding:88px 18px 105px;
+      }
+
+      .save-bar{
+        left:0;
+        padding:10px 18px;
+      }
+
+      .admin-label,
+      .admin-info{
+        display:none;
+      }
+
+      .settings-layout{
+        grid-template-columns:1fr;
+      }
+
+      .settings-nav{
+        position:static;
+        display:flex;
+        gap:4px;
+        overflow-x:auto;
+        padding:6px;
+      }
+
+      .settings-nav-title{
+        display:none;
+      }
+
+      .settings-tab{
+        width:auto;
+        flex:none;
+        white-space:nowrap;
+      }
+
+    }
+
+    @media(max-width:650px){
+
+      .topbar{
+        padding:0 12px;
+      }
+
+      .brand{
+        font-size:18px;
+      }
+
+      .brand-mark{
+        width:32px;
+        height:32px;
+      }
+
+      .top-icon:first-child{
+        display:none;
+      }
+
+      .page-header{
+        flex-direction:column;
+      }
+
+      .header-actions{
+        justify-content:flex-start;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .form-grid,
+      .form-grid.three{
+        grid-template-columns:1fr;
+      }
+
+      .field.full{
+        grid-column:auto;
+      }
+
+      .env-grid{
+        grid-template-columns:1fr;
+      }
+
+      .section-header{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .save-bar{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:7px;
+        padding:9px 12px;
+      }
+
+      .save-actions{
+        width:100%;
+      }
+
+      .save-actions .btn{
+        flex:1;
+      }
+
+      .toast{
+        right:15px;
+        bottom:110px;
+        left:15px;
+      }
+
+      .role-table{
+        min-width:650px;
+      }
+
+      .role-table-wrap{
+        overflow-x:auto;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+
+  <header class="topbar">
+
+    <div class="top-left">
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation">
+        ☰
+      </button>
+
+      <a href="../Public website/index.html" class="brand">
+        <span class="brand-mark">F</span>
+        <span>FAGA</span>
+      </a>
+
+      <span class="admin-label">
+        Administration Portal
+      </span>
+
+    </div>
+
+    <div class="top-actions">
+
+      <button class="top-icon" title="Search">
+        ⌕
+      </button>
+
+      <button
+        class="top-icon"
+        title="Notifications"
+        onclick="window.location.href='notifications.html'">
+        ♢
+        <span class="notification-dot"></span>
+      </button>
+
+      <div class="admin-profile">
+
+        <div class="avatar">
+          AD
+        </div>
+
+        <div class="admin-info">
+          <strong>Admin User</strong>
+          <span>Super Administrator</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Overview
+      </div>
+
+      <a href="../Public website/index.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Dashboard
+      </a>
+
+      <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Users
+        <span class="nav-badge">12.4k</span>
+      </a>
+
+      <a href="orders.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Orders
+        <span class="nav-badge">284</span>
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Operations
+      </div>
+
+      <a href="../Public website/logistics.html" class="nav-link">
+        <span class="nav-icon">▱</span>
+        Logistics
+      </a>
+
+      <a href="riders.html" class="nav-link">
+        <span class="nav-icon">♟</span>
+        Riders
+      </a>
+
+      <a href="../Public website/marketplace.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Marketplace
+      </a>
+
+      <a href="sellers.html" class="nav-link">
+        <span class="nav-icon">◫</span>
+        Sellers
+      </a>
+
+      <a href="../Public website/services.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Services
+      </a>
+
+      <a href="service-providers.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Service Providers
+      </a>
+
+      <a href="../Public website/food.html" class="nav-link">
+        <span class="nav-icon">◉</span>
+        Food
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Finance
+      </div>
+
+      <a href="payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Payments
+      </a>
+
+      <a href="wallets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Wallets
+      </a>
+
+      <a href="payouts.html" class="nav-link">
+        <span class="nav-icon">↗</span>
+        Payouts
+      </a>
+
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Reports
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Jobs
+      </div>
+
+      <a href="../Public website/jobs.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Jobs
+      </a>
+
+      <a href="job-applicants.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Applicants
+      </a>
+
+      <a href="../Public website/job-applications.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Applications
+      </a>
+
+      <a href="job-payments.html" class="nav-link">
+        <span class="nav-icon">₦</span>
+        Job Payments
+      </a>
+
+      <a href="job-settings.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Job Settings
+      </a>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+      <div class="sidebar-title">
+        Administration
+      </div>
+
+      <a href="support.html" class="nav-link">
+        <span class="nav-icon">?</span>
+        Support
+      </a>
+
+      <a href="disputes.html" class="nav-link">
+        <span class="nav-icon">!</span>
+        Disputes
+      </a>
+
+      <a href="notifications.html" class="nav-link">
+        <span class="nav-icon">♢</span>
+        Notifications
+        <span class="nav-badge">47</span>
+      </a>
+
+      <a href="audit-logs.html" class="nav-link">
+        <span class="nav-icon">≡</span>
+        Audit Logs
+      </a>
+
+      <a href="settings.html" class="nav-link active">
+        <span class="nav-icon">⚙</span>
+        System Settings
+      </a>
+
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div class="page-header">
+
+      <div>
+
+        <div class="breadcrumb">
+          <span>Admin</span>
+          <span>›</span>
+          <span>System Settings</span>
+        </div>
+
+        <h1 class="page-title">
+          System Settings
+        </h1>
+
+        <p class="page-description">
+          Configure FAGA platform behavior, security, communications,
+          payments, administration and system preferences.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          class="btn"
+          onclick="resetAllSettings()">
+          ↺ Restore Defaults
+        </button>
+
+        <button
+          class="btn"
+          onclick="openSystemPreview()">
+          ◉ System Status
+        </button>
+
+        <button
+          class="btn btn-primary"
+          onclick="saveSettings()">
+          ✓ Save Changes
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-top">
+
+          <span class="summary-label">
+            Platform Status
+          </span>
+
+          <span class="summary-icon">
+            ●
+          </span>
+
+        </div>
+
+        <div class="summary-value">
+          Operational
+        </div>
+
+        <div class="summary-note">
+          All core services responding
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-top">
+
+          <span class="summary-label">
+            Active Users
+          </span>
+
+          <span class="summary-icon">
+            ♙
+          </span>
+
+        </div>
+
+        <div class="summary-value">
+          12,482
+        </div>
+
+        <div class="summary-note">
+          Across all FAGA roles
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-top">
+
+          <span class="summary-label">
+            API Health
+          </span>
+
+          <span class="summary-icon">
+            ↗
+          </span>
+
+        </div>
+
+        <div class="summary-value">
+          99.98%
+        </div>
+
+        <div class="summary-note">
+          Current service availability
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-top">
+
+          <span class="summary-label">
+            Configuration
+          </span>
+
+          <span class="summary-icon">
+            ⚙
+          </span>
+
+        </div>
+
+        <div class="summary-value">
+          Up to date
+        </div>
+
+        <div class="summary-note">
+          Last saved today at 08:42
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS LAYOUT -->
+
+    <div class="settings-layout">
+
+
+      <!-- SETTINGS NAV -->
+
+      <nav class="settings-nav">
+
+        <div class="settings-nav-title">
+          Configuration
+        </div>
+
+        <button
+          class="settings-tab active"
+          data-section="general">
+          <span class="settings-tab-icon">◉</span>
+          General
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="users">
+          <span class="settings-tab-icon">♙</span>
+          Users & Roles
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="orders">
+          <span class="settings-tab-icon">▤</span>
+          Orders & Logistics
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="payments">
+          <span class="settings-tab-icon">₦</span>
+          Payments
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="notifications">
+          <span class="settings-tab-icon">♢</span>
+          Notifications
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="security">
+          <span class="settings-tab-icon">!</span>
+          Security
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="integrations">
+          <span class="settings-tab-icon">↗</span>
+          Integrations
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="maintenance">
+          <span class="settings-tab-icon">⚙</span>
+          Maintenance
+        </button>
+
+        <button
+          class="settings-tab"
+          data-section="legal">
+          <span class="settings-tab-icon">▣</span>
+          Legal & Privacy
+        </button>
+
+      </nav>
+
+
+      <!-- SETTINGS CONTENT -->
+
+      <div class="settings-content">
+
+
+        <!-- =====================================
+             GENERAL
+        ====================================== -->
+
+        <section
+          class="settings-section active"
+          id="section-general">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  General Platform Settings
+                </div>
+
+                <div class="section-description">
+                  Basic information and public-facing platform configuration.
+                </div>
+
+              </div>
+
+              <span class="status-pill success">
+                <span class="status-dot"></span>
+                Active
+              </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Platform Name
+                  </label>
+
+                  <input
+                    type="text"
+                    value="FAGA">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Platform URL
+                  </label>
+
+                  <input
+                    type="url"
+                    value="https://faga.com">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Support Email
+                  </label>
+
+                  <input
+                    type="email"
+                    value="support@faga.com">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Support Phone
+                  </label>
+
+                  <input
+                    type="tel"
+                    value="+234 800 000 0000">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Default Country
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Nigeria
+                    </option>
+
+                    <option>
+                      Ghana
+                    </option>
+
+                    <option>
+                      Kenya
+                    </option>
+
+                    <option>
+                      South Africa
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Default Currency
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      NGN — Nigerian Naira
+                    </option>
+
+                    <option>
+                      GHS — Ghanaian Cedi
+                    </option>
+
+                    <option>
+                      KES — Kenyan Shilling
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Timezone
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Africa/Lagos — WAT
+                    </option>
+
+                    <option>
+                      Africa/Accra — GMT
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Date Format
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      DD MMM YYYY
+                    </option>
+
+                    <option>
+                      MMM DD, YYYY
+                    </option>
+
+                    <option>
+                      YYYY-MM-DD
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label>
+                    Platform Description
+                  </label>
+
+                  <textarea>FAGA is a multi-service platform connecting customers with logistics, marketplace, food, services and employment opportunities.</textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Platform Availability
+                </div>
+
+                <div class="section-description">
+                  Control availability of major FAGA modules.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="setting-list">
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Public Website
+                    </div>
+
+                    <div class="setting-help">
+                      Allow visitors to access the public FAGA website.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Customer Orders
+                    </div>
+
+                    <div class="setting-help">
+                      Allow customers to create and manage orders.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Marketplace
+                    </div>
+
+                    <div class="setting-help">
+                      Enable buying and selling through the marketplace.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Food Ordering
+                    </div>
+
+                    <div class="setting-help">
+                      Enable restaurant discovery and food ordering.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Jobs & Applications
+                    </div>
+
+                    <div class="setting-help">
+                      Enable public job listings and applicant workflows.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             USERS
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-users">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  User Account Settings
+                </div>
+
+                <div class="section-description">
+                  Configure registration, verification and account behavior.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Minimum Password Length
+                  </label>
+
+                  <input
+                    type="number"
+                    value="8"
+                    min="8"
+                    max="64">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Session Duration
+                  </label>
+
+                  <select>
+
+                    <option>
+                      12 hours
+                    </option>
+
+                    <option selected>
+                      24 hours
+                    </option>
+
+                    <option>
+                      7 days
+                    </option>
+
+                    <option>
+                      30 days
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Email Verification
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Required
+                    </option>
+
+                    <option>
+                      Optional
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Phone Verification
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Required for transactions
+                    </option>
+
+                    <option>
+                      Required at registration
+                    </option>
+
+                    <option>
+                      Optional
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="setting-list" style="margin-top:20px">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Allow New Registrations
+                    </div>
+
+                    <div class="setting-help">
+                      Allow new customers, riders, sellers and providers to create accounts.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Require Terms Acceptance
+                    </div>
+
+                    <div class="setting-help">
+                      Users must accept the current terms before account creation.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Enable Multi-Role Accounts
+                    </div>
+
+                    <div class="setting-help">
+                      Allow one FAGA account to have multiple approved roles.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Automatically Suspend Repeatedly Failed Logins
+                    </div>
+
+                    <div class="setting-help">
+                      Apply server-side account protection after configured authentication failures.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Administrator Roles
+                </div>
+
+                <div class="section-description">
+                  Reference permissions for FAGA administrative roles.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body role-table-wrap">
+
+              <table class="role-table">
+
+                <thead>
+
+                  <tr>
+                    <th>Role</th>
+                    <th>Users</th>
+                    <th>Payments</th>
+                    <th>Jobs</th>
+                    <th>Support</th>
+                    <th>Settings</th>
+                    <th>Audit Logs</th>
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  <tr>
+
+                    <td>
+                      <span class="role-name">
+                        Super Administrator
+                      </span>
+                    </td>
+
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+
+                  </tr>
+
+
+                  <tr>
+
+                    <td>
+                      <span class="role-name">
+                        Finance Administrator
+                      </span>
+                    </td>
+
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+
+                  </tr>
+
+
+                  <tr>
+
+                    <td>
+                      <span class="role-name">
+                        Jobs Administrator
+                      </span>
+                    </td>
+
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+
+                  </tr>
+
+
+                  <tr>
+
+                    <td>
+                      <span class="role-name">
+                        Support Administrator
+                      </span>
+                    </td>
+
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+                    <td><span class="permission-dot no">—</span></td>
+                    <td><span class="permission-dot yes">✓</span></td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ORDERS
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-orders">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Orders & Logistics
+                </div>
+
+                <div class="section-description">
+                  Configure order lifecycle and delivery behavior.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Default Order Timeout
+                  </label>
+
+                  <select>
+
+                    <option>
+                      15 minutes
+                    </option>
+
+                    <option selected>
+                      30 minutes
+                    </option>
+
+                    <option>
+                      60 minutes
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Maximum Delivery Radius
+                  </label>
+
+                  <div class="input-prefix">
+
+                    <span class="prefix">
+                      KM
+                    </span>
+
+                    <input
+                      type="number"
+                      value="50">
+
+                  </div>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Rider Assignment
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Automatic
+                    </option>
+
+                    <option>
+                      Manual
+                    </option>
+
+                    <option>
+                      Hybrid
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Delivery Confirmation
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      OTP + Status
+                    </option>
+
+                    <option>
+                      Photo + Status
+                    </option>
+
+                    <option>
+                      Status Only
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="setting-list" style="margin-top:20px">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Automatic Rider Assignment
+                    </div>
+
+                    <div class="setting-help">
+                      Automatically assign eligible riders to qualifying deliveries.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Customer Order Cancellation
+                    </div>
+
+                    <div class="setting-help">
+                      Allow customers to cancel orders subject to order status and refund rules.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Delivery OTP
+                    </div>
+
+                    <div class="setting-help">
+                      Require delivery verification through a server-generated OTP.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Live Rider Tracking
+                    </div>
+
+                    <div class="setting-help">
+                      Show eligible order tracking information to customers.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             PAYMENTS
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-payments">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Payment Configuration
+                </div>
+
+                <div class="section-description">
+                  Configure payment behavior. Provider credentials must remain server-side.
+                </div>
+
+              </div>
+
+              <span class="status-pill success">
+                <span class="status-dot"></span>
+                Providers Connected
+              </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Primary Payment Provider
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Paystack
+                    </option>
+
+                    <option>
+                      Flutterwave
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Secondary Provider
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Flutterwave
+                    </option>
+
+                    <option>
+                      Paystack
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Payment Currency
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      NGN
+                    </option>
+
+                    <option>
+                      GHS
+                    </option>
+
+                    <option>
+                      KES
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Payment Verification
+                  </label>
+
+                  <select>
+
+                    <option selected>
+                      Provider + Webhook
+                    </option>
+
+                    <option>
+                      Provider Only
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="warning-box">
+
+                <div class="warning-icon">
+                  !
+                </div>
+
+                <div>
+
+                  <div class="warning-title">
+                    Payment credentials are protected
+                  </div>
+
+                  <div class="warning-text">
+                    Secret API keys, webhook signing secrets and private
+                    credentials must never be stored in this HTML page or
+                    exposed to browser JavaScript. Keep them in server-side
+                    secret storage.
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="setting-list" style="margin-top:20px">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Require Server-Side Payment Verification
+                    </div>
+
+                    <div class="setting-help">
+                      Never activate an order, wallet credit or job access solely from browser payment status.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Verify Provider Webhooks
+                    </div>
+
+                    <div class="setting-help">
+                      Verify provider webhook signatures before processing payment events.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Enable Payment Idempotency
+                    </div>
+
+                    <div class="setting-help">
+                      Prevent duplicate payment operations during retries.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             NOTIFICATIONS
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-notifications">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Notification Channels
+                </div>
+
+                <div class="section-description">
+                  Configure default communication channels and delivery behavior.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="setting-list">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      In-App Notifications
+                    </div>
+
+                    <div class="setting-help">
+                      Display notifications inside customer and admin dashboards.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Email Notifications
+                    </div>
+
+                    <div class="setting-help">
+                      Send transactional and approved communications through email.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      SMS Notifications
+                    </div>
+
+                    <div class="setting-help">
+                      Send OTP and eligible transactional SMS messages.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Push Notifications
+                    </div>
+
+                    <div class="setting-help">
+                      Send push notifications to supported mobile applications.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Marketing Communications
+                    </div>
+
+                    <div class="setting-help">
+                      Respect user consent and opt-out preferences for promotional communications.
+                    </div>
+
+                  </div>
+
+                  <button class="switch"></button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Notification Defaults
+                </div>
+
+                <div class="section-description">
+                  Queue and delivery behavior.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Retry Attempts
+                  </label>
+
+                  <input
+                    type="number"
+                    value="3"
+                    min="0"
+                    max="10">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Retry Delay
+                  </label>
+
+                  <select>
+
+                    <option>
+                      10 seconds
+                    </option>
+
+                    <option selected>
+                      30 seconds
+                    </option>
+
+                    <option>
+                      60 seconds
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Quiet Hours Start
+                  </label>
+
+                  <input
+                    type="time"
+                    value="22:00">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Quiet Hours End
+                  </label>
+
+                  <input
+                    type="time"
+                    value="07:00">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SECURITY
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-security">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Security Settings
+                </div>
+
+                <div class="section-description">
+                  Configure authentication and administrator security controls.
+                </div>
+
+              </div>
+
+              <span class="status-pill success">
+                <span class="status-dot"></span>
+                Protected
+              </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Login Failure Threshold
+                  </label>
+
+                  <input
+                    type="number"
+                    value="5"
+                    min="3"
+                    max="20">
+
+                  <small>
+                    Server-side threshold before additional account protection is applied.
+                  </small>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Temporary Lock Duration
+                  </label>
+
+                  <select>
+
+                    <option>
+                      5 minutes
+                    </option>
+
+                    <option selected>
+                      15 minutes
+                    </option>
+
+                    <option>
+                      30 minutes
+                    </option>
+
+                    <option>
+                      60 minutes
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Admin Session Timeout
+                  </label>
+
+                  <select>
+
+                    <option>
+                      30 minutes
+                    </option>
+
+                    <option selected>
+                      60 minutes
+                    </option>
+
+                    <option>
+                      4 hours
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Audit Log Retention
+                  </label>
+
+                  <select>
+
+                    <option>
+                      180 days
+                    </option>
+
+                    <option selected>
+                      365 days
+                    </option>
+
+                    <option>
+                      730 days
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="setting-list" style="margin-top:20px">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Require MFA for Administrators
+                    </div>
+
+                    <div class="setting-help">
+                      Require multi-factor authentication for administrative accounts.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Require MFA for Finance Actions
+                    </div>
+
+                    <div class="setting-help">
+                      Require an additional authentication factor for sensitive financial operations.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      IP-Based Admin Restrictions
+                    </div>
+
+                    <div class="setting-help">
+                      Apply configured network restrictions to administrative access where supported.
+                    </div>
+
+                  </div>
+
+                  <button class="switch"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Audit All Privileged Actions
+                    </div>
+
+                    <div class="setting-help">
+                      Generate server-side audit records for sensitive administrator operations.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+
+              <div class="danger-box">
+
+                <div class="danger-icon">
+                  !
+                </div>
+
+                <div>
+
+                  <div class="danger-title">
+                    Security changes require additional controls
+                  </div>
+
+                  <div class="danger-text">
+                    Authentication, MFA, session, authorization and audit
+                    settings should be changed only by authorized
+                    administrators. Every sensitive configuration change
+                    should create an audit event.
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             INTEGRATIONS
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-integrations">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  External Integrations
+                </div>
+
+                <div class="section-description">
+                  Monitor connected infrastructure and service providers.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="env-grid">
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    Primary Payment
+                  </div>
+
+                  <div class="env-value success">
+                    Paystack · Connected
+                  </div>
+
+                </div>
+
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    Secondary Payment
+                  </div>
+
+                  <div class="env-value success">
+                    Flutterwave · Connected
+                  </div>
+
+                </div>
+
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    Email Provider
+                  </div>
+
+                  <div class="env-value success">
+                    Operational
+                  </div>
+
+                </div>
+
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    SMS Provider
+                  </div>
+
+                  <div class="env-value warning">
+                    Elevated Latency
+                  </div>
+
+                </div>
+
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    Push Provider
+                  </div>
+
+                  <div class="env-value success">
+                    Operational
+                  </div>
+
+                </div>
+
+
+                <div class="env-card">
+
+                  <div class="env-label">
+                    Storage
+                  </div>
+
+                  <div class="env-value success">
+                    Operational
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="warning-box">
+
+                <div class="warning-icon">
+                  !
+                </div>
+
+                <div>
+
+                  <div class="warning-title">
+                    Integration secrets are server-side only
+                  </div>
+
+                  <div class="warning-text">
+                    API secrets, signing keys and access tokens should
+                    be configured through protected backend environment
+                    variables or secret-management infrastructure.
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             MAINTENANCE
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-maintenance">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Maintenance & System Operations
+                </div>
+
+                <div class="section-description">
+                  Control maintenance mode, caching and operational diagnostics.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="setting-list">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Maintenance Mode
+                    </div>
+
+                    <div class="setting-help">
+                      Temporarily restrict public platform operations while maintenance is performed.
+                    </div>
+
+                  </div>
+
+                  <button
+                    class="switch"
+                    id="maintenanceSwitch">
+                  </button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Background Job Processing
+                    </div>
+
+                    <div class="setting-help">
+                      Allow queued background tasks such as notifications and reconciliations to run.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Application Caching
+                    </div>
+
+                    <div class="setting-help">
+                      Use configured caching infrastructure for public and administrative data.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Detailed Error Logging
+                    </div>
+
+                    <div class="setting-help">
+                      Capture diagnostic server errors while ensuring secrets and sensitive information are redacted.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+
+              <div class="warning-box">
+
+                <div class="warning-icon">
+                  !
+                </div>
+
+                <div>
+
+                  <div class="warning-title">
+                    Maintenance mode affects platform availability
+                  </div>
+
+                  <div class="warning-text">
+                    Production maintenance mode should require explicit
+                    authorization and should be recorded in the audit log.
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div style="
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+                margin-top:16px;
+              ">
+
+                <button
+                  class="btn"
+                  onclick="showToast('Cache clear request queued.')">
+                  Clear Application Cache
+                </button>
+
+                <button
+                  class="btn"
+                  onclick="showToast('System health check started.')">
+                  Run Health Check
+                </button>
+
+                <button
+                  class="btn"
+                  onclick="showToast('Background queue status requested.')">
+                  Check Queue Status
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             LEGAL
+        ====================================== -->
+
+        <section
+          class="settings-section"
+          id="section-legal">
+
+          <div class="section-card">
+
+            <div class="section-header">
+
+              <div>
+
+                <div class="section-title">
+                  Legal & Privacy
+                </div>
+
+                <div class="section-description">
+                  Manage public legal document versions and privacy-related defaults.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label>
+                    Terms Version
+                  </label>
+
+                  <input
+                    type="text"
+                    value="v1.0">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Privacy Policy Version
+                  </label>
+
+                  <input
+                    type="text"
+                    value="v1.0">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Safety Guidelines Version
+                  </label>
+
+                  <input
+                    type="text"
+                    value="v1.0">
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Cookie Notice Version
+                  </label>
+
+                  <input
+                    type="text"
+                    value="v1.0">
+
+                </div>
+
+              </div>
+
+
+              <div class="setting-list" style="margin-top:20px">
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Require Privacy Notice Acceptance
+                    </div>
+
+                    <div class="setting-help">
+                      Present the applicable privacy notice during relevant registration or consent flows.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Cookie Consent
+                    </div>
+
+                    <div class="setting-help">
+                      Enable consent controls where applicable to analytics and non-essential technologies.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Data Export Requests
+                    </div>
+
+                    <div class="setting-help">
+                      Allow eligible authenticated users to request copies of their personal information.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                  <div class="setting-copy">
+
+                    <div class="setting-name">
+                      Account Deletion Requests
+                    </div>
+
+                    <div class="setting-help">
+                      Allow eligible users to initiate account deletion subject to applicable legal and operational requirements.
+                    </div>
+
+                  </div>
+
+                  <button class="switch on"></button>
+
+                </div>
+
+              </div>
+
+
+              <div class="warning-box">
+
+                <div class="warning-icon">
+                  !
+                </div>
+
+                <div>
+
+                  <div class="warning-title">
+                    Legal configuration requires jurisdiction-specific review
+                  </div>
+
+                  <div class="warning-text">
+                    Privacy, retention, consent, consumer protection,
+                    employment, payment and other legal requirements should
+                    be reviewed against FAGA's actual operating entities,
+                    jurisdictions and data practices before production use.
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div style="
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+                margin-top:16px;
+              ">
+
+                <button
+                  class="btn"
+                  onclick="window.location.href='../Public website/terms.html'">
+                  View Terms
+                </button>
+
+                <button
+                  class="btn"
+                  onclick="window.location.href='../Public website/privacy.html'">
+                  View Privacy
+                </button>
+
+                <button
+                  class="btn"
+                  onclick="window.location.href='../Public website/safety.html'">
+                  View Safety
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- SAVE BAR -->
+
+  <div class="save-bar">
+
+    <div class="save-status">
+
+      <span class="save-status-dot" id="saveDot"></span>
+
+      <span id="saveStatus">
+        All changes saved
+      </span>
+
+    </div>
+
+
+    <div class="save-actions">
+
+      <button
+        class="btn"
+        id="discardBtn"
+        onclick="discardChanges()"
+        style="display:none;">
+        Discard
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="saveSettings()">
+        ✓ Save Changes
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- SYSTEM STATUS MODAL -->
+
+  <div
+    class="modal"
+    id="systemModal">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          FAGA System Status
+        </div>
+
+        <button
+          class="modal-close"
+          onclick="closeModal('systemModal')">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="env-grid">
+
+          <div class="env-card">
+
+            <div class="env-label">
+              Web Application
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+
+          <div class="env-card">
+
+            <div class="env-label">
+              API
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+
+          <div class="env-card">
+
+            <div class="env-label">
+              Database
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+
+          <div class="env-card">
+
+            <div class="env-label">
+              Payment Services
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+
+          <div class="env-card">
+
+            <div class="env-label">
+              Notification Queue
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+
+          <div class="env-card">
+
+            <div class="env-label">
+              File Storage
+            </div>
+
+            <div class="env-value success">
+              Operational
+            </div>
+
+          </div>
+
+        </div>
+
+        <div style="
+          margin-top:15px;
+          padding:12px;
+          border-radius:9px;
+          background:#f8fbfe;
+          border:1px solid #dce7f2;
+          color:var(--muted);
+          font-size:9px;
+          line-height:1.6;
+        ">
+          Production system health must be determined by backend
+          monitoring services. The status displayed here is demo data
+          until connected to the FAGA monitoring API.
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn"
+          onclick="closeModal('systemModal')">
+          Close
+        </button>
+
+        <button
+          class="btn btn-primary"
+          onclick="runHealthCheck()">
+          Run Health Check
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RESET MODAL -->
+
+  <div
+    class="modal"
+    id="resetModal">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          Restore Default Settings
+        </div>
+
+        <button
+          class="modal-close"
+          onclick="closeModal('resetModal')">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="danger-box" style="margin-top:0">
+
+          <div class="danger-icon">
+            !
+          </div>
+
+          <div>
+
+            <div class="danger-title">
+              Configuration change
+            </div>
+
+            <div class="danger-text">
+              Restoring defaults will replace the current browser form
+              values with the predefined demo defaults. In production,
+              sensitive configuration changes must require server-side
+              authorization and create an audit event.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn"
+          onclick="closeModal('resetModal')">
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-danger"
+          onclick="confirmReset()">
+          Restore Defaults
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TOAST -->
+
+  <div
+    class="toast"
+    id="toast">
+
+    <span class="toast-icon">
+      ✓
+    </span>
+
+    <span id="toastMessage">
+      Action completed.
+    </span>
+
+  </div>
+
+
+  <script>
+
+    /*
+      ============================================================
+      FAGA ADMIN — SYSTEM SETTINGS
+      ============================================================
+
+      PRODUCTION API ENDPOINTS
+      ------------------------------------------------------------
+
+      GET
+      /api/admin/settings
+
+      PATCH
+      /api/admin/settings
+
+      POST
+      /api/admin/settings/restore-defaults
+
+      GET
+      /api/admin/system/status
+
+      GET
+      /api/admin/integrations/health
+
+      GET
+      /api/admin/roles
+
+      PATCH
+      /api/admin/roles/:roleId
+
+      GET
+      /api/admin/legal/settings
+
+      PATCH
+      /api/admin/legal/settings
+
+
+      SECURITY REQUIREMENTS
+      ------------------------------------------------------------
+
+      1. ALL settings must be validated server-side.
+
+      2. Browser values must NEVER be treated as authoritative.
+
+      3. Server-side authentication and RBAC are mandatory.
+
+      4. Sensitive settings should require elevated permissions.
+
+      5. Financial settings should require appropriate finance
+         authorization.
+
+      6. Security settings should require appropriate security/
+         super-administrator authorization.
+
+      7. Payment provider secrets must never be returned to the
+         browser.
+
+      8. API keys and webhook secrets must remain in secure backend
+         secret storage.
+
+      9. Every sensitive settings change must create an audit event.
+
+      10. Use optimistic locking/version numbers to prevent an older
+          browser session from overwriting newer configuration.
+
+      11. Sanitize public-facing text before publishing it.
+
+      12. Validate numeric limits and enum values on the backend.
+
+      13. Do not allow client-side JavaScript to independently
+          activate payments, accounts, permissions or maintenance mode.
+
+      14. Legal settings should be reviewed for the actual FAGA
+          operating entity and applicable jurisdictions.
+
+      15. Configuration exports should exclude secrets.
+
+      16. Changes to administrator permissions must be separately
+          audited.
+
+      17. Production maintenance mode should require explicit
+          authorization.
+
+      18. Configuration changes should be idempotent where appropriate.
+    */
+
+
+    /* =========================================
+       SIDEBAR
+    ========================================== */
+
+    const menuToggle =
+      document.getElementById("menuToggle");
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const overlay =
+      document.getElementById("overlay");
+
+
+    menuToggle.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("show");
+
+      }
+    );
+
+
+    overlay.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+
+      }
+    );
+
+
+    /* =========================================
+       SETTINGS TABS
+    ========================================== */
+
+    const settingTabs =
+      document.querySelectorAll(
+        ".settings-tab"
+      );
+
+    const settingSections =
+      document.querySelectorAll(
+        ".settings-section"
+      );
+
+
+    settingTabs.forEach(tab => {
+
+      tab.addEventListener(
+        "click",
+        () => {
+
+          const section =
+            tab.dataset.section;
+
+
+          settingTabs.forEach(item => {
+            item.classList.remove("active");
+          });
+
+
+          settingSections.forEach(item => {
+            item.classList.remove("active");
+          });
+
+
+          tab.classList.add("active");
+
+
+          document
+            .getElementById(
+              "section-" + section
+            )
+            .classList.add("active");
+
+        }
+      );
+
+    });
+
+
+    /* =========================================
+       SWITCHES
+    ========================================== */
+
+    document
+      .querySelectorAll(".switch")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            button.classList.toggle("on");
+
+            markUnsaved();
+
+          }
+        );
+
+      });
+
+
+    /* =========================================
+       TRACK CHANGES
+    ========================================== */
+
+    let hasUnsavedChanges = false;
+
+
+    document
+      .querySelectorAll(
+        "input, select, textarea"
+      )
+      .forEach(field => {
+
+        field.addEventListener(
+          "input",
+          markUnsaved
+        );
+
+        field.addEventListener(
+          "change",
+          markUnsaved
+        );
+
+      });
+
+
+    function markUnsaved(){
+
+      hasUnsavedChanges = true;
+
+
+      document.getElementById(
+        "saveStatus"
+      ).textContent =
+        "Unsaved changes";
+
+
+      document.getElementById(
+        "saveDot"
+      ).style.background =
+        "var(--orange)";
+
+
+      document.getElementById(
+        "discardBtn"
+      ).style.display =
+        "inline-flex";
+
+    }
+
+
+    function markSaved(){
+
+      hasUnsavedChanges = false;
+
+
+      document.getElementById(
+        "saveStatus"
+      ).textContent =
+        "All changes saved";
+
+
+      document.getElementById(
+        "saveDot"
+      ).style.background =
+        "var(--success)";
+
+
+      document.getElementById(
+        "discardBtn"
+      ).style.display =
+        "none";
+
+    }
+
+
+    /* =========================================
+       SAVE SETTINGS
+    ========================================== */
+
+    function saveSettings(){
+
+      /*
+        Production:
+
+        Collect only settings allowed by the authenticated
+        administrator's permissions.
+
+        PATCH /api/admin/settings
+
+        Example:
+
+        {
+          "platform_name": "FAGA",
+          "support_email": "...",
+          "default_currency": "NGN",
+          "modules": {
+            "marketplace": true,
+            "food": true,
+            "jobs": true
+          },
+          "version": 14
+        }
+
+        The backend must:
+
+        - authenticate the admin
+        - check RBAC
+        - validate every field
+        - reject unauthorized settings
+        - preserve version history
+        - write an audit event
+        - return the authoritative saved configuration
+      */
+
+
+      markSaved();
+
+      showToast(
+        "Settings saved successfully."
+      );
+
+    }
+
+
+    /* =========================================
+       DISCARD
+    ========================================== */
+
+    function discardChanges(){
+
+      /*
+        Production:
+
+        Reload authoritative settings from:
+
+        GET /api/admin/settings
+
+        Do not rely on local browser state as the source of truth.
+      */
+
+
+      location.reload();
+
+    }
+
+
+    /* =========================================
+       RESTORE DEFAULTS
+    ========================================== */
+
+    function resetAllSettings(){
+
+      openModal(
+        "resetModal"
+      );
+
+    }
+
+
+    function confirmReset(){
+
+      /*
+        Production:
+
+        POST
+        /api/admin/settings/restore-defaults
+
+        This operation should require appropriate authorization
+        and should create a new audit event.
+
+        It should not silently alter historical records.
+      */
+
+
+      closeModal(
+        "resetModal"
+      );
+
+
+      showToast(
+        "Default settings restored."
+      );
+
+
+      markSaved();
+
+    }
+
+
+    /* =========================================
+       SYSTEM STATUS
+    ========================================== */
+
+    function openSystemPreview(){
+
+      /*
+        Production:
+
+        GET
+        /api/admin/system/status
+
+        Return only non-sensitive health information.
+        Never expose infrastructure credentials or secrets.
+      */
+
+
+      openModal(
+        "systemModal"
+      );
+
+    }
+
+
+    function runHealthCheck(){
+
+      /*
+        Production:
+
+        GET
+        /api/admin/system/status?refresh=true
+
+        Or:
+
+        POST
+        /api/admin/system/health-check
+
+        The server should perform the actual checks.
+      */
+
+
+      closeModal(
+        "systemModal"
+      );
+
+
+      showToast(
+        "System health check started."
+      );
+
+    }
+
+
+    /* =========================================
+       MODALS
+    ========================================== */
+
+    function closeModal(id){
+
+      document
+        .getElementById(id)
+        .classList.remove("show");
+
+    }
+
+
+    document
+      .querySelectorAll(".modal")
+      .forEach(modal => {
+
+        modal.addEventListener(
+          "click",
+          event => {
+
+            if(event.target === modal){
+              modal.classList.remove("show");
+            }
+
+          }
+        );
+
+      });
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if(event.key === "Escape"){
+
+          document
+            .querySelectorAll(
+              ".modal.show"
+            )
+            .forEach(modal => {
+
+              modal.classList.remove(
+                "show"
+              );
+
+            });
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       TOAST
+    ========================================== */
+
+    let toastTimer;
+
+
+    function showToast(message){
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+      const text =
+        document.getElementById(
+          "toastMessage"
+        );
+
+
+      text.textContent =
+        message;
+
+
+      toast.classList.add(
+        "show"
+      );
+
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toastTimer =
+        setTimeout(
+          () => {
+
+            toast.classList.remove(
+              "show"
+            );
+
+          },
+          3000
+        );
+
+    }
+
+
+    /* =========================================
+       BEFORE UNLOAD
+    ========================================== */
+
+    window.addEventListener(
+      "beforeunload",
+      event => {
+
+        if(!hasUnsavedChanges){
+          return;
+        }
+
+
+        event.preventDefault();
+        event.returnValue = "";
+
+      }
+    );
+
+
+    /* =========================================
+       INITIALIZATION
+    ========================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        /*
+          Production:
+
+          Load authoritative settings:
+
+          GET /api/admin/settings
+
+          Then populate controls from the server response.
+
+          Example response:
+
+          {
+            "version": 14,
+            "platform": {...},
+            "modules": {...},
+            "security": {...},
+            "payments": {...},
+            "notifications": {...}
+          }
+
+          Never place provider secrets in this response.
+        */
+
+
+        markSaved();
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

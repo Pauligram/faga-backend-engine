@@ -1,0 +1,4155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAGA Admin — Riders</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --navy:#071a33;
+    --navy2:#0d2745;
+    --navy3:#12395f;
+    --orange:#ff7a18;
+    --orange2:#e76509;
+    --white:#fff;
+    --bg:#f4f6f9;
+    --border:#e1e7ee;
+    --text:#172033;
+    --muted:#6b7280;
+    --green:#16a34a;
+    --red:#dc2626;
+    --yellow:#d97706;
+    --blue:#2563eb;
+    --purple:#7c3aed;
+    --shadow:0 4px 18px rgba(7,26,51,.06);
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button,
+input,
+select{
+    font-family:inherit;
+}
+
+.topbar{
+    height:68px;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
+    background:var(--navy);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:0 24px;
+}
+
+.mobile-toggle{
+    display:none;
+    cursor:pointer;
+    font-size:21px;
+}
+
+.logo{
+    width:215px;
+    flex-shrink:0;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:-1.5px;
+}
+
+.logo span{
+    color:var(--orange);
+}
+
+.admin-label{
+    color:#9aadc1!important;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-left:5px;
+}
+
+.top-search{
+    max-width:550px;
+    flex:1;
+    position:relative;
+}
+
+.top-search input{
+    width:100%;
+    height:39px;
+    border:0;
+    border-radius:5px;
+    outline:0;
+    padding:0 42px 0 14px;
+    font-size:12px;
+}
+
+.top-search span{
+    position:absolute;
+    right:14px;
+    top:11px;
+    color:var(--muted);
+}
+
+.top-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.top-action{
+    cursor:pointer;
+    position:relative;
+    font-size:18px;
+}
+
+.notification-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--orange);
+    position:absolute;
+    right:-4px;
+    top:-4px;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.admin-avatar{
+    width:37px;
+    height:37px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:800;
+}
+
+.admin-profile strong{
+    font-size:11px;
+}
+
+.admin-profile small{
+    display:block;
+    color:#9fb0c3;
+    font-size:9px;
+    margin-top:3px;
+}
+
+.sidebar{
+    position:fixed;
+    top:68px;
+    left:0;
+    bottom:0;
+    width:235px;
+    background:var(--navy2);
+    color:#fff;
+    overflow-y:auto;
+    z-index:900;
+}
+
+.sidebar-section{
+    padding:22px 13px 7px;
+    color:#7d94ac;
+    font-size:9px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+
+.sidebar-link{
+    margin:2px 10px;
+    padding:11px 12px;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    color:#c3cedb;
+    font-size:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.sidebar-link:hover{
+    background:rgba(255,255,255,.07);
+    color:#fff;
+}
+
+.sidebar-link.active{
+    background:var(--orange);
+    color:#fff;
+    font-weight:700;
+}
+
+.sidebar-icon{
+    width:20px;
+    text-align:center;
+    font-size:15px;
+}
+
+.sidebar-badge{
+    margin-left:auto;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--orange);
+    color:#fff;
+    font-size:9px;
+}
+
+.sidebar-link.active .sidebar-badge{
+    background:#fff;
+    color:var(--orange);
+}
+
+.sidebar-bottom{
+    border-top:1px solid rgba(255,255,255,.08);
+    margin-top:20px;
+    padding-top:10px;
+}
+
+.main{
+    margin-left:235px;
+    padding:94px 28px 35px;
+}
+
+.page-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:22px;
+}
+
+.page-heading h1{
+    color:var(--navy);
+    font-size:25px;
+    margin-bottom:5px;
+}
+
+.page-heading p{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.heading-actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:0;
+    border-radius:5px;
+    padding:10px 15px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.btn-orange{
+    background:var(--orange);
+    color:#fff;
+}
+
+.btn-orange:hover{
+    background:var(--orange2);
+}
+
+.btn-white{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy);
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:13px;
+    margin-bottom:19px;
+}
+
+.summary-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:16px;
+    box-shadow:var(--shadow);
+}
+
+.summary-card small{
+    color:var(--muted);
+    font-size:9px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.summary-number{
+    margin-top:9px;
+    color:var(--navy);
+    font-size:22px;
+    font-weight:800;
+}
+
+.summary-bottom{
+    margin-top:7px;
+    display:flex;
+    justify-content:space-between;
+    font-size:8px;
+}
+
+.green{
+    color:var(--green);
+    font-weight:700;
+}
+
+.orange-text{
+    color:var(--orange2);
+    font-weight:700;
+}
+
+.red{
+    color:var(--red);
+    font-weight:700;
+}
+
+.card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:7px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:18px;
+}
+
+.card-header{
+    min-height:55px;
+    padding:13px 17px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.card-header h2{
+    color:var(--navy);
+    font-size:14px;
+}
+
+.card-header p{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:4px;
+}
+
+.live-indicator{
+    color:var(--green);
+    font-size:8px;
+    font-weight:700;
+}
+
+.filters{
+    padding:15px 17px;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;
+    gap:9px;
+    border-bottom:1px solid var(--border);
+    background:#fbfcfd;
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    font-weight:700;
+    margin-bottom:5px;
+    text-transform:uppercase;
+}
+
+.field input,
+.field select{
+    width:100%;
+    height:36px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    outline:0;
+    background:#fff;
+    padding:0 10px;
+    font-size:10px;
+    color:var(--text);
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--orange);
+}
+
+.filter-button{
+    align-self:end;
+    height:36px;
+    padding:0 14px;
+    border:0;
+    border-radius:4px;
+    background:var(--navy);
+    color:#fff;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.status-tabs{
+    display:flex;
+    gap:4px;
+    padding:13px 17px;
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+}
+
+.status-tab{
+    white-space:nowrap;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:#fff;
+    color:var(--muted);
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.status-tab.active{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:#fff;
+}
+
+.table-toolbar{
+    padding:12px 17px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+}
+
+.selected-info{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.toolbar-actions{
+    display:flex;
+    gap:6px;
+}
+
+.small-btn{
+    height:29px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    padding:0 10px;
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.small-btn:hover{
+    border-color:var(--orange);
+    color:var(--orange2);
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    padding:11px 14px;
+    text-align:left;
+    background:#f8fafc;
+    color:var(--muted);
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+}
+
+td{
+    padding:12px 14px;
+    font-size:9px;
+    border-bottom:1px solid #eef1f5;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#fafbfd;
+}
+
+.checkbox{
+    width:14px;
+    height:14px;
+    accent-color:var(--orange);
+    cursor:pointer;
+}
+
+.rider-info{
+    min-width:180px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.rider-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#e9eef5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--navy);
+    font-size:9px;
+    font-weight:800;
+    flex-shrink:0;
+}
+
+.rider-name strong{
+    display:block;
+    color:var(--navy);
+    font-size:10px;
+}
+
+.rider-name small{
+    display:block;
+    color:var(--muted);
+    margin-top:3px;
+    font-size:8px;
+}
+
+.vehicle{
+    min-width:130px;
+}
+
+.vehicle strong{
+    display:block;
+    font-size:9px;
+}
+
+.vehicle small{
+    display:block;
+    color:var(--muted);
+    margin-top:3px;
+    font-size:8px;
+}
+
+.online-status{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:8px;
+    font-weight:700;
+}
+
+.online-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+}
+
+.offline-dot{
+    background:#9ca3af;
+}
+
+.busy-dot{
+    background:var(--orange);
+}
+
+.verification{
+    display:inline-block;
+    padding:4px 7px;
+    border-radius:20px;
+    font-size:7px;
+    font-weight:700;
+}
+
+.verified{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.rating{
+    color:#d97706;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.rating span{
+    color:var(--muted);
+    font-weight:400;
+}
+
+.delivery-count{
+    color:var(--navy);
+    font-weight:800;
+}
+
+.action-menu{
+    position:relative;
+}
+
+.more-btn{
+    width:29px;
+    height:29px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:33px;
+    width:165px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:5px;
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+    z-index:100;
+}
+
+.dropdown.show{
+    display:block;
+}
+
+.dropdown button{
+    display:block;
+    width:100%;
+    padding:9px 11px;
+    text-align:left;
+    border:0;
+    background:#fff;
+    font-size:9px;
+    cursor:pointer;
+}
+
+.dropdown button:hover{
+    background:#f6f8fa;
+}
+
+.dropdown .danger{
+    color:var(--red);
+}
+
+.pagination{
+    padding:13px 17px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-top:1px solid var(--border);
+}
+
+.pagination-info{
+    color:var(--muted);
+    font-size:8px;
+}
+
+.pages{
+    display:flex;
+    gap:4px;
+}
+
+.page-btn{
+    width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:#fff;
+    font-size:8px;
+    cursor:pointer;
+}
+
+.page-btn.active{
+    background:var(--orange);
+    color:#fff;
+    border-color:var(--orange);
+}
+
+.operations-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    padding:15px 17px;
+}
+
+.operation{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px;
+}
+
+.operation-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.operation-icon{
+    width:34px;
+    height:34px;
+    border-radius:6px;
+    background:#f5f7fa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+}
+
+.operation-count{
+    color:var(--navy);
+    font-size:17px;
+    font-weight:800;
+}
+
+.operation h3{
+    margin-top:11px;
+    font-size:10px;
+    color:var(--navy);
+}
+
+.operation p{
+    margin-top:4px;
+    font-size:8px;
+    color:var(--muted);
+}
+
+.operation-link{
+    margin-top:10px;
+    color:var(--orange2);
+    font-size:8px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.lower-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.zone-list{
+    padding:8px 17px 16px;
+}
+
+.zone-row{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:12px 0;
+    border-bottom:1px solid #eef1f5;
+}
+
+.zone-row:last-child{
+    border-bottom:0;
+}
+
+.zone-icon{
+    width:32px;
+    height:32px;
+    border-radius:6px;
+    background:#f5f7fa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.zone-info{
+    flex:1;
+}
+
+.zone-info strong{
+    display:block;
+    font-size:9px;
+}
+
+.zone-info small{
+    display:block;
+    color:var(--muted);
+    font-size:7px;
+    margin-top:3px;
+}
+
+.zone-number{
+    color:var(--navy);
+    font-size:11px;
+    font-weight:800;
+}
+
+.progress-bar{
+    width:90px;
+    height:5px;
+    border-radius:10px;
+    background:#edf0f4;
+    overflow:hidden;
+    margin-top:5px;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--orange);
+    border-radius:10px;
+}
+
+.activity-list{
+    padding:8px 17px 16px;
+}
+
+.activity-row{
+    display:flex;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid #eef1f5;
+}
+
+.activity-row:last-child{
+    border-bottom:0;
+}
+
+.activity-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    margin-top:4px;
+    flex-shrink:0;
+}
+
+.activity-content{
+    flex:1;
+}
+
+.activity-content strong{
+    display:block;
+    font-size:9px;
+}
+
+.activity-content small{
+    display:block;
+    color:var(--muted);
+    font-size:7px;
+    margin-top:3px;
+}
+
+.activity-time{
+    color:var(--muted);
+    font-size:7px;
+}
+
+.footer{
+    margin-left:235px;
+    background:var(--navy);
+    color:#91a2b5;
+    padding:20px 28px;
+    display:flex;
+    justify-content:space-between;
+    font-size:9px;
+}
+
+.footer span{
+    color:var(--orange);
+}
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:var(--navy);
+    color:#fff;
+    padding:13px 17px;
+    border-radius:6px;
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+    font-size:10px;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:5000;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@media(max-width:1250px){
+
+    .summary-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .filters{
+        grid-template-columns:1fr 1fr 1fr;
+    }
+
+    .operations-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:950px){
+
+    .mobile-toggle{
+        display:block;
+    }
+
+    .logo{
+        width:auto;
+    }
+
+    .top-search{
+        display:none;
+    }
+
+    .sidebar{
+        left:-235px;
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        left:0;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .footer{
+        margin-left:0;
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .admin-profile>div:last-child{
+        display:none;
+    }
+
+    .main{
+        padding:88px 12px 25px;
+    }
+
+    .page-heading{
+        display:block;
+    }
+
+    .heading-actions{
+        margin-top:14px;
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .summary-card{
+        padding:12px;
+    }
+
+    .summary-number{
+        font-size:18px;
+    }
+
+    .filters{
+        grid-template-columns:1fr;
+    }
+
+    .operations-grid{
+        grid-template-columns:1fr;
+    }
+
+    .table-toolbar{
+        display:block;
+    }
+
+    .toolbar-actions{
+        margin-top:10px;
+    }
+
+    .footer{
+        display:block;
+        line-height:1.8;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="mobile-toggle" onclick="toggleSidebar()">
+        ☰
+    </div>
+
+    <a href="../Public website/index.html" class="logo">
+        FA<span>GA</span>
+        <span class="admin-label">Admin</span>
+    </a>
+
+    <div class="top-search">
+
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Search riders, phone numbers, vehicles..."
+        >
+
+        <span>🔍</span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <div
+            class="top-action"
+            onclick="showToast('Notifications opened')">
+
+            🔔
+            <span class="notification-dot"></span>
+
+        </div>
+
+        <div
+            class="top-action"
+            onclick="showToast('Support center opened')">
+
+            💬
+
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                SA
+            </div>
+
+            <div>
+                <strong>Super Admin</strong>
+                <small>Administrator</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+        Overview
+    </div>
+
+    <a class="sidebar-link" href="../Public website/index.html">
+        <span class="sidebar-icon">📊</span>
+        Dashboard
+    </a>
+
+
+    <div class="sidebar-section">
+        Platform
+    </div>
+
+    <a class="sidebar-link" href="users.html">
+        <span class="sidebar-icon">👥</span>
+        Users
+        <span class="sidebar-badge">24</span>
+    </a>
+
+    <a class="sidebar-link" href="orders.html">
+        <span class="sidebar-icon">📦</span>
+        Orders
+        <span class="sidebar-badge">18</span>
+    </a>
+
+    <a class="sidebar-link" href="../Public website/logistics.html">
+        <span class="sidebar-icon">🚚</span>
+        Logistics
+    </a>
+
+    <a class="sidebar-link active" href="riders.html">
+        <span class="sidebar-icon">🏍️</span>
+        Riders
+        <span class="sidebar-badge">7</span>
+    </a>
+
+    <a class="sidebar-link" href="../Public website/marketplace.html">
+        <span class="sidebar-icon">🛍️</span>
+        Marketplace
+    </a>
+
+    <a class="sidebar-link" href="sellers.html">
+        <span class="sidebar-icon">🏪</span>
+        Sellers
+    </a>
+
+    <a class="sidebar-link" href="../Public website/services.html">
+        <span class="sidebar-icon">🛠️</span>
+        Services
+    </a>
+
+    <a class="sidebar-link" href="service-providers.html">
+        <span class="sidebar-icon">👨‍🔧</span>
+        Service Providers
+    </a>
+
+    <a class="sidebar-link" href="../Public website/food.html">
+        <span class="sidebar-icon">🍽️</span>
+        Food & Restaurants
+    </a>
+
+
+    <div class="sidebar-section">
+        Finance
+    </div>
+
+    <a class="sidebar-link" href="payments.html">
+        <span class="sidebar-icon">💳</span>
+        Payments
+    </a>
+
+    <a class="sidebar-link" href="wallets.html">
+        <span class="sidebar-icon">💰</span>
+        Wallets
+    </a>
+
+    <a class="sidebar-link" href="payouts.html">
+        <span class="sidebar-icon">🏦</span>
+        Payouts
+    </a>
+
+
+    <div class="sidebar-section">
+        Management
+    </div>
+
+    <a class="sidebar-link" href="reports.html">
+        <span class="sidebar-icon">📈</span>
+        Reports
+    </a>
+
+    <a class="sidebar-link" href="support.html">
+        <span class="sidebar-icon">🎧</span>
+        Support
+        <span class="sidebar-badge">9</span>
+    </a>
+
+    <a class="sidebar-link" href="disputes.html">
+        <span class="sidebar-icon">⚠️</span>
+        Disputes
+        <span class="sidebar-badge">3</span>
+    </a>
+
+
+    <div class="sidebar-section">
+        System
+    </div>
+
+    <a class="sidebar-link" href="settings.html">
+        <span class="sidebar-icon">⚙️</span>
+        Settings
+    </a>
+
+    <div
+        class="sidebar-link"
+        onclick="showToast('Audit logs opened')">
+
+        <span class="sidebar-icon">🔐</span>
+        Audit Logs
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+        <a class="sidebar-link" href="../user portal/dashboard.html">
+            <span class="sidebar-icon">↩</span>
+            User Portal
+        </a>
+
+        <div
+            class="sidebar-link"
+            style="color:#ff9a9a"
+            onclick="logout()">
+
+            <span class="sidebar-icon">↪</span>
+            Sign Out
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- HEADER -->
+
+    <section class="page-heading">
+
+        <div>
+
+            <h1>
+                Rider Management
+            </h1>
+
+            <p>
+                Manage FAGA riders, verification, availability, vehicles and delivery performance.
+            </p>
+
+        </div>
+
+        <div class="heading-actions">
+
+            <button
+                class="btn btn-white"
+                onclick="exportRiders()">
+
+                ↓ Export Riders
+
+            </button>
+
+            <button
+                class="btn btn-orange"
+                onclick="addRider()">
+
+                + Add Rider
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <small>
+                Total Riders
+            </small>
+
+            <div class="summary-number">
+                2,846
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="green">
+                    ↑ 12.4%
+                </span>
+
+                <span style="color:var(--muted)">
+                    this month
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Online Now
+            </small>
+
+            <div class="summary-number">
+                742
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="green">
+                    26.1%
+                </span>
+
+                <span style="color:var(--muted)">
+                    of riders
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                On Delivery
+            </small>
+
+            <div class="summary-number">
+                428
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="orange-text">
+                    Active
+                </span>
+
+                <span style="color:var(--muted)">
+                    deliveries
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Pending Verification
+            </small>
+
+            <div class="summary-number">
+                86
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="orange-text">
+                    Review
+                </span>
+
+                <span style="color:var(--muted)">
+                    applications
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <small>
+                Suspended
+            </small>
+
+            <div class="summary-number">
+                31
+            </div>
+
+            <div class="summary-bottom">
+
+                <span class="red">
+                    Needs review
+                </span>
+
+                <span style="color:var(--muted)">
+                    accounts
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RIDER TABLE
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    All Riders
+                </h2>
+
+                <p>
+                    Search and manage registered delivery riders.
+                </p>
+
+            </div>
+
+            <span class="live-indicator">
+                ● LIVE
+            </span>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <div class="filters">
+
+            <div class="field">
+
+                <label>
+                    Search Rider
+                </label>
+
+                <input
+                    id="riderSearch"
+                    type="text"
+                    placeholder="Name, ID, phone or vehicle..."
+                    oninput="filterRiders()"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Availability
+                </label>
+
+                <select
+                    id="availabilityFilter"
+                    onchange="filterRiders()">
+
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="online">
+                        Online
+                    </option>
+
+                    <option value="busy">
+                        On Delivery
+                    </option>
+
+                    <option value="offline">
+                        Offline
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Verification
+                </label>
+
+                <select
+                    id="verificationFilter"
+                    onchange="filterRiders()">
+
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="verified">
+                        Verified
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="rejected">
+                        Rejected
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Vehicle
+                </label>
+
+                <select>
+
+                    <option>
+                        All Vehicles
+                    </option>
+
+                    <option>
+                        Motorcycle
+                    </option>
+
+                    <option>
+                        Car
+                    </option>
+
+                    <option>
+                        Van
+                    </option>
+
+                    <option>
+                        Bicycle
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Zone
+                </label>
+
+                <select>
+
+                    <option>
+                        All Zones
+                    </option>
+
+                    <option>
+                        Ikeja
+                    </option>
+
+                    <option>
+                        Lekki
+                    </option>
+
+                    <option>
+                        Yaba
+                    </option>
+
+                    <option>
+                        Surulere
+                    </option>
+
+                    <option>
+                        Victoria Island
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="filter-button"
+                onclick="resetFilters()">
+
+                Reset
+
+            </button>
+
+        </div>
+
+
+        <!-- TABS -->
+
+        <div class="status-tabs">
+
+            <button
+                class="status-tab active"
+                onclick="setAvailability(this,'all')">
+
+                All Riders
+                <strong>2,846</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setAvailability(this,'online')">
+
+                Online
+                <strong>742</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setAvailability(this,'busy')">
+
+                On Delivery
+                <strong>428</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setAvailability(this,'offline')">
+
+                Offline
+                <strong>1,676</strong>
+
+            </button>
+
+            <button
+                class="status-tab"
+                onclick="setVerification(this,'pending')">
+
+                Pending Verification
+                <strong>86</strong>
+
+            </button>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="table-toolbar">
+
+            <div
+                class="selected-info"
+                id="selectedInfo">
+
+                0 riders selected
+
+            </div>
+
+
+            <div class="toolbar-actions">
+
+                <button
+                    class="small-btn"
+                    onclick="bulkMessage()">
+
+                    Message
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkVerify()">
+
+                    Verify
+
+                </button>
+
+                <button
+                    class="small-btn"
+                    onclick="bulkSuspend()">
+
+                    Suspend
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox"
+                                id="selectAll"
+                                onchange="toggleAll(this)"
+                            >
+
+                        </th>
+
+                        <th>
+                            Rider
+                        </th>
+
+                        <th>
+                            Availability
+                        </th>
+
+                        <th>
+                            Vehicle
+                        </th>
+
+                        <th>
+                            Verification
+                        </th>
+
+                        <th>
+                            Rating
+                        </th>
+
+                        <th>
+                            Deliveries
+                        </th>
+
+                        <th>
+                            Earnings
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ridersTable">
+
+
+                    <!-- RIDER 1 -->
+
+                    <tr
+                        data-search="musa abdullahi RID-1001 08031234567 honda pcx ikeja"
+                        data-availability="busy"
+                        data-verification="verified">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    MA
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Musa Abdullahi
+                                    </strong>
+
+                                    <small>
+                                        RID-1001 · 0803 123 4567
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot busy-dot"></span>
+
+                                On Delivery
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Honda PCX
+                                </strong>
+
+                                <small>
+                                    KSF-284-LA · Motorcycle
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ 4.9
+                                <span>(482)</span>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                1,284
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                ₦684K
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1001')">
+                                        View Rider
+                                    </button>
+
+                                    <button onclick="viewDeliveries('RID-1001')">
+                                        View Deliveries
+                                    </button>
+
+                                    <button onclick="messageRider('Musa Abdullahi')">
+                                        Message Rider
+                                    </button>
+
+                                    <button onclick="showLocation('RID-1001')">
+                                        View Location
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendRider('RID-1001')">
+
+                                        Suspend Rider
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 2 -->
+
+                    <tr
+                        data-search="chioma okafor RID-1002 08045678901 yamaha lekki"
+                        data-availability="online"
+                        data-verification="verified">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    CO
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Chioma Okafor
+                                    </strong>
+
+                                    <small>
+                                        RID-1002 · 0804 567 8901
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot"></span>
+
+                                Online
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Yamaha NMAX
+                                </strong>
+
+                                <small>
+                                    LAG-772-AB · Motorcycle
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ 4.8
+                                <span>(316)</span>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                932
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦492K</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1002')">
+                                        View Rider
+                                    </button>
+
+                                    <button onclick="viewDeliveries('RID-1002')">
+                                        View Deliveries
+                                    </button>
+
+                                    <button onclick="messageRider('Chioma Okafor')">
+                                        Message Rider
+                                    </button>
+
+                                    <button onclick="showLocation('RID-1002')">
+                                        View Location
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="suspendRider('RID-1002')">
+
+                                        Suspend Rider
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 3 -->
+
+                    <tr
+                        data-search="emmanuel john RID-1003 08123456789 toyota corolla ikeja"
+                        data-availability="online"
+                        data-verification="verified">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    EJ
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Emmanuel John
+                                    </strong>
+
+                                    <small>
+                                        RID-1003 · 0812 345 6789
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot"></span>
+
+                                Online
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Toyota Corolla
+                                </strong>
+
+                                <small>
+                                    KJA-114-BD · Car</small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ 4.7
+                                <span>(284)</span>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                817
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦518K</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1003')">
+                                        View Rider
+                                    </button>
+
+                                    <button onclick="viewDeliveries('RID-1003')">
+                                        View Deliveries
+                                    </button>
+
+                                    <button onclick="messageRider('Emmanuel John')">
+                                        Message Rider
+                                    </button>
+
+                                    <button onclick="showLocation('RID-1003')">
+                                        View Location
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 4 -->
+
+                    <tr
+                        data-search="abdulrahman bello RID-1004 08098765432 honda cb lekki"
+                        data-availability="offline"
+                        data-verification="pending">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    AB
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Abdulrahman Bello
+                                    </strong>
+
+                                    <small>
+                                        RID-1004 · 0809 876 5432
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot offline-dot"></span>
+
+                                Offline
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Honda CB125
+                                </strong>
+
+                                <small>
+                                    LSR-408-CE · Motorcycle
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ —
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                0
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦0</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1004')">
+                                        View Application
+                                    </button>
+
+                                    <button onclick="reviewRider('RID-1004')">
+                                        Review Documents
+                                    </button>
+
+                                    <button onclick="verifyRider('RID-1004')">
+                                        Approve Rider
+                                    </button>
+
+                                    <button
+                                        class="danger"
+                                        onclick="rejectRider('RID-1004')">
+
+                                        Reject Application
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 5 -->
+
+                    <tr
+                        data-search="sarah ade RID-1005 08187654321 suzuki surulere"
+                        data-availability="busy"
+                        data-verification="verified">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    SA
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Sarah Ade
+                                    </strong>
+
+                                    <small>
+                                        RID-1005 · 0818 765 4321
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot busy-dot"></span>
+
+                                On Delivery
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Suzuki Address
+                                </strong>
+
+                                <small>
+                                    KSF-991-LA · Motorcycle
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ 4.9
+                                <span>(621)</span>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                1,542
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦812K</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1005')">
+                                        View Rider
+                                    </button>
+
+                                    <button onclick="viewDeliveries('RID-1005')">
+                                        View Deliveries
+                                    </button>
+
+                                    <button onclick="showLocation('RID-1005')">
+                                        View Location
+                                    </button>
+
+                                    <button onclick="messageRider('Sarah Ade')">
+                                        Message Rider
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 6 -->
+
+                    <tr
+                        data-search="john peter RID-1006 08034567890 toyota sienna yaba"
+                        data-availability="offline"
+                        data-verification="verified">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    JP
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        John Peter
+                                    </strong>
+
+                                    <small>
+                                        RID-1006 · 0803 456 7890
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot offline-dot"></span>
+
+                                Offline
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Toyota Sienna
+                                </strong>
+
+                                <small>
+                                    YAB-331-AA · Van
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ 4.6
+                                <span>(198)</span>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                645
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦431K</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1006')">
+                                        View Rider
+                                    </button>
+
+                                    <button onclick="viewDeliveries('RID-1006')">
+                                        View Deliveries
+                                    </button>
+
+                                    <button onclick="messageRider('John Peter')">
+                                        Message Rider
+                                    </button>
+
+                                    <button onclick="showLocation('RID-1006')">
+                                        Last Location
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- RIDER 7 -->
+
+                    <tr
+                        data-search="michael obi RID-1007 08134567890 yamaha aerox victoria island"
+                        data-availability="online"
+                        data-verification="rejected">
+
+                        <td>
+
+                            <input
+                                type="checkbox"
+                                class="checkbox rider-check"
+                                onchange="updateSelected()"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <div class="rider-info">
+
+                                <div class="rider-avatar">
+                                    MO
+                                </div>
+
+                                <div class="rider-name">
+
+                                    <strong>
+                                        Michael Obi
+                                    </strong>
+
+                                    <small>
+                                        RID-1007 · 0813 456 7890
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="online-status">
+
+                                <span class="online-dot offline-dot"></span>
+
+                                Offline
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="vehicle">
+
+                                <strong>
+                                    Yamaha Aerox
+                                </strong>
+
+                                <small>
+                                    LAG-602-QT · Motorcycle
+                                </small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="verification rejected">
+                                Rejected
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="rating">
+                                ★ —
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="delivery-count">
+                                0
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>₦0</strong>
+                        </td>
+
+                        <td>
+
+                            <div class="action-menu">
+
+                                <button
+                                    class="more-btn"
+                                    onclick="toggleMenu(this)">
+
+                                    ⋮
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="viewRider('RID-1007')">
+                                        View Application
+                                    </button>
+
+                                    <button onclick="reviewRider('RID-1007')">
+                                        Review Documents
+                                    </button>
+
+                                    <button onclick="showToast('Rejection reason opened')">
+                                        View Reason
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <div class="pagination">
+
+            <div class="pagination-info">
+
+                Showing
+                <strong>1–7</strong>
+                of
+                <strong>2,846</strong>
+                riders
+
+            </div>
+
+            <div class="pages">
+
+                <button class="page-btn">
+                    ‹
+                </button>
+
+                <button class="page-btn active">
+                    1
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(2)">
+                    2
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(3)">
+                    3
+                </button>
+
+                <button class="page-btn">
+                    ...
+                </button>
+
+                <button
+                    class="page-btn"
+                    onclick="changePage(285)">
+                    285
+                </button>
+
+                <button class="page-btn">
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RIDER OPERATIONS
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Rider Operations
+                </h2>
+
+                <p>
+                    Current rider workload and fleet status.
+                </p>
+
+            </div>
+
+            <span style="font-size:9px;color:var(--muted)">
+                Updated continuously
+            </span>
+
+        </div>
+
+
+        <div class="operations-grid">
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🟢
+                    </div>
+
+                    <div class="operation-count">
+                        742
+                    </div>
+
+                </div>
+
+                <h3>
+                    Online Riders
+                </h3>
+
+                <p>
+                    Available on the FAGA network
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="showToast('Opening live rider map')">
+
+                    View Live Map →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        🏍️
+                    </div>
+
+                    <div class="operation-count">
+                        428
+                    </div>
+
+                </div>
+
+                <h3>
+                    On Delivery
+                </h3>
+
+                <p>
+                    Riders currently handling orders
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="showToast('Opening active deliveries')">
+
+                    View Deliveries →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        📋
+                    </div>
+
+                    <div class="operation-count">
+                        86
+                    </div>
+
+                </div>
+
+                <h3>
+                    Pending Verification
+                </h3>
+
+                <p>
+                    New rider applications awaiting review
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="showPendingVerification()">
+
+                    Review Applications →
+
+                </div>
+
+            </div>
+
+
+            <div class="operation">
+
+                <div class="operation-top">
+
+                    <div class="operation-icon">
+                        ⚠️
+                    </div>
+
+                    <div class="operation-count">
+                        31
+                    </div>
+
+                </div>
+
+                <h3>
+                    Suspended Riders
+                </h3>
+
+                <p>
+                    Riders currently restricted
+                </p>
+
+                <div
+                    class="operation-link"
+                    onclick="showSuspended()">
+
+                    Review Riders →
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOWER GRID
+    ====================================================== -->
+
+    <section class="lower-grid">
+
+
+        <!-- ZONES -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Riders by Zone
+                    </h2>
+
+                    <p>
+                        Current rider distribution.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="zone-list">
+
+
+                <div class="zone-row">
+
+                    <div class="zone-icon">
+                        📍
+                    </div>
+
+                    <div class="zone-info">
+
+                        <strong>
+                            Ikeja
+                        </strong>
+
+                        <small>
+                            188 online riders
+                        </small>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                style="width:78%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="zone-number">
+                        486
+                    </div>
+
+                </div>
+
+
+                <div class="zone-row">
+
+                    <div class="zone-icon">
+                        📍
+                    </div>
+
+                    <div class="zone-info">
+
+                        <strong>
+                            Lekki
+                        </strong>
+
+                        <small>
+                            164 online riders
+                        </small>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                style="width:69%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="zone-number">
+                        421
+                    </div>
+
+                </div>
+
+
+                <div class="zone-row">
+
+                    <div class="zone-icon">
+                        📍
+                    </div>
+
+                    <div class="zone-info">
+
+                        <strong>
+                            Surulere
+                        </strong>
+
+                        <small>
+                            107 online riders
+                        </small>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                style="width:51%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="zone-number">
+                        328
+                    </div>
+
+                </div>
+
+
+                <div class="zone-row">
+
+                    <div class="zone-icon">
+                        📍
+                    </div>
+
+                    <div class="zone-info">
+
+                        <strong>
+                            Yaba
+                        </strong>
+
+                        <small>
+                            91 online riders
+                        </small>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                style="width:43%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="zone-number">
+                        276
+                    </div>
+
+                </div>
+
+
+                <div class="zone-row">
+
+                    <div class="zone-icon">
+                        📍
+                    </div>
+
+                    <div class="zone-info">
+
+                        <strong>
+                            Victoria Island
+                        </strong>
+
+                        <small>
+                            92 online riders
+                        </small>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                style="width:47%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="zone-number">
+                        294
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVITY -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Recent Rider Activity
+                    </h2>
+
+                    <p>
+                        Latest rider events.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="activity-list">
+
+
+                <div class="activity-row">
+
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Musa Abdullahi completed delivery
+                        </strong>
+
+                        <small>
+                            Order #ORD-10284 · Lekki → Ikeja
+                        </small>
+
+                    </div>
+
+                    <div class="activity-time">
+                        2 min
+                    </div>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Chioma Okafor became available
+                        </strong>
+
+                        <small>
+                            Rider is now accepting deliveries
+                        </small>
+
+                    </div>
+
+                    <div class="activity-time">
+                        5 min
+                    </div>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            New rider application received
+                        </strong>
+
+                        <small>
+                            RID-1008 · Documents submitted
+                        </small>
+
+                    </div>
+
+                    <div class="activity-time">
+                        11 min
+                    </div>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Sarah Ade accepted delivery
+                        </strong>
+
+                        <small>
+                            Order #ORD-10283 · Food delivery
+                        </small>
+
+                    </div>
+
+                    <div class="activity-time">
+                        16 min
+                    </div>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+
+                        <strong>
+                            Emmanuel John went online
+                        </strong>
+
+                        <small>
+                            Ikeja delivery zone
+                        </small>
+
+                    </div>
+
+                    <div class="activity-time">
+                        21 min
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div>
+
+        <strong style="color:#fff">
+            FAGA Admin
+        </strong>
+
+        — Rider Management
+
+    </div>
+
+    <div>
+
+        FAGA Platform v1.0
+
+        <span>●</span>
+
+        Secure Administration
+
+    </div>
+
+</footer>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(function(){
+
+            toast.classList.remove("show");
+
+        },2800);
+
+}
+
+
+/* =====================================================
+   RIDER FILTERING
+===================================================== */
+
+function filterRiders(){
+
+    const search =
+        document
+            .getElementById("riderSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const availability =
+        document
+            .getElementById("availabilityFilter")
+            .value;
+
+    const verification =
+        document
+            .getElementById("verificationFilter")
+            .value;
+
+    const rows =
+        document.querySelectorAll(
+            "#ridersTable tr"
+        );
+
+
+    rows.forEach(function(row){
+
+        const searchable =
+            (
+                row.dataset.search || ""
+            ).toLowerCase();
+
+        const riderAvailability =
+            row.dataset.availability || "";
+
+        const riderVerification =
+            row.dataset.verification || "";
+
+
+        const searchMatch =
+            !search ||
+            searchable.includes(search);
+
+        const availabilityMatch =
+            availability === "all" ||
+            riderAvailability === availability;
+
+        const verificationMatch =
+            verification === "all" ||
+            riderVerification === verification;
+
+
+        row.style.display =
+            searchMatch &&
+            availabilityMatch &&
+            verificationMatch
+                ? ""
+                : "none";
+
+    });
+
+}
+
+
+/* =====================================================
+   RESET FILTERS
+===================================================== */
+
+function resetFilters(){
+
+    document
+        .getElementById("riderSearch")
+        .value = "";
+
+    document
+        .getElementById("availabilityFilter")
+        .value = "all";
+
+    document
+        .getElementById("verificationFilter")
+        .value = "all";
+
+    filterRiders();
+
+    document
+        .querySelectorAll(".status-tab")
+        .forEach(function(tab){
+
+            tab.classList.remove("active");
+
+        });
+
+    document
+        .querySelector(".status-tab")
+        .classList.add("active");
+
+    showToast("Rider filters reset");
+
+}
+
+
+/* =====================================================
+   AVAILABILITY TAB
+===================================================== */
+
+function setAvailability(button,value){
+
+    document
+        .querySelectorAll(".status-tab")
+        .forEach(function(tab){
+
+            tab.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("availabilityFilter")
+        .value = value;
+
+    document
+        .getElementById("verificationFilter")
+        .value = "all";
+
+    filterRiders();
+
+}
+
+
+/* =====================================================
+   VERIFICATION TAB
+===================================================== */
+
+function setVerification(button,value){
+
+    document
+        .querySelectorAll(".status-tab")
+        .forEach(function(tab){
+
+            tab.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("verificationFilter")
+        .value = value;
+
+    document
+        .getElementById("availabilityFilter")
+        .value = "all";
+
+    filterRiders();
+
+}
+
+
+/* =====================================================
+   SELECT ALL
+===================================================== */
+
+function toggleAll(master){
+
+    document
+        .querySelectorAll(".rider-check")
+        .forEach(function(box){
+
+            const row =
+                box.closest("tr");
+
+            if(row.style.display !== "none"){
+
+                box.checked =
+                    master.checked;
+
+            }
+
+        });
+
+    updateSelected();
+
+}
+
+
+/* =====================================================
+   SELECTED COUNT
+===================================================== */
+
+function updateSelected(){
+
+    const selected =
+        document
+            .querySelectorAll(
+                ".rider-check:checked"
+            )
+            .length;
+
+    document
+        .getElementById("selectedInfo")
+        .textContent =
+            selected +
+            " rider" +
+            (selected === 1 ? "" : "s") +
+            " selected";
+
+}
+
+
+/* =====================================================
+   DROPDOWN
+===================================================== */
+
+function toggleMenu(button){
+
+    document
+        .querySelectorAll(".dropdown")
+        .forEach(function(menu){
+
+            if(
+                menu !==
+                button.nextElementSibling
+            ){
+
+                menu.classList.remove("show");
+
+            }
+
+        });
+
+    button
+        .nextElementSibling
+        .classList.toggle("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            !event.target.closest(
+                ".action-menu"
+            )
+        ){
+
+            document
+                .querySelectorAll(".dropdown")
+                .forEach(function(menu){
+
+                    menu.classList.remove(
+                        "show"
+                    );
+
+                });
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RIDER ACTIONS
+===================================================== */
+
+function viewRider(riderId){
+
+    showToast(
+        "Opening rider " +
+        riderId
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders/:id
+    */
+
+}
+
+
+function viewDeliveries(riderId){
+
+    showToast(
+        "Loading deliveries for " +
+        riderId
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders/:id/deliveries
+    */
+
+}
+
+
+function messageRider(name){
+
+    showToast(
+        "Opening message with " +
+        name
+    );
+
+}
+
+
+function showLocation(riderId){
+
+    showToast(
+        "Opening live location for " +
+        riderId
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders/:id/location
+    */
+
+}
+
+
+function reviewRider(riderId){
+
+    showToast(
+        "Opening documents for " +
+        riderId
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders/:id/documents
+    */
+
+}
+
+
+function verifyRider(riderId){
+
+    const confirmed =
+        confirm(
+            "Approve rider " +
+            riderId +
+            "?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    showToast(
+        riderId +
+        " approved successfully."
+    );
+
+    /*
+        BACKEND:
+
+        POST /api/admin/riders/:id/verify
+
+        Also update:
+        user role = rider
+        rider verification = verified
+        rider account status = active
+        notification = sent
+        audit log = created
+    */
+
+}
+
+
+function rejectRider(riderId){
+
+    const confirmed =
+        confirm(
+            "Reject application " +
+            riderId +
+            "?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    showToast(
+        riderId +
+        " application rejected."
+    );
+
+    /*
+        BACKEND:
+
+        POST /api/admin/riders/:id/reject
+    */
+
+}
+
+
+function suspendRider(riderId){
+
+    const confirmed =
+        confirm(
+            "Suspend rider " +
+            riderId +
+            "?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    showToast(
+        riderId +
+        " has been queued for suspension."
+    );
+
+    /*
+        BACKEND:
+
+        POST /api/admin/riders/:id/status
+
+        {
+            status: "suspended"
+        }
+
+        Should also create an audit log.
+    */
+
+}
+
+
+/* =====================================================
+   BULK ACTIONS
+===================================================== */
+
+function getSelectedRiders(){
+
+    const selected = [];
+
+    document
+        .querySelectorAll(
+            ".rider-check:checked"
+        )
+        .forEach(function(box){
+
+            const row =
+                box.closest("tr");
+
+            if(row){
+
+                selected.push(
+                    row.dataset.search
+                );
+
+            }
+
+        });
+
+    return selected;
+
+}
+
+
+function bulkMessage(){
+
+    const riders =
+        getSelectedRiders();
+
+    if(!riders.length){
+
+        showToast(
+            "Select riders to message."
+        );
+
+        return;
+
+    }
+
+    showToast(
+        "Messaging " +
+        riders.length +
+        " selected rider(s)."
+    );
+
+}
+
+
+function bulkVerify(){
+
+    const riders =
+        getSelectedRiders();
+
+    if(!riders.length){
+
+        showToast(
+            "Select riders to verify."
+        );
+
+        return;
+
+    }
+
+    showToast(
+        riders.length +
+        " rider(s) queued for verification."
+    );
+
+    /*
+        BACKEND:
+
+        POST /api/admin/riders/bulk-verify
+    */
+
+}
+
+
+function bulkSuspend(){
+
+    const riders =
+        getSelectedRiders();
+
+    if(!riders.length){
+
+        showToast(
+            "Select riders to suspend."
+        );
+
+        return;
+
+    }
+
+    const confirmed =
+        confirm(
+            "Suspend " +
+            riders.length +
+            " selected rider(s)?"
+        );
+
+    if(confirmed){
+
+        showToast(
+            riders.length +
+            " rider(s) queued for suspension."
+        );
+
+        /*
+            BACKEND:
+
+            POST /api/admin/riders/bulk-status
+        */
+
+    }
+
+}
+
+
+/* =====================================================
+   ADD RIDER
+===================================================== */
+
+function addRider(){
+
+    showToast(
+        "Opening rider registration."
+    );
+
+    /*
+        This can later open a dedicated
+        admin rider onboarding form.
+
+        IMPORTANT:
+
+        Rider is NOT a separate account.
+
+        The rider should be attached to
+        an existing FAGA user account or
+        create one FAGA account first.
+
+        BACKEND:
+
+        POST /api/admin/riders
+    */
+
+}
+
+
+/* =====================================================
+   EXPORT
+===================================================== */
+
+function exportRiders(){
+
+    showToast(
+        "Preparing rider export..."
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders/export
+    */
+
+}
+
+
+/* =====================================================
+   PENDING VERIFICATION
+===================================================== */
+
+function showPendingVerification(){
+
+    document
+        .getElementById("verificationFilter")
+        .value = "pending";
+
+    document
+        .getElementById("availabilityFilter")
+        .value = "all";
+
+    filterRiders();
+
+    showToast(
+        "Showing pending rider applications."
+    );
+
+}
+
+
+/* =====================================================
+   SUSPENDED
+===================================================== */
+
+function showSuspended(){
+
+    showToast(
+        "Opening suspended rider review."
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders?status=suspended
+    */
+
+}
+
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+function changePage(page){
+
+    showToast(
+        "Loading rider page " +
+        page +
+        "..."
+    );
+
+    /*
+        BACKEND:
+
+        GET /api/admin/riders?page=2
+
+        Recommended response:
+
+        {
+            data: [],
+            current_page: 2,
+            per_page: 50,
+            total: 2846,
+            total_pages: 57
+        }
+    */
+
+}
+
+
+/* =====================================================
+   GLOBAL SEARCH
+===================================================== */
+
+document
+    .getElementById("globalSearch")
+    .addEventListener(
+        "keypress",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                const query =
+                    this.value.trim();
+
+                if(!query){
+                    return;
+                }
+
+                document
+                    .getElementById("riderSearch")
+                    .value = query;
+
+                filterRiders();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    const confirmed =
+        confirm(
+            "Sign out of the FAGA Admin Portal?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    /*
+        BACKEND:
+
+        POST /api/admin/logout
+    */
+
+    window.location.href="../user portal/login.html";
+
+}
+
+</script>
+
+</body>
+</html>

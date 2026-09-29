@@ -1,0 +1,4216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAGA Admin — Service Providers</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a2f;
+            --navy-2: #0b2744;
+            --orange: #ff7a00;
+            --orange-dark: #e96700;
+            --white: #ffffff;
+            --bg: #f4f6f9;
+            --border: #e2e7ed;
+            --text: #172235;
+            --muted: #6c7888;
+            --green: #119657;
+            --red: #d83228;
+            --yellow: #e59a00;
+            --blue: #2878d8;
+            --purple: #7352d2;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: var(--navy);
+            color: white;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .topbar-inner {
+            height: 100%;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .brand {
+            width: 230px;
+            min-width: 230px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 27px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .brand-logo span {
+            color: var(--orange);
+        }
+
+        .admin-label {
+            background: var(--orange);
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .mobile-menu {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 24px;
+        }
+
+        .global-search {
+            flex: 1;
+            max-width: 680px;
+            position: relative;
+        }
+
+        .global-search input {
+            width: 100%;
+            height: 42px;
+            border: 0;
+            outline: none;
+            border-radius: 8px;
+            padding: 0 48px 0 16px;
+            color: var(--text);
+        }
+
+        .global-search button {
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            width: 34px;
+            height: 34px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--orange);
+            color: white;
+            font-size: 17px;
+        }
+
+        .top-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .top-action {
+            position: relative;
+            border: 0;
+            background: transparent;
+            color: white;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .top-action:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+        .notification {
+            font-size: 18px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            width: 16px;
+            height: 16px;
+            background: var(--orange);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding-left: 11px;
+            border-left: 1px solid rgba(255,255,255,.12);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .admin-user strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .admin-user span {
+            display: block;
+            color: #aab7c5;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 68px;
+            bottom: 0;
+            width: 250px;
+            background: var(--navy);
+            color: #d5dfe9;
+            padding: 18px 12px;
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .sidebar-section {
+            margin-bottom: 21px;
+        }
+
+        .sidebar-title {
+            padding: 0 12px 8px;
+            color: #718298;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .side-link {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 0;
+            background: transparent;
+            color: #c8d3de;
+            padding: 11px 12px;
+            border-radius: 7px;
+            text-align: left;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .side-link:hover {
+            background: rgba(255,255,255,.06);
+            color: white;
+        }
+
+        .side-link.active {
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+        }
+
+        .side-icon {
+            width: 21px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .side-badge {
+            margin-left: auto;
+            background: #e65d48;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 250px;
+            padding-top: 68px;
+            min-height: 100vh;
+        }
+
+        .content {
+            max-width: 1700px;
+            margin: auto;
+            padding: 28px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn:hover {
+            border-color: #c7d0da;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+        }
+
+        .btn-success {
+            background: #edf9f2;
+            color: var(--green);
+            border-color: #c6ead5;
+        }
+
+        .btn-danger {
+            background: #fff1f0;
+            color: var(--red);
+            border-color: #ffd2ce;
+        }
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 17px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            right: -28px;
+            bottom: -32px;
+            border-radius: 50%;
+            background: rgba(255,122,0,.06);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .45px;
+            font-weight: 800;
+        }
+
+        .stat-value {
+            margin-top: 9px;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .stat-meta {
+            margin-top: 7px;
+            font-size: 10px;
+        }
+
+        .positive {
+            color: var(--green);
+        }
+
+        .warning {
+            color: var(--yellow);
+        }
+
+        .negative {
+            color: var(--red);
+        }
+
+        /* =====================================================
+           PANELS
+        ===================================================== */
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+            padding: 17px 19px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .panel-header h2 {
+            font-size: 15px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .panel-body {
+            padding: 18px;
+        }
+
+        /* =====================================================
+           TABS
+        ===================================================== */
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab {
+            border: 0;
+            background: transparent;
+            padding: 14px;
+            color: var(--muted);
+            border-bottom: 3px solid transparent;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: var(--orange);
+            border-bottom-color: var(--orange);
+        }
+
+        /* =====================================================
+           FILTERS
+        ===================================================== */
+
+        .filters {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            gap: 10px;
+        }
+
+        .input,
+        .select {
+            height: 40px;
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 0 12px;
+            outline: none;
+            color: var(--text);
+            background: white;
+            font-size: 12px;
+        }
+
+        .input:focus,
+        .select:focus {
+            border-color: var(--orange);
+        }
+
+        /* =====================================================
+           BULK BAR
+        ===================================================== */
+
+        .bulk-bar {
+            display: none;
+            padding: 11px 16px;
+            background: #fff8f1;
+            border-bottom: 1px solid #ffe0c4;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bulk-bar.show {
+            display: flex;
+        }
+
+        .bulk-left {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .small-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1250px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #fafbfd;
+            color: #6b7787;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .45px;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #fcfdff;
+        }
+
+        .provider-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 220px;
+        }
+
+        .provider-avatar {
+            width: 39px;
+            height: 39px;
+            min-width: 39px;
+            border-radius: 9px;
+            background: #edf2f7;
+            color: var(--navy);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            font-size: 12px;
+        }
+
+        .provider-name {
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .provider-id {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 4px 7px;
+            border-radius: 5px;
+            background: #f0f3f7;
+            color: #506073;
+            font-size: 9px;
+            font-weight: 800;
+            margin: 2px;
+        }
+
+        .tag.orange {
+            background: #fff1e4;
+            color: #d76400;
+        }
+
+        .tag.blue {
+            background: #edf5ff;
+            color: #2169b9;
+        }
+
+        .tag.green {
+            background: #eaf8ef;
+            color: #16824a;
+        }
+
+        .tag.purple {
+            background: #f1edff;
+            color: #6548bb;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status.active {
+            color: var(--green);
+            background: #eaf8ef;
+        }
+
+        .status.pending {
+            color: var(--yellow);
+            background: #fff7df;
+        }
+
+        .status.review {
+            color: var(--blue);
+            background: #edf5ff;
+        }
+
+        .status.suspended {
+            color: var(--red);
+            background: #fff0ef;
+        }
+
+        .status.rejected {
+            color: #707a87;
+            background: #f0f2f5;
+        }
+
+        .rating {
+            font-weight: 800;
+        }
+
+        .rating span {
+            color: #f2a000;
+        }
+
+        .money {
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           ACTION MENU
+        ===================================================== */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .action-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 37px;
+            min-width: 180px;
+            padding: 5px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.14);
+            z-index: 100;
+        }
+
+        .action-menu.show {
+            display: block;
+        }
+
+        .action-menu button {
+            display: block;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            padding: 9px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .action-menu button:hover {
+            background: #f5f7fa;
+        }
+
+        .action-menu .danger {
+            color: var(--red);
+        }
+
+        /* =====================================================
+           PAGINATION
+        ===================================================== */
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-info {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .page-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 8px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .page-btn.active {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        /* =====================================================
+           LOWER GRID
+        ===================================================== */
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 20px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: 35px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: #f1f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-row strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .category-row span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        .category-number {
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .operations {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .operation {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .operation-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .operation-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #f1f4f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .operation strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .operation span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        .operation-number {
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2,13,25,.63);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 780px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.3);
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 17px;
+        }
+
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 6px;
+            background: #f2f4f7;
+            font-size: 18px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .large-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: #edf2f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .profile-header h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .profile-header p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .profile-status {
+            margin-left: auto;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 13px;
+        }
+
+        .detail-box span {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .detail-box strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .modal-section {
+            margin-top: 20px;
+        }
+
+        .modal-section h4 {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .document-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .document {
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+        }
+
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* =====================================================
+           EMPTY / TOAST
+        ===================================================== */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 45px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state strong {
+            display: block;
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 3000;
+            background: var(--navy);
+            color: white;
+            padding: 13px 17px;
+            border-radius: 8px;
+            font-size: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .25s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .footer {
+            text-align: center;
+            color: #8793a2;
+            font-size: 10px;
+            padding: 25px 0 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1350px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+
+            .brand {
+                width: auto;
+                min-width: auto;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .support-action {
+                display: none;
+            }
+
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .content {
+                padding: 18px 12px;
+            }
+
+            .global-search {
+                display: none;
+            }
+
+            .admin-user > div:last-child {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .document-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     TOPBAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+        <div class="brand">
+            <div class="brand-logo">FA<span>GA</span></div>
+            <div class="admin-label">ADMIN</div>
+        </div>
+
+        <div class="global-search">
+
+            <input
+                id="globalSearch"
+                type="text"
+                placeholder="Search providers, services, users..."
+                onkeydown="globalSearch(event)"
+            >
+
+            <button onclick="runGlobalSearch()">⌕</button>
+
+        </div>
+
+        <div class="top-actions">
+
+            <button
+                class="top-action notification"
+                onclick="showToast('You have 6 service-provider notifications.')"
+            >
+                🔔
+                <span class="notification-badge">6</span>
+            </button>
+
+            <button
+                class="top-action support-action"
+                onclick="showToast('Opening admin support...')"
+            >
+                Support
+            </button>
+
+            <div class="admin-user">
+
+                <div class="avatar">SA</div>
+
+                <div>
+                    <strong>Super Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Overview</div>
+
+        <button class="side-link" onclick="navigate('index.html')">
+            <span class="side-icon">▦</span>
+            Dashboard
+        </button>
+
+        <button class="side-link" onclick="navigate('users.html')">
+            <span class="side-icon">♙</span>
+            Users
+        </button>
+
+        <button class="side-link" onclick="navigate('orders.html')">
+            <span class="side-icon">▤</span>
+            Orders
+            <span class="side-badge">36</span>
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Operations</div>
+
+        <button class="side-link" onclick="navigate('logistics.html')">
+            <span class="side-icon">▣</span>
+            Logistics
+        </button>
+
+        <button class="side-link" onclick="navigate('riders.html')">
+            <span class="side-icon">♟</span>
+            Riders
+        </button>
+
+        <button class="side-link" onclick="navigate('marketplace.html')">
+            <span class="side-icon">▥</span>
+            Marketplace
+        </button>
+
+        <button class="side-link" onclick="navigate('sellers.html')">
+            <span class="side-icon">▱</span>
+            Sellers
+        </button>
+
+        <button class="side-link" onclick="navigate('services.html')">
+            <span class="side-icon">⚒</span>
+            Services
+        </button>
+
+        <button class="side-link active" onclick="navigate('service-providers.html')">
+            <span class="side-icon">♧</span>
+            Service Providers
+        </button>
+
+        <button class="side-link" onclick="navigate('food.html')">
+            <span class="side-icon">♨</span>
+            Food & Restaurants
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Finance</div>
+
+        <button class="side-link" onclick="navigate('payments.html')">
+            <span class="side-icon">₦</span>
+            Payments
+        </button>
+
+        <button class="side-link" onclick="navigate('wallets.html')">
+            <span class="side-icon">▰</span>
+            Wallets
+        </button>
+
+        <button class="side-link" onclick="navigate('payouts.html')">
+            <span class="side-icon">⇄</span>
+            Payouts
+        </button>
+
+        <button class="side-link" onclick="navigate('reports.html')">
+            <span class="side-icon">◫</span>
+            Reports
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Administration</div>
+
+        <button class="side-link" onclick="navigate('support.html')">
+            <span class="side-icon">?</span>
+            Support
+        </button>
+
+        <button class="side-link" onclick="navigate('disputes.html')">
+            <span class="side-icon">⚠</span>
+            Disputes
+            <span class="side-badge">12</span>
+        </button>
+
+        <button class="side-link" onclick="navigate('settings.html')">
+            <span class="side-icon">⚙</span>
+            Settings
+        </button>
+
+        <button class="side-link" onclick="navigate('audit-logs.html')">
+            <span class="side-icon">≡</span>
+            Audit Logs
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <div class="sidebar-title">Portal</div>
+
+        <button class="side-link" onclick="navigate('../dashboard.html')">
+            <span class="side-icon">↗</span>
+            User Portal
+        </button>
+
+        <button class="side-link" onclick="logout()">
+            <span class="side-icon">⇥</span>
+            Sign Out
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="main">
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <div>
+                <h1>Service Provider Management</h1>
+
+                <p>
+                    Manage service professionals, verification, services,
+                    bookings, ratings, earnings and provider compliance.
+                </p>
+            </div>
+
+            <div class="header-actions">
+
+                <button class="btn" onclick="exportProviders()">
+                    ↓ Export Providers
+                </button>
+
+                <button class="btn btn-primary" onclick="addProvider()">
+                    + Add Provider
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             KPI CARDS
+        ====================================================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Providers</div>
+                <div class="stat-value">4,218</div>
+                <div class="stat-meta positive">↑ 12.4% this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Active Providers</div>
+                <div class="stat-value">3,684</div>
+                <div class="stat-meta positive">87.3% active</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Pending Verification</div>
+                <div class="stat-value">214</div>
+                <div class="stat-meta warning">Requires review</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Bookings Today</div>
+                <div class="stat-value">486</div>
+                <div class="stat-meta positive">↑ 8.7% today</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Service GMV</div>
+                <div class="stat-value">₦5.82M</div>
+                <div class="stat-meta positive">↑ 15.2% this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Provider Issues</div>
+                <div class="stat-value">29</div>
+                <div class="stat-meta negative">Needs attention</div>
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FILTER PANEL
+        ====================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Provider Directory</h2>
+
+                    <p>
+                        Search and manage professionals offering services through FAGA.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    data-tab="all"
+                    onclick="setTab(this,'all')"
+                >
+                    All Providers
+                </button>
+
+                <button
+                    class="tab"
+                    data-tab="active"
+                    onclick="setTab(this,'active')"
+                >
+                    Active
+                </button>
+
+                <button
+                    class="tab"
+                    data-tab="pending"
+                    onclick="setTab(this,'pending')"
+                >
+                    Pending Verification
+                </button>
+
+                <button
+                    class="tab"
+                    data-tab="review"
+                    onclick="setTab(this,'review')"
+                >
+                    Under Review
+                </button>
+
+                <button
+                    class="tab"
+                    data-tab="suspended"
+                    onclick="setTab(this,'suspended')"
+                >
+                    Suspended
+                </button>
+
+                <button
+                    class="tab"
+                    data-tab="rejected"
+                    onclick="setTab(this,'rejected')"
+                >
+                    Rejected
+                </button>
+
+            </div>
+
+
+            <div class="filters">
+
+                <input
+                    class="input"
+                    id="providerSearch"
+                    type="text"
+                    placeholder="Search provider, service, email or provider ID..."
+                    oninput="filterProviders()"
+                >
+
+
+                <select
+                    class="select"
+                    id="categoryFilter"
+                    onchange="filterProviders()"
+                >
+                    <option value="">All Service Categories</option>
+                    <option value="Cleaning">Cleaning</option>
+                    <option value="Repairs">Repairs</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Design">Design</option>
+                    <option value="Events">Events</option>
+                    <option value="Auto">Auto Services</option>
+                    <option value="Home">Home Services</option>
+                    <option value="Tutoring">Tutoring</option>
+                </select>
+
+
+                <select
+                    class="select"
+                    id="verificationFilter"
+                    onchange="filterProviders()"
+                >
+                    <option value="">Verification</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Review">Under Review</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+
+                <select
+                    class="select"
+                    id="providerTypeFilter"
+                    onchange="filterProviders()"
+                >
+                    <option value="">Provider Type</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Business">Business</option>
+                    <option value="Agency">Agency</option>
+                </select>
+
+
+                <select
+                    class="select"
+                    id="statusFilter"
+                    onchange="filterProviders()"
+                >
+                    <option value="">Account Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Suspended">Suspended</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+
+                <button class="btn" onclick="resetFilters()">
+                    Reset
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BULK ACTION BAR
+        ====================================================== -->
+
+        <div class="bulk-bar" id="bulkBar">
+
+            <div class="bulk-left">
+                <span id="selectedCount">0</span>
+                providers selected
+            </div>
+
+            <div class="bulk-actions">
+
+                <button class="small-btn" onclick="bulkVerify()">
+                    ✓ Verify
+                </button>
+
+                <button class="small-btn" onclick="bulkMessage()">
+                    ✉ Message
+                </button>
+
+                <button class="small-btn" onclick="bulkFeature()">
+                    ★ Feature
+                </button>
+
+                <button class="small-btn" onclick="bulkSuspend()">
+                    Suspend
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PROVIDER TABLE
+        ====================================================== -->
+
+        <section class="panel">
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                <input
+                                    type="checkbox"
+                                    id="selectAll"
+                                    onchange="toggleAll(this)"
+                                >
+                            </th>
+
+                            <th>Provider</th>
+
+                            <th>Provider Type</th>
+
+                            <th>Services</th>
+
+                            <th>Verification</th>
+
+                            <th>Status</th>
+
+                            <th>Bookings</th>
+
+                            <th>Earnings</th>
+
+                            <th>Rating</th>
+
+                            <th>Completion</th>
+
+                            <th>Joined</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="providerTable">
+
+                        <!-- PROVIDER 1 -->
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Technology"
+                            data-type="Business"
+                            data-search="techfix nigeria technology repairs phones laptop computer pro-10021"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        TF
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            TechFix Nigeria
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10021
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag blue">
+                                    Business
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag blue">
+                                    Repairs
+                                </span>
+
+                                <span class="tag purple">
+                                    Technology
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Verified
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>1,248</td>
+
+                            <td class="money">
+                                ₦3.84M
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.9
+                                </div>
+                            </td>
+
+                            <td>96%</td>
+
+                            <td>Jan 12, 2025</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('TechFix Nigeria')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="viewServices('TechFix Nigeria')">
+                                            View Services
+                                        </button>
+
+                                        <button onclick="viewBookings('TechFix Nigeria')">
+                                            Bookings
+                                        </button>
+
+                                        <button onclick="messageProvider('TechFix Nigeria')">
+                                            Message
+                                        </button>
+
+                                        <button onclick="verifyProvider('TechFix Nigeria')">
+                                            Verification
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="suspendProvider('TechFix Nigeria')">
+                                            Suspend
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 2 -->
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Cleaning"
+                            data-type="Individual"
+                            data-search="sparkle clean cleaning home cleaning sparkle pro-10048"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        SC
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            Sparkle Clean
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10048
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag green">
+                                    Individual
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag green">
+                                    Cleaning
+                                </span>
+
+                                <span class="tag orange">
+                                    Home
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Verified
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>936</td>
+
+                            <td class="money">
+                                ₦2.17M
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.8
+                                </div>
+                            </td>
+
+                            <td>94%</td>
+
+                            <td>Feb 21, 2025</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('Sparkle Clean')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="viewServices('Sparkle Clean')">
+                                            View Services
+                                        </button>
+
+                                        <button onclick="viewBookings('Sparkle Clean')">
+                                            Bookings
+                                        </button>
+
+                                        <button onclick="messageProvider('Sparkle Clean')">
+                                            Message
+                                        </button>
+
+                                        <button onclick="verifyProvider('Sparkle Clean')">
+                                            Verification
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="suspendProvider('Sparkle Clean')">
+                                            Suspend
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 3 -->
+
+                        <tr
+                            data-status="Pending"
+                            data-verification="Pending"
+                            data-category="Beauty"
+                            data-type="Individual"
+                            data-search="beauty by ada beauty makeup hair stylist ada pro-10114"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        BA
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            Beauty by Ada
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10114
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag green">
+                                    Individual
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag purple">
+                                    Beauty
+                                </span>
+
+                                <span class="tag">
+                                    Hair
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>0</td>
+
+                            <td class="money">
+                                ₦0
+                            </td>
+
+                            <td>—</td>
+
+                            <td>—</td>
+
+                            <td>Sep 08, 2026</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('Beauty by Ada')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="verifyProvider('Beauty by Ada')">
+                                            Review Documents
+                                        </button>
+
+                                        <button onclick="approveProvider('Beauty by Ada')">
+                                            Approve Provider
+                                        </button>
+
+                                        <button onclick="messageProvider('Beauty by Ada')">
+                                            Message
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="rejectProvider('Beauty by Ada')">
+                                            Reject
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 4 -->
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Repairs"
+                            data-type="Business"
+                            data-search="fixmaster home repairs plumbing electrical home services fixmaster pro-10076"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        FH
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            FixMaster Home
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10076
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag blue">
+                                    Business
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag orange">
+                                    Repairs
+                                </span>
+
+                                <span class="tag green">
+                                    Home
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Verified
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>784</td>
+
+                            <td class="money">
+                                ₦1.94M
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.7
+                                </div>
+                            </td>
+
+                            <td>92%</td>
+
+                            <td>Mar 17, 2025</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('FixMaster Home')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="viewServices('FixMaster Home')">
+                                            View Services
+                                        </button>
+
+                                        <button onclick="viewBookings('FixMaster Home')">
+                                            Bookings
+                                        </button>
+
+                                        <button onclick="messageProvider('FixMaster Home')">
+                                            Message
+                                        </button>
+
+                                        <button onclick="verifyProvider('FixMaster Home')">
+                                            Verification
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="suspendProvider('FixMaster Home')">
+                                            Suspend
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 5 -->
+
+                        <tr
+                            data-status="Review"
+                            data-verification="Review"
+                            data-category="Events"
+                            data-type="Agency"
+                            data-search="elite events nigeria events planning catering decoration elite pro-10202"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        EE
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            Elite Events Nigeria
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10202
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag purple">
+                                    Agency
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag purple">
+                                    Events
+                                </span>
+
+                                <span class="tag orange">
+                                    Catering
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status review">
+                                    Under Review
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status review">
+                                    Review
+                                </span>
+                            </td>
+
+                            <td>126</td>
+
+                            <td class="money">
+                                ₦624K
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.3
+                                </div>
+                            </td>
+
+                            <td>89%</td>
+
+                            <td>Aug 26, 2026</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('Elite Events Nigeria')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="verifyProvider('Elite Events Nigeria')">
+                                            Review Documents
+                                        </button>
+
+                                        <button onclick="approveProvider('Elite Events Nigeria')">
+                                            Approve
+                                        </button>
+
+                                        <button onclick="messageProvider('Elite Events Nigeria')">
+                                            Message
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="rejectProvider('Elite Events Nigeria')">
+                                            Reject
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 6 -->
+
+                        <tr
+                            data-status="Suspended"
+                            data-verification="Verified"
+                            data-category="Auto"
+                            data-type="Business"
+                            data-search="auto pro nigeria mechanic car repair auto services auto pro-09921"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        AP
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            AutoPro Nigeria
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-09921
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag blue">
+                                    Business
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag">
+                                    Auto
+                                </span>
+
+                                <span class="tag orange">
+                                    Repairs
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Verified
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status suspended">
+                                    Suspended
+                                </span>
+                            </td>
+
+                            <td>512</td>
+
+                            <td class="money">
+                                ₦1.28M
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 3.6
+                                </div>
+                            </td>
+
+                            <td>76%</td>
+
+                            <td>Oct 11, 2024</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('AutoPro Nigeria')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="viewBookings('AutoPro Nigeria')">
+                                            Bookings
+                                        </button>
+
+                                        <button onclick="messageProvider('AutoPro Nigeria')">
+                                            Message
+                                        </button>
+
+                                        <button onclick="restoreProvider('AutoPro Nigeria')">
+                                            Restore Provider
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="deleteProvider('AutoPro Nigeria')">
+                                            Delete Provider
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- PROVIDER 7 -->
+
+                        <tr
+                            data-status="Active"
+                            data-verification="Verified"
+                            data-category="Design"
+                            data-type="Individual"
+                            data-search="pixel craft design graphic design ui ux branding pixel pro-10091"
+                        >
+
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="provider-check"
+                                    onchange="updateBulkBar()"
+                                >
+                            </td>
+
+                            <td>
+
+                                <div class="provider-cell">
+
+                                    <div class="provider-avatar">
+                                        PC
+                                    </div>
+
+                                    <div>
+
+                                        <div class="provider-name">
+                                            PixelCraft Studio
+                                        </div>
+
+                                        <div class="provider-id">
+                                            PRO-10091
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <span class="tag green">
+                                    Individual
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span class="tag purple">
+                                    Design
+                                </span>
+
+                                <span class="tag blue">
+                                    UI/UX
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Verified
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="status active">
+                                    Active
+                                </span>
+                            </td>
+
+                            <td>624</td>
+
+                            <td class="money">
+                                ₦1.76M
+                            </td>
+
+                            <td>
+                                <div class="rating">
+                                    <span>★</span> 4.8
+                                </div>
+                            </td>
+
+                            <td>97%</td>
+
+                            <td>Apr 02, 2025</td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleMenu(this)"
+                                    >
+                                        ⋮
+                                    </button>
+
+                                    <div class="action-menu">
+
+                                        <button onclick="viewProvider('PixelCraft Studio')">
+                                            View Provider
+                                        </button>
+
+                                        <button onclick="viewServices('PixelCraft Studio')">
+                                            View Services
+                                        </button>
+
+                                        <button onclick="viewBookings('PixelCraft Studio')">
+                                            Bookings
+                                        </button>
+
+                                        <button onclick="messageProvider('PixelCraft Studio')">
+                                            Message
+                                        </button>
+
+                                        <button onclick="verifyProvider('PixelCraft Studio')">
+                                            Verification
+                                        </button>
+
+                                        <button class="danger"
+                                            onclick="suspendProvider('PixelCraft Studio')">
+                                            Suspend
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-state" id="emptyState">
+
+                    <strong>No service providers found</strong>
+
+                    Try changing your search or filter settings.
+
+                </div>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <div class="pagination">
+
+                <div class="page-info">
+                    Showing <strong>1–7</strong> of
+                    <strong>4,218</strong> providers
+                </div>
+
+                <div class="page-buttons">
+
+                    <button class="page-btn">‹</button>
+
+                    <button class="page-btn active">
+                        1
+                    </button>
+
+                    <button class="page-btn" onclick="changePage(2)">
+                        2
+                    </button>
+
+                    <button class="page-btn" onclick="changePage(3)">
+                        3
+                    </button>
+
+                    <button class="page-btn">
+                        4
+                    </button>
+
+                    <button class="page-btn">
+                        5
+                    </button>
+
+                    <button class="page-btn">
+                        …
+                    </button>
+
+                    <button class="page-btn">
+                        603
+                    </button>
+
+                    <button class="page-btn">
+                        ›
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             LOWER INFORMATION
+        ====================================================== -->
+
+        <div class="lower-grid">
+
+            <!-- SERVICE CATEGORIES -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Providers by Service Category</h2>
+
+                        <p>
+                            Current provider distribution across FAGA services.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="category-list">
+
+                        <div class="category-row">
+
+                            <div class="category-icon">
+                                🧹
+                            </div>
+
+                            <div>
+                                <strong>Cleaning</strong>
+                                <span>Home and commercial cleaning</span>
+                            </div>
+
+                            <div class="category-number">
+                                842
+                            </div>
+
+                        </div>
+
+
+                        <div class="category-row">
+
+                            <div class="category-icon">
+                                🔧
+                            </div>
+
+                            <div>
+                                <strong>Repairs</strong>
+                                <span>Plumbing, electrical and general repairs</span>
+                            </div>
+
+                            <div class="category-number">
+                                718
+                            </div>
+
+                        </div>
+
+
+                        <div class="category-row">
+
+                            <div class="category-icon">
+                                💻
+                            </div>
+
+                            <div>
+                                <strong>Technology</strong>
+                                <span>IT, devices, software and technical support</span>
+                            </div>
+
+                            <div class="category-number">
+                                634
+                            </div>
+
+                        </div>
+
+
+                        <div class="category-row">
+
+                            <div class="category-icon">
+                                💄
+                            </div>
+
+                            <div>
+                                <strong>Beauty</strong>
+                                <span>Hair, makeup, nails and beauty services</span>
+                            </div>
+
+                            <div class="category-number">
+                                521
+                            </div>
+
+                        </div>
+
+
+                        <div class="category-row">
+
+                            <div class="category-icon">
+                                🎨
+                            </div>
+
+                            <div>
+                                <strong>Design</strong>
+                                <span>Graphic, UI/UX, branding and creative services</span>
+                            </div>
+
+                            <div class="category-number">
+                                438
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- OPERATIONS -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Provider Operations</h2>
+
+                        <p>
+                            Items requiring attention from the admin team.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="operations">
+
+                        <div class="operation">
+
+                            <div class="operation-left">
+
+                                <div class="operation-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+                                    <strong>Pending Verification</strong>
+                                    <span>Provider accounts awaiting approval</span>
+                                </div>
+
+                            </div>
+
+                            <div class="operation-number warning">
+                                214
+                            </div>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <div class="operation-left">
+
+                                <div class="operation-icon">
+                                    ⚠
+                                </div>
+
+                                <div>
+                                    <strong>Provider Complaints</strong>
+                                    <span>Customer complaints requiring review</span>
+                                </div>
+
+                            </div>
+
+                            <div class="operation-number negative">
+                                29
+                            </div>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <div class="operation-left">
+
+                                <div class="operation-icon">
+                                    ★
+                                </div>
+
+                                <div>
+                                    <strong>Low Rated Providers</strong>
+                                    <span>Providers below 3.5 rating</span>
+                                </div>
+
+                            </div>
+
+                            <div class="operation-number negative">
+                                47
+                            </div>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <div class="operation-left">
+
+                                <div class="operation-icon">
+                                    ₦
+                                </div>
+
+                                <div>
+                                    <strong>Pending Provider Payouts</strong>
+                                    <span>Funds awaiting settlement</span>
+                                </div>
+
+                            </div>
+
+                            <div class="operation-number">
+                                ₦1.84M
+                            </div>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <div class="operation-left">
+
+                                <div class="operation-icon">
+                                    ◷
+                                </div>
+
+                                <div>
+                                    <strong>Inactive Providers</strong>
+                                    <span>No completed booking in 30+ days</span>
+                                </div>
+
+                            </div>
+
+                            <div class="operation-number">
+                                534
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =====================================================
+             SINGLE ACCOUNT MODEL
+        ====================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>FAGA Service Provider Account Model</h2>
+
+                    <p>
+                        A provider is a capability attached to the user's existing FAGA account.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="panel-body">
+
+                <div
+                    style="
+                        display:grid;
+                        grid-template-columns:repeat(4,1fr);
+                        gap:12px;
+                    "
+                >
+
+                    <div class="detail-box">
+                        <span>Authentication</span>
+                        <strong>One FAGA Account</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>User Role</span>
+                        <strong>Service Provider</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Provider Profile</span>
+                        <strong>Professional Profile</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Marketplace</span>
+                        <strong>Service Listings</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="footer">
+            FAGA Admin Portal · Service Provider Management · © 2026 FAGA
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     PROVIDER MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="providerModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>Service Provider Profile</h2>
+
+            <button
+                class="close-modal"
+                onclick="closeModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="profile-header">
+
+                <div class="large-avatar" id="modalAvatar">
+                    TF
+                </div>
+
+                <div>
+
+                    <h3 id="modalProviderName">
+                        TechFix Nigeria
+                    </h3>
+
+                    <p id="modalProviderId">
+                        Provider ID: PRO-10021 · Business Provider<br>
+                        Provider profile attached to the user's main FAGA account.
+                    </p>
+
+                </div>
+
+                <div class="profile-status">
+                    <span class="status active">
+                        Verified
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+                    <span>Total Bookings</span>
+                    <strong>1,248</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Completed</span>
+                    <strong>1,198</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Provider Earnings</span>
+                    <strong>₦3.84M</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Rating</span>
+                    <strong>★ 4.9 / 5</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Completion Rate</span>
+                    <strong>96%</strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Response Rate</span>
+                    <strong>98%</strong>
+                </div>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h4>Provider Information</h4>
+
+                <div class="detail-grid">
+
+                    <div class="detail-box">
+                        <span>Email</span>
+                        <strong>provider@example.com</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Phone</span>
+                        <strong>+234 800 000 0000</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Provider Type</span>
+                        <strong>Business</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Location</span>
+                        <strong>Lagos, Nigeria</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Account Role</span>
+                        <strong>Service Provider</strong>
+                    </div>
+
+                    <div class="detail-box">
+                        <span>Joined</span>
+                        <strong>Jan 12, 2025</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h4>Services Offered</h4>
+
+                <div class="service-list">
+
+                    <span class="tag blue">
+                        Laptop Repair
+                    </span>
+
+                    <span class="tag blue">
+                        Phone Repair
+                    </span>
+
+                    <span class="tag purple">
+                        Software Support
+                    </span>
+
+                    <span class="tag green">
+                        Device Setup
+                    </span>
+
+                    <span class="tag orange">
+                        IT Consultation
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h4>Verification Documents</h4>
+
+                <div class="document-list">
+
+                    <div class="document">
+
+                        <span>
+                            Identity Verification
+                        </span>
+
+                        <span class="status active">
+                            Verified
+                        </span>
+
+                    </div>
+
+
+                    <div class="document">
+
+                        <span>
+                            Business Registration
+                        </span>
+
+                        <span class="status active">
+                            Verified
+                        </span>
+
+                    </div>
+
+
+                    <div class="document">
+
+                        <span>
+                            Service Certification
+                        </span>
+
+                        <span class="status active">
+                            Verified
+                        </span>
+
+                    </div>
+
+
+                    <div class="document">
+
+                        <span>
+                            Bank Account
+                        </span>
+
+                        <span class="status active">
+                            Verified
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="btn"
+                onclick="messageCurrentProvider()"
+            >
+                Message Provider
+            </button>
+
+            <button
+                class="btn"
+                onclick="viewCurrentBookings()"
+            >
+                View Bookings
+            </button>
+
+            <button
+                class="btn btn-success"
+                onclick="approveCurrentProvider()"
+            >
+                Approve
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="suspendCurrentProvider()"
+            >
+                Suspend
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div class="toast" id="toast"></div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    let currentProvider = "";
+    let currentTab = "all";
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    function navigate(page) {
+        window.location.href = page;
+    }
+
+
+    /* =========================================================
+       MOBILE SIDEBAR
+    ========================================================= */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+    }
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2800);
+
+    }
+
+
+    /* =========================================================
+       TABS
+    ========================================================= */
+
+    function setTab(button, tab) {
+
+        document
+            .querySelectorAll(".tab")
+            .forEach(item => {
+                item.classList.remove("active");
+            });
+
+        button.classList.add("active");
+
+        currentTab = tab;
+
+        filterProviders();
+
+    }
+
+
+    /* =========================================================
+       FILTER PROVIDERS
+    ========================================================= */
+
+    function filterProviders() {
+
+        const search =
+            document
+                .getElementById("providerSearch")
+                .value
+                .toLowerCase()
+                .trim();
+
+        const category =
+            document.getElementById("categoryFilter").value;
+
+        const verification =
+            document.getElementById("verificationFilter").value;
+
+        const type =
+            document.getElementById("providerTypeFilter").value;
+
+        const status =
+            document.getElementById("statusFilter").value;
+
+        const rows =
+            document.querySelectorAll(
+                "#providerTable tr"
+            );
+
+        let visible = 0;
+
+
+        rows.forEach(row => {
+
+            const rowSearch =
+                row.dataset.search.toLowerCase();
+
+            const rowCategory =
+                row.dataset.category;
+
+            const rowVerification =
+                row.dataset.verification;
+
+            const rowType =
+                row.dataset.type;
+
+            const rowStatus =
+                row.dataset.status;
+
+            let matches = true;
+
+
+            if (
+                search &&
+                !rowSearch.includes(search)
+            ) {
+                matches = false;
+            }
+
+
+            if (
+                category &&
+                rowCategory !== category
+            ) {
+                matches = false;
+            }
+
+
+            if (
+                verification &&
+                rowVerification !== verification
+            ) {
+                matches = false;
+            }
+
+
+            if (
+                type &&
+                rowType !== type
+            ) {
+                matches = false;
+            }
+
+
+            if (
+                status &&
+                rowStatus !== status
+            ) {
+                matches = false;
+            }
+
+
+            if (currentTab !== "all") {
+
+                if (
+                    currentTab === "active" &&
+                    rowStatus !== "Active"
+                ) {
+                    matches = false;
+                }
+
+                if (
+                    currentTab === "pending" &&
+                    rowVerification !== "Pending"
+                ) {
+                    matches = false;
+                }
+
+                if (
+                    currentTab === "review" &&
+                    rowVerification !== "Review"
+                ) {
+                    matches = false;
+                }
+
+                if (
+                    currentTab === "suspended" &&
+                    rowStatus !== "Suspended"
+                ) {
+                    matches = false;
+                }
+
+                if (
+                    currentTab === "rejected" &&
+                    rowStatus !== "Rejected"
+                ) {
+                    matches = false;
+                }
+
+            }
+
+
+            row.style.display =
+                matches ? "" : "none";
+
+            if (matches) {
+                visible++;
+            }
+
+        });
+
+
+        document.getElementById("emptyState").style.display =
+            visible === 0 ? "block" : "none";
+
+    }
+
+
+    /* =========================================================
+       RESET FILTERS
+    ========================================================= */
+
+    function resetFilters() {
+
+        document.getElementById("providerSearch").value = "";
+        document.getElementById("categoryFilter").value = "";
+        document.getElementById("verificationFilter").value = "";
+        document.getElementById("providerTypeFilter").value = "";
+        document.getElementById("statusFilter").value = "";
+
+        document
+            .querySelectorAll(".tab")
+            .forEach(tab => {
+                tab.classList.remove("active");
+            });
+
+        document
+            .querySelector('[data-tab="all"]')
+            .classList.add("active");
+
+        currentTab = "all";
+
+        document
+            .querySelectorAll("#providerTable tr")
+            .forEach(row => {
+                row.style.display = "";
+            });
+
+        document.getElementById("emptyState").style.display =
+            "none";
+
+        showToast("Provider filters reset.");
+
+    }
+
+
+    /* =========================================================
+       SELECT ALL
+    ========================================================= */
+
+    function toggleAll(master) {
+
+        document
+            .querySelectorAll(".provider-check")
+            .forEach(check => {
+
+                const row = check.closest("tr");
+
+                if (row.style.display !== "none") {
+                    check.checked = master.checked;
+                }
+
+            });
+
+        updateBulkBar();
+
+    }
+
+
+    /* =========================================================
+       BULK BAR
+    ========================================================= */
+
+    function updateBulkBar() {
+
+        const selected =
+            document.querySelectorAll(
+                ".provider-check:checked"
+            ).length;
+
+        document.getElementById("selectedCount")
+            .textContent = selected;
+
+        document.getElementById("bulkBar")
+            .classList.toggle(
+                "show",
+                selected > 0
+            );
+
+    }
+
+
+    function selectedProviderCount() {
+
+        return document.querySelectorAll(
+            ".provider-check:checked"
+        ).length;
+
+    }
+
+
+    /* =========================================================
+       BULK ACTIONS
+    ========================================================= */
+
+    function bulkVerify() {
+
+        const count = selectedProviderCount();
+
+        if (!count) return;
+
+        showToast(
+            `${count} provider${count > 1 ? "s" : ""} queued for verification.`
+        );
+
+    }
+
+
+    function bulkMessage() {
+
+        const count = selectedProviderCount();
+
+        if (!count) return;
+
+        showToast(
+            `Message composer opened for ${count} providers.`
+        );
+
+    }
+
+
+    function bulkFeature() {
+
+        const count = selectedProviderCount();
+
+        if (!count) return;
+
+        showToast(
+            `${count} provider${count > 1 ? "s" : ""} marked for featured placement.`
+        );
+
+    }
+
+
+    function bulkSuspend() {
+
+        const count = selectedProviderCount();
+
+        if (!count) return;
+
+        if (
+            confirm(
+                `Suspend ${count} selected provider(s)?`
+            )
+        ) {
+
+            showToast(
+                `${count} provider(s) suspended.`
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       ACTION MENU
+    ========================================================= */
+
+    function toggleMenu(button) {
+
+        document
+            .querySelectorAll(".action-menu")
+            .forEach(menu => {
+
+                if (
+                    menu !== button.nextElementSibling
+                ) {
+                    menu.classList.remove("show");
+                }
+
+            });
+
+        button
+            .nextElementSibling
+            .classList.toggle("show");
+
+    }
+
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                !event.target.closest(".dropdown")
+            ) {
+
+                document
+                    .querySelectorAll(".action-menu")
+                    .forEach(menu => {
+                        menu.classList.remove("show");
+                    });
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       PROVIDER MODAL
+    ========================================================= */
+
+    function viewProvider(name) {
+
+        currentProvider = name;
+
+        document
+            .getElementById("modalProviderName")
+            .textContent = name;
+
+        document
+            .getElementById("modalProviderId")
+            .innerHTML =
+                "Service Provider · FAGA Professional<br>" +
+                "Provider profile attached to the user's main FAGA account.";
+
+        document
+            .getElementById("providerModal")
+            .classList.add("show");
+
+    }
+
+
+    function closeModal() {
+
+        document
+            .getElementById("providerModal")
+            .classList.remove("show");
+
+    }
+
+
+    document
+        .getElementById("providerModal")
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === this) {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       PROVIDER ACTIONS
+    ========================================================= */
+
+    function viewServices(name) {
+
+        showToast(
+            `Opening services offered by ${name}.`
+        );
+
+    }
+
+
+    function viewBookings(name) {
+
+        showToast(
+            `Opening bookings for ${name}.`
+        );
+
+    }
+
+
+    function viewCurrentBookings() {
+
+        showToast(
+            `Opening bookings for ${currentProvider}.`
+        );
+
+    }
+
+
+    function messageProvider(name) {
+
+        showToast(
+            `Message composer opened for ${name}.`
+        );
+
+    }
+
+
+    function messageCurrentProvider() {
+
+        showToast(
+            `Message composer opened for ${currentProvider}.`
+        );
+
+    }
+
+
+    function verifyProvider(name) {
+
+        showToast(
+            `Opening verification documents for ${name}.`
+        );
+
+    }
+
+
+    function approveProvider(name) {
+
+        if (
+            confirm(
+                `Approve ${name} as a FAGA service provider?`
+            )
+        ) {
+
+            showToast(
+                `${name} has been approved.`
+            );
+
+        }
+
+    }
+
+
+    function approveCurrentProvider() {
+
+        if (
+            confirm(
+                `Approve ${currentProvider} as a FAGA service provider?`
+            )
+        ) {
+
+            showToast(
+                `${currentProvider} has been approved.`
+            );
+
+            closeModal();
+
+        }
+
+    }
+
+
+    function rejectProvider(name) {
+
+        if (
+            confirm(
+                `Reject the provider application for ${name}?`
+            )
+        ) {
+
+            showToast(
+                `${name} has been rejected.`
+            );
+
+        }
+
+    }
+
+
+    function suspendProvider(name) {
+
+        if (
+            confirm(
+                `Suspend ${name} from offering services on FAGA?`
+            )
+        ) {
+
+            showToast(
+                `${name} has been suspended.`
+            );
+
+        }
+
+    }
+
+
+    function suspendCurrentProvider() {
+
+        if (
+            confirm(
+                `Suspend ${currentProvider}?`
+            )
+        ) {
+
+            showToast(
+                `${currentProvider} has been suspended.`
+            );
+
+            closeModal();
+
+        }
+
+    }
+
+
+    function restoreProvider(name) {
+
+        if (
+            confirm(
+                `Restore ${name} to active status?`
+            )
+        ) {
+
+            showToast(
+                `${name} has been restored.`
+            );
+
+        }
+
+    }
+
+
+    function deleteProvider(name) {
+
+        if (
+            confirm(
+                `Delete ${name}? This should be protected by backend permissions.`
+            )
+        ) {
+
+            showToast(
+                `${name} deletion request submitted.`
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       ADD PROVIDER
+    ========================================================= */
+
+    function addProvider() {
+
+        showToast(
+            "Provider onboarding form would open here. The provider will be attached to a FAGA user account."
+        );
+
+    }
+
+
+    /* =========================================================
+       EXPORT
+    ========================================================= */
+
+    function exportProviders() {
+
+        showToast(
+            "Provider export is being prepared."
+        );
+
+        /*
+            Backend:
+
+            GET /api/admin/services/providers/export
+
+            Expected:
+            CSV or XLSX download
+        */
+
+    }
+
+
+    /* =========================================================
+       PAGINATION
+    ========================================================= */
+
+    function changePage(page) {
+
+        showToast(
+            `Loading provider page ${page}.`
+        );
+
+    }
+
+
+    /* =========================================================
+       GLOBAL SEARCH
+    ========================================================= */
+
+    function globalSearch(event) {
+
+        if (event.key === "Enter") {
+            runGlobalSearch();
+        }
+
+    }
+
+
+    function runGlobalSearch() {
+
+        const value =
+            document
+                .getElementById("globalSearch")
+                .value
+                .trim();
+
+        if (!value) {
+
+            showToast(
+                "Enter a provider, service or user."
+            );
+
+            return;
+        }
+
+        document
+            .getElementById("providerSearch")
+            .value = value;
+
+        filterProviders();
+
+        showToast(
+            `Searching service providers for "${value}".`
+        );
+
+    }
+
+
+    /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+    function logout() {
+
+        if (
+            confirm(
+                "Sign out of the FAGA Admin Portal?"
+            )
+        ) {
+
+            /*
+                Backend:
+
+                POST /api/admin/logout
+            */
+
+            window.location.href="../user portal/login.html";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       BACKEND INTEGRATION MAP
+    =========================================================
+
+        GET
+        /api/admin/services/providers
+
+        GET
+        /api/admin/services/providers/:id
+
+        POST
+        /api/admin/services/providers
+
+        PATCH
+        /api/admin/services/providers/:id
+
+        PATCH
+        /api/admin/services/providers/:id/status
+
+        PATCH
+        /api/admin/services/providers/:id/verify
+
+        PATCH
+        /api/admin/services/providers/:id/suspend
+
+        GET
+        /api/admin/services/providers/:id/services
+
+        GET
+        /api/admin/services/providers/:id/bookings
+
+        GET
+        /api/admin/services/providers/:id/reviews
+
+        GET
+        /api/admin/services/providers/:id/payouts
+
+        GET
+        /api/admin/services/providers/export
+
+        POST
+        /api/admin/services/providers/bulk-verify
+
+        POST
+        /api/admin/services/providers/bulk-status
+
+        POST
+        /api/admin/logout
+
+
+        RECOMMENDED DATA MODEL:
+
+        users
+        ├── id
+        ├── name
+        ├── email
+        ├── phone
+        └── ...
+
+        user_roles
+        ├── user_id
+        └── role = service_provider
+
+        service_provider_profiles
+        ├── id
+        ├── user_id
+        ├── provider_type
+        ├── business_name
+        ├── bio
+        ├── verification_status
+        ├── rating
+        ├── service_area
+        ├── payout_account_id
+        └── ...
+
+        services
+        ├── id
+        ├── provider_id
+        ├── category_id
+        ├── title
+        ├── description
+        ├── price
+        └── status
+
+        service_bookings
+        ├── id
+        ├── service_id
+        ├── customer_id
+        ├── provider_id
+        ├── scheduled_at
+        ├── status
+        ├── amount
+        └── ...
+
+        service_reviews
+        ├── booking_id
+        ├── customer_id
+        ├── provider_id
+        ├── rating
+        └── comment
+
+
+        IMPORTANT:
+
+        A user does NOT need a second login to become a
+        service provider.
+
+        Example:
+
+        One FAGA account
+        ├── Customer
+        ├── Seller
+        ├── Rider
+        └── Service Provider
+
+        The provider dashboard and profile are capabilities
+        attached to that same authenticated user.
+
+    ========================================================= */
+
+</script>
+
+</body>
+</html>

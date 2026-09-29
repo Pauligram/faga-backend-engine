@@ -1,0 +1,5652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Applications | FAGA Admin</title>
+
+<style>
+:root{
+  --navy:#071a33;
+  --navy2:#0b2343;
+  --orange:#f7931e;
+  --orange2:#df7f0b;
+  --bg:#f4f7fb;
+  --white:#fff;
+  --text:#172033;
+  --muted:#707b8d;
+  --border:#e2e7ee;
+  --success:#16834b;
+  --success-bg:#eaf8f0;
+  --warning:#a86d00;
+  --warning-bg:#fff6dd;
+  --danger:#d23d3d;
+  --danger-bg:#fff0f0;
+  --info:#236bc8;
+  --info-bg:#edf5ff;
+  --purple:#6c48b8;
+  --purple-bg:#f3edff;
+  --shadow:0 8px 28px rgba(7,26,51,.07);
+  --radius:14px;
+  --sidebar:250px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* TOPBAR */
+
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  height:68px;
+  padding:0 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:var(--navy);
+  color:#fff;
+  box-shadow:0 3px 15px rgba(0,0,0,.16);
+}
+
+.top-left{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.menu-toggle{
+  display:none;
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:#fff;
+  font-size:21px;
+}
+
+.menu-toggle:hover{
+  background:rgba(255,255,255,.08);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:21px;
+  font-weight:900;
+}
+
+.brand-mark{
+  width:35px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:9px;
+  background:var(--orange);
+  color:var(--navy);
+  font-weight:900;
+}
+
+.admin-label{
+  padding-left:14px;
+  border-left:1px solid rgba(255,255,255,.15);
+  color:#aebbd0;
+  font-size:12px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.top-icon{
+  position:relative;
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:#dbe4ef;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+}
+
+.top-icon:hover{
+  background:rgba(255,255,255,.08);
+}
+
+.notification-dot{
+  position:absolute;
+  top:7px;
+  right:7px;
+  width:7px;
+  height:7px;
+  border:2px solid var(--navy);
+  border-radius:50%;
+  background:var(--orange);
+}
+
+.admin-profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-left:11px;
+  margin-left:4px;
+  border-left:1px solid rgba(255,255,255,.12);
+}
+
+.avatar{
+  width:37px;
+  height:37px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--orange);
+  color:var(--navy);
+  font-size:13px;
+  font-weight:900;
+}
+
+.admin-info strong{
+  display:block;
+  font-size:13px;
+}
+
+.admin-info span{
+  display:block;
+  color:#aebbd0;
+  font-size:11px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  position:fixed;
+  top:68px;
+  left:0;
+  bottom:0;
+  z-index:900;
+  width:var(--sidebar);
+  padding:18px 12px;
+  overflow-y:auto;
+  background:var(--navy);
+  color:#dce5f1;
+  transition:transform .25s ease;
+}
+
+.sidebar-section{
+  margin-bottom:20px;
+}
+
+.sidebar-title{
+  padding:0 12px 8px;
+  color:#73849c;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:43px;
+  margin-bottom:3px;
+  padding:10px 12px;
+  border-radius:9px;
+  color:#bfcbdc;
+  font-size:13px;
+  transition:.2s;
+}
+
+.nav-link:hover{
+  background:rgba(255,255,255,.07);
+  color:#fff;
+}
+
+.nav-link.active{
+  background:var(--orange);
+  color:var(--navy);
+  font-weight:900;
+}
+
+.nav-icon{
+  width:21px;
+  flex:none;
+  text-align:center;
+  font-size:15px;
+}
+
+.nav-badge{
+  margin-left:auto;
+  padding:2px 7px;
+  border-radius:20px;
+  background:rgba(255,255,255,.1);
+  color:#c8d4e5;
+  font-size:10px;
+}
+
+.nav-link.active .nav-badge{
+  background:rgba(7,26,51,.14);
+  color:var(--navy);
+}
+
+/* MAIN */
+
+.main{
+  min-height:100vh;
+  margin-left:var(--sidebar);
+  padding:92px 28px 40px;
+}
+
+.page-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:22px;
+}
+
+.breadcrumb{
+  display:flex;
+  gap:8px;
+  margin-bottom:7px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.breadcrumb span:last-child{
+  color:var(--text);
+  font-weight:800;
+}
+
+.page-title{
+  margin-bottom:5px;
+  color:var(--navy);
+  font-size:27px;
+  line-height:1.2;
+}
+
+.page-description{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.header-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+.btn{
+  min-height:40px;
+  padding:9px 14px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fff;
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-size:10px;
+  font-weight:900;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:#c8d2df;
+  transform:translateY(-1px);
+}
+
+.btn-primary{
+  border-color:var(--orange);
+  background:var(--orange);
+  color:var(--navy);
+}
+
+.btn-primary:hover{
+  border-color:var(--orange2);
+  background:var(--orange2);
+}
+
+.btn-dark{
+  border-color:var(--navy);
+  background:var(--navy);
+  color:#fff;
+}
+
+.btn-danger{
+  color:var(--danger);
+  border-color:#efcdcd;
+  background:#fff;
+}
+
+.btn-success{
+  color:var(--success);
+  border-color:#cce9d8;
+  background:#fff;
+}
+
+.btn-small{
+  min-height:32px;
+  padding:6px 9px;
+  font-size:9px;
+}
+
+/* KPI */
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.kpi{
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.kpi-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+
+.kpi-label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+}
+
+.kpi-icon{
+  width:31px;
+  height:31px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:#f1f4f8;
+  color:var(--navy);
+  font-size:14px;
+}
+
+.kpi-value{
+  color:var(--navy);
+  font-size:20px;
+  font-weight:900;
+}
+
+.kpi-note{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* CARDS */
+
+.card{
+  overflow:hidden;
+  margin-bottom:18px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.card-title{
+  color:var(--navy);
+  font-size:14px;
+  font-weight:900;
+}
+
+.card-description{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.card-body{
+  padding:18px;
+}
+
+/* ANALYTICS */
+
+.analytics-grid{
+  display:grid;
+  grid-template-columns:1.4fr .8fr;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.chart{
+  height:180px;
+  position:relative;
+  padding:12px 5px 0;
+}
+
+.chart-grid{
+  position:absolute;
+  inset:12px 5px 26px 5px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.chart-line{
+  border-top:1px dashed #e4e8ee;
+}
+
+.chart-bars{
+  position:absolute;
+  inset:18px 15px 28px 20px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  gap:12px;
+}
+
+.bar-group{
+  height:100%;
+  flex:1;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:4px;
+}
+
+.bar{
+  width:35%;
+  min-width:8px;
+  border-radius:5px 5px 0 0;
+  background:var(--orange);
+}
+
+.bar.secondary{
+  background:#b9c5d5;
+}
+
+.chart-labels{
+  position:absolute;
+  right:10px;
+  bottom:4px;
+  left:20px;
+  display:flex;
+  justify-content:space-around;
+  color:#8b95a4;
+  font-size:8px;
+}
+
+.legend{
+  display:flex;
+  gap:15px;
+  margin-top:5px;
+  color:#748092;
+  font-size:8px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.legend-dot{
+  width:8px;
+  height:8px;
+  border-radius:2px;
+  background:var(--orange);
+}
+
+.legend-dot.gray{
+  background:#b9c5d5;
+}
+
+.status-summary{
+  display:grid;
+  gap:11px;
+}
+
+.summary-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.summary-label{
+  color:#677386;
+  font-size:9px;
+}
+
+.summary-value{
+  color:var(--navy);
+  font-size:11px;
+  font-weight:900;
+}
+
+.summary-progress{
+  height:5px;
+  margin-top:5px;
+  overflow:hidden;
+  border-radius:10px;
+  background:#edf0f4;
+}
+
+.summary-progress div{
+  height:100%;
+  border-radius:10px;
+  background:var(--orange);
+}
+
+/* FILTER */
+
+.filter-card{
+  padding:15px;
+  margin-bottom:18px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+
+.filter-grid{
+  display:grid;
+  grid-template-columns:2fr 1.4fr 1.2fr 1.2fr 1.2fr 1.2fr auto;
+  gap:9px;
+  align-items:end;
+}
+
+.filter-field label{
+  display:block;
+  margin-bottom:5px;
+  color:#778294;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+}
+
+.filter-field input,
+.filter-field select{
+  width:100%;
+  height:38px;
+  padding:8px 9px;
+  outline:none;
+  border:1px solid #dce2ea;
+  border-radius:8px;
+  background:#fff;
+  color:var(--text);
+  font-size:10px;
+}
+
+.filter-field input:focus,
+.filter-field select:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(247,147,30,.1);
+}
+
+/* TABS */
+
+.tabs{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  overflow-x:auto;
+  padding:0 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.tab{
+  position:relative;
+  flex:none;
+  padding:13px 12px;
+  border:0;
+  background:transparent;
+  color:#778294;
+  font-size:9px;
+  font-weight:800;
+}
+
+.tab.active{
+  color:var(--navy);
+}
+
+.tab.active::after{
+  content:"";
+  position:absolute;
+  right:8px;
+  bottom:-1px;
+  left:8px;
+  height:3px;
+  border-radius:5px 5px 0 0;
+  background:var(--orange);
+}
+
+.tab-count{
+  margin-left:4px;
+  padding:2px 5px;
+  border-radius:10px;
+  background:#eef1f5;
+  color:#788394;
+  font-size:7px;
+}
+
+/* BULK BAR */
+
+.bulk-bar{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 18px;
+  border-bottom:1px solid var(--border);
+  background:#fffaf2;
+}
+
+.bulk-bar.show{
+  display:flex;
+}
+
+.bulk-count{
+  color:#7b5a24;
+  font-size:9px;
+  font-weight:800;
+}
+
+.bulk-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+/* TABLE */
+
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  min-width:1250px;
+  border-collapse:collapse;
+}
+
+th{
+  padding:11px 12px;
+  background:#f8fafc;
+  color:#7c8796;
+  font-size:8px;
+  font-weight:900;
+  text-align:left;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  white-space:nowrap;
+}
+
+td{
+  padding:12px;
+  border-top:1px solid #edf0f4;
+  color:#536074;
+  font-size:9px;
+  vertical-align:middle;
+}
+
+tbody tr:hover{
+  background:#fbfcfd;
+}
+
+.check{
+  width:16px;
+  height:16px;
+  accent-color:var(--orange);
+}
+
+.applicant-cell{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:175px;
+}
+
+.applicant-avatar{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  border-radius:50%;
+  background:#edf3fa;
+  color:var(--navy);
+  font-size:10px;
+  font-weight:900;
+}
+
+.applicant-name{
+  color:var(--navy);
+  font-size:10px;
+  font-weight:900;
+}
+
+.applicant-id{
+  margin-top:1px;
+  color:#8a94a2;
+  font-size:8px;
+}
+
+.job-name{
+  color:#4f5b6d;
+  font-size:9px;
+  font-weight:800;
+}
+
+.job-company{
+  margin-top:2px;
+  color:#929baa;
+  font-size:8px;
+}
+
+.location{
+  white-space:nowrap;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.status-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:currentColor;
+}
+
+.status.submitted{
+  background:var(--info-bg);
+  color:var(--info);
+}
+
+.status.review{
+  background:var(--warning-bg);
+  color:var(--warning);
+}
+
+.status.shortlisted{
+  background:#e9f4ff;
+  color:#1769aa;
+}
+
+.status.interview{
+  background:var(--purple-bg);
+  color:var(--purple);
+}
+
+.status.selected{
+  background:var(--success-bg);
+  color:var(--success);
+}
+
+.status.rejected{
+  background:var(--danger-bg);
+  color:var(--danger);
+}
+
+.status.missing{
+  background:#f0f2f5;
+  color:#737e8d;
+}
+
+.cv-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 7px;
+  border-radius:6px;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.cv-badge.uploaded{
+  background:var(--success-bg);
+  color:var(--success);
+}
+
+.cv-badge.missing{
+  background:var(--danger-bg);
+  color:var(--danger);
+}
+
+.action-buttons{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.icon-btn{
+  width:29px;
+  height:29px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:#fff;
+  color:#657184;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+}
+
+.icon-btn:hover{
+  color:var(--navy);
+  border-color:#cbd4df;
+  background:#f8fafc;
+}
+
+/* PAGINATION */
+
+.table-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:13px 18px;
+  border-top:1px solid var(--border);
+}
+
+.pagination-info{
+  color:var(--muted);
+  font-size:9px;
+}
+
+.pagination{
+  display:flex;
+  gap:4px;
+}
+
+.page-btn{
+  width:29px;
+  height:29px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:#fff;
+  color:#657184;
+  font-size:9px;
+  font-weight:800;
+}
+
+.page-btn.active{
+  border-color:var(--orange);
+  background:var(--orange);
+  color:var(--navy);
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:2500;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(7,26,51,.58);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(850px,100%);
+  max-height:91vh;
+  overflow-y:auto;
+  border-radius:15px;
+  background:#fff;
+  box-shadow:0 25px 70px rgba(0,0,0,.28);
+}
+
+.modal-box.large{
+  width:min(1040px,100%);
+}
+
+.modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:17px 20px;
+  border-bottom:1px solid var(--border);
+}
+
+.modal-title{
+  color:var(--navy);
+  font-size:16px;
+  font-weight:900;
+}
+
+.modal-subtitle{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.modal-close{
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:8px;
+  background:#f1f3f6;
+  color:#657083;
+  font-size:17px;
+}
+
+.modal-body{
+  padding:20px;
+}
+
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  padding:13px 20px;
+  border-top:1px solid var(--border);
+}
+
+/* DETAIL */
+
+.application-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px;
+  margin-bottom:16px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#f8fafc;
+}
+
+.profile-avatar{
+  width:62px;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#e9f0f8;
+  color:var(--navy);
+  font-size:18px;
+  font-weight:900;
+}
+
+.profile-name{
+  color:var(--navy);
+  font-size:17px;
+  font-weight:900;
+}
+
+.profile-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px 15px;
+  margin-top:3px;
+  color:#6e7989;
+  font-size:9px;
+}
+
+.header-status{
+  margin-left:auto;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.detail-box{
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fafbfd;
+}
+
+.detail-label{
+  margin-bottom:4px;
+  color:#8993a1;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--navy);
+  font-size:10px;
+  font-weight:900;
+  word-break:break-word;
+}
+
+.detail-section{
+  padding:15px;
+  margin-bottom:13px;
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+
+.detail-section h4{
+  margin-bottom:9px;
+  color:var(--navy);
+  font-size:11px;
+}
+
+.detail-section p,
+.detail-section li{
+  color:#5f6a7b;
+  font-size:9px;
+  line-height:1.7;
+}
+
+.detail-section ul{
+  padding-left:17px;
+}
+
+.skills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.skill{
+  padding:5px 8px;
+  border-radius:6px;
+  background:#edf3fa;
+  color:#44546a;
+  font-size:8px;
+  font-weight:800;
+}
+
+.cv-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px;
+  border:1px solid #dce5ef;
+  border-radius:9px;
+  background:#f8fbff;
+}
+
+.cv-left{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.cv-icon{
+  width:35px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:#e9f1fb;
+  color:var(--info);
+  font-size:11px;
+  font-weight:900;
+}
+
+.cv-name{
+  color:var(--navy);
+  font-size:9px;
+  font-weight:900;
+}
+
+.cv-size{
+  margin-top:2px;
+  color:#8993a1;
+  font-size:8px;
+}
+
+.cover-letter{
+  padding:12px;
+  border-left:3px solid var(--orange);
+  background:#fffaf2;
+  color:#5c6879;
+  font-size:9px;
+  line-height:1.8;
+}
+
+.timeline{
+  display:grid;
+  gap:13px;
+}
+
+.timeline-item{
+  display:grid;
+  grid-template-columns:22px 1fr;
+  gap:8px;
+}
+
+.timeline-dot{
+  width:9px;
+  height:9px;
+  margin-top:4px;
+  border:2px solid var(--orange);
+  border-radius:50%;
+  background:#fff;
+}
+
+.timeline-title{
+  color:var(--navy);
+  font-size:9px;
+  font-weight:900;
+}
+
+.timeline-date{
+  color:#8a94a2;
+  font-size:8px;
+}
+
+.timeline-note{
+  margin-top:2px;
+  color:#657184;
+  font-size:8px;
+}
+
+/* ACTION MODAL */
+
+.action-list{
+  display:grid;
+  gap:8px;
+}
+
+.action-item{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fff;
+  color:var(--text);
+  text-align:left;
+}
+
+.action-item:hover{
+  border-color:var(--orange);
+  background:#fffaf2;
+}
+
+.action-item strong{
+  display:block;
+  color:var(--navy);
+  font-size:10px;
+}
+
+.action-item span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:8px;
+}
+
+/* FORM */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:5px;
+  color:#778294;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:9px 10px;
+  outline:none;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--text);
+  font-size:10px;
+}
+
+.form-group textarea{
+  min-height:105px;
+  resize:vertical;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:4000;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:13px 16px;
+  border-radius:10px;
+  background:var(--navy);
+  color:#fff;
+  box-shadow:0 15px 35px rgba(0,0,0,.22);
+  font-size:10px;
+  font-weight:800;
+  opacity:0;
+  transform:translateY(120px);
+  pointer-events:none;
+  transition:.3s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.toast-icon{
+  color:var(--orange);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1350px){
+
+  .kpi-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .filter-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .analytics-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:950px){
+
+  .menu-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+    padding:88px 18px 35px;
+  }
+
+  .admin-label,
+  .admin-info{
+    display:none;
+  }
+
+  .page-header{
+    flex-direction:column;
+  }
+
+  .header-actions{
+    justify-content:flex-start;
+  }
+
+  .kpi-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:650px){
+
+  .topbar{
+    padding:0 12px;
+  }
+
+  .brand{
+    font-size:18px;
+  }
+
+  .brand-mark{
+    width:32px;
+    height:32px;
+  }
+
+  .kpi-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .filter-grid{
+    grid-template-columns:1fr;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .application-header{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .header-status{
+    margin-left:0;
+  }
+
+  .table-footer{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .bulk-bar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .cv-box{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .toast{
+    right:15px;
+    bottom:15px;
+    left:15px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+  <div class="top-left">
+
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      aria-label="Open navigation">
+      ☰
+    </button>
+
+    <a href="../Public website/index.html" class="brand">
+      <span class="brand-mark">F</span>
+      <span>FAGA</span>
+    </a>
+
+    <span class="admin-label">
+      Administration Portal
+    </span>
+
+  </div>
+
+
+  <div class="top-actions">
+
+    <button
+      class="top-icon"
+      title="Search">
+      ⌕
+    </button>
+
+    <button
+      class="top-icon"
+      title="Notifications"
+      onclick="window.location.href='notifications.html'">
+      ♢
+      <span class="notification-dot"></span>
+    </button>
+
+    <div class="admin-profile">
+
+      <div class="avatar">
+        AD
+      </div>
+
+      <div class="admin-info">
+        <strong>Admin User</strong>
+        <span>Super Administrator</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-section">
+
+    <div class="sidebar-title">
+      Overview
+    </div>
+
+    <a href="../Public website/index.html" class="nav-link">
+      <span class="nav-icon">▦</span>
+      Dashboard
+    </a>
+
+    <a href="users.html" class="nav-link">
+      <span class="nav-icon">♙</span>
+      Users
+      <span class="nav-badge">12.4k</span>
+    </a>
+
+    <a href="orders.html" class="nav-link">
+      <span class="nav-icon">▤</span>
+      Orders
+      <span class="nav-badge">284</span>
+    </a>
+
+  </div>
+
+
+  <div class="sidebar-section">
+
+    <div class="sidebar-title">
+      Operations
+    </div>
+
+    <a href="../Public website/logistics.html" class="nav-link">
+      <span class="nav-icon">▱</span>
+      Logistics
+    </a>
+
+    <a href="riders.html" class="nav-link">
+      <span class="nav-icon">♟</span>
+      Riders
+    </a>
+
+    <a href="../Public website/marketplace.html" class="nav-link">
+      <span class="nav-icon">▧</span>
+      Marketplace
+    </a>
+
+    <a href="sellers.html" class="nav-link">
+      <span class="nav-icon">◫</span>
+      Sellers
+    </a>
+
+    <a href="../Public website/services.html" class="nav-link">
+      <span class="nav-icon">⚙</span>
+      Services
+    </a>
+
+    <a href="service-providers.html" class="nav-link">
+      <span class="nav-icon">♙</span>
+      Service Providers
+    </a>
+
+    <a href="../Public website/food.html" class="nav-link">
+      <span class="nav-icon">◉</span>
+      Food
+    </a>
+
+  </div>
+
+
+  <div class="sidebar-section">
+
+    <div class="sidebar-title">
+      Finance
+    </div>
+
+    <a href="payments.html" class="nav-link">
+      <span class="nav-icon">₦</span>
+      Payments
+    </a>
+
+    <a href="wallets.html" class="nav-link">
+      <span class="nav-icon">▣</span>
+      Wallets
+    </a>
+
+    <a href="payouts.html" class="nav-link">
+      <span class="nav-icon">↗</span>
+      Payouts
+    </a>
+
+    <a href="reports.html" class="nav-link">
+      <span class="nav-icon">▥</span>
+      Reports
+    </a>
+
+  </div>
+
+
+  <div class="sidebar-section">
+
+    <div class="sidebar-title">
+      Jobs
+    </div>
+
+    <a href="../Public website/jobs.html" class="nav-link">
+      <span class="nav-icon">▤</span>
+      Jobs
+    </a>
+
+    <a href="job-applicants.html" class="nav-link">
+      <span class="nav-icon">♙</span>
+      Applicants
+      <span class="nav-badge">682</span>
+    </a>
+
+    <a href="../Public website/job-applications.html" class="nav-link active">
+      <span class="nav-icon">▧</span>
+      Applications
+      <span class="nav-badge">184</span>
+    </a>
+
+    <a href="job-payments.html" class="nav-link">
+      <span class="nav-icon">₦</span>
+      Job Payments
+    </a>
+
+    <a href="job-settings.html" class="nav-link">
+      <span class="nav-icon">⚙</span>
+      Job Settings
+    </a>
+
+  </div>
+
+
+  <div class="sidebar-section">
+
+    <div class="sidebar-title">
+      Administration
+    </div>
+
+    <a href="support.html" class="nav-link">
+      <span class="nav-icon">?</span>
+      Support
+    </a>
+
+    <a href="disputes.html" class="nav-link">
+      <span class="nav-icon">!</span>
+      Disputes
+    </a>
+
+    <a href="notifications.html" class="nav-link">
+      <span class="nav-icon">♢</span>
+      Notifications
+      <span class="nav-badge">47</span>
+    </a>
+
+    <a href="audit-logs.html" class="nav-link">
+      <span class="nav-icon">≡</span>
+      Audit Logs
+    </a>
+
+    <a href="settings.html" class="nav-link">
+      <span class="nav-icon">⚙</span>
+      System Settings
+    </a>
+
+  </div>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        <span>Admin</span>
+        <span>›</span>
+        <span>Jobs</span>
+        <span>›</span>
+        <span>Applications</span>
+      </div>
+
+      <h1 class="page-title">
+        Job Applications
+      </h1>
+
+      <p class="page-description">
+        Review applications, manage candidate progress and coordinate hiring workflows.
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        class="btn"
+        onclick="exportApplications()">
+        ↓ Export
+      </button>
+
+      <button
+        class="btn"
+        onclick="showReviewQueue()">
+        ◷ Review Queue
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="messageSelected()">
+        ✉ Message Applicants
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================
+       KPI
+  ==================================================== -->
+
+  <section class="kpi-grid">
+
+    <div class="kpi">
+
+      <div class="kpi-top">
+        <span class="kpi-label">Total Applications</span>
+        <span class="kpi-icon">▧</span>
+      </div>
+
+      <div class="kpi-value">
+        1,284
+      </div>
+
+      <div class="kpi-note">
+        Across all published jobs
+      </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+      <div class="kpi-top">
+        <span class="kpi-label">New Applications</span>
+        <span class="kpi-icon">+</span>
+      </div>
+
+      <div class="kpi-value">
+        184
+      </div>
+
+      <div class="kpi-note">
+        Awaiting initial review
+      </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+      <div class="kpi-top">
+        <span class="kpi-label">Under Review</span>
+        <span class="kpi-icon">◷</span>
+      </div>
+
+      <div class="kpi-value">
+        326
+      </div>
+
+      <div class="kpi-note">
+        Currently being evaluated
+      </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+      <div class="kpi-top">
+        <span class="kpi-label">Shortlisted</span>
+        <span class="kpi-icon">★</span>
+      </div>
+
+      <div class="kpi-value">
+        148
+      </div>
+
+      <div class="kpi-note">
+        Candidates progressing
+      </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+      <div class="kpi-top">
+        <span class="kpi-label">Not Selected</span>
+        <span class="kpi-icon">×</span>
+      </div>
+
+      <div class="kpi-value">
+        417
+      </div>
+
+      <div class="kpi-note">
+        Closed applications
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       ANALYTICS
+  ==================================================== -->
+
+  <section class="analytics-grid">
+
+    <div class="card">
+
+      <div class="card-header">
+
+        <div>
+
+          <div class="card-title">
+            Application Activity
+          </div>
+
+          <div class="card-description">
+            Applications received and reviewed over the last 7 days.
+          </div>
+
+        </div>
+
+        <select
+          style="
+            height:34px;
+            padding:5px 8px;
+            border:1px solid var(--border);
+            border-radius:7px;
+            font-size:9px;
+          ">
+
+          <option>
+            Last 7 Days
+          </option>
+
+          <option>
+            Last 30 Days
+          </option>
+
+          <option>
+            Last 90 Days
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="chart">
+
+          <div class="chart-grid">
+
+            <div class="chart-line"></div>
+            <div class="chart-line"></div>
+            <div class="chart-line"></div>
+            <div class="chart-line"></div>
+            <div class="chart-line"></div>
+
+          </div>
+
+
+          <div class="chart-bars">
+
+            <div class="bar-group">
+              <div class="bar" style="height:48%;"></div>
+              <div class="bar secondary" style="height:31%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:65%;"></div>
+              <div class="bar secondary" style="height:42%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:54%;"></div>
+              <div class="bar secondary" style="height:38%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:78%;"></div>
+              <div class="bar secondary" style="height:52%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:69%;"></div>
+              <div class="bar secondary" style="height:48%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:91%;"></div>
+              <div class="bar secondary" style="height:67%;"></div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar" style="height:82%;"></div>
+              <div class="bar secondary" style="height:58%;"></div>
+            </div>
+
+          </div>
+
+
+          <div class="chart-labels">
+
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+
+          </div>
+
+        </div>
+
+
+        <div class="legend">
+
+          <div class="legend-item">
+            <span class="legend-dot"></span>
+            Applications
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-dot gray"></span>
+            Reviewed
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-header">
+
+        <div>
+
+          <div class="card-title">
+            Review Pipeline
+          </div>
+
+          <div class="card-description">
+            Current application status distribution.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="status-summary">
+
+          <div>
+
+            <div class="summary-row">
+
+              <span class="summary-label">
+                Submitted
+              </span>
+
+              <span class="summary-value">
+                184
+              </span>
+
+            </div>
+
+            <div class="summary-progress">
+              <div style="width:52%;"></div>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="summary-row">
+
+              <span class="summary-label">
+                Under Review
+              </span>
+
+              <span class="summary-value">
+                326
+              </span>
+
+            </div>
+
+            <div class="summary-progress">
+              <div style="width:71%;"></div>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="summary-row">
+
+              <span class="summary-label">
+                Shortlisted
+              </span>
+
+              <span class="summary-value">
+                148
+              </span>
+
+            </div>
+
+            <div class="summary-progress">
+              <div style="width:43%;"></div>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="summary-row">
+
+              <span class="summary-label">
+                Interview
+              </span>
+
+              <span class="summary-value">
+                91
+              </span>
+
+            </div>
+
+            <div class="summary-progress">
+              <div style="width:28%;"></div>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <div class="summary-row">
+
+              <span class="summary-label">
+                Selected
+              </span>
+
+              <span class="summary-value">
+                118
+              </span>
+
+            </div>
+
+            <div class="summary-progress">
+              <div style="width:35%;"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       FILTERS
+  ==================================================== -->
+
+  <section class="filter-card">
+
+    <div class="filter-grid">
+
+      <div class="filter-field">
+
+        <label>
+          Search
+        </label>
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Application ID, applicant, email or job...">
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label>
+          Job
+        </label>
+
+        <select id="jobFilter">
+
+          <option value="">
+            All Jobs
+          </option>
+
+          <option>
+            Frontend Developer
+          </option>
+
+          <option>
+            Customer Support Officer
+          </option>
+
+          <option>
+            Operations Assistant
+          </option>
+
+          <option>
+            Delivery Rider
+          </option>
+
+          <option>
+            Sales Executive
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label>
+          Status
+        </label>
+
+        <select id="statusFilter">
+
+          <option value="">
+            All Statuses
+          </option>
+
+          <option>
+            Submitted
+          </option>
+
+          <option>
+            Under Review
+          </option>
+
+          <option>
+            Shortlisted
+          </option>
+
+          <option>
+            Interview
+          </option>
+
+          <option>
+            Selected
+          </option>
+
+          <option>
+            Not Selected
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label>
+          Location
+        </label>
+
+        <select id="locationFilter">
+
+          <option value="">
+            All Locations
+          </option>
+
+          <option>
+            Lagos
+          </option>
+
+          <option>
+            Abuja
+          </option>
+
+          <option>
+            Ibadan
+          </option>
+
+          <option>
+            Port Harcourt
+          </option>
+
+          <option>
+            Kano
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label>
+          Experience
+        </label>
+
+        <select id="experienceFilter">
+
+          <option value="">
+            Any Experience
+          </option>
+
+          <option>
+            0–1 years
+          </option>
+
+          <option>
+            2–3 years
+          </option>
+
+          <option>
+            4–5 years
+          </option>
+
+          <option>
+            6+ years
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label>
+          Date
+        </label>
+
+        <select id="dateFilter">
+
+          <option value="">
+            All Dates
+          </option>
+
+          <option>
+            Today
+          </option>
+
+          <option>
+            Last 7 Days
+          </option>
+
+          <option>
+            Last 30 Days
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="btn"
+        onclick="resetFilters()">
+        Reset
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       APPLICATION TABLE
+  ==================================================== -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <div>
+
+        <div class="card-title">
+          Application Review Queue
+        </div>
+
+        <div class="card-description">
+          Review candidate profiles and update application progress.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        data-tab="All">
+        All
+        <span class="tab-count">
+          1,284
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Submitted">
+        Submitted
+        <span class="tab-count">
+          184
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Under Review">
+        Under Review
+        <span class="tab-count">
+          326
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Shortlisted">
+        Shortlisted
+        <span class="tab-count">
+          148
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Interview">
+        Interview
+        <span class="tab-count">
+          91
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Selected">
+        Selected
+        <span class="tab-count">
+          118
+        </span>
+      </button>
+
+      <button
+        class="tab"
+        data-tab="Not Selected">
+        Not Selected
+        <span class="tab-count">
+          417
+        </span>
+      </button>
+
+    </div>
+
+
+    <div
+      class="bulk-bar"
+      id="bulkBar">
+
+      <div
+        class="bulk-count"
+        id="bulkCount">
+        0 selected
+      </div>
+
+      <div class="bulk-actions">
+
+        <button
+          class="btn btn-small"
+          onclick="bulkShortlist()">
+          ★ Shortlist
+        </button>
+
+        <button
+          class="btn btn-small"
+          onclick="bulkReview()">
+          ◷ Mark Review
+        </button>
+
+        <button
+          class="btn btn-small"
+          onclick="messageSelected()">
+          ✉ Message
+        </button>
+
+        <button
+          class="btn btn-small"
+          onclick="bulkExport()">
+          ↓ Export
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th style="width:35px;">
+              <input
+                class="check"
+                type="checkbox"
+                id="selectAll">
+            </th>
+
+            <th>
+              Application
+            </th>
+
+            <th>
+              Applicant
+            </th>
+
+            <th>
+              Job
+            </th>
+
+            <th>
+              Location
+            </th>
+
+            <th>
+              Experience
+            </th>
+
+            <th>
+              CV
+            </th>
+
+            <th>
+              Applied
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="applicationTable">
+
+          <!-- APPLICATION 1 -->
+
+          <tr
+            data-status="Shortlisted"
+            data-job="Frontend Developer"
+            data-location="Lagos"
+            data-experience="4–5 years"
+            data-search="APP-100284 Amina Okafor amina@example.com Frontend Developer">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100284
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                Updated today
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  AO
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Amina Okafor
+                  </div>
+
+                  <div class="applicant-id">
+                    amina@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Frontend Developer
+              </div>
+
+              <div class="job-company">
+                FAGA Technologies
+              </div>
+
+            </td>
+
+            <td>
+              Lagos
+            </td>
+
+            <td>
+              4 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              15 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status shortlisted">
+                <span class="status-dot"></span>
+                Shortlisted
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  title="View"
+                  onclick="viewApplication('APP-100284')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  title="Review"
+                  onclick="reviewApplication('APP-100284')">
+                  ✓
+                </button>
+
+                <button
+                  class="icon-btn"
+                  title="Message"
+                  onclick="messageApplicant('APP-100284')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 2 -->
+
+          <tr
+            data-status="Under Review"
+            data-job="Customer Support Officer"
+            data-location="Lagos"
+            data-experience="2–3 years"
+            data-search="APP-100197 Chinedu Eze chinedu@example.com Customer Support Officer">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100197
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                New
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  CE
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Chinedu Eze
+                  </div>
+
+                  <div class="applicant-id">
+                    chinedu@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Customer Support Officer
+              </div>
+
+              <div class="job-company">
+                FAGA
+              </div>
+
+            </td>
+
+            <td>
+              Lagos
+            </td>
+
+            <td>
+              3 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              14 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status review">
+                <span class="status-dot"></span>
+                Under Review
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100197')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="reviewApplication('APP-100197')">
+                  ✓
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100197')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 3 -->
+
+          <tr
+            data-status="Interview"
+            data-job="Operations Assistant"
+            data-location="Abuja"
+            data-experience="2–3 years"
+            data-search="APP-100143 Ibrahim Musa ibrahim@example.com Operations Assistant">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100143
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                Interview scheduled
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  IM
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Ibrahim Musa
+                  </div>
+
+                  <div class="applicant-id">
+                    ibrahim@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Operations Assistant
+              </div>
+
+              <div class="job-company">
+                FAGA
+              </div>
+
+            </td>
+
+            <td>
+              Abuja
+            </td>
+
+            <td>
+              2 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              13 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status interview">
+                <span class="status-dot"></span>
+                Interview
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100143')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="scheduleInterview('APP-100143')">
+                  ◷
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100143')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 4 -->
+
+          <tr
+            data-status="Submitted"
+            data-job="Delivery Rider"
+            data-location="Lagos"
+            data-experience="0–1 years"
+            data-search="APP-100138 Daniel Adeyemi daniel@example.com Delivery Rider">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100138
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                New
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  DA
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Daniel Adeyemi
+                  </div>
+
+                  <div class="applicant-id">
+                    daniel@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Delivery Rider
+              </div>
+
+              <div class="job-company">
+                FAGA Logistics
+              </div>
+
+            </td>
+
+            <td>
+              Lagos
+            </td>
+
+            <td>
+              1 year
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              12 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status submitted">
+                <span class="status-dot"></span>
+                Submitted
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100138')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="reviewApplication('APP-100138')">
+                  ✓
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100138')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 5 -->
+
+          <tr
+            data-status="Selected"
+            data-job="Sales Executive"
+            data-location="Port Harcourt"
+            data-experience="4–5 years"
+            data-search="APP-100119 Grace Williams grace@example.com Sales Executive">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100119
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                Offer accepted
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  GW
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Grace Williams
+                  </div>
+
+                  <div class="applicant-id">
+                    grace@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Sales Executive
+              </div>
+
+              <div class="job-company">
+                FAGA
+              </div>
+
+            </td>
+
+            <td>
+              Port Harcourt
+            </td>
+
+            <td>
+              5 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              10 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status selected">
+                <span class="status-dot"></span>
+                Selected
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100119')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100119')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 6 -->
+
+          <tr
+            data-status="Not Selected"
+            data-job="Frontend Developer"
+            data-location="Ibadan"
+            data-experience="2–3 years"
+            data-search="APP-100087 Tolu Adebayo tolu@example.com Frontend Developer">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100087
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                Closed
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  TA
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Tolu Adebayo
+                  </div>
+
+                  <div class="applicant-id">
+                    tolu@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Frontend Developer
+              </div>
+
+              <div class="job-company">
+                FAGA Technologies
+              </div>
+
+            </td>
+
+            <td>
+              Ibadan
+            </td>
+
+            <td>
+              3 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              07 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status rejected">
+                <span class="status-dot"></span>
+                Not Selected
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100087')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100087')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 7 -->
+
+          <tr
+            data-status="Under Review"
+            data-job="Customer Support Officer"
+            data-location="Kano"
+            data-experience="2–3 years"
+            data-search="APP-100061 Yusuf Bello yusuf@example.com Customer Support Officer">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100061
+              </strong>
+
+              <div style="
+                color:var(--danger);
+                font-size:8px;
+                margin-top:2px;
+              ">
+                CV missing
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  YB
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Yusuf Bello
+                  </div>
+
+                  <div class="applicant-id">
+                    yusuf@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Customer Support Officer
+              </div>
+
+              <div class="job-company">
+                FAGA
+              </div>
+
+            </td>
+
+            <td>
+              Kano
+            </td>
+
+            <td>
+              2 years
+            </td>
+
+            <td>
+
+              <span class="cv-badge missing">
+                × Missing
+              </span>
+
+            </td>
+
+            <td>
+              05 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status review">
+                <span class="status-dot"></span>
+                Under Review
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100061')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100061')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- APPLICATION 8 -->
+
+          <tr
+            data-status="Submitted"
+            data-job="Operations Assistant"
+            data-location="Lagos"
+            data-experience="0–1 years"
+            data-search="APP-100043 Sarah Johnson sarah@example.com Operations Assistant">
+
+            <td>
+              <input
+                class="check row-check"
+                type="checkbox">
+            </td>
+
+            <td>
+
+              <strong style="color:var(--navy);">
+                APP-100043
+              </strong>
+
+              <div style="
+                color:#8a94a2;
+                font-size:8px;
+                margin-top:2px;
+              ">
+                New
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="applicant-cell">
+
+                <div class="applicant-avatar">
+                  SJ
+                </div>
+
+                <div>
+
+                  <div class="applicant-name">
+                    Sarah Johnson
+                  </div>
+
+                  <div class="applicant-id">
+                    sarah@example.com
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="job-name">
+                Operations Assistant
+              </div>
+
+              <div class="job-company">
+                FAGA
+              </div>
+
+            </td>
+
+            <td>
+              Lagos
+            </td>
+
+            <td>
+              1 year
+            </td>
+
+            <td>
+
+              <span class="cv-badge uploaded">
+                ✓ CV
+              </span>
+
+            </td>
+
+            <td>
+              04 Sep 2026
+            </td>
+
+            <td>
+
+              <span class="status submitted">
+                <span class="status-dot"></span>
+                Submitted
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="icon-btn"
+                  onclick="viewApplication('APP-100043')">
+                  ◉
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="reviewApplication('APP-100043')">
+                  ✓
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="messageApplicant('APP-100043')">
+                  ✉
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <div class="table-footer">
+
+      <div
+        class="pagination-info"
+        id="paginationInfo">
+        Showing 1–8 of 1,284 applications
+      </div>
+
+      <div class="pagination">
+
+        <button class="page-btn">
+          ‹
+        </button>
+
+        <button class="page-btn active">
+          1
+        </button>
+
+        <button class="page-btn">
+          2
+        </button>
+
+        <button class="page-btn">
+          3
+        </button>
+
+        <button class="page-btn">
+          4
+        </button>
+
+        <button class="page-btn">
+          5
+        </button>
+
+        <button class="page-btn">
+          ›
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       SECURITY / INTEGRATION
+  ==================================================== -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <div>
+
+        <div class="card-title">
+          Application Management Controls
+        </div>
+
+        <div class="card-description">
+          Production requirements for secure application review.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="detail-section">
+
+        <h4>
+          Recommended API endpoints
+        </h4>
+
+        <ul>
+
+          <li>
+            GET /api/admin/jobs/applications
+          </li>
+
+          <li>
+            GET /api/admin/jobs/applications/:applicationId
+          </li>
+
+          <li>
+            GET /api/admin/jobs/applications/:applicationId/applicant
+          </li>
+
+          <li>
+            GET /api/admin/jobs/applications/:applicationId/cv
+          </li>
+
+          <li>
+            PATCH /api/admin/jobs/applications/:applicationId/status
+          </li>
+
+          <li>
+            POST /api/admin/jobs/applications/:applicationId/message
+          </li>
+
+          <li>
+            POST /api/admin/jobs/applications/:applicationId/interview
+          </li>
+
+          <li>
+            POST /api/admin/jobs/applications/bulk-action
+          </li>
+
+          <li>
+            GET /api/admin/jobs/applications/export
+          </li>
+
+        </ul>
+
+
+        <h4 style="margin-top:15px;">
+          Security requirements
+        </h4>
+
+        <ul>
+
+          <li>
+            Enforce administrator authentication and RBAC server-side.
+          </li>
+
+          <li>
+            Do not trust application status, applicant identity or permissions from the browser.
+          </li>
+
+          <li>
+            Keep CVs private; use short-lived authorized URLs for preview and download.
+          </li>
+
+          <li>
+            Audit status changes, CV access, applicant contact and interview actions.
+          </li>
+
+          <li>
+            Prevent duplicate applications according to the configured application rules.
+          </li>
+
+          <li>
+            Use server-side pagination, filtering and sorting.
+          </li>
+
+          <li>
+            Protect applicant PII and restrict access according to administrator role.
+          </li>
+
+          <li>
+            Use idempotency for status-changing and communication actions where appropriate.
+          </li>
+
+          <li>
+            Preserve the full application history when an application changes status.
+          </li>
+
+          <li>
+            Do not expose passwords, authentication tokens, payment secrets or provider credentials.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =====================================================
+     APPLICATION DETAIL MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="applicationModal">
+
+  <div class="modal-box large">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-title">
+          Application Details
+        </div>
+
+        <div
+          class="modal-subtitle"
+          id="modalApplicationId">
+          APP-100284
+        </div>
+
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('applicationModal')">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="application-header">
+
+        <div
+          class="profile-avatar"
+          id="modalAvatar">
+          AO
+        </div>
+
+        <div>
+
+          <div
+            class="profile-name"
+            id="modalApplicantName">
+            Amina Okafor
+          </div>
+
+          <div
+            class="profile-meta"
+            id="modalApplicantMeta">
+            Lagos · amina@example.com · 0803 123 4567
+          </div>
+
+        </div>
+
+        <div class="header-status">
+
+          <span class="status shortlisted">
+            <span class="status-dot"></span>
+            Shortlisted
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-grid">
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Job
+          </div>
+
+          <div class="detail-value">
+            Frontend Developer
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Employer
+          </div>
+
+          <div class="detail-value">
+            FAGA Technologies
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Location
+          </div>
+
+          <div class="detail-value">
+            Lagos
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Applied
+          </div>
+
+          <div class="detail-value">
+            15 Sep 2026
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Experience
+          </div>
+
+          <div class="detail-value">
+            4 years
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Education
+          </div>
+
+          <div class="detail-value">
+            Bachelor's Degree
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Applicant Access
+          </div>
+
+          <div class="detail-value">
+            Active · 1 Year
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Application Source
+          </div>
+
+          <div class="detail-value">
+            FAGA Jobs
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <h4>
+          Applicant Skills
+        </h4>
+
+        <div class="skills">
+
+          <span class="skill">
+            HTML
+          </span>
+
+          <span class="skill">
+            CSS
+          </span>
+
+          <span class="skill">
+            JavaScript
+          </span>
+
+          <span class="skill">
+            React
+          </span>
+
+          <span class="skill">
+            Git
+          </span>
+
+          <span class="skill">
+            REST APIs
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <h4>
+          Cover Letter
+        </h4>
+
+        <div class="cover-letter">
+
+          I am interested in the Frontend Developer position and believe my experience
+          building responsive web applications and user-focused interfaces aligns with
+          the requirements of this role. I would welcome the opportunity to contribute
+          to FAGA Technologies and discuss my experience with your hiring team.
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <h4>
+          Curriculum Vitae
+        </h4>
+
+        <div class="cv-box">
+
+          <div class="cv-left">
+
+            <div class="cv-icon">
+              PDF
+            </div>
+
+            <div>
+
+              <div class="cv-name">
+                Amina_Okafor_CV.pdf
+              </div>
+
+              <div class="cv-size">
+                2.4 MB · Uploaded 14 Sep 2026
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div style="
+            display:flex;
+            gap:6px;
+            flex-wrap:wrap;
+          ">
+
+            <button
+              class="btn btn-small"
+              onclick="previewCV()">
+              Preview
+            </button>
+
+            <button
+              class="btn btn-small"
+              onclick="downloadCV()">
+              Download
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <h4>
+          Application History
+        </h4>
+
+        <div class="timeline">
+
+          <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div>
+
+              <div class="timeline-title">
+                Application shortlisted
+              </div>
+
+              <div class="timeline-date">
+                16 Sep 2026 · 09:30 AM
+              </div>
+
+              <div class="timeline-note">
+                Candidate moved to the shortlist by Jobs Admin.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div>
+
+              <div class="timeline-title">
+                Application reviewed
+              </div>
+
+              <div class="timeline-date">
+                15 Sep 2026 · 03:18 PM
+              </div>
+
+              <div class="timeline-note">
+                Initial application review completed.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div>
+
+              <div class="timeline-title">
+                Application submitted
+              </div>
+
+              <div class="timeline-date">
+                15 Sep 2026 · 09:42 AM
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div>
+
+              <div class="timeline-title">
+                CV uploaded
+              </div>
+
+              <div class="timeline-date">
+                14 Sep 2026 · 04:18 PM
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        onclick="closeModal('applicationModal')">
+        Close
+      </button>
+
+      <button
+        class="btn btn-danger"
+        onclick="rejectApplication()">
+        Not Selected
+      </button>
+
+      <button
+        class="btn"
+        onclick="messageApplicant(selectedApplicationId)">
+        Message
+      </button>
+
+      <button
+        class="btn"
+        onclick="scheduleInterview(selectedApplicationId)">
+        Schedule Interview
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="shortlistApplication()">
+        Shortlist
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     MESSAGE MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="messageModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-title">
+          Message Applicant
+        </div>
+
+        <div
+          class="modal-subtitle"
+          id="messageRecipient">
+          Applicant
+        </div>
+
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('messageModal')">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-grid">
+
+        <div class="form-group full">
+
+          <label>
+            Message Type
+          </label>
+
+          <select id="messageType">
+
+            <option>
+              Application Update
+            </option>
+
+            <option>
+              Interview Invitation
+            </option>
+
+            <option>
+              Additional Information Request
+            </option>
+
+            <option>
+              General Message
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Message
+          </label>
+
+          <textarea
+            id="messageText"
+            placeholder="Write your message to the applicant..."></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        onclick="closeModal('messageModal')">
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="sendMessage()">
+        Send Message
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     INTERVIEW MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="interviewModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-title">
+          Schedule Interview
+        </div>
+
+        <div class="modal-subtitle">
+          Create an interview event for the selected applicant.
+        </div>
+
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('interviewModal')">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>
+            Interview Date
+          </label>
+
+          <input
+            type="date"
+            id="interviewDate">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Time
+          </label>
+
+          <input
+            type="time"
+            id="interviewTime">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Interview Type
+          </label>
+
+          <select>
+
+            <option>
+              Video Call
+            </option>
+
+            <option>
+              In Person
+            </option>
+
+            <option>
+              Phone
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Interviewer
+          </label>
+
+          <input
+            type="text"
+            placeholder="Interviewer name">
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Meeting / Location
+          </label>
+
+          <input
+            type="text"
+            placeholder="Meeting link or physical location">
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Notes
+          </label>
+
+          <textarea
+            placeholder="Interview notes or instructions..."></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        onclick="closeModal('interviewModal')">
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="saveInterview()">
+        Schedule Interview
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+  class="toast"
+  id="toast">
+
+  <span class="toast-icon">
+    ✓
+  </span>
+
+  <span id="toastMessage">
+    Action completed.
+  </span>
+
+</div>
+
+
+<script>
+
+/*
+============================================================
+FAGA ADMIN — JOB APPLICATIONS
+============================================================
+
+PRODUCTION API
+------------------------------------------------------------
+
+GET
+/api/admin/jobs/applications
+
+GET
+/api/admin/jobs/applications/:applicationId
+
+GET
+/api/admin/jobs/applications/:applicationId/applicant
+
+GET
+/api/admin/jobs/applications/:applicationId/cv
+
+PATCH
+/api/admin/jobs/applications/:applicationId/status
+
+POST
+/api/admin/jobs/applications/:applicationId/message
+
+POST
+/api/admin/jobs/applications/:applicationId/interview
+
+POST
+/api/admin/jobs/applications/bulk-action
+
+GET
+/api/admin/jobs/applications/export
+
+
+SECURITY
+------------------------------------------------------------
+
+- Server-side admin authentication and RBAC.
+- Never trust application status supplied by browser.
+- Applicant identity must come from authorized server records.
+- CVs must remain private.
+- Use short-lived signed/authorized URLs for CV access.
+- Audit CV preview/download events.
+- Audit every application status change.
+- Audit bulk actions and exports.
+- Protect applicant PII.
+- Use server-side pagination and filtering.
+- Use idempotency for state-changing requests.
+- Preserve application history.
+*/
+
+
+/* ========================================================
+   MOBILE SIDEBAR
+======================================================== */
+
+const menuToggle =
+  document.getElementById("menuToggle");
+
+const sidebar =
+  document.getElementById("sidebar");
+
+const overlay =
+  document.getElementById("overlay");
+
+
+menuToggle.addEventListener(
+  "click",
+  () => {
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+
+  }
+);
+
+
+overlay.addEventListener(
+  "click",
+  () => {
+
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+
+  }
+);
+
+
+/* ========================================================
+   APPLICATION DATA
+======================================================== */
+
+const applications = {
+
+  "APP-100284":{
+    name:"Amina Okafor",
+    initials:"AO",
+    email:"amina@example.com",
+    phone:"0803 123 4567",
+    location:"Lagos"
+  },
+
+  "APP-100197":{
+    name:"Chinedu Eze",
+    initials:"CE",
+    email:"chinedu@example.com",
+    phone:"0802 987 6543",
+    location:"Lagos"
+  },
+
+  "APP-100143":{
+    name:"Ibrahim Musa",
+    initials:"IM",
+    email:"ibrahim@example.com",
+    phone:"0810 123 4567",
+    location:"Abuja"
+  },
+
+  "APP-100138":{
+    name:"Daniel Adeyemi",
+    initials:"DA",
+    email:"daniel@example.com",
+    phone:"0813 444 5566",
+    location:"Lagos"
+  },
+
+  "APP-100119":{
+    name:"Grace Williams",
+    initials:"GW",
+    email:"grace@example.com",
+    phone:"0806 111 2233",
+    location:"Port Harcourt"
+  },
+
+  "APP-100087":{
+    name:"Tolu Adebayo",
+    initials:"TA",
+    email:"tolu@example.com",
+    phone:"0704 555 6677",
+    location:"Ibadan"
+  },
+
+  "APP-100061":{
+    name:"Yusuf Bello",
+    initials:"YB",
+    email:"yusuf@example.com",
+    phone:"0805 123 4567",
+    location:"Kano"
+  },
+
+  "APP-100043":{
+    name:"Sarah Johnson",
+    initials:"SJ",
+    email:"sarah@example.com",
+    phone:"0809 333 4455",
+    location:"Lagos"
+  }
+
+};
+
+
+let selectedApplicationId = null;
+
+
+/* ========================================================
+   FILTERS
+======================================================== */
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const jobFilter =
+  document.getElementById(
+    "jobFilter"
+  );
+
+const statusFilter =
+  document.getElementById(
+    "statusFilter"
+  );
+
+const locationFilter =
+  document.getElementById(
+    "locationFilter"
+  );
+
+const experienceFilter =
+  document.getElementById(
+    "experienceFilter"
+  );
+
+const dateFilter =
+  document.getElementById(
+    "dateFilter"
+  );
+
+
+function filterApplications(){
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+  const job =
+    jobFilter.value;
+
+  const status =
+    statusFilter.value;
+
+  const location =
+    locationFilter.value;
+
+  const experience =
+    experienceFilter.value;
+
+
+  document
+    .querySelectorAll(
+      "#applicationTable tr"
+    )
+    .forEach(row => {
+
+      const rowSearch =
+        row.dataset.search
+          ?.toLowerCase() || "";
+
+      const rowJob =
+        row.dataset.job || "";
+
+      const rowStatus =
+        row.dataset.status || "";
+
+      const rowLocation =
+        row.dataset.location || "";
+
+      const rowExperience =
+        row.dataset.experience || "";
+
+
+      const searchMatch =
+        !search ||
+        rowSearch.includes(search);
+
+      const jobMatch =
+        !job ||
+        rowJob === job;
+
+      const statusMatch =
+        !status ||
+        rowStatus === status;
+
+      const locationMatch =
+        !location ||
+        rowLocation === location;
+
+      const experienceMatch =
+        !experience ||
+        rowExperience === experience;
+
+
+      row.style.display =
+        searchMatch &&
+        jobMatch &&
+        statusMatch &&
+        locationMatch &&
+        experienceMatch
+          ? ""
+          : "none";
+
+    });
+
+
+  updateVisibleCount();
+  updateBulkBar();
+
+}
+
+
+[
+  searchInput,
+  jobFilter,
+  statusFilter,
+  locationFilter,
+  experienceFilter,
+  dateFilter
+].forEach(element => {
+
+  element.addEventListener(
+    "input",
+    filterApplications
+  );
+
+  element.addEventListener(
+    "change",
+    filterApplications
+  );
+
+});
+
+
+function resetFilters(){
+
+  searchInput.value = "";
+  jobFilter.value = "";
+  statusFilter.value = "";
+  locationFilter.value = "";
+  experienceFilter.value = "";
+  dateFilter.value = "";
+
+
+  document
+    .querySelectorAll(
+      "#applicationTable tr"
+    )
+    .forEach(row => {
+
+      row.style.display = "";
+
+    });
+
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(tab => {
+
+      tab.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  document
+    .querySelector(
+      '.tab[data-tab="All"]'
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  updateVisibleCount();
+  updateBulkBar();
+
+  showToast(
+    "Filters reset."
+  );
+
+}
+
+
+function updateVisibleCount(){
+
+  const visible =
+    [
+      ...document.querySelectorAll(
+        "#applicationTable tr"
+      )
+    ].filter(
+      row =>
+        row.style.display !== "none"
+    );
+
+
+  document.getElementById(
+    "paginationInfo"
+  ).textContent =
+    `Showing 1–${visible.length} of 1,284 applications`;
+
+}
+
+
+/* ========================================================
+   TABS
+======================================================== */
+
+document
+  .querySelectorAll(".tab")
+  .forEach(tab => {
+
+    tab.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".tab")
+          .forEach(item => {
+
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+        tab.classList.add(
+          "active"
+        );
+
+
+        const selected =
+          tab.dataset.tab;
+
+
+        searchInput.value = "";
+        jobFilter.value = "";
+        statusFilter.value = "";
+        locationFilter.value = "";
+        experienceFilter.value = "";
+        dateFilter.value = "";
+
+
+        document
+          .querySelectorAll(
+            "#applicationTable tr"
+          )
+          .forEach(row => {
+
+            const show =
+              selected === "All" ||
+              row.dataset.status === selected;
+
+
+            row.style.display =
+              show ? "" : "none";
+
+          });
+
+
+        updateVisibleCount();
+        updateBulkBar();
+
+      }
+    );
+
+  });
+
+
+/* ========================================================
+   SELECT ALL
+======================================================== */
+
+const selectAll =
+  document.getElementById(
+    "selectAll"
+  );
+
+
+selectAll.addEventListener(
+  "change",
+  () => {
+
+    document
+      .querySelectorAll(
+        ".row-check"
+      )
+      .forEach(check => {
+
+        const row =
+          check.closest("tr");
+
+
+        if(
+          row &&
+          row.style.display !== "none"
+        ){
+
+          check.checked =
+            selectAll.checked;
+
+        }
+
+      });
+
+
+    updateBulkBar();
+
+  }
+);
+
+
+document
+  .querySelectorAll(
+    ".row-check"
+  )
+  .forEach(check => {
+
+    check.addEventListener(
+      "change",
+      updateBulkBar
+    );
+
+  });
+
+
+function updateBulkBar(){
+
+  const selected =
+    document.querySelectorAll(
+      ".row-check:checked"
+    );
+
+
+  const bulkBar =
+    document.getElementById(
+      "bulkBar"
+    );
+
+
+  document.getElementById(
+    "bulkCount"
+  ).textContent =
+    `${selected.length} selected`;
+
+
+  if(selected.length){
+
+    bulkBar.classList.add(
+      "show"
+    );
+
+  }else{
+
+    bulkBar.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  const visibleChecks =
+    [
+      ...document.querySelectorAll(
+        ".row-check"
+      )
+    ].filter(
+      check =>
+        check.closest("tr").style.display !== "none"
+    );
+
+
+  selectAll.checked =
+    visibleChecks.length > 0 &&
+    visibleChecks.every(
+      check => check.checked
+    );
+
+}
+
+
+/* ========================================================
+   VIEW APPLICATION
+======================================================== */
+
+function viewApplication(id){
+
+  const application =
+    applications[id];
+
+
+  if(!application){
+
+    showToast(
+      "Application information not found."
+    );
+
+    return;
+
+  }
+
+
+  selectedApplicationId =
+    id;
+
+
+  document.getElementById(
+    "modalApplicationId"
+  ).textContent =
+    id;
+
+
+  document.getElementById(
+    "modalAvatar"
+  ).textContent =
+    application.initials;
+
+
+  document.getElementById(
+    "modalApplicantName"
+  ).textContent =
+    application.name;
+
+
+  document.getElementById(
+    "modalApplicantMeta"
+  ).textContent =
+    `${application.location} · ${application.email} · ${application.phone}`;
+
+
+  openModal(
+    "applicationModal"
+  );
+
+
+  /*
+    Production:
+
+    GET
+    /api/admin/jobs/applications/:applicationId
+
+    The server must verify that the current admin has permission
+    to access the application and associated applicant data.
+  */
+
+}
+
+
+/* ========================================================
+   REVIEW
+======================================================== */
+
+function reviewApplication(id){
+
+  selectedApplicationId =
+    id;
+
+
+  viewApplication(id);
+
+}
+
+
+/* ========================================================
+   SHORTLIST
+======================================================== */
+
+function shortlistApplication(){
+
+  if(!selectedApplicationId){
+    return;
+  }
+
+
+  closeModal(
+    "applicationModal"
+  );
+
+
+  /*
+    Production:
+
+    PATCH
+    /api/admin/jobs/applications/:applicationId/status
+
+    Body example:
+
+    {
+      "status":"shortlisted"
+    }
+
+    The server should:
+    - validate allowed state transition
+    - authorize administrator
+    - record actor
+    - record timestamp
+    - create audit event
+    - optionally queue applicant notification
+  */
+
+
+  showToast(
+    "Application moved to shortlist."
+  );
+
+}
+
+
+/* ========================================================
+   REJECT
+======================================================== */
+
+function rejectApplication(){
+
+  if(!selectedApplicationId){
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Mark this application as Not Selected?"
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  closeModal(
+    "applicationModal"
+  );
+
+
+  /*
+    Production:
+
+    PATCH
+    /api/admin/jobs/applications/:applicationId/status
+
+    {
+      "status":"not_selected"
+    }
+
+    This action must be audited.
+  */
+
+
+  showToast(
+    "Application marked as not selected."
+  );
+
+}
+
+
+/* ========================================================
+   MESSAGE
+======================================================== */
+
+function messageApplicant(id){
+
+  selectedApplicationId =
+    id;
+
+
+  const application =
+    applications[id];
+
+
+  if(application){
+
+    document.getElementById(
+      "messageRecipient"
+    ).textContent =
+      `${application.name} · ${id}`;
+
+  }
+
+
+  closeModal(
+    "applicationModal"
+  );
+
+
+  openModal(
+    "messageModal"
+  );
+
+}
+
+
+function messageSelected(){
+
+  const selected =
+    [
+      ...document.querySelectorAll(
+        ".row-check:checked"
+      )
+    ];
+
+
+  if(!selected.length){
+
+    showToast(
+      "Select at least one application first."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "messageRecipient"
+  ).textContent =
+    `${selected.length} selected applicant(s)`;
+
+
+  openModal(
+    "messageModal"
+  );
+
+}
+
+
+function sendMessage(){
+
+  const message =
+    document.getElementById(
+      "messageText"
+    ).value.trim();
+
+
+  if(!message){
+
+    showToast(
+      "Enter a message first."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Production:
+
+    POST
+    /api/admin/jobs/applications/:applicationId/message
+
+    For bulk messaging:
+
+    POST
+    /api/admin/jobs/applications/bulk-action
+
+    {
+      "action":"message",
+      "application_ids":[...]
+    }
+
+    Backend must enforce consent/notification policy,
+    authorization, rate limits and audit logging.
+  */
+
+
+  closeModal(
+    "messageModal"
+  );
+
+
+  document.getElementById(
+    "messageText"
+  ).value = "";
+
+
+  showToast(
+    "Message queued for delivery."
+  );
+
+}
+
+
+/* ========================================================
+   INTERVIEW
+======================================================== */
+
+function scheduleInterview(id){
+
+  selectedApplicationId =
+    id;
+
+
+  closeModal(
+    "applicationModal"
+  );
+
+
+  openModal(
+    "interviewModal"
+  );
+
+}
+
+
+function saveInterview(){
+
+  const date =
+    document.getElementById(
+      "interviewDate"
+    ).value;
+
+  const time =
+    document.getElementById(
+      "interviewTime"
+    ).value;
+
+
+  if(!date || !time){
+
+    showToast(
+      "Select an interview date and time."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Production:
+
+    POST
+    /api/admin/jobs/applications/:applicationId/interview
+
+    The server should create the interview and notification
+    transaction atomically where practical.
+  */
+
+
+  closeModal(
+    "interviewModal"
+  );
+
+
+  showToast(
+    "Interview scheduled successfully."
+  );
+
+}
+
+
+/* ========================================================
+   CV
+======================================================== */
+
+function previewCV(){
+
+  /*
+    Production:
+
+    GET
+    /api/admin/jobs/applications/:applicationId/cv
+
+    Return a short-lived authorized URL only after checking
+    administrator permissions.
+
+    Never expose permanent public CV URLs.
+  */
+
+
+  showToast(
+    "Secure CV preview requested."
+  );
+
+}
+
+
+function downloadCV(){
+
+  /*
+    Production:
+
+    CV download must be authorized server-side and logged.
+  */
+
+
+  showToast(
+    "Secure CV download requested."
+  );
+
+}
+
+
+/* ========================================================
+   BULK ACTIONS
+======================================================== */
+
+function getSelectedIds(){
+
+  return [
+    ...document.querySelectorAll(
+      ".row-check:checked"
+    )
+  ].map(
+    check =>
+      check
+        .closest("tr")
+        .querySelector(
+          "td:nth-child(2) strong"
+        )
+        .textContent
+        .trim()
+  );
+
+}
+
+
+function bulkShortlist(){
+
+  const ids =
+    getSelectedIds();
+
+
+  if(!ids.length){
+    return;
+  }
+
+
+  /*
+    Production:
+
+    POST
+    /api/admin/jobs/applications/bulk-action
+
+    {
+      "action":"shortlist",
+      "application_ids":[...]
+    }
+  */
+
+
+  showToast(
+    `${ids.length} application(s) queued for shortlisting.`
+  );
+
+}
+
+
+function bulkReview(){
+
+  const ids =
+    getSelectedIds();
+
+
+  if(!ids.length){
+    return;
+  }
+
+
+  /*
+    Production:
+
+    POST
+    /api/admin/jobs/applications/bulk-action
+
+    {
+      "action":"under_review",
+      "application_ids":[...]
+    }
+  */
+
+
+  showToast(
+    `${ids.length} application(s) moved to review queue.`
+  );
+
+}
+
+
+function bulkExport(){
+
+  const ids =
+    getSelectedIds();
+
+
+  if(!ids.length){
+    return;
+  }
+
+
+  /*
+    Production:
+
+    Export must be authorized and audited.
+
+    GET /api/admin/jobs/applications/export
+    or POST with selected application IDs.
+  */
+
+
+  showToast(
+    `Export prepared for ${ids.length} application(s).`
+  );
+
+}
+
+
+/* ========================================================
+   EXPORT
+======================================================== */
+
+function exportApplications(){
+
+  /*
+    Production:
+
+    GET
+    /api/admin/jobs/applications/export
+
+    Apply active server-side filters and enforce admin
+    permissions before generating an export.
+  */
+
+
+  showToast(
+    "Application export prepared."
+  );
+
+}
+
+
+/* ========================================================
+   REVIEW QUEUE
+======================================================== */
+
+function showReviewQueue(){
+
+  statusFilter.value =
+    "Submitted";
+
+
+  filterApplications();
+
+
+  showToast(
+    "Showing the new application review queue."
+  );
+
+}
+
+
+/* ========================================================
+   MODALS
+======================================================== */
+
+function openModal(id){
+
+  document
+    .getElementById(id)
+    .classList.add("show");
+
+}
+
+
+function closeModal(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
+}
+
+
+document
+  .querySelectorAll(".modal")
+  .forEach(modal => {
+
+    modal.addEventListener(
+      "click",
+      event => {
+
+        if(
+          event.target === modal
+        ){
+
+          modal.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape"
+    ){
+
+      document
+        .querySelectorAll(
+          ".modal.show"
+        )
+        .forEach(modal => {
+
+          modal.classList.remove(
+            "show"
+          );
+
+        });
+
+    }
+
+  }
+);
+
+
+/* ========================================================
+   TOAST
+======================================================== */
+
+let toastTimer;
+
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  const toastMessage =
+    document.getElementById(
+      "toastMessage"
+    );
+
+
+  toastMessage.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      3200
+    );
+
+}
+
+
+/* ========================================================
+   INITIALIZATION
+======================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    updateVisibleCount();
+    updateBulkBar();
+
+  }
+);
+
+</script>
+
+</body>
+</html>

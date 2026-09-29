@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy & Sell | FAGA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eaeded;
+            color: #172033;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .top-header {
+            background: #071a33;
+            color: white;
+        }
+
+        .header-main {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 12px 4%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff7a18;
+        }
+
+        .location-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            font-size: 13px;
+            color: #dbe4f0;
+        }
+
+        .location-box strong {
+            display: block;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-box {
+            flex: 1;
+            height: 46px;
+            display: flex;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+            min-width: 250px;
+        }
+
+        .search-category {
+            border: 0;
+            background: #e8edf3;
+            padding: 0 13px;
+            color: #344054;
+            cursor: pointer;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: 0;
+            outline: none;
+            padding: 0 15px;
+            font-size: 15px;
+        }
+
+        .search-btn {
+            width: 58px;
+            border: 0;
+            background: #ff7a18;
+            color: white;
+            font-size: 19px;
+            cursor: pointer;
+        }
+
+        .header-item {
+            white-space: nowrap;
+            color: white;
+            font-size: 12px;
+        }
+
+        .header-item strong {
+            display: block;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .cart {
+            font-size: 25px;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -7px;
+            right: -10px;
+            background: #ff7a18;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-bar {
+            background: #102b4c;
+            color: white;
+            padding: 0 4%;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-bar a {
+            padding: 14px 0;
+        }
+
+        .nav-bar a:hover {
+            color: #ff9b4a;
+        }
+
+        .nav-all {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .market-hero {
+            min-height: 340px;
+            background:
+                linear-gradient(90deg, rgba(5, 22, 43, .94), rgba(5, 22, 43, .55), rgba(5, 22, 43, .15)),
+                url("./assets/marketplace-banner.jpg") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 50px 7%;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #ff7a18;
+            padding: 7px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            line-height: 1.05;
+            margin-bottom: 18px;
+        }
+
+        .hero-content h1 span {
+            color: #ff7a18;
+        }
+
+        .hero-content p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #e2e8f0;
+            margin-bottom: 25px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-orange,
+        .btn-white {
+            border: 0;
+            padding: 13px 23px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-orange {
+            background: #ff7a18;
+            color: white;
+        }
+
+        .btn-white {
+            background: white;
+            color: #102b4c;
+        }
+
+        /* =========================
+           CATEGORY STRIP
+        ========================= */
+
+        .category-strip {
+            background: white;
+            padding: 20px 4%;
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .category-chip {
+            min-width: 115px;
+            text-align: center;
+            padding: 14px 10px;
+            border: 1px solid #d7dce2;
+            border-radius: 7px;
+            background: white;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .category-chip:hover {
+            border-color: #ff7a18;
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .category-chip strong {
+            font-size: 13px;
+        }
+
+        /* =========================
+           PAGE CONTAINER
+        ========================= */
+
+        .container {
+            width: 92%;
+            max-width: 1450px;
+            margin: 25px auto;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+        }
+
+        .section-heading a {
+            color: #e65d00;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           DEALS
+        ========================= */
+
+        .deals-section {
+            background: white;
+            padding: 22px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .deal-card {
+            position: relative;
+            min-height: 180px;
+            border-radius: 6px;
+            padding: 22px;
+            overflow: hidden;
+            background: #f5f7fa;
+        }
+
+        .deal-card:nth-child(1) {
+            background: #e8f3ff;
+        }
+
+        .deal-card:nth-child(2) {
+            background: #fff0e4;
+        }
+
+        .deal-card:nth-child(3) {
+            background: #edf8ee;
+        }
+
+        .deal-card:nth-child(4) {
+            background: #f5ecff;
+        }
+
+        .deal-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            max-width: 170px;
+        }
+
+        .deal-card p {
+            color: #667085;
+            font-size: 13px;
+            max-width: 180px;
+            line-height: 1.5;
+        }
+
+        .deal-card .discount {
+            display: inline-block;
+            margin-top: 13px;
+            background: #cc0c39;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            border-radius: 3px;
+        }
+
+        .deal-emoji {
+            position: absolute;
+            right: 15px;
+            bottom: 12px;
+            font-size: 75px;
+        }
+
+        /* =========================
+           MARKETPLACE LAYOUT
+        ========================= */
+
+        .market-layout {
+            display: grid;
+            grid-template-columns: 235px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .sidebar h3 {
+            font-size: 17px;
+            margin-bottom: 16px;
+        }
+
+        .filter-group {
+            border-top: 1px solid #ddd;
+            padding: 17px 0;
+        }
+
+        .filter-group:first-of-type {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .filter-group h4 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 9px;
+            color: #475467;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .filter-option input {
+            accent-color: #ff7a18;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 7px;
+        }
+
+        .price-inputs input {
+            width: 50%;
+            padding: 8px;
+            border: 1px solid #ccd2d9;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .filter-button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 9px;
+            background: white;
+            border: 1px solid #c6ccd3;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .product-area {
+            min-width: 0;
+        }
+
+        .market-toolbar {
+            background: white;
+            padding: 13px 17px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-count {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #c7cdd4;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 5px;
+            padding: 13px;
+            position: relative;
+            transition: .2s;
+            min-width: 0;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,.12);
+            transform: translateY(-2px);
+        }
+
+        .product-image {
+            height: 220px;
+            background: #f5f6f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+
+        .product-placeholder {
+            font-size: 90px;
+        }
+
+        .badge {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            background: #cc0c39;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            border-radius: 3px;
+        }
+
+        .wishlist {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            width: 31px;
+            height: 31px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .wishlist.active {
+            color: #e11d48;
+        }
+
+        .product-category {
+            color: #667085;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .product-name {
+            font-size: 15px;
+            line-height: 1.4;
+            min-height: 42px;
+            margin-bottom: 6px;
+        }
+
+        .stars {
+            color: #f59e0b;
+            font-size: 13px;
+        }
+
+        .reviews {
+            color: #667085;
+            font-size: 12px;
+        }
+
+        .price {
+            margin-top: 9px;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .price small {
+            font-size: 12px;
+            vertical-align: top;
+        }
+
+        .old-price {
+            color: #667085;
+            font-size: 12px;
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .delivery {
+            font-size: 12px;
+            color: #475467;
+            margin-top: 7px;
+        }
+
+        .delivery strong {
+            color: #067d62;
+        }
+
+        .seller {
+            font-size: 11px;
+            color: #667085;
+            margin-top: 5px;
+        }
+
+        .product-actions {
+            margin-top: 13px;
+            display: flex;
+            gap: 7px;
+        }
+
+        .add-cart {
+            flex: 1;
+            border: 0;
+            background: #ffb700;
+            color: #111827;
+            padding: 9px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .buy-now {
+            width: 80px;
+            border: 0;
+            background: #ff7a18;
+            color: white;
+            padding: 9px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        /* =========================
+           SELLER CTA
+        ========================= */
+
+        .seller-banner {
+            margin: 35px 0;
+            background: #071a33;
+            color: white;
+            padding: 40px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .seller-banner h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .seller-banner p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            max-width: 650px;
+        }
+
+        .seller-banner strong {
+            color: #ff7a18;
+        }
+
+        /* =========================
+           TRUST SECTION
+        ========================= */
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 35px;
+        }
+
+        .trust-card {
+            padding: 25px;
+            text-align: center;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .trust-card:last-child {
+            border-right: 0;
+        }
+
+        .trust-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .trust-card h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .trust-card p {
+            color: #667085;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #071a33;
+            color: white;
+        }
+
+        .back-top {
+            background: #183555;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .footer-main {
+            width: 90%;
+            max-width: 1300px;
+            margin: auto;
+            padding: 45px 0;
+            display: grid;
+            grid-template-columns: 1.5fr repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .footer-brand h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand h2 span {
+            color: #ff7a18;
+        }
+
+        .footer-brand p {
+            color: #b9c4d2;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #c4cedb;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: #ff7a18;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #203854;
+            padding: 20px 5%;
+            text-align: center;
+            color: #9eabba;
+            font-size: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .location-box {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .deals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-main {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .header-main {
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                width: auto;
+            }
+
+            .search-box {
+                order: 5;
+                flex-basis: 100%;
+            }
+
+            .nav-bar {
+                overflow-x: auto;
+                gap: 20px;
+            }
+
+            .market-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trust-card:nth-child(2) {
+                border-right: 0;
+            }
+
+            .trust-card:nth-child(-n+2) {
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .seller-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .header-main {
+                padding: 12px 4%;
+            }
+
+            .header-item {
+                display: none;
+            }
+
+            .market-hero {
+                padding: 40px 6%;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .product-card {
+                padding: 9px;
+            }
+
+            .product-image {
+                height: 155px;
+            }
+
+            .product-placeholder {
+                font-size: 60px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .price {
+                font-size: 18px;
+            }
+
+            .buy-now {
+                display: none;
+            }
+
+            .deals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-card {
+                border-right: 0;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="top-header">
+
+        <div class="header-main">
+
+            <a href="index.html" class="logo">
+                FA<span>GA</span>
+            </a>
+
+            <div class="location-box">
+                <span>📍</span>
+                <div>
+                    Deliver to
+                    <strong>Nigeria</strong>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <select class="search-category" id="headerCategory">
+                    <option>All</option>
+                    <option>Electronics</option>
+                    <option>Fashion</option>
+                    <option>Phones</option>
+                    <option>Home & Kitchen</option>
+                    <option>Beauty</option>
+                    <option>Automotive</option>
+                    <option>Computers</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="headerSearch"
+                    placeholder="Search products, brands and more..."
+                >
+
+                <button class="search-btn" onclick="searchProducts()">🔍</button>
+            </div>
+
+            <a href="../user portal/dashboard.html" class="header-item">
+                Hello, Guest
+                <strong>Account & Lists</strong>
+            </a>
+
+            <a href="../user portal/dashboard.html" class="header-item">
+                Returns
+                <strong>& Orders</strong>
+            </a>
+
+            <a href="marketplace.html" class="header-item cart">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+
+        </div>
+
+        <nav class="nav-bar">
+
+            <a href="#" class="nav-all">
+                ☰ All Categories
+            </a>
+
+            <a href="index.html">Home</a>
+            <a href="logistics.html">Logistics</a>
+            <a href="services.html">Services</a>
+            <a href="marketplace.html">Buy & Sell</a>
+            <a href="food.html">Food</a>
+            <a href="help.html">Help</a>
+            <a href="track-order.html">Track Order</a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="market-hero">
+
+        <div class="hero-content">
+
+            <span class="hero-label">FAGA MARKETPLACE</span>
+
+            <h1>
+                Everything You Want.
+                <span>All in One Place.</span>
+            </h1>
+
+            <p>
+                Shop thousands of products from trusted sellers.
+                From phones and electronics to fashion, home essentials,
+                beauty products and everyday items.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#products" class="btn-orange">
+                    Shop Now
+                </a>
+
+                <a href="#sell" class="btn-white">
+                    Sell on FAGA
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CATEGORY STRIP
+    ========================== -->
+
+    <div class="category-strip">
+
+        <div class="category-chip">
+            <div class="category-icon">📱</div>
+            <strong>Phones</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">💻</div>
+            <strong>Computers</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">👕</div>
+            <strong>Fashion</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">🏠</div>
+            <strong>Home</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">💄</div>
+            <strong>Beauty</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">🎧</div>
+            <strong>Electronics</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">🚗</div>
+            <strong>Automotive</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">🛒</div>
+            <strong>Groceries</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">⚽</div>
+            <strong>Sports</strong>
+        </div>
+
+        <div class="category-chip">
+            <div class="category-icon">📚</div>
+            <strong>Books</strong>
+        </div>
+
+    </div>
+
+
+    <main class="container">
+
+        <!-- =========================
+             DEALS
+        ========================== -->
+
+        <section class="deals-section">
+
+            <div class="section-heading">
+                <h2>Today's Deals</h2>
+                <a href="#">See all deals →</a>
+            </div>
+
+            <div class="deals-grid">
+
+                <div class="deal-card">
+                    <h3>Phones & Accessories</h3>
+                    <p>Upgrade your devices with great marketplace deals.</p>
+                    <span class="discount">UP TO 30% OFF</span>
+                    <div class="deal-emoji">📱</div>
+                </div>
+
+                <div class="deal-card">
+                    <h3>Fashion Essentials</h3>
+                    <p>Discover new styles from FAGA sellers.</p>
+                    <span class="discount">UP TO 50% OFF</span>
+                    <div class="deal-emoji">👟</div>
+                </div>
+
+                <div class="deal-card">
+                    <h3>Home & Kitchen</h3>
+                    <p>Everything you need to improve your home.</p>
+                    <span class="discount">UP TO 35% OFF</span>
+                    <div class="deal-emoji">🏠</div>
+                </div>
+
+                <div class="deal-card">
+                    <h3>Electronics</h3>
+                    <p>Smart gadgets and electronics at competitive prices.</p>
+                    <span class="discount">UP TO 25% OFF</span>
+                    <div class="deal-emoji">🎧</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MARKETPLACE
+        ========================== -->
+
+        <section id="products">
+
+            <div class="section-heading">
+                <h2>Explore Products</h2>
+                <a href="#">See all products →</a>
+            </div>
+
+            <div class="market-layout">
+
+                <!-- SIDEBAR -->
+
+                <aside class="sidebar">
+
+                    <h3>Shop by Category</h3>
+
+                    <div class="filter-group">
+
+                        <h4>Department</h4>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Electronics
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Fashion
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Phones & Tablets
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Home & Kitchen
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Beauty
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Automotive
+                        </label>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <h4>Customer Rating</h4>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            ⭐⭐⭐⭐⭐ & Up
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            ⭐⭐⭐⭐ & Up
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            ⭐⭐⭐ & Up
+                        </label>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <h4>Price</h4>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Under ₦10,000
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            ₦10,000 - ₦50,000
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            ₦50,000 - ₦150,000
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            Over ₦150,000
+                        </label>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <h4>Custom Price</h4>
+
+                        <div class="price-inputs">
+                            <input type="number" placeholder="Min">
+                            <input type="number" placeholder="Max">
+                        </div>
+
+                        <button class="filter-button">
+                            Apply
+                        </button>
+
+                    </div>
+
+                </aside>
+
+
+                <!-- PRODUCT AREA -->
+
+                <div class="product-area">
+
+                    <div class="market-toolbar">
+
+                        <span class="result-count">
+                            1-16 of thousands of results
+                        </span>
+
+                        <select class="sort-select">
+                            <option>Sort by: Featured</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Avg. Customer Review</option>
+                            <option>Newest Arrivals</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="product-grid">
+
+                        <!-- PRODUCT 1 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <span class="badge">20% OFF</span>
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">📱</div>
+                            </div>
+
+                            <div class="product-category">
+                                Electronics
+                            </div>
+
+                            <h3 class="product-name">
+                                Premium Smartphone 256GB Dual SIM
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★★</span>
+                                <span class="reviews">(124)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>285,000
+                                <span class="old-price">₦350,000</span>
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by FAGA Official Store
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 2 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <span class="badge">BEST DEAL</span>
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">💻</div>
+                            </div>
+
+                            <div class="product-category">
+                                Computers
+                            </div>
+
+                            <h3 class="product-name">
+                                Ultra Slim Laptop 15.6" Core i5
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★★</span>
+                                <span class="reviews">(87)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>495,000
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by TechZone Nigeria
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 3 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">🎧</div>
+                            </div>
+
+                            <div class="product-category">
+                                Electronics
+                            </div>
+
+                            <h3 class="product-name">
+                                Wireless Noise Cancelling Headphones
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★☆</span>
+                                <span class="reviews">(213)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>45,000
+                                <span class="old-price">₦62,000</span>
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by SoundHub
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 4 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <span class="badge">15% OFF</span>
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">👟</div>
+                            </div>
+
+                            <div class="product-category">
+                                Fashion
+                            </div>
+
+                            <h3 class="product-name">
+                                Premium Men's Casual Sneakers
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★★</span>
+                                <span class="reviews">(64)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>38,500
+                                <span class="old-price">₦45,000</span>
+                            </div>
+
+                            <div class="delivery">
+                                <strong>Fast delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by Urban Styles
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 5 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">⌚</div>
+                            </div>
+
+                            <div class="product-category">
+                                Accessories
+                            </div>
+
+                            <h3 class="product-name">
+                                Smart Watch Fitness & Health Tracker
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★☆</span>
+                                <span class="reviews">(156)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>28,000
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by SmartLife Store
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 6 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <span class="badge">DEAL</span>
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">📺</div>
+                            </div>
+
+                            <div class="product-category">
+                                Electronics
+                            </div>
+
+                            <h3 class="product-name">
+                                55" 4K Smart LED Television
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★★</span>
+                                <span class="reviews">(92)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>385,000
+                                <span class="old-price">₦450,000</span>
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by HomeTech
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 7 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">👜</div>
+                            </div>
+
+                            <div class="product-category">
+                                Fashion
+                            </div>
+
+                            <h3 class="product-name">
+                                Women's Premium Leather Handbag
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★★</span>
+                                <span class="reviews">(48)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>52,000
+                            </div>
+
+                            <div class="delivery">
+                                <strong>Fast delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by Fashion Avenue
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+
+                        <!-- PRODUCT 8 -->
+
+                        <article class="product-card">
+
+                            <div class="product-image">
+                                <span class="badge">10% OFF</span>
+                                <button class="wishlist" onclick="toggleWishlist(this)">♡</button>
+                                <div class="product-placeholder">🍳</div>
+                            </div>
+
+                            <div class="product-category">
+                                Home & Kitchen
+                            </div>
+
+                            <h3 class="product-name">
+                                12-Piece Premium Kitchen Cookware Set
+                            </h3>
+
+                            <div>
+                                <span class="stars">★★★★☆</span>
+                                <span class="reviews">(73)</span>
+                            </div>
+
+                            <div class="price">
+                                <small>₦</small>74,500
+                                <span class="old-price">₦82,000</span>
+                            </div>
+
+                            <div class="delivery">
+                                <strong>FREE delivery</strong>
+                            </div>
+
+                            <div class="seller">
+                                Sold by KitchenWorld
+                            </div>
+
+                            <div class="product-actions">
+                                <button class="add-cart" onclick="addToCart()">
+                                    Add to Cart
+                                </button>
+                                <button class="buy-now">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SELL ON FAGA
+        ========================== -->
+
+        <section class="seller-banner" id="sell">
+
+            <div>
+                <h2>Start Selling on <strong>FAGA</strong></h2>
+
+                <p>
+                    Reach customers across Nigeria and grow your business
+                    through the FAGA marketplace. Create one FAGA account,
+                    then activate your seller profile whenever you're ready
+                    to start selling.
+                </p>
+            </div>
+
+            <a href="../user portal/register.html?role=seller" class="btn-orange">
+                Start Selling
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             TRUST
+        ========================== -->
+
+        <section class="trust-grid">
+
+            <div class="trust-card">
+                <div class="trust-icon">🔒</div>
+                <h3>Secure Shopping</h3>
+                <p>
+                    Shop with confidence through secure FAGA checkout.
+                </p>
+            </div>
+
+            <div class="trust-card">
+                <div class="trust-icon">🚚</div>
+                <h3>Reliable Delivery</h3>
+                <p>
+                    Get your products delivered through FAGA logistics.
+                </p>
+            </div>
+
+            <div class="trust-card">
+                <div class="trust-icon">⭐</div>
+                <h3>Trusted Sellers</h3>
+                <p>
+                    Discover sellers and products with ratings and reviews.
+                </p>
+            </div>
+
+            <div class="trust-card">
+                <div class="trust-icon">↩️</div>
+                <h3>Buyer Protection</h3>
+                <p>
+                    Dedicated support for orders, returns and disputes.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="back-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            Back to top ↑
+        </div>
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <h2>FA<span>GA</span></h2>
+
+                <p>
+                    Your all-in-one platform for logistics, services,
+                    food and marketplace shopping.
+                </p>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Get to Know FAGA</h4>
+
+                <a href="#">About FAGA</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact Us</a>
+                <a href="#">FAGA Blog</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Make Money with FAGA</h4>
+
+                <a href="../user portal/register.html?role=seller">
+                    Sell on FAGA
+                </a>
+
+                <a href="../user portal/register.html?role=service-provider">
+                    Offer Services
+                </a>
+
+                <a href="../user portal/register.html?role=rider">
+                    Become a Rider
+                </a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Customer Service</h4>
+
+                <a href="help.html">Help Center</a>
+                <a href="track-order.html">Track Order</a>
+                <a href="#">Returns</a>
+                <a href="#">Report an Issue</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Account</h4>
+
+                <a href="../user portal/dashboard.html">Your Account</a>
+                <a href="../user portal/dashboard.html">Your Orders</a>
+                <a href="marketplace.html">Wishlist</a>
+                <a href="marketplace.html">Shopping Cart</a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 FAGA. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        let cartCount = 0;
+
+        function addToCart() {
+
+            cartCount++;
+
+            document.getElementById("cartCount").textContent = cartCount;
+
+            alert("Product added to your FAGA cart.");
+
+        }
+
+
+        function toggleWishlist(button) {
+
+            button.classList.toggle("active");
+
+            if (button.classList.contains("active")) {
+                button.textContent = "♥";
+            } else {
+                button.textContent = "♡";
+            }
+
+        }
+
+
+        function searchProducts() {
+
+            const search =
+                document.getElementById("headerSearch").value.trim();
+
+            const category =
+                document.getElementById("headerCategory").value;
+
+            if (!search && category === "All") {
+
+                alert("Enter a product or choose a category.");
+
+                return;
+            }
+
+            alert(
+                "Searching FAGA Marketplace for: " +
+                (search || category)
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,2817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FAGA Admin Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0d2745;
+            --navy-3: #12395f;
+            --orange: #ff7a18;
+            --orange-dark: #e76509;
+            --white: #ffffff;
+            --bg: #f4f6f9;
+            --border: #e3e8ef;
+            --text: #182233;
+            --muted: #6b7280;
+            --green: #16a34a;
+            --red: #dc2626;
+            --yellow: #d97706;
+            --blue: #2563eb;
+            --purple: #7c3aed;
+            --shadow: 0 4px 18px rgba(7, 26, 51, .06);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* ================= HEADER ================= */
+
+        .topbar {
+            height: 68px;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 25px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            width: 215px;
+            flex-shrink: 0;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .admin-label {
+            color: #9fb0c3;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 5px;
+        }
+
+        .top-search {
+            flex: 1;
+            max-width: 550px;
+            position: relative;
+        }
+
+        .top-search input {
+            width: 100%;
+            height: 39px;
+            border: none;
+            border-radius: 5px;
+            padding: 0 45px 0 15px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .top-search span {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: var(--muted);
+        }
+
+        .top-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 21px;
+        }
+
+        .top-action {
+            cursor: pointer;
+            position: relative;
+            font-size: 18px;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--orange);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            background: var(--orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .admin-profile strong {
+            font-size: 12px;
+        }
+
+        .admin-profile small {
+            color: #aebccc;
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            bottom: 0;
+            width: 235px;
+            background: var(--navy-2);
+            color: white;
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .sidebar-section {
+            padding: 22px 13px 7px;
+            color: #7f95ad;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .sidebar-link {
+            margin: 2px 10px;
+            padding: 11px 12px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #c4cfdb;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,.07);
+            color: white;
+        }
+
+        .sidebar-link.active {
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+            background: var(--orange);
+            color: white;
+            min-width: 19px;
+            height: 19px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            font-size: 9px;
+        }
+
+        .sidebar-link.active .sidebar-badge {
+            background: white;
+            color: var(--orange);
+        }
+
+        .sidebar-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            margin-top: 20px;
+            padding-top: 10px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 235px;
+            padding: 94px 28px 35px;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 23px;
+        }
+
+        .page-heading h1 {
+            color: var(--navy);
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .heading-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-orange:hover {
+            background: var(--orange-dark);
+        }
+
+        .btn-white {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--navy);
+        }
+
+        /* ================= KPI ================= */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .kpi {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 17px;
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .kpi-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff2e8;
+            color: var(--orange);
+        }
+
+        .kpi h2 {
+            color: var(--navy);
+            margin-top: 12px;
+            font-size: 23px;
+        }
+
+        .kpi-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 9px;
+            font-size: 9px;
+        }
+
+        .up {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        /* ================= GRID ================= */
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.65fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            min-height: 55px;
+            padding: 14px 17px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .card-header span {
+            color: var(--orange-dark);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ================= CHART ================= */
+
+        .chart-body {
+            padding: 20px;
+        }
+
+        .chart-summary {
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .chart-summary strong {
+            font-size: 24px;
+            color: var(--navy);
+        }
+
+        .chart-summary span {
+            font-size: 10px;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .chart {
+            height: 220px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+            padding: 0 8px;
+        }
+
+        .bar-group {
+            height: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .bar {
+            width: 75%;
+            max-width: 35px;
+            background: var(--orange);
+            border-radius: 3px 3px 0 0;
+            min-height: 12px;
+        }
+
+        .bar:hover {
+            background: var(--orange-dark);
+        }
+
+        .bar-label {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        /* ================= ACTIVITY ================= */
+
+        .activity {
+            padding: 0 17px;
+        }
+
+        .activity-row {
+            display: flex;
+            gap: 11px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .activity-row:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 33px;
+            height: 33px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff2e8;
+            color: var(--orange);
+            flex-shrink: 0;
+        }
+
+        .activity-text {
+            flex: 1;
+        }
+
+        .activity-text strong {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .activity-text p {
+            font-size: 9px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .activity-time {
+            color: #9ca3af;
+            font-size: 8px;
+            white-space: nowrap;
+        }
+
+        /* ================= OPERATIONS ================= */
+
+        .operation-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 11px;
+            padding: 16px;
+        }
+
+        .operation {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .operation:hover {
+            border-color: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        .operation-icon {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .operation strong {
+            font-size: 11px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .operation p {
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.4;
+        }
+
+        .operation-count {
+            color: var(--orange-dark);
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 9px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafc;
+            color: var(--muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 13px 15px;
+            border-bottom: 1px solid #eef1f5;
+            font-size: 10px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .mini-avatar {
+            width: 29px;
+            height: 29px;
+            border-radius: 50%;
+            background: var(--navy-2);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .user-cell strong {
+            display: block;
+            font-size: 10px;
+        }
+
+        .user-cell small {
+            display: block;
+            color: var(--muted);
+            font-size: 8px;
+            margin-top: 2px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .pill-green {
+            color: #15803d;
+            background: #dcfce7;
+        }
+
+        .pill-orange {
+            color: #c2410c;
+            background: #ffedd5;
+        }
+
+        .pill-blue {
+            color: #1d4ed8;
+            background: #dbeafe;
+        }
+
+        .pill-red {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .action-btn {
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 4px;
+            padding: 5px 8px;
+            font-size: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .action-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange-dark);
+        }
+
+        /* ================= SYSTEM STATUS ================= */
+
+        .system-status {
+            padding: 16px;
+        }
+
+        .system-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .system-row:last-child {
+            border-bottom: none;
+        }
+
+        .system-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .system-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .online {
+            background: var(--green);
+        }
+
+        .warning {
+            background: var(--yellow);
+        }
+
+        .system-state {
+            color: var(--green);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* ================= MAP ================= */
+
+        .map {
+            height: 235px;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,.55) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,.55) 1px, transparent 1px),
+                #dce5df;
+            background-size: 45px 45px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .road {
+            position: absolute;
+            background: rgba(255,255,255,.8);
+            height: 22px;
+            transform: rotate(-18deg);
+            width: 120%;
+            left: -10%;
+            top: 100px;
+        }
+
+        .road-two {
+            position: absolute;
+            background: rgba(255,255,255,.75);
+            height: 16px;
+            transform: rotate(25deg);
+            width: 120%;
+            left: -10%;
+            top: 60px;
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .map-marker span {
+            transform: rotate(45deg);
+        }
+
+        .marker-orange {
+            background: var(--orange);
+            left: 28%;
+            top: 48%;
+        }
+
+        .marker-blue {
+            background: var(--blue);
+            left: 56%;
+            top: 31%;
+        }
+
+        .marker-green {
+            background: var(--green);
+            right: 16%;
+            bottom: 22%;
+        }
+
+        .map-label {
+            position: absolute;
+            background: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 7px rgba(0,0,0,.12);
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .label-one {
+            left: 20%;
+            top: 67%;
+        }
+
+        .label-two {
+            left: 49%;
+            top: 18%;
+        }
+
+        .label-three {
+            right: 9%;
+            bottom: 9%;
+        }
+
+        /* ================= REVENUE ================= */
+
+        .revenue-list {
+            padding: 10px 17px;
+        }
+
+        .revenue-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            gap: 10px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .revenue-item:last-child {
+            border-bottom: none;
+        }
+
+        .revenue-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .revenue-info {
+            flex: 1;
+        }
+
+        .revenue-info strong {
+            font-size: 10px;
+            display: block;
+        }
+
+        .revenue-info small {
+            font-size: 8px;
+            color: var(--muted);
+        }
+
+        .revenue-value {
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .admin-footer {
+            margin-left: 235px;
+            background: var(--navy);
+            color: #8ea0b4;
+            padding: 20px 28px;
+            font-size: 9px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .admin-footer span {
+            color: var(--orange);
+        }
+
+        /* ================= MOBILE ================= */
+
+        .mobile-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        @media (max-width: 1250px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 950px) {
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .logo {
+                width: auto;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .sidebar {
+                left: -235px;
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .admin-footer {
+                margin-left: 0;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .operation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                padding: 0 12px;
+                gap: 12px;
+            }
+
+            .top-search {
+                display: none;
+            }
+
+            .admin-profile > div:last-child {
+                display: none;
+            }
+
+            .main {
+                padding: 88px 13px 25px;
+            }
+
+            .page-heading {
+                display: block;
+            }
+
+            .heading-actions {
+                margin-top: 15px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .kpi {
+                padding: 13px;
+            }
+
+            .kpi h2 {
+                font-size: 18px;
+            }
+
+            .kpi-icon {
+                display: none;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .operation-grid {
+                grid-template-columns: 1fr 1fr;
+                padding: 10px;
+            }
+
+            .admin-footer {
+                display: block;
+                line-height: 1.8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         TOP ADMIN BAR
+    ========================================================== -->
+
+    <header class="topbar">
+
+        <div
+            class="mobile-toggle"
+            onclick="toggleSidebar()">
+            ☰
+        </div>
+
+        <a href="../Public website/index.html" class="logo">
+            FA<span>GA</span>
+            <span class="admin-label">Admin</span>
+        </a>
+
+        <div class="top-search">
+
+            <input
+                type="text"
+                id="adminSearch"
+                placeholder="Search users, orders, products, riders..."
+            >
+
+            <span>🔍</span>
+
+        </div>
+
+        <div class="top-actions">
+
+            <div
+                class="top-action"
+                onclick="showMessage('Notifications opened')">
+                🔔
+                <span class="notification-dot"></span>
+            </div>
+
+            <div
+                class="top-action"
+                onclick="showMessage('Support center opened')">
+                💬
+            </div>
+
+            <div class="admin-profile">
+
+                <div class="admin-avatar">
+                    SA
+                </div>
+
+                <div>
+                    <strong>Super Admin</strong>
+                    <small>Administrator</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-section">
+            Overview
+        </div>
+
+        <div
+            class="sidebar-link active"
+            onclick="setActive(this)">
+            <span class="sidebar-icon">📊</span>
+            Dashboard
+        </div>
+
+
+        <div class="sidebar-section">
+            Platform
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('users.html')">
+            <span class="sidebar-icon">👥</span>
+            Users
+            <span class="sidebar-badge">24</span>
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('orders.html')">
+            <span class="sidebar-icon">📦</span>
+            Orders
+            <span class="sidebar-badge">18</span>
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('logistics.html')">
+            <span class="sidebar-icon">🚚</span>
+            Logistics
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('riders.html')">
+            <span class="sidebar-icon">🏍️</span>
+            Riders
+            <span class="sidebar-badge">7</span>
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('marketplace.html')">
+            <span class="sidebar-icon">🛍️</span>
+            Marketplace
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('sellers.html')">
+            <span class="sidebar-icon">🏪</span>
+            Sellers
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('services.html')">
+            <span class="sidebar-icon">🛠️</span>
+            Services
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('providers.html')">
+            <span class="sidebar-icon">👨‍🔧</span>
+            Service Providers
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('food.html')">
+            <span class="sidebar-icon">🍽️</span>
+            Food & Restaurants
+        </div>
+
+
+        <div class="sidebar-section">
+            Finance
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('payments.html')">
+            <span class="sidebar-icon">💳</span>
+            Payments
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('wallets.html')">
+            <span class="sidebar-icon">💰</span>
+            Wallets
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('payouts.html')">
+            <span class="sidebar-icon">🏦</span>
+            Payouts
+        </div>
+
+
+        <div class="sidebar-section">
+            Management
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('reports.html')">
+            <span class="sidebar-icon">📈</span>
+            Reports
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('support.html')">
+            <span class="sidebar-icon">🎧</span>
+            Support
+            <span class="sidebar-badge">9</span>
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('disputes.html')">
+            <span class="sidebar-icon">⚠️</span>
+            Disputes
+            <span class="sidebar-badge">3</span>
+        </div>
+
+
+        <div class="sidebar-section">
+            System
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="navigate('settings.html')">
+            <span class="sidebar-icon">⚙️</span>
+            Settings
+        </div>
+
+        <div
+            class="sidebar-link"
+            onclick="showMessage('Audit logs opened')">
+            <span class="sidebar-icon">🔐</span>
+            Audit Logs
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div
+                class="sidebar-link"
+                onclick="window.location.href='../user portal/dashboard.html'">
+                <span class="sidebar-icon">↩</span>
+                User Portal
+            </div>
+
+            <div
+                class="sidebar-link"
+                style="color:#ff9a9a;"
+                onclick="logout()">
+                <span class="sidebar-icon">↪</span>
+                Sign Out
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main">
+
+        <section class="page-heading">
+
+            <div>
+
+                <h1>FAGA Admin Dashboard</h1>
+
+                <p>
+                    Platform overview and real-time operations control center.
+                </p>
+
+            </div>
+
+            <div class="heading-actions">
+
+                <button
+                    class="btn btn-white"
+                    onclick="showMessage('Report export started')">
+                    ↓ Export Report
+                </button>
+
+                <button
+                    class="btn btn-orange"
+                    onclick="showMessage('Create action opened')">
+                    + Create
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             KPI CARDS
+        ====================================================== -->
+
+        <section class="kpi-grid">
+
+            <div class="kpi">
+
+                <div class="kpi-top">
+
+                    <span class="kpi-label">
+                        TOTAL USERS
+                    </span>
+
+                    <div class="kpi-icon">
+                        👥
+                    </div>
+
+                </div>
+
+                <h2>48,392</h2>
+
+                <div class="kpi-footer">
+                    <span class="up">↑ 8.4%</span>
+                    <span class="muted">vs last month</span>
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-top">
+
+                    <span class="kpi-label">
+                        ORDERS TODAY
+                    </span>
+
+                    <div class="kpi-icon">
+                        📦
+                    </div>
+
+                </div>
+
+                <h2>1,284</h2>
+
+                <div class="kpi-footer">
+                    <span class="up">↑ 12.8%</span>
+                    <span class="muted">vs yesterday</span>
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-top">
+
+                    <span class="kpi-label">
+                        REVENUE TODAY
+                    </span>
+
+                    <div class="kpi-icon">
+                        ₦
+                    </div>
+
+                </div>
+
+                <h2>₦8.74M</h2>
+
+                <div class="kpi-footer">
+                    <span class="up">↑ 14.2%</span>
+                    <span class="muted">vs yesterday</span>
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-top">
+
+                    <span class="kpi-label">
+                        ACTIVE RIDERS
+                    </span>
+
+                    <div class="kpi-icon">
+                        🏍️
+                    </div>
+
+                </div>
+
+                <h2>742</h2>
+
+                <div class="kpi-footer">
+                    <span class="up">↑ 5.1%</span>
+                    <span class="muted">online now</span>
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-top">
+
+                    <span class="kpi-label">
+                        PENDING ISSUES
+                    </span>
+
+                    <div class="kpi-icon">
+                        ⚠️
+                    </div>
+
+                </div>
+
+                <h2>36</h2>
+
+                <div class="kpi-footer">
+                    <span style="color:var(--red);font-weight:700;">
+                        9 urgent
+                    </span>
+                    <span class="muted">needs attention</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             REVENUE CHART + ACTIVITY
+        ====================================================== -->
+
+        <section class="grid-2">
+
+
+            <!-- REVENUE -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>Platform Revenue</h2>
+
+                    <span
+                        onclick="showMessage('Opening revenue analytics')">
+                        View Analytics →
+                    </span>
+
+                </div>
+
+                <div class="chart-body">
+
+                    <div class="chart-summary">
+
+                        <strong>
+                            ₦52.8M
+                        </strong>
+
+                        <span>
+                            ↑ 18.6% this month
+                        </span>
+
+                    </div>
+
+                    <div class="chart">
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:42%;"></div>
+                            <span class="bar-label">1</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:55%;"></div>
+                            <span class="bar-label">2</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:48%;"></div>
+                            <span class="bar-label">3</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:67%;"></div>
+                            <span class="bar-label">4</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:62%;"></div>
+                            <span class="bar-label">5</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:78%;"></div>
+                            <span class="bar-label">6</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:70%;"></div>
+                            <span class="bar-label">7</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:88%;"></div>
+                            <span class="bar-label">8</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:73%;"></div>
+                            <span class="bar-label">9</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:91%;"></div>
+                            <span class="bar-label">10</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:84%;"></div>
+                            <span class="bar-label">11</span>
+                        </div>
+
+                        <div class="bar-group">
+                            <div class="bar" style="height:96%;"></div>
+                            <span class="bar-label">12</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIVE ACTIVITY -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>Live Activity</h2>
+
+                    <span>
+                        LIVE ●
+                    </span>
+
+                </div>
+
+                <div class="activity">
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            📦
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                New order received
+                            </strong>
+
+                            <p>
+                                Order #FG-92841 — ₦24,500
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            1m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🏍️
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Rider completed delivery
+                            </strong>
+
+                            <p>
+                                Delivery #FG-77420 completed.
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            3m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            👤
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                New user registered
+                            </strong>
+
+                            <p>
+                                New customer account created.
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            5m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🏪
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Seller verification submitted
+                            </strong>
+
+                            <p>
+                                New seller awaiting verification.
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            8m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🍽️
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Restaurant order received
+                            </strong>
+
+                            <p>
+                                FAGA Kitchen received a new order.
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            11m
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             OPERATIONS
+        ====================================================== -->
+
+        <section class="card" style="margin-bottom:18px;">
+
+            <div class="card-header">
+
+                <h2>Operations Center</h2>
+
+                <span>
+                    Manage Platform →
+                </span>
+
+            </div>
+
+
+            <div class="operation-grid">
+
+                <div
+                    class="operation"
+                    onclick="navigate('orders.html')">
+
+                    <div class="operation-icon">
+                        📦
+                    </div>
+
+                    <strong>
+                        Orders
+                    </strong>
+
+                    <p>
+                        Monitor and manage all platform orders.
+                    </p>
+
+                    <div class="operation-count">
+                        18 pending
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('logistics.html')">
+
+                    <div class="operation-icon">
+                        🚚
+                    </div>
+
+                    <strong>
+                        Logistics
+                    </strong>
+
+                    <p>
+                        Control shipments and delivery operations.
+                    </p>
+
+                    <div class="operation-count">
+                        326 in transit
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('riders.html')">
+
+                    <div class="operation-icon">
+                        🏍️
+                    </div>
+
+                    <strong>
+                        Riders
+                    </strong>
+
+                    <p>
+                        Manage riders and delivery assignments.
+                    </p>
+
+                    <div class="operation-count">
+                        742 online
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('marketplace.html')">
+
+                    <div class="operation-icon">
+                        🛍️
+                    </div>
+
+                    <strong>
+                        Marketplace
+                    </strong>
+
+                    <p>
+                        Products, sellers and marketplace orders.
+                    </p>
+
+                    <div class="operation-count">
+                        27 awaiting review
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('services.html')">
+
+                    <div class="operation-icon">
+                        🛠️
+                    </div>
+
+                    <strong>
+                        Services
+                    </strong>
+
+                    <p>
+                        Monitor service providers and bookings.
+                    </p>
+
+                    <div class="operation-count">
+                        14 pending
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('food.html')">
+
+                    <div class="operation-icon">
+                        🍽️
+                    </div>
+
+                    <strong>
+                        Food
+                    </strong>
+
+                    <p>
+                        Restaurants, menus and food orders.
+                    </p>
+
+                    <div class="operation-count">
+                        42 active orders
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('payments.html')">
+
+                    <div class="operation-icon">
+                        💳
+                    </div>
+
+                    <strong>
+                        Payments
+                    </strong>
+
+                    <p>
+                        Monitor transactions and payment status.
+                    </p>
+
+                    <div class="operation-count">
+                        ₦8.74M today
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="operation"
+                    onclick="navigate('support.html')">
+
+                    <div class="operation-icon">
+                        🎧
+                    </div>
+
+                    <strong>
+                        Support
+                    </strong>
+
+                    <p>
+                        Handle customer issues and support tickets.
+                    </p>
+
+                    <div class="operation-count">
+                        9 urgent
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ORDERS + MAP
+        ====================================================== -->
+
+        <section class="grid-2">
+
+
+            <!-- RECENT ORDERS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>Recent Orders</h2>
+
+                    <span onclick="navigate('orders.html')">
+                        View All →
+                    </span>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <strong>#FG-92841</strong>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="mini-avatar">
+                                            AO
+                                        </div>
+
+                                        <div>
+                                            <strong>Alex Okafor</strong>
+                                            <small>Customer</small>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>Food</td>
+
+                                <td>₦24,500</td>
+
+                                <td>
+                                    <span class="pill pill-orange">
+                                        Preparing
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="action-btn"
+                                        onclick="viewOrder('FG-92841')">
+                                        View
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>#FG-92840</strong>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="mini-avatar">
+                                            MK
+                                        </div>
+
+                                        <div>
+                                            <strong>Mary Kalu</strong>
+                                            <small>Customer</small>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>Product</td>
+
+                                <td>₦145,000</td>
+
+                                <td>
+                                    <span class="pill pill-blue">
+                                        In Transit
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="action-btn"
+                                        onclick="viewOrder('FG-92840')">
+                                        View
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>#FG-92839</strong>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="mini-avatar">
+                                            TY
+                                        </div>
+
+                                        <div>
+                                            <strong>Tom Yusuf</strong>
+                                            <small>Customer</small>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>Logistics</td>
+
+                                <td>₦18,500</td>
+
+                                <td>
+                                    <span class="pill pill-blue">
+                                        In Transit
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="action-btn"
+                                        onclick="viewOrder('FG-92839')">
+                                        View
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>#FG-92838</strong>
+                                </td>
+
+                                <td>
+
+                                    <div class="user-cell">
+
+                                        <div class="mini-avatar">
+                                            SA
+                                        </div>
+
+                                        <div>
+                                            <strong>Sarah Ade</strong>
+                                            <small>Customer</small>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>Service</td>
+
+                                <td>₦35,000</td>
+
+                                <td>
+                                    <span class="pill pill-green">
+                                        Completed
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="action-btn"
+                                        onclick="viewOrder('FG-92838')">
+                                        View
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIVE MAP -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>Live Delivery Operations</h2>
+
+                    <span onclick="navigate('logistics.html')">
+                        Full Map →
+                    </span>
+
+                </div>
+
+                <div class="map">
+
+                    <div class="road"></div>
+                    <div class="road-two"></div>
+
+                    <div class="map-marker marker-orange">
+                        <span>🏍</span>
+                    </div>
+
+                    <div class="map-marker marker-blue">
+                        <span>🏍</span>
+                    </div>
+
+                    <div class="map-marker marker-green">
+                        <span>✓</span>
+                    </div>
+
+                    <div class="map-label label-one">
+                        Rider #104
+                    </div>
+
+                    <div class="map-label label-two">
+                        Rider #218
+                    </div>
+
+                    <div class="map-label label-three">
+                        Delivery
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             USERS + REVENUE + SYSTEM
+        ====================================================== -->
+
+        <section class="grid-3">
+
+
+            <!-- NEW USERS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>New Users</h2>
+
+                    <span onclick="navigate('users.html')">
+                        View All →
+                    </span>
+
+                </div>
+
+                <div class="activity">
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            👤
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                David Johnson
+                            </strong>
+
+                            <p>
+                                Customer account
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            4m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🏍️
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Michael James
+                            </strong>
+
+                            <p>
+                                Rider registration
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            13m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🏪
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Grace Stores
+                            </strong>
+
+                            <p>
+                                Seller registration
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            21m
+                        </span>
+
+                    </div>
+
+
+                    <div class="activity-row">
+
+                        <div class="activity-icon">
+                            🛠️
+                        </div>
+
+                        <div class="activity-text">
+
+                            <strong>
+                                Chuka Repairs
+                            </strong>
+
+                            <p>
+                                Service provider
+                            </p>
+
+                        </div>
+
+                        <span class="activity-time">
+                            34m
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- REVENUE SOURCES -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>Revenue Sources</h2>
+
+                    <span onclick="navigate('reports.html')">
+                        Details →
+                    </span>
+
+                </div>
+
+                <div class="revenue-list">
+
+                    <div class="revenue-item">
+
+                        <div class="revenue-icon">
+                            🚚
+                        </div>
+
+                        <div class="revenue-info">
+                            <strong>Logistics</strong>
+                            <small>Delivery fees</small>
+                        </div>
+
+                        <div class="revenue-value">
+                            ₦3.2M
+                        </div>
+
+                    </div>
+
+
+                    <div class="revenue-item">
+
+                        <div class="revenue-icon">
+                            🛍️
+                        </div>
+
+                        <div class="revenue-info">
+                            <strong>Marketplace</strong>
+                            <small>Commissions</small>
+                        </div>
+
+                        <div class="revenue-value">
+                            ₦2.4M
+                        </div>
+
+                    </div>
+
+
+                    <div class="revenue-item">
+
+                        <div class="revenue-icon">
+                            🍽️
+                        </div>
+
+                        <div class="revenue-info">
+                            <strong>Food</strong>
+                            <small>Commissions & fees</small>
+                        </div>
+
+                        <div class="revenue-value">
+                            ₦1.9M
+                        </div>
+
+                    </div>
+
+
+                    <div class="revenue-item">
+
+                        <div class="revenue-icon">
+                            🛠️
+                        </div>
+
+                        <div class="revenue-info">
+                            <strong>Services</strong>
+                            <small>Platform fees</small>
+                        </div>
+
+                        <div class="revenue-value">
+                            ₦1.2M
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SYSTEM STATUS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h2>System Status</h2>
+
+                    <span>
+                        Operational
+                    </span>
+
+                </div>
+
+                <div class="system-status">
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot online"></span>
+                            Website
+                        </div>
+
+                        <span class="system-state">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot online"></span>
+                            API
+                        </div>
+
+                        <span class="system-state">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot online"></span>
+                            Payments
+                        </div>
+
+                        <span class="system-state">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot online"></span>
+                            Logistics
+                        </div>
+
+                        <span class="system-state">
+                            Operational
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot warning"></span>
+                            Notifications
+                        </div>
+
+                        <span
+                            class="system-state"
+                            style="color:var(--yellow);">
+                            Degraded
+                        </span>
+
+                    </div>
+
+
+                    <div class="system-row">
+
+                        <div class="system-name">
+                            <span class="system-dot online"></span>
+                            Database
+                        </div>
+
+                        <span class="system-state">
+                            Operational
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             APPROVALS
+        ====================================================== -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2>Pending Approvals</h2>
+
+                <span onclick="navigate('approvals.html')">
+                    Manage All →
+                </span>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Applicant</th>
+                            <th>Activity</th>
+                            <th>Submitted</th>
+                            <th>Documents</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                <div class="user-cell">
+
+                                    <div class="mini-avatar">
+                                        EO
+                                    </div>
+
+                                    <div>
+                                        <strong>Emeka Okoro</strong>
+                                        <small>emeka@example.com</small>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td>Rider</td>
+
+                            <td>Today, 06:42</td>
+
+                            <td>
+                                <span class="pill pill-green">
+                                    Complete
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="pill pill-orange">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="action-btn"
+                                    onclick="reviewApplication('Emeka Okoro')">
+                                    Review
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <div class="user-cell">
+
+                                    <div class="mini-avatar">
+                                        GB
+                                    </div>
+
+                                    <div>
+                                        <strong>Grace Beauty</strong>
+                                        <small>grace@example.com</small>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td>Seller</td>
+
+                            <td>Today, 05:30</td>
+
+                            <td>
+                                <span class="pill pill-green">
+                                    Complete
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="pill pill-orange">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="action-btn"
+                                    onclick="reviewApplication('Grace Beauty')">
+                                    Review
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <div class="user-cell">
+
+                                    <div class="mini-avatar">
+                                        FT
+                                    </div>
+
+                                    <div>
+                                        <strong>Fresh Taste</strong>
+                                        <small>fresh@example.com</small>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td>Restaurant</td>
+
+                            <td>Yesterday</td>
+
+                            <td>
+                                <span class="pill pill-orange">
+                                    1 Missing
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="pill pill-orange">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="action-btn"
+                                    onclick="reviewApplication('Fresh Taste')">
+                                    Review
+                                </button>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer class="admin-footer">
+
+        <div>
+            <strong style="color:white;">FAGA Admin</strong>
+            —
+            Platform Administration & Operations
+        </div>
+
+        <div>
+            FAGA Platform v1.0
+            <span>●</span>
+            All systems monitored
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        /* ================= SIDEBAR ================= */
+
+        function toggleSidebar() {
+
+            document
+                .getElementById("sidebar")
+                .classList.toggle("open");
+
+        }
+
+
+        /* ================= ACTIVE MENU ================= */
+
+        function setActive(element) {
+
+            document
+                .querySelectorAll(".sidebar-link")
+                .forEach(function(link) {
+
+                    link.classList.remove("active");
+
+                });
+
+            element.classList.add("active");
+
+        }
+
+
+        /* ================= NAVIGATION ================= */
+
+        function navigate(page) {
+
+            /*
+                These pages will be created next.
+
+                Example:
+
+                admin/users.html
+                admin/orders.html
+                admin/riders.html
+                admin/payments.html
+            */
+
+            window.location.href = page;
+
+        }
+
+
+        /* ================= MESSAGE ================= */
+
+        function showMessage(message) {
+
+            alert(message);
+
+        }
+
+
+        /* ================= ORDER ================= */
+
+        function viewOrder(orderNumber) {
+
+            alert(
+                "Opening order " +
+                orderNumber +
+                "..."
+            );
+
+        }
+
+
+        /* ================= APPLICATION ================= */
+
+        function reviewApplication(name) {
+
+            alert(
+                "Opening verification review for " +
+                name +
+                "..."
+            );
+
+        }
+
+
+        /* ================= LOGOUT ================= */
+
+        function logout() {
+
+            const confirmed =
+                confirm(
+                    "Sign out of the FAGA Admin Portal?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            /*
+                BACKEND:
+
+                POST /api/admin/logout
+
+                After successful logout:
+
+                window.location.href =
+                    "login.html";
+            */
+
+            window.location.href="../admin portal/login.html";
+
+        }
+
+
+        /* ================= SEARCH ================= */
+
+        document
+            .getElementById("adminSearch")
+            .addEventListener(
+                "keypress",
+                function(event) {
+
+                    if (event.key === "Enter") {
+
+                        const query =
+                            this.value.trim();
+
+                        if (!query) {
+
+                            alert(
+                                "Enter something to search."
+                            );
+
+                            return;
+
+                        }
+
+                        alert(
+                            "Admin search for: " +
+                            query
+                        );
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+</html>

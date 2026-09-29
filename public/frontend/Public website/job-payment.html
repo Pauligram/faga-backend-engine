@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Application Payment | FAGA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --navy:#071a33;
+      --navy-2:#0d2748;
+      --orange:#f7931e;
+      --orange-dark:#dc7808;
+      --white:#ffffff;
+      --bg:#f5f7fa;
+      --text:#182334;
+      --muted:#6b7789;
+      --border:#e3e8ef;
+      --success:#16854b;
+      --success-bg:#eaf8f0;
+      --danger:#c62828;
+      --shadow:0 12px 35px rgba(7,26,51,.08);
+      --radius:16px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button,
+    input{
+      font:inherit;
+    }
+
+    .container{
+      width:min(1180px,92%);
+      margin:auto;
+    }
+
+    /* NAVBAR */
+    .navbar{
+      background:var(--navy);
+      color:#fff;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 4px 18px rgba(0,0,0,.12);
+    }
+
+    .nav-inner{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:25px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:23px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .brand-mark{
+      width:38px;
+      height:38px;
+      border-radius:10px;
+      background:var(--orange);
+      color:var(--navy);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:22px;
+    }
+
+    .nav-links a{
+      font-size:14px;
+      color:#dbe4ef;
+      transition:.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:var(--orange);
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .btn{
+      border:0;
+      border-radius:9px;
+      padding:11px 18px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.2s;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn-orange{
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    .btn-orange:hover{
+      background:#ff9f2e;
+      transform:translateY(-1px);
+    }
+
+    .btn-outline{
+      border:1px solid rgba(255,255,255,.3);
+      background:transparent;
+      color:#fff;
+    }
+
+    .mobile-toggle{
+      display:none;
+      background:none;
+      border:0;
+      color:#fff;
+      font-size:22px;
+      cursor:pointer;
+    }
+
+    /* HERO */
+    .hero{
+      background:linear-gradient(135deg,var(--navy),var(--navy-2));
+      color:#fff;
+      padding:55px 0 65px;
+    }
+
+    .hero-content{
+      max-width:760px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--orange);
+      font-size:13px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:12px;
+    }
+
+    .hero h1{
+      font-size:clamp(30px,5vw,46px);
+      line-height:1.12;
+      margin-bottom:14px;
+    }
+
+    .hero p{
+      color:#d7e1ec;
+      max-width:680px;
+    }
+
+    /* STEPS */
+    .steps-wrap{
+      margin-top:-28px;
+      position:relative;
+      z-index:3;
+    }
+
+    .steps{
+      background:#fff;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      border-radius:15px;
+      padding:18px 24px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .step{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      color:#8a95a4;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .step-number{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:#eef1f5;
+      color:#6b7789;
+      flex-shrink:0;
+    }
+
+    .step.completed{
+      color:var(--success);
+    }
+
+    .step.completed .step-number{
+      background:var(--success-bg);
+      color:var(--success);
+    }
+
+    .step.active{
+      color:var(--orange-dark);
+    }
+
+    .step.active .step-number{
+      background:var(--orange);
+      color:var(--navy);
+    }
+
+    /* MAIN */
+    .main{
+      padding:50px 0 75px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 390px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .card-header{
+      padding:24px 26px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .card-header h2{
+      font-size:21px;
+      margin-bottom:5px;
+    }
+
+    .card-header p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .card-body{
+      padding:26px;
+    }
+
+    /* JOB SUMMARY */
+    .job-summary{
+      display:flex;
+      gap:15px;
+      align-items:flex-start;
+      padding:18px;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      border-radius:12px;
+      margin-bottom:26px;
+    }
+
+    .company-icon{
+      width:48px;
+      height:48px;
+      border-radius:12px;
+      background:var(--navy);
+      color:var(--orange);
+      display:grid;
+      place-items:center;
+      font-size:20px;
+      flex-shrink:0;
+    }
+
+    .job-summary h3{
+      font-size:17px;
+      margin-bottom:3px;
+    }
+
+    .job-summary p{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .job-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:9px;
+    }
+
+    .meta{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:4px 9px;
+      font-size:11px;
+      color:#536174;
+    }
+
+    /* PLANS */
+    .section-title{
+      font-size:16px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    .plans{
+      display:grid;
+      gap:13px;
+    }
+
+    .plan{
+      position:relative;
+      border:2px solid var(--border);
+      border-radius:14px;
+      padding:20px;
+      cursor:pointer;
+      transition:.2s;
+      background:#fff;
+    }
+
+    .plan:hover{
+      border-color:#f3c27f;
+      transform:translateY(-1px);
+    }
+
+    .plan.selected{
+      border-color:var(--orange);
+      background:#fffaf4;
+    }
+
+    .plan input{
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .plan-top{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      align-items:flex-start;
+    }
+
+    .plan-name{
+      font-weight:800;
+      font-size:16px;
+    }
+
+    .plan-price{
+      font-size:25px;
+      font-weight:800;
+      color:var(--navy);
+      white-space:nowrap;
+    }
+
+    .plan-price small{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:500;
+    }
+
+    .plan-description{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:5px;
+    }
+
+    .plan-features{
+      margin-top:14px;
+      display:grid;
+      gap:7px;
+      list-style:none;
+      color:#566274;
+      font-size:13px;
+    }
+
+    .plan-features li{
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+    }
+
+    .plan-features i{
+      color:var(--success);
+      margin-top:4px;
+    }
+
+    .best-value{
+      position:absolute;
+      right:14px;
+      top:-11px;
+      background:var(--orange);
+      color:var(--navy);
+      font-size:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      padding:4px 9px;
+      border-radius:20px;
+    }
+
+    /* PAYMENT OPTIONS */
+    .payment-options{
+      margin-top:28px;
+    }
+
+    .payment-method{
+      border:1px solid var(--border);
+      border-radius:11px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+      cursor:pointer;
+    }
+
+    .payment-method.selected{
+      border-color:var(--orange);
+      background:#fffaf4;
+    }
+
+    .payment-method input{
+      accent-color:var(--orange);
+    }
+
+    .payment-icon{
+      width:38px;
+      height:38px;
+      border-radius:9px;
+      background:#f0f3f7;
+      display:grid;
+      place-items:center;
+      color:var(--navy);
+    }
+
+    .payment-method strong{
+      display:block;
+      font-size:14px;
+    }
+
+    .payment-method span{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .secure-note{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin-top:20px;
+      padding:13px;
+      background:#f5faf7;
+      border:1px solid #d8eee1;
+      color:#426353;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .secure-note i{
+      color:var(--success);
+      margin-top:2px;
+    }
+
+    /* SUMMARY SIDEBAR */
+    .summary-card{
+      position:sticky;
+      top:98px;
+    }
+
+    .summary-header{
+      background:var(--navy);
+      color:#fff;
+      padding:22px;
+      border-radius:16px 16px 0 0;
+    }
+
+    .summary-header h3{
+      font-size:18px;
+      margin-bottom:4px;
+    }
+
+    .summary-header p{
+      font-size:12px;
+      color:#bdcada;
+    }
+
+    .summary-body{
+      padding:22px;
+    }
+
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      padding:10px 0;
+      font-size:13px;
+      color:#596678;
+    }
+
+    .summary-row strong{
+      color:var(--text);
+    }
+
+    .summary-total{
+      border-top:1px solid var(--border);
+      margin-top:8px;
+      padding-top:17px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .summary-total span{
+      font-weight:700;
+    }
+
+    .summary-total strong{
+      font-size:27px;
+      color:var(--navy);
+    }
+
+    .pay-btn{
+      width:100%;
+      margin-top:20px;
+      padding:14px;
+      font-size:15px;
+    }
+
+    .fine-print{
+      text-align:center;
+      color:#8994a2;
+      font-size:10px;
+      line-height:1.5;
+      margin-top:12px;
+    }
+
+    .benefits{
+      margin-top:20px;
+      padding-top:18px;
+      border-top:1px solid var(--border);
+    }
+
+    .benefits h4{
+      font-size:13px;
+      margin-bottom:10px;
+    }
+
+    .benefits ul{
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+
+    .benefits li{
+      display:flex;
+      gap:8px;
+      font-size:12px;
+      color:#5f6b7b;
+    }
+
+    .benefits i{
+      color:var(--success);
+      margin-top:3px;
+    }
+
+    /* STATUS */
+    .status-box{
+      display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      text-align:center;
+    }
+
+    .status-box.show{
+      display:block;
+    }
+
+    .spinner{
+      width:36px;
+      height:36px;
+      border:4px solid #e8ebef;
+      border-top-color:var(--orange);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+      margin:0 auto 12px;
+    }
+
+    @keyframes spin{
+      to{transform:rotate(360deg);}
+    }
+
+    .status-box h4{
+      margin-bottom:4px;
+    }
+
+    .status-box p{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* ALERT */
+    .alert{
+      display:none;
+      padding:13px 15px;
+      border-radius:10px;
+      margin-bottom:18px;
+      font-size:13px;
+    }
+
+    .alert.show{
+      display:block;
+    }
+
+    .alert.error{
+      color:#8d2525;
+      background:#fff0f0;
+      border:1px solid #f2caca;
+    }
+
+    /* FOOTER */
+    footer{
+      background:var(--navy);
+      color:#fff;
+      padding:50px 0 25px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:40px;
+    }
+
+    .footer-brand p{
+      color:#b9c7d8;
+      max-width:390px;
+      font-size:13px;
+      margin-top:13px;
+    }
+
+    footer h4{
+      margin-bottom:14px;
+      font-size:14px;
+    }
+
+    footer ul{
+      list-style:none;
+      display:grid;
+      gap:9px;
+    }
+
+    footer li a{
+      color:#b9c7d8;
+      font-size:13px;
+    }
+
+    footer li a:hover{
+      color:var(--orange);
+    }
+
+    .copyright{
+      border-top:1px solid rgba(255,255,255,.1);
+      margin-top:35px;
+      padding-top:20px;
+      color:#8fa0b4;
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:1000px){
+      .nav-links{
+        display:none;
+      }
+
+      .mobile-toggle{
+        display:block;
+      }
+
+      .nav-links.open{
+        display:flex;
+        position:absolute;
+        top:74px;
+        left:0;
+        right:0;
+        background:var(--navy);
+        padding:20px;
+        flex-direction:column;
+        align-items:flex-start;
+        border-top:1px solid rgba(255,255,255,.08);
+      }
+
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .summary-card{
+        position:static;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:650px){
+      .nav-actions .btn-outline{
+        display:none;
+      }
+
+      .steps{
+        grid-template-columns:1fr 1fr;
+        gap:14px;
+      }
+
+      .hero{
+        padding:42px 0 55px;
+      }
+
+      .card-header,
+      .card-body{
+        padding:20px;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .copyright{
+        flex-direction:column;
+      }
+
+      .plan-top{
+        flex-direction:column;
+      }
+
+      .plan-price{
+        font-size:22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!--
+    FAGA JOB PAYMENT PAGE
+
+    Production flow:
+    1. Applicant registers on job-register.html.
+    2. Backend creates applicant record.
+    3. This page receives a server-created payment/order reference.
+    4. Backend creates payment transaction with the selected payment provider.
+    5. Browser redirects/opens provider checkout.
+    6. Backend verifies provider transaction.
+    7. Only after backend verification is the applicant's application-access plan activated.
+    8. Browser is redirected to job-profile.html.
+
+    IMPORTANT:
+    - Never trust the amount, plan, payment status, or expiry date supplied by the browser.
+    - Never place payment-provider secret keys in this HTML.
+    - The backend must calculate the amount from the selected plan.
+    - The backend must verify payment directly with the payment provider.
+    - CV upload/application access must remain locked until payment is verified.
+  -->
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+
+      <a href="index.html" class="brand">
+        <span class="brand-mark">F</span>
+        FAGA
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="logistics.html">Logistics</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="food.html">Food</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html" class="active">Jobs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="help.html">Help</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="../user portal/login.html" class="btn btn-outline">Login</a>
+        <a href="../user portal/register.html" class="btn btn-orange">Get Started</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="eyebrow">
+          <i class="fa-solid fa-lock"></i>
+          Applicant access
+        </div>
+
+        <h1>Activate Your Job Application Access</h1>
+
+        <p>
+          Choose an access plan to continue to your applicant profile,
+          upload your CV and apply for available opportunities on FAGA.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <div class="steps-wrap">
+    <div class="container">
+      <div class="steps">
+
+        <div class="step completed">
+          <span class="step-number">
+            <i class="fa-solid fa-check"></i>
+          </span>
+          Registration
+        </div>
+
+        <div class="step active">
+          <span class="step-number">2</span>
+          Payment
+        </div>
+
+        <div class="step">
+          <span class="step-number">3</span>
+          Profile & CV
+        </div>
+
+        <div class="step">
+          <span class="step-number">4</span>
+          Apply
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="container">
+
+      <div class="layout">
+
+        <!-- LEFT -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Choose an application access plan</h2>
+            <p>
+              Your selected plan determines how long your FAGA applicant
+              platform access remains active.
+            </p>
+          </div>
+
+          <div class="card-body">
+
+            <div id="errorAlert" class="alert error"></div>
+
+            <!-- JOB -->
+            <div class="job-summary">
+              <div class="company-icon">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+
+              <div>
+                <h3 id="jobTitle">Frontend Developer</h3>
+                <p id="companyName">FAGA Technologies</p>
+
+                <div class="job-meta">
+                  <span class="meta">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="jobLocation">Lagos</span>
+                  </span>
+
+                  <span class="meta">
+                    <i class="fa-solid fa-clock"></i>
+                    <span id="jobType">Full Time</span>
+                  </span>
+
+                  <span class="meta" id="jobIdMeta">
+                    JOB-1001
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              Select your access duration
+            </div>
+
+            <!-- PLANS -->
+            <div class="plans">
+
+              <label class="plan" id="plan3">
+                <input
+                  type="radio"
+                  name="plan"
+                  value="quarterly"
+                >
+
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name">
+                      3-Month Access
+                    </div>
+
+                    <div class="plan-description">
+                      Suitable if you are actively searching for opportunities
+                      over a shorter period.
+                    </div>
+                  </div>
+
+                  <div class="plan-price">
+                    ₦300
+                    <small>/ 3 months</small>
+                  </div>
+                </div>
+
+                <ul class="plan-features">
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Access eligible job applications
+                  </li>
+
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Create and maintain your applicant profile
+                  </li>
+
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Upload and use your CV
+                  </li>
+                </ul>
+              </label>
+
+
+              <label class="plan selected" id="plan12">
+
+                <span class="best-value">
+                  Best Value
+                </span>
+
+                <input
+                  type="radio"
+                  name="plan"
+                  value="annual"
+                  checked
+                >
+
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name">
+                      1-Year Access
+                    </div>
+
+                    <div class="plan-description">
+                      Keep your applicant access active for a full year.
+                    </div>
+                  </div>
+
+                  <div class="plan-price">
+                    ₦500
+                    <small>/ year</small>
+                  </div>
+                </div>
+
+                <ul class="plan-features">
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Access eligible job applications
+                  </li>
+
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Create and maintain your applicant profile
+                  </li>
+
+                  <li>
+                    <i class="fa-solid fa-check"></i>
+                    Upload and use your CV
+                  </li>
+                </ul>
+              </label>
+
+            </div>
+
+            <!-- PAYMENT METHOD -->
+            <div class="payment-options">
+
+              <div class="section-title">
+                Payment method
+              </div>
+
+              <label class="payment-method selected">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="online"
+                  checked
+                >
+
+                <div class="payment-icon">
+                  <i class="fa-solid fa-credit-card"></i>
+                </div>
+
+                <div>
+                  <strong>Online payment</strong>
+                  <span>
+                    Secure checkout through FAGA's configured payment provider
+                  </span>
+                </div>
+              </label>
+
+              <!--
+              Additional payment methods can be enabled here when supported
+              by the backend/payment provider.
+
+              Example:
+              - Bank transfer
+              - USSD
+              - Card
+              - Mobile money
+              -->
+
+            </div>
+
+            <div class="secure-note">
+              <i class="fa-solid fa-shield-halved"></i>
+
+              <div>
+                <strong>Secure payment processing</strong><br>
+                Your payment is processed through FAGA's configured payment
+                provider. FAGA does not store your card PIN, CVV or other
+                sensitive payment credentials in this page.
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- RIGHT SUMMARY -->
+        <aside class="card summary-card">
+
+          <div class="summary-header">
+            <h3>Payment Summary</h3>
+            <p>Your selected application access</p>
+          </div>
+
+          <div class="summary-body">
+
+            <div class="summary-row">
+              <span>Application access</span>
+              <strong id="summaryPlan">
+                1 Year
+              </strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Access fee</span>
+              <strong id="summaryFee">
+                ₦500
+              </strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Payment processing</span>
+              <strong id="summaryProcessing">
+                ₦0
+              </strong>
+            </div>
+
+            <div class="summary-total">
+              <span>Total</span>
+              <strong id="summaryTotal">
+                ₦500
+              </strong>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-orange pay-btn"
+              id="payBtn"
+            >
+              <i class="fa-solid fa-lock"></i>
+              Continue to Payment
+            </button>
+
+            <p class="fine-print">
+              By continuing, you agree that the application access fee
+              provides access to FAGA's applicant platform and related
+              application features. It does not guarantee employment,
+              interview, shortlisting or selection.
+            </p>
+
+            <div class="benefits">
+              <h4>After successful payment</h4>
+
+              <ul>
+                <li>
+                  <i class="fa-solid fa-check"></i>
+                  Complete your applicant profile
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+                  Upload your CV
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+                  Apply for eligible jobs
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+                  Track your application status
+                </li>
+              </ul>
+            </div>
+
+            <!-- PAYMENT STATUS -->
+            <div class="status-box" id="statusBox">
+
+              <div class="spinner"></div>
+
+              <h4 id="statusTitle">
+                Verifying payment
+              </h4>
+
+              <p id="statusMessage">
+                Please wait while we confirm your transaction.
+              </p>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="brand">
+            <span class="brand-mark">F</span>
+            FAGA
+          </div>
+
+          <p>
+            Connecting people, businesses and opportunities through
+            logistics, services, marketplace, food and career solutions.
+          </p>
+        </div>
+
+        <div>
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="logistics.html">Logistics</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="food.html">Food</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="safety.html">Safety</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="../user portal/register.html">Register</a></li>
+            <li><a href="../user portal/login.html">Login</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="copyright">
+        <span>
+          © 2026 FAGA. All rights reserved.
+        </span>
+
+        <span>
+          Career opportunities are subject to individual employer decisions.
+        </span>
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+    /*
+      ============================================================
+      FAGA JOB PAYMENT
+      ============================================================
+
+      DEMO:
+      This frontend demonstrates the payment flow.
+
+      PRODUCTION:
+      Payment MUST be initiated and verified by the backend.
+
+      Suggested APIs:
+
+      POST /api/jobs/application-access/order
+
+      Request:
+      {
+        "applicant_id": "...",
+        "job_id": "...",
+        "plan": "annual"
+      }
+
+      Backend determines:
+      - actual price
+      - currency
+      - plan duration
+      - payment provider
+      - payment reference
+      - applicant identity
+
+      Response example:
+      {
+        "order_id": "JOBPAY-12345",
+        "payment_reference": "REF-12345",
+        "checkout_url": "https://payment-provider.example/...",
+        "amount": 500,
+        "currency": "NGN"
+      }
+
+      After payment:
+
+      GET /api/jobs/application-access/payment-status?reference=...
+
+      Response:
+      {
+        "status": "success",
+        "active": true,
+        "plan": "annual",
+        "expires_at": "2027-09-15"
+      }
+
+      IMPORTANT:
+      Never activate application access based solely on:
+      - URL parameters
+      - localStorage
+      - sessionStorage
+      - JavaScript variables
+      - a successful frontend redirect
+
+      The backend must verify the transaction.
+    */
+
+
+    /* ----------------------------------------------------------
+       DEMO JOB DATA
+    ---------------------------------------------------------- */
+
+    const jobs = {
+      "JOB-1001": {
+        title: "Frontend Developer",
+        company: "FAGA Technologies",
+        location: "Lagos",
+        type: "Full Time"
+      },
+
+      "JOB-1002": {
+        title: "Delivery Rider",
+        company: "FAGA Logistics",
+        location: "Lagos",
+        type: "Full Time"
+      },
+
+      "JOB-1003": {
+        title: "Customer Support Officer",
+        company: "FAGA",
+        location: "Lagos",
+        type: "Full Time"
+      },
+
+      "JOB-1004": {
+        title: "Restaurant Operations Assistant",
+        company: "FAGA Food",
+        location: "Abuja",
+        type: "Full Time"
+      }
+    };
+
+
+    /* ----------------------------------------------------------
+       READ QUERY PARAMETERS
+    ---------------------------------------------------------- */
+
+    const params = new URLSearchParams(window.location.search);
+
+    const jobId =
+      params.get("job") ||
+      sessionStorage.getItem("fagaJobId") ||
+      "JOB-1001";
+
+    const incomingPlan =
+      params.get("plan") ||
+      sessionStorage.getItem("fagaJobPlan") ||
+      "annual";
+
+
+    /* ----------------------------------------------------------
+       JOB DISPLAY
+    ---------------------------------------------------------- */
+
+    const job =
+      jobs[jobId] ||
+      jobs["JOB-1001"];
+
+    document.getElementById("jobTitle").textContent =
+      job.title;
+
+    document.getElementById("companyName").textContent =
+      job.company;
+
+    document.getElementById("jobLocation").textContent =
+      job.location;
+
+    document.getElementById("jobType").textContent =
+      job.type;
+
+    document.getElementById("jobIdMeta").textContent =
+      jobId;
+
+
+    /* ----------------------------------------------------------
+       PLAN DATA
+    ---------------------------------------------------------- */
+
+    const planData = {
+      quarterly: {
+        name: "3 Months",
+        amount: 300,
+        label: "₦300",
+        duration: "3 months"
+      },
+
+      annual: {
+        name: "1 Year",
+        amount: 500,
+        label: "₦500",
+        duration: "1 year"
+      }
+    };
+
+
+    let selectedPlan =
+      planData[incomingPlan]
+        ? incomingPlan
+        : "annual";
+
+
+    const plan3 =
+      document.getElementById("plan3");
+
+    const plan12 =
+      document.getElementById("plan12");
+
+
+    function updatePlanUI(){
+
+      const data =
+        planData[selectedPlan];
+
+      plan3.classList.toggle(
+        "selected",
+        selectedPlan === "quarterly"
+      );
+
+      plan12.classList.toggle(
+        "selected",
+        selectedPlan === "annual"
+      );
+
+      document.querySelector(
+        'input[name="plan"][value="quarterly"]'
+      ).checked =
+        selectedPlan === "quarterly";
+
+      document.querySelector(
+        'input[name="plan"][value="annual"]'
+      ).checked =
+        selectedPlan === "annual";
+
+
+      document.getElementById(
+        "summaryPlan"
+      ).textContent =
+        data.name;
+
+      document.getElementById(
+        "summaryFee"
+      ).textContent =
+        data.label;
+
+      document.getElementById(
+        "summaryTotal"
+      ).textContent =
+        data.label;
+
+
+      sessionStorage.setItem(
+        "fagaJobPlan",
+        selectedPlan
+      );
+
+      sessionStorage.setItem(
+        "fagaJobId",
+        jobId
+      );
+    }
+
+
+    document
+      .querySelectorAll('input[name="plan"]')
+      .forEach(input => {
+
+        input.addEventListener(
+          "change",
+          function(){
+
+            selectedPlan =
+              this.value;
+
+            updatePlanUI();
+
+          }
+        );
+
+      });
+
+
+    updatePlanUI();
+
+
+    /* ----------------------------------------------------------
+       ALERT
+    ---------------------------------------------------------- */
+
+    function showError(message){
+
+      const alert =
+        document.getElementById("errorAlert");
+
+      alert.textContent =
+        message;
+
+      alert.classList.add("show");
+
+      window.scrollTo({
+        top: alert.offsetTop - 110,
+        behavior:"smooth"
+      });
+    }
+
+
+    function hideError(){
+
+      document
+        .getElementById("errorAlert")
+        .classList
+        .remove("show");
+
+    }
+
+
+    /* ----------------------------------------------------------
+       PAYMENT STATUS
+    ---------------------------------------------------------- */
+
+    const payBtn =
+      document.getElementById("payBtn");
+
+    const statusBox =
+      document.getElementById("statusBox");
+
+    const statusTitle =
+      document.getElementById("statusTitle");
+
+    const statusMessage =
+      document.getElementById("statusMessage");
+
+
+    function showPaymentStatus(
+      title,
+      message
+    ){
+
+      statusBox.classList.add("show");
+
+      statusTitle.textContent =
+        title;
+
+      statusMessage.textContent =
+        message;
+
+    }
+
+
+    /* ----------------------------------------------------------
+       CONTINUE TO PAYMENT
+    ---------------------------------------------------------- */
+
+    payBtn.addEventListener(
+      "click",
+      async function(){
+
+        hideError();
+
+        if(
+          !selectedPlan ||
+          !planData[selectedPlan]
+        ){
+
+          showError(
+            "Please select an application access plan."
+          );
+
+          return;
+        }
+
+
+        const selected =
+          planData[selectedPlan];
+
+
+        /*
+          Disable button while creating payment.
+        */
+
+        payBtn.disabled = true;
+
+        payBtn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Preparing Payment';
+
+
+        /*
+          --------------------------------------------------------
+          PRODUCTION API
+          --------------------------------------------------------
+
+          Replace demo block below with:
+
+          const response = await fetch(
+            "/api/jobs/application-access/order",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              credentials: "include",
+
+              body: JSON.stringify({
+                job_id: jobId,
+                plan: selectedPlan
+              })
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              "Unable to create payment."
+            );
+          }
+
+          const payment =
+            await response.json();
+
+          window.location.href =
+            payment.checkout_url;
+
+          --------------------------------------------------------
+
+          The server must determine the real amount.
+        */
+
+
+        try{
+
+          /*
+            DEMO DELAY
+          */
+
+          await new Promise(
+            resolve =>
+              setTimeout(resolve,700)
+          );
+
+
+          /*
+            DEMO PAYMENT FLOW
+
+            In production, this must be replaced by
+            the payment provider checkout URL returned
+            by the backend.
+          */
+
+          const demoReference =
+            "DEMO-" +
+            Date.now();
+
+
+          sessionStorage.setItem(
+            "fagaJobPaymentReference",
+            demoReference
+          );
+
+
+          sessionStorage.setItem(
+            "fagaJobPlan",
+            selectedPlan
+          );
+
+
+          sessionStorage.setItem(
+            "fagaJobId",
+            jobId
+          );
+
+
+          /*
+            DEMO MODE
+
+            Simulate payment checkout.
+            A real implementation should redirect to
+            the payment provider here.
+
+            For demonstration, show verification.
+          */
+
+          showPaymentStatus(
+            "Verifying payment",
+            "Connecting to the payment verification service..."
+          );
+
+
+          payBtn.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Verifying';
+
+
+          /*
+            DEMO VERIFICATION DELAY
+          */
+
+          await new Promise(
+            resolve =>
+              setTimeout(resolve,1800)
+          );
+
+
+          /*
+            IMPORTANT:
+
+            This is ONLY demo behavior.
+
+            In production, call:
+
+            GET
+            /api/jobs/application-access/payment-status?reference=...
+
+            and wait for the backend to return:
+
+            {
+              status: "success",
+              active: true,
+              expires_at: "..."
+            }
+
+            Never activate access simply because
+            the payment page redirected back.
+          */
+
+
+          showPaymentStatus(
+            "Payment verified",
+            "Your applicant access is active. Taking you to your profile..."
+          );
+
+
+          statusBox.querySelector(
+            ".spinner"
+          ).style.display = "none";
+
+
+          statusBox.style.borderColor =
+            "#bde3cd";
+
+          statusBox.style.background =
+            "#f4fbf7";
+
+
+          /*
+            Demo redirect.
+
+            Production:
+            Redirect ONLY after the backend has confirmed
+            the payment and activated the access entitlement.
+          */
+
+          setTimeout(
+            function(){
+
+              window.location.href="job-profile.html" +
+                "?job=" +
+                encodeURIComponent(jobId);
+
+            },
+            1200
+          );
+
+
+        }catch(error){
+
+          console.error(error);
+
+          payBtn.disabled = false;
+
+          payBtn.innerHTML =
+            '<i class="fa-solid fa-lock"></i> Continue to Payment';
+
+          showError(
+            "We could not start the payment process. Please try again."
+          );
+
+        }
+
+      }
+    );
+
+
+    /* ----------------------------------------------------------
+       MOBILE NAVIGATION
+    ---------------------------------------------------------- */
+
+    const mobileToggle =
+      document.getElementById(
+        "mobileToggle"
+      );
+
+    const navLinks =
+      document.getElementById(
+        "navLinks"
+      );
+
+
+    mobileToggle.addEventListener(
+      "click",
+      function(){
+
+        navLinks.classList.toggle(
+          "open"
+        );
+
+      }
+    );
+
+
+    /* ----------------------------------------------------------
+       CLOSE MOBILE NAV ON LINK CLICK
+    ---------------------------------------------------------- */
+
+    navLinks
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          function(){
+
+            navLinks.classList.remove(
+              "open"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* ----------------------------------------------------------
+       BACKEND SECURITY NOTES
+    ----------------------------------------------------------
+
+    Server-side requirements:
+
+    1. Authenticate applicant.
+
+    2. Retrieve applicant from authenticated session/token.
+
+    3. Validate requested job ID.
+
+    4. Validate selected plan against server-side plan configuration.
+
+    5. Server-side pricing example:
+
+       quarterly = NGN 300
+       annual    = NGN 500
+
+       Never accept:
+       {
+         amount: 500
+       }
+
+       from the browser.
+
+    6. Create a unique payment order.
+
+    7. Store:
+
+       payment_id
+       applicant_id
+       job_id
+       plan
+       amount
+       currency
+       provider
+       provider_reference
+       status
+       created_at
+       expires_at
+
+    8. Send user to payment provider.
+
+    9. Receive provider webhook.
+
+    10. Verify webhook signature.
+
+    11. Verify transaction directly with provider API.
+
+    12. Ensure transaction reference is idempotent.
+
+    13. Confirm paid amount matches expected amount.
+
+    14. Mark payment successful.
+
+    15. Create application-access entitlement.
+
+    16. Set expiry:
+
+        quarterly -> payment date + 3 months
+        annual    -> payment date + 1 year
+
+    17. Allow CV upload only when:
+
+        applicant.application_access.active === true
+
+    18. Audit payment status changes.
+
+    19. Never expose provider secret keys in frontend code.
+
+    20. Do not store CVs or sensitive applicant documents
+        in publicly accessible folders.
+    */
+
+
+    /* ----------------------------------------------------------
+       RECOMMENDED BACKEND ENDPOINTS
+    ----------------------------------------------------------
+
+    POST
+    /api/jobs/application-access/order
+
+    GET
+    /api/jobs/application-access/payment-status
+
+    POST
+    /api/jobs/application-access/webhook
+
+    GET
+    /api/jobs/application-access/status
+
+    GET
+    /api/jobs/plans
+
+    Example final entitlement:
+
+    {
+      "active": true,
+      "plan": "annual",
+      "amount": 500,
+      "currency": "NGN",
+      "paid_at": "2026-09-15T18:20:00Z",
+      "expires_at": "2027-09-15T18:20:00Z"
+    }
+
+    ------------------------------------------------------------
+
+    EMPLOYMENT DISCLAIMER:
+
+    FAGA does not guarantee employment, interviews,
+    shortlisting or selection.
+
+    The application access fee is for access to the
+    FAGA applicant platform and related application
+    features.
+
+    Individual employers are responsible for their own
+    hiring decisions.
+
+    This wording should be reviewed by appropriate
+    legal counsel before production launch.
+    ------------------------------------------------------------ */
+
+  </script>
+
+</body>
+</html>

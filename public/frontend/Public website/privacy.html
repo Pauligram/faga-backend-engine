@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Privacy Policy | FAGA</title>
+
+    <meta name="description"
+          content="Read the FAGA Privacy Policy and learn how FAGA collects, uses, protects and manages personal information across its platform.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --navy: #071a33;
+            --navy-2: #0b2342;
+            --navy-3: #102d50;
+            --orange: #f7931e;
+            --orange-light: #fff4e6;
+            --white: #ffffff;
+            --text: #172033;
+            --muted: #667085;
+            --light: #f7f9fc;
+            --border: #e5eaf0;
+            --success: #12a150;
+            --danger: #d92d20;
+            --shadow: 0 12px 35px rgba(7, 26, 51, .08);
+            --radius: 18px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: auto;
+        }
+
+        /* =========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(7, 26, 51, .97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .nav-inner {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.8px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--orange);
+            display: grid;
+            place-items: center;
+            color: var(--navy);
+            font-weight: 900;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,.88);
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: .2s ease;
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255,255,255,.25);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        .btn-orange:hover {
+            background: #ff9f2e;
+            transform: translateY(-1px);
+        }
+
+        .menu-toggle {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* =========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(7,26,51,.98), rgba(11,35,66,.95)),
+                radial-gradient(circle at 85% 20%, rgba(247,147,30,.22), transparent 35%);
+            color: white;
+            padding: 78px 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr .72fr;
+            align-items: center;
+            gap: 70px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--orange);
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            margin-bottom: 17px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--orange);
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 62px);
+            line-height: 1.04;
+            letter-spacing: -2.3px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--orange);
+        }
+
+        .hero p {
+            max-width: 680px;
+            color: rgba(255,255,255,.73);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .hero-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 22px;
+            padding: 27px;
+        }
+
+        .hero-card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            background: rgba(247,147,30,.14);
+            color: var(--orange);
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            color: rgba(255,255,255,.61);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .updated-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.1);
+            color: rgba(255,255,255,.76);
+            padding: 8px 11px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .updated-badge i {
+            color: var(--orange);
+        }
+
+        /* =========================================
+           POLICY LAYOUT
+        ========================================== */
+
+        .policy-section {
+            padding: 75px 0 90px;
+            background: var(--light);
+        }
+
+        .policy-layout {
+            display: grid;
+            grid-template-columns: 265px 1fr;
+            gap: 35px;
+            align-items: start;
+        }
+
+        /* =========================================
+           TABLE OF CONTENTS
+        ========================================== */
+
+        .policy-nav {
+            position: sticky;
+            top: 95px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .policy-nav-title {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .policy-nav a {
+            display: block;
+            padding: 8px 10px;
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.4;
+            transition: .2s ease;
+        }
+
+        .policy-nav a:hover,
+        .policy-nav a.active {
+            color: var(--navy);
+            background: var(--orange-light);
+            font-weight: 700;
+        }
+
+        /* =========================================
+           POLICY CONTENT
+        ========================================== */
+
+        .policy-content {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 42px;
+            box-shadow: var(--shadow);
+        }
+
+        .policy-intro {
+            padding: 22px;
+            border-left: 4px solid var(--orange);
+            background: var(--orange-light);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 35px;
+        }
+
+        .policy-intro p {
+            color: #475467;
+            font-size: 13px;
+        }
+
+        .policy-section-block {
+            scroll-margin-top: 100px;
+            padding-top: 10px;
+            margin-bottom: 42px;
+        }
+
+        .policy-section-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-section-block h2 {
+            color: var(--navy);
+            font-size: 24px;
+            line-height: 1.25;
+            letter-spacing: -.5px;
+            margin-bottom: 13px;
+        }
+
+        .policy-section-block h3 {
+            color: #26364c;
+            font-size: 16px;
+            margin: 22px 0 8px;
+        }
+
+        .policy-section-block p {
+            color: #5f6b7a;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .policy-section-block ul {
+            margin: 10px 0 15px 20px;
+        }
+
+        .policy-section-block li {
+            color: #5f6b7a;
+            font-size: 14px;
+            margin-bottom: 7px;
+            padding-left: 4px;
+        }
+
+        .policy-section-block strong {
+            color: #344054;
+        }
+
+        .policy-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 35px 0;
+        }
+
+        .highlight-box {
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: #fbfcfe;
+            padding: 18px 20px;
+            margin: 17px 0;
+        }
+
+        .highlight-box h4 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           RIGHTS GRID
+        ========================================== */
+
+        .rights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .right-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .right-card i {
+            color: var(--orange);
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .right-card h4 {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .right-card p {
+            font-size: 12px;
+            margin: 0;
+        }
+
+        /* =========================================
+           CONTACT CTA
+        ========================================== */
+
+        .privacy-contact {
+            margin-top: 42px;
+            background: var(--navy);
+            color: white;
+            border-radius: 18px;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .privacy-contact h3 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .privacy-contact p {
+            color: rgba(255,255,255,.62);
+            font-size: 12px;
+            max-width: 600px;
+        }
+
+        .privacy-contact .btn {
+            white-space: nowrap;
+            background: var(--orange);
+            color: var(--navy);
+        }
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        footer {
+            background: #041226;
+            color: white;
+        }
+
+        .footer-main {
+            padding: 65px 0 40px;
+            display: grid;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 45px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,.58);
+            max-width: 330px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .footer-title {
+            font-weight: 800;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,.58);
+            font-size: 13px;
+            transition: .2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--orange);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: rgba(255,255,255,.45);
+            font-size: 12px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .socials a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.65);
+            transition: .2s ease;
+        }
+
+        .socials a:hover {
+            color: var(--orange);
+            border-color: var(--orange);
+        }
+
+        /* =========================================
+           BACK TO TOP
+        ========================================== */
+
+        .back-top {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border: none;
+            background: var(--orange);
+            color: var(--navy);
+            display: none;
+            place-items: center;
+            z-index: 2000;
+            box-shadow: 0 8px 25px rgba(0,0,0,.2);
+        }
+
+        .back-top.show {
+            display: grid;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 1000px) {
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                max-width: 600px;
+            }
+
+            .policy-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .policy-nav {
+                position: static;
+            }
+
+            .policy-nav-links {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 4px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            .container {
+                width: min(100% - 28px, 1180px);
+            }
+
+            .nav-inner {
+                min-height: 67px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+
+            .nav-mobile-open .nav-links {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 67px;
+                background: var(--navy);
+                border: 1px solid rgba(255,255,255,.1);
+                border-radius: 0 0 15px 15px;
+                padding: 15px;
+                display: grid;
+                gap: 3px;
+            }
+
+            .nav-mobile-open .nav-links a {
+                padding: 11px;
+                border-radius: 8px;
+            }
+
+            .nav-mobile-open .nav-actions {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 345px;
+                background: var(--navy);
+                display: flex;
+                padding: 0 15px 15px;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .hero {
+                padding: 58px 0;
+            }
+
+            .policy-section {
+                padding: 50px 0 70px;
+            }
+
+            .policy-content {
+                padding: 25px 20px;
+            }
+
+            .policy-nav-links {
+                grid-template-columns: 1fr;
+            }
+
+            .rights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .privacy-contact {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .privacy-contact .btn {
+                width: 100%;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .brand {
+                font-size: 22px;
+            }
+
+            .brand-mark {
+                width: 34px;
+                height: 34px;
+            }
+
+            .hero {
+                padding: 50px 0;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .policy-content {
+                padding: 22px 16px;
+            }
+
+            .policy-section-block h2 {
+                font-size: 21px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar" id="navbar">
+
+    <div class="container nav-inner">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">F</span>
+            <span>FAGA</span>
+        </a>
+
+        <nav class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+
+            <a href="logistics.html">Logistics</a>
+
+            <a href="marketplace.html">Marketplace</a>
+
+            <a href="food.html">Food</a>
+
+            <a href="services.html">Services</a>
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html">Contact</a>
+
+            <a href="help.html">Help</a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="../user portal/login.html" class="btn btn-outline">
+                Login
+            </a>
+
+            <a href="../user portal/register.html" class="btn btn-orange">
+                Get Started
+            </a>
+
+        </div>
+
+        <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================
+     HERO
+========================================== -->
+
+<section class="hero">
+
+    <div class="container hero-grid">
+
+        <div>
+
+            <div class="eyebrow">
+                Privacy & Data Protection
+            </div>
+
+            <h1>
+                Your privacy
+                <span>matters.</span>
+            </h1>
+
+            <p>
+                This Privacy Policy explains how FAGA may collect,
+                use, share, retain and protect information when you
+                use our website, applications, products and services.
+            </p>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="hero-card-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>Privacy at the core</h3>
+
+            <p>
+                We aim to handle personal information responsibly,
+                transparently and only for legitimate business and
+                service purposes.
+            </p>
+
+            <div class="updated-badge">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                Last updated:
+                <span id="policyDate">
+                    September 2026
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     POLICY
+========================================== -->
+
+<section class="policy-section">
+
+    <div class="container policy-layout">
+
+
+        <!-- TABLE OF CONTENTS -->
+
+        <aside class="policy-nav">
+
+            <div class="policy-nav-title">
+                Privacy Policy
+            </div>
+
+            <div class="policy-nav-links">
+
+                <a href="#introduction" class="active">
+                    1. Introduction
+                </a>
+
+                <a href="#information">
+                    2. Information We Collect
+                </a>
+
+                <a href="#use">
+                    3. How We Use Information
+                </a>
+
+                <a href="#sharing">
+                    4. Information Sharing
+                </a>
+
+                <a href="#cookies">
+                    5. Cookies & Technologies
+                </a>
+
+                <a href="#location">
+                    6. Location Information
+                </a>
+
+                <a href="#payments">
+                    7. Payments
+                </a>
+
+                <a href="#retention">
+                    8. Data Retention
+                </a>
+
+                <a href="#security">
+                    9. Data Security
+                </a>
+
+                <a href="#rights">
+                    10. Your Rights
+                </a>
+
+                <a href="#children">
+                    11. Children's Privacy
+                </a>
+
+                <a href="#third-party">
+                    12. Third-Party Services
+                </a>
+
+                <a href="#international">
+                    13. International Transfers
+                </a>
+
+                <a href="#changes">
+                    14. Policy Changes
+                </a>
+
+                <a href="#contact">
+                    15. Contact Us
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- POLICY CONTENT -->
+
+        <main class="policy-content">
+
+
+            <div class="policy-intro">
+
+                <p>
+                    <strong>Important:</strong>
+                    This Privacy Policy is intended to describe FAGA's
+                    general privacy practices. The final production
+                    version should be reviewed and updated to reflect
+                    the exact FAGA legal entity, jurisdictions,
+                    products, data processors, retention schedules
+                    and regulatory requirements that apply to the
+                    deployed platform.
+                </p>
+
+            </div>
+
+
+            <!-- 1 -->
+
+            <section
+                class="policy-section-block"
+                id="introduction"
+            >
+
+                <h2>1. Introduction</h2>
+
+                <p>
+                    Welcome to FAGA. FAGA provides a connected
+                    platform through which users may access or
+                    participate in logistics, marketplace, food and
+                    professional service experiences.
+                </p>
+
+                <p>
+                    This Privacy Policy explains how information
+                    relating to identifiable individuals may be
+                    collected and processed when they interact with
+                    FAGA, including through our websites,
+                    applications, accounts, customer support channels
+                    and related services.
+                </p>
+
+                <p>
+                    By using FAGA, you acknowledge that your
+                    information may be handled as described in this
+                    Privacy Policy, subject to applicable law and
+                    the specific terms presented to you when you use
+                    particular services.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 2 -->
+
+            <section
+                class="policy-section-block"
+                id="information"
+            >
+
+                <h2>2. Information We Collect</h2>
+
+                <p>
+                    The information we collect depends on how you use
+                    FAGA and the features you choose to access.
+                </p>
+
+
+                <h3>Information you provide</h3>
+
+                <ul>
+
+                    <li>
+                        Name and profile information.
+                    </li>
+
+                    <li>
+                        Email address and phone number.
+                    </li>
+
+                    <li>
+                        Account credentials and authentication
+                        information.
+                    </li>
+
+                    <li>
+                        Delivery, billing and transaction details.
+                    </li>
+
+                    <li>
+                        Addresses and delivery instructions.
+                    </li>
+
+                    <li>
+                        Product, food, service or order information.
+                    </li>
+
+                    <li>
+                        Information submitted when contacting
+                        customer support.
+                    </li>
+
+                    <li>
+                        Business or professional information when
+                        registering as a seller, rider, service
+                        provider or restaurant.
+                    </li>
+
+                </ul>
+
+
+                <h3>Information collected automatically</h3>
+
+                <ul>
+
+                    <li>
+                        Device and browser information.
+                    </li>
+
+                    <li>
+                        IP address and approximate network information.
+                    </li>
+
+                    <li>
+                        Platform usage and interaction information.
+                    </li>
+
+                    <li>
+                        Log information, diagnostic information and
+                        security events.
+                    </li>
+
+                    <li>
+                        Cookies and similar technologies where
+                        applicable.
+                    </li>
+
+                </ul>
+
+
+                <div class="highlight-box">
+
+                    <h4>Data minimization</h4>
+
+                    <p>
+                        FAGA should collect only information that is
+                        reasonably necessary for the relevant
+                        service, security, legal or operational
+                        purpose.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 3 -->
+
+            <section
+                class="policy-section-block"
+                id="use"
+            >
+
+                <h2>3. How We Use Information</h2>
+
+                <p>
+                    Depending on the service and circumstances, FAGA
+                    may use information to:
+                </p>
+
+                <ul>
+
+                    <li>
+                        Create and manage user accounts.
+                    </li>
+
+                    <li>
+                        Provide, operate and improve FAGA services.
+                    </li>
+
+                    <li>
+                        Process and manage orders, bookings and
+                        transactions.
+                    </li>
+
+                    <li>
+                        Coordinate deliveries and logistics.
+                    </li>
+
+                    <li>
+                        Connect customers with sellers, riders,
+                        restaurants and service providers.
+                    </li>
+
+                    <li>
+                        Provide customer support.
+                    </li>
+
+                    <li>
+                        Detect fraud, abuse, security threats and
+                        unauthorized activity.
+                    </li>
+
+                    <li>
+                        Send transactional notifications and service
+                        communications.
+                    </li>
+
+                    <li>
+                        Personalize or improve the user experience.
+                    </li>
+
+                    <li>
+                        Perform analytics and understand platform
+                        performance.
+                    </li>
+
+                    <li>
+                        Meet legal, regulatory and contractual
+                        obligations.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 4 -->
+
+            <section
+                class="policy-section-block"
+                id="sharing"
+            >
+
+                <h2>4. Information Sharing</h2>
+
+                <p>
+                    FAGA may share information when necessary to
+                    provide a requested service, operate the platform,
+                    protect users or comply with applicable law.
+                </p>
+
+                <h3>Service participants</h3>
+
+                <p>
+                    Where necessary to fulfil an order or service,
+                    relevant information may be shared with the
+                    appropriate rider, seller, restaurant or service
+                    provider.
+                </p>
+
+                <h3>Service providers</h3>
+
+                <p>
+                    FAGA may use third-party companies to support
+                    hosting, communications, payments, analytics,
+                    security, customer support and other operational
+                    functions.
+                </p>
+
+                <h3>Legal and safety purposes</h3>
+
+                <p>
+                    Information may be disclosed where required or
+                    permitted by law, or where reasonably necessary
+                    to protect users, FAGA, the public or the
+                    integrity of the platform.
+                </p>
+
+                <p>
+                    FAGA should not sell personal information merely
+                    because information is collected through the
+                    platform. Any legally relevant sharing or
+                    processing arrangement should be disclosed as
+                    required by applicable law.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 5 -->
+
+            <section
+                class="policy-section-block"
+                id="cookies"
+            >
+
+                <h2>5. Cookies & Similar Technologies</h2>
+
+                <p>
+                    FAGA may use cookies, local storage, pixels,
+                    software development kits and similar technologies
+                    to support essential functionality, security,
+                    preferences, analytics and other permitted
+                    purposes.
+                </p>
+
+                <p>
+                    Depending on the technology and applicable law,
+                    you may be able to control certain cookies or
+                    similar technologies through your browser or
+                    device settings.
+                </p>
+
+                <div class="highlight-box">
+
+                    <h4>Essential technologies</h4>
+
+                    <p>
+                        Some technologies may be required for functions
+                        such as authentication, security, shopping
+                        carts, session management and other core
+                        platform functionality.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 6 -->
+
+            <section
+                class="policy-section-block"
+                id="location"
+            >
+
+                <h2>6. Location Information</h2>
+
+                <p>
+                    Certain FAGA services may require location
+                    information to support delivery, dispatch,
+                    mapping, service availability or other location
+                    dependent functionality.
+                </p>
+
+                <p>
+                    Where applicable, location access may be
+                    controlled through your device or browser
+                    permissions.
+                </p>
+
+                <p>
+                    FAGA should explain the purpose of location
+                    collection when permission is requested and
+                    should avoid collecting more precise location
+                    information than is reasonably necessary for the
+                    relevant service.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 7 -->
+
+            <section
+                class="policy-section-block"
+                id="payments"
+            >
+
+                <h2>7. Payments</h2>
+
+                <p>
+                    Payments may be processed through third-party
+                    payment providers or financial service partners.
+                </p>
+
+                <p>
+                    Payment providers may collect and process payment
+                    information under their own privacy policies and
+                    contractual arrangements.
+                </p>
+
+                <div class="highlight-box">
+
+                    <h4>Payment security</h4>
+
+                    <p>
+                        FAGA should not store full payment-card
+                        credentials in the browser or expose payment
+                        provider secrets through client-side code.
+                        Sensitive payment processing should be handled
+                        through appropriate secure payment systems.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 8 -->
+
+            <section
+                class="policy-section-block"
+                id="retention"
+            >
+
+                <h2>8. Data Retention</h2>
+
+                <p>
+                    FAGA may retain information for as long as
+                    reasonably necessary to provide services, maintain
+                    accounts, complete transactions, resolve disputes,
+                    prevent fraud, maintain security and comply with
+                    legal or regulatory requirements.
+                </p>
+
+                <p>
+                    Specific retention periods should be determined
+                    according to the type of information, the purpose
+                    for which it was collected and applicable legal
+                    requirements.
+                </p>
+
+                <p>
+                    When information is no longer required, FAGA
+                    should securely delete it, anonymize it or
+                    otherwise dispose of it in accordance with its
+                    retention procedures.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 9 -->
+
+            <section
+                class="policy-section-block"
+                id="security"
+            >
+
+                <h2>9. Data Security</h2>
+
+                <p>
+                    FAGA uses reasonable technical and organizational
+                    safeguards designed to protect information against
+                    unauthorized access, loss, misuse, alteration or
+                    disclosure.
+                </p>
+
+                <p>
+                    Security measures may include access controls,
+                    encryption where appropriate, authentication
+                    controls, monitoring, logging, secure development
+                    practices and infrastructure protections.
+                </p>
+
+                <p>
+                    No internet-based service can guarantee absolute
+                    security. Users should protect their account
+                    credentials and promptly report suspected
+                    unauthorized activity.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 10 -->
+
+            <section
+                class="policy-section-block"
+                id="rights"
+            >
+
+                <h2>10. Your Privacy Rights</h2>
+
+                <p>
+                    Depending on your location and applicable law,
+                    you may have certain rights concerning your
+                    personal information.
+                </p>
+
+
+                <div class="rights-grid">
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        <h4>Access</h4>
+
+                        <p>
+                            Request access to certain personal
+                            information held about you.
+                        </p>
+
+                    </div>
+
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        <h4>Correction</h4>
+
+                        <p>
+                            Request correction of inaccurate or
+                            incomplete information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        <h4>Deletion</h4>
+
+                        <p>
+                            Request deletion where applicable and
+                            subject to legal exceptions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-ban"></i>
+
+                        <h4>Restriction</h4>
+
+                        <p>
+                            Request restriction of certain processing
+                            where permitted by law.
+                        </p>
+
+                    </div>
+
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-download"></i>
+
+                        <h4>Portability</h4>
+
+                        <p>
+                            Request certain information in a portable
+                            format where legally applicable.
+                        </p>
+
+                    </div>
+
+
+                    <div class="right-card">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <h4>Marketing Choices</h4>
+
+                        <p>
+                            Control certain promotional communications
+                            where applicable.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p style="margin-top:20px;">
+                    Requests may be subject to identity verification,
+                    legal requirements and applicable exceptions.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 11 -->
+
+            <section
+                class="policy-section-block"
+                id="children"
+            >
+
+                <h2>11. Children's Privacy</h2>
+
+                <p>
+                    FAGA's services are not intended for individuals
+                    who are not permitted to use the relevant service
+                    under applicable law.
+                </p>
+
+                <p>
+                    FAGA should not knowingly collect personal
+                    information from children in circumstances where
+                    such collection is prohibited without the
+                    required consent or authorization.
+                </p>
+
+                <p>
+                    If you believe that information relating to a
+                    child has been improperly submitted to FAGA,
+                    please contact us so that the matter can be
+                    reviewed.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 12 -->
+
+            <section
+                class="policy-section-block"
+                id="third-party"
+            >
+
+                <h2>12. Third-Party Services</h2>
+
+                <p>
+                    FAGA may integrate third-party services to
+                    provide functions such as payment processing,
+                    maps, communications, analytics, hosting,
+                    identity verification and customer support.
+                </p>
+
+                <p>
+                    Third-party services may process information
+                    according to their own privacy policies and
+                    contractual obligations.
+                </p>
+
+                <p>
+                    Users should review relevant third-party privacy
+                    notices where appropriate.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 13 -->
+
+            <section
+                class="policy-section-block"
+                id="international"
+            >
+
+                <h2>13. International Data Transfers</h2>
+
+                <p>
+                    Depending on the services and infrastructure used
+                    by FAGA, information may be processed or stored
+                    in countries other than the country where the
+                    user is located.
+                </p>
+
+                <p>
+                    Where applicable, FAGA should implement appropriate
+                    safeguards for cross-border transfers in
+                    accordance with relevant privacy and data
+                    protection requirements.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 14 -->
+
+            <section
+                class="policy-section-block"
+                id="changes"
+            >
+
+                <h2>14. Changes to This Privacy Policy</h2>
+
+                <p>
+                    FAGA may update this Privacy Policy from time to
+                    time to reflect changes in the platform, business
+                    practices, technology, legal requirements or
+                    other relevant circumstances.
+                </p>
+
+                <p>
+                    When material changes are made, FAGA may provide
+                    additional notice where required.
+                </p>
+
+                <p>
+                    The "Last Updated" date at the beginning of this
+                    policy should be updated whenever the published
+                    policy is materially revised.
+                </p>
+
+            </section>
+
+
+            <div class="policy-divider"></div>
+
+
+            <!-- 15 -->
+
+            <section
+                class="policy-section-block"
+                id="contact"
+            >
+
+                <h2>15. Contact Us</h2>
+
+                <p>
+                    If you have a privacy question, request or concern,
+                    please contact FAGA through the official contact
+                    channels provided on our website.
+                </p>
+
+                <p>
+                    For account, order or service-related issues, you
+                    may also use the FAGA Help Center or the support
+                    tools available within your account.
+                </p>
+
+            </section>
+
+
+            <!-- CTA -->
+
+            <div class="privacy-contact">
+
+                <div>
+
+                    <h3>Have a privacy question?</h3>
+
+                    <p>
+                        Contact FAGA or visit the Help Center for
+                        assistance with privacy, account and platform
+                        questions.
+                    </p>
+
+                </div>
+
+                <a href="contact.html" class="btn">
+                    Contact FAGA
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FOOTER
+========================================== -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">F</span>
+                    <span>FAGA</span>
+                </a>
+
+                <p>
+                    A connected platform for logistics, marketplace,
+                    food and professional services.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Explore
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="logistics.html">
+                        Logistics
+                    </a>
+
+                    <a href="marketplace.html">
+                        Marketplace
+                    </a>
+
+                    <a href="food.html">
+                        Food
+                    </a>
+
+                    <a href="services.html">
+                        Services
+                    </a>
+
+                    <a href="track-order.html">
+                        Track Order
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Company
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="about.html">
+                        About FAGA
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="help.html">
+                        Help Center
+                    </a>
+
+                    <a href="safety.html">
+                        Safety
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Legal
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="privacy.html">
+                        Privacy Policy
+                    </a>
+
+                    <a href="terms.html">
+                        Terms & Conditions
+                    </a>
+
+                    <a href="safety.html">
+                        Safety
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © <span id="year"></span> FAGA. All rights reserved.
+            </span>
+
+            <div class="socials">
+
+                <a href="#" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="#" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="#" aria-label="X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+
+                <a href="#" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     BACK TO TOP
+========================================== -->
+
+<button
+    class="back-top"
+    id="backTop"
+    aria-label="Back to top"
+>
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+
+<script>
+
+    /* =========================================
+       MOBILE NAVIGATION
+    ========================================== */
+
+    const navbar =
+        document.getElementById("navbar");
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+
+    menuToggle.addEventListener("click", function () {
+
+        navbar.classList.toggle("nav-mobile-open");
+
+        const icon =
+            menuToggle.querySelector("i");
+
+        if (navbar.classList.contains("nav-mobile-open")) {
+
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-xmark");
+
+        } else {
+
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+
+        }
+
+    });
+
+
+    document.querySelectorAll(".nav-links a")
+        .forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                navbar.classList.remove(
+                    "nav-mobile-open"
+                );
+
+                const icon =
+                    menuToggle.querySelector("i");
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+            });
+
+        });
+
+
+    /* =========================================
+       BACK TO TOP
+    ========================================== */
+
+    const backTop =
+        document.getElementById("backTop");
+
+
+    window.addEventListener("scroll", function () {
+
+        if (window.scrollY > 450) {
+
+            backTop.classList.add("show");
+
+        } else {
+
+            backTop.classList.remove("show");
+
+        }
+
+    });
+
+
+    backTop.addEventListener("click", function () {
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+
+    /* =========================================
+       ACTIVE POLICY NAVIGATION
+    ========================================== */
+
+    const policySections =
+        document.querySelectorAll(
+            ".policy-section-block"
+        );
+
+    const policyLinks =
+        document.querySelectorAll(
+            ".policy-nav a"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting) {
+
+                        policyLinks.forEach(function (link) {
+
+                            link.classList.remove("active");
+
+                            if (
+                                link.getAttribute("href") ===
+                                "#" + entry.target.id
+                            ) {
+
+                                link.classList.add("active");
+
+                            }
+
+                        });
+
+                    }
+
+                });
+
+            },
+            {
+                rootMargin: "-110px 0px -60% 0px",
+                threshold: 0
+            }
+        );
+
+
+    policySections.forEach(function (section) {
+
+        observer.observe(section);
+
+    });
+
+
+    /* =========================================
+       CURRENT YEAR
+    ========================================== */
+
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+
+
+    /* =========================================
+       BACKEND / CMS NOTES
+    ==========================================
+
+       This page can initially remain static.
+
+       If FAGA later manages legal documents through
+       an admin/CMS system, recommended endpoints include:
+
+       GET /api/legal/privacy
+       GET /api/legal/privacy/version
+       GET /api/legal/documents
+
+       The production backend can provide:
+
+       - Effective date
+       - Version number
+       - Policy content
+       - Previous versions
+       - Jurisdiction-specific notices
+
+       IMPORTANT:
+
+       Do not allow ordinary users to modify legal-policy
+       content.
+
+       Changes should require authorized administrative
+       permissions and should be recorded in the audit log.
+
+    ========================================== */
+
+</script>
+
+</body>
+</html>

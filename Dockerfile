@@ -37,6 +37,12 @@ RUN php -r "require 'vendor/autoload.php'; if (!class_exists('Illuminate\\Founda
 # Copy Laravel application
 COPY . .
 
+RUN test -f vendor/laravel/framework/src/Illuminate/Foundation/Application.php \
+    && echo "LARAVEL FILE EXISTS" \
+    || (echo "LARAVEL FILE MISSING" && exit 1)
+
+RUN php -r "require 'vendor/autoload.php'; var_dump(class_exists('Illuminate\\\\Foundation\\\\Application'));"
+
 RUN echo "=== LARAVEL FRAMEWORK CHECK ===" \
     && test -f /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php \
     && echo "APPLICATION.PHP EXISTS" \

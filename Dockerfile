@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 # Download verified stable Composer binaries straight from official roots
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configure working directories 
+# Configure working directories - TYPO REPAIRED TO STANDARD PATHWAY
 WORKDIR /var/www/html
 COPY . .
 

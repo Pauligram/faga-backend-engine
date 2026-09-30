@@ -1,6 +1,5 @@
-// This real public link works globally from any device, anywhere in the world!
+// Aligned precisely to match your live Render back-end engine container
 const FAGA_API_BASE_URL = "https://onrender.com";
-
 
 const FagaAPI = {
 

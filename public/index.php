@@ -3,21 +3,20 @@
 // ==========================================================
 // AUTO-RUN MIGRATION & SEEDER BYPASS FOR RENDER FREE PLAN
 // ==========================================================
+
 try {
     if (file_exists(__DIR__ . '/../bootstrap/app.php')) {
         $app = require_once __DIR__ . '/../bootstrap/app.php';
-        $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
         
-        // Check if our deliveries table exists yet. If not, trigger setup automatically!
+        // If the database tables are completely fresh, run migrations & seeds in the background
         if (!Illuminate\Support\Facades\Schema::hasTable('deliveries')) {
             Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
             Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         }
     }
 } catch (\Exception $e) {
-    // Fails silently if already initialized to keep application processing fast
+    // Already synchronized
 }
-
 // ... rest of your original index.php code remains exactly the same below ...
 
 

@@ -1,12 +1,13 @@
 # Use the explicit PHP 8.4 alpine build with alpine package managers
 FROM php:8.4-fpm-alpine
 
-# Install essential system utilities and Nginx proxy wrappers
+# Install essential system utilities, Nginx proxy wrappers, and dos2unix to convert Windows files
 RUN apk add --no-cache \
     nginx \
     postgresql-dev \
     libpq-dev \
     bash \
+    dos2unix \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Download verified stable Composer binaries straight from official roots
@@ -18,7 +19,10 @@ WORKDIR /var/www/html
 # Copy all repository source files into the container workspace
 COPY . .
 
-# Force a clean composer installation directly inside the workspace folder room
+# CRITICAL WINDOWS FIX: Automatically convert any hidden Windows line endings (CRLF) to Linux (LF)
+RUN find . -type f -not -path '*/.*' -exec dos2unix {} +
+
+# Run a completely fresh composer optimized installation satisfying framework parameters
 RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist --optimize-autoloader
 
 # Mirror static public directories straight into your Nginx defaults

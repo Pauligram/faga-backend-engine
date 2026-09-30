@@ -1,5 +1,5 @@
 // Aligned precisely to match your live Render back-end engine container
-const FAGA_API_BASE_URL = "http://127.0.0.1:8000/api";
+const FAGA_API_BASE_URL = "https://faga-backend-engine.onrender.com";
 
 const FagaAPI = {
 

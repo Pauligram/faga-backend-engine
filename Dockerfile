@@ -20,7 +20,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Application directory
 WORKDIR /var/www/html
 
-# Copy Composer files first for better Docker layer caching
+# Copy Composer files first for Docker layer caching
 COPY composer.json composer.lock ./
 
 # Install production dependencies
@@ -30,13 +30,16 @@ RUN COMPOSER_MEMORY_LIMIT=-1 composer install \
     --prefer-dist \
     --optimize-autoloader
 
+# Verify Laravel framework was installed correctly
+RUN php -r "require 'vendor/autoload.php'; if (!class_exists('Illuminate\\Foundation\\Application')) { exit(1); } echo 'Laravel framework loaded successfully.';"
+
 # Copy Laravel application
 COPY . .
 
 # Convert Windows line endings
 RUN find . -type f -not -path './.git/*' -exec dos2unix {} \;
 
-# Make sure required Laravel directories exist
+# Create required Laravel directories
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -44,7 +47,7 @@ RUN mkdir -p \
     storage/logs \
     bootstrap/cache
 
-# Permissions
+# Set permissions
 RUN chown -R www-data:www-data \
     storage \
     bootstrap/cache

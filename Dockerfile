@@ -25,8 +25,8 @@ COPY . .
 # CRITICAL WINDOWS FIX: Convert hidden Windows line endings (CRLF) to Linux (LF)
 RUN find . -type f -not -path '*/.*' -exec dos2unix {} +
 
-# FORCE THE CLOUD SERVER TO EXTRACT AND COMPILE LARAVEL DEPENDENCIES INTERNALLY
-RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist --optimize-autoloader
+# 🚀 ULTRA-LIGHT RAM MEMORY BYPASS: Limits memory allocation and disables scripts to prevent free tier out-of-memory crashes
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist --optimize-autoloader
 
 # Mirror static public directories straight into your Nginx defaults
 COPY nginx.conf /etc/nginx/nginx.conf

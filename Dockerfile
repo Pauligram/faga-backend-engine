@@ -28,7 +28,8 @@ RUN COMPOSER_MEMORY_LIMIT=-1 composer install \
     --no-interaction \
     --no-dev \
     --prefer-dist \
-    --optimize-autoloader
+    --optimize-autoloader \
+    --no-scripts
 
 # Verify Laravel framework was installed correctly
 RUN php -r "require 'vendor/autoload.php'; if (!class_exists('Illuminate\\Foundation\\Application')) { exit(1); } echo 'Laravel framework loaded successfully.';"
@@ -36,8 +37,8 @@ RUN php -r "require 'vendor/autoload.php'; if (!class_exists('Illuminate\\Founda
 # Copy Laravel application
 COPY . .
 
-# Convert Windows line endings
-RUN find . -type f -not -path './.git/*' -exec dos2unix {} \;
+# Run Laravel package discovery
+RUN php artisan package:discover --ansi
 
 # Create required Laravel directories
 RUN mkdir -p \

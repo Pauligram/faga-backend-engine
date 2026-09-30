@@ -1,39 +1,57 @@
-# Use the explicit PHP 8.4 alpine build with alpine package managers
 FROM php:8.4-fpm-alpine
 
-# Install essential system utilities, Nginx proxies, and git/zip utilities required by composer
+# Install required packages
 RUN apk add --no-cache \
     nginx \
     postgresql-dev \
-    libpq-dev \
+    libpq \
     bash \
-    dos2unix \
     git \
     zip \
     unzip \
-    && docker-php-ext-install pdo pdo_pgsql
+    dos2unix
 
-# Download verified stable Composer binaries straight from official roots
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_pgsql
+
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configure standard working directory
+# Application directory
 WORKDIR /var/www/html
 
-# Copy all repository source files into the container workspace
+# Copy Composer files first for better Docker layer caching
+COPY composer.json composer.lock ./
+
+# Install production dependencies
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install \
+    --no-interaction \
+    --no-dev \
+    --prefer-dist \
+    --optimize-autoloader
+
+# Copy Laravel application
 COPY . .
 
-# CRITICAL WINDOWS FIX: Convert hidden Windows line endings (CRLF) to Linux (LF)
-RUN find . -type f -not -path '*/.*' -exec dos2unix {} +
+# Convert Windows line endings
+RUN find . -type f -not -path './.git/*' -exec dos2unix {} \;
 
-# 🚀 ULTRA-LIGHT RAM MEMORY BYPASS: Limits memory allocation and disables scripts to prevent free tier out-of-memory crashes
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist --optimize-autoloader
+# Make sure required Laravel directories exist
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache
 
-# Mirror static public directories straight into your Nginx defaults
+# Permissions
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache
+
+# Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
-
-# Give absolute system permissions to the web server user
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 10000
 
-CMD nginx && php-fpm
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]

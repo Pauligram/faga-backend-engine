@@ -20,10 +20,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Application directory
 WORKDIR /var/www/html
 
-# Copy Composer files first for Docker layer caching
+# Copy Composer files first
 COPY composer.json composer.lock ./
 
-# Install production dependencies
+# Install dependencies WITHOUT running Laravel scripts
 RUN COMPOSER_MEMORY_LIMIT=-1 composer install \
     --no-interaction \
     --no-dev \
@@ -31,14 +31,17 @@ RUN COMPOSER_MEMORY_LIMIT=-1 composer install \
     --optimize-autoloader \
     --no-scripts
 
-# Verify Laravel framework was installed correctly
+# Verify Laravel framework is actually installed
 RUN php -r "require 'vendor/autoload.php'; if (!class_exists('Illuminate\\Foundation\\Application')) { exit(1); } echo 'Laravel framework loaded successfully.';"
 
 # Copy Laravel application
 COPY . .
 
-# Run Laravel package discovery
+# Now run Laravel package discovery
 RUN php artisan package:discover --ansi
+
+# Convert Windows line endings
+RUN find . -type f -not -path './.git/*' -exec dos2unix {} \;
 
 # Create required Laravel directories
 RUN mkdir -p \

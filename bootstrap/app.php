@@ -13,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // 1. Drop the CSRF state token shield so remote mobile logins can pass validation
+        $middleware->validateCsrfTokens(except: ['*']);
+
+        // 2. Attach a global cross-origin resource sharing (CORS) filter directly to the stack
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

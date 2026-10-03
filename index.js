@@ -8,7 +8,54 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'faga_production_secure_token_secret_key';
 
+// ==========================================
+// CORS CONFIGURATION
+// ==========================================
+
+// Allows the FAGA frontend to communicate with the Railway API.
+app.use((req, res, next) => {
+  const allowedOrigin = process.env.FRONTEND_URL || '*';
+
+  res.header('Access-Control-Allow-Origin', allowedOrigin);
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET,POST,PATCH,PUT,DELETE,OPTIONS'
+  );
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+
+  // Browser CORS preflight request
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
+// Parse JSON request bodies
 app.use(express.json());
+
+// ==========================================
+// HEALTH CHECK
+// ==========================================
+
+// Railway / browser health check
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    service: 'FAGA Backend Engine',
+    status: 'online'
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    status: 'online'
+  });
+});
 
 // 🗄️ Core PostgreSQL Database Connection Pool
 const pool = new Pool({
@@ -119,27 +166,72 @@ const initDatabase = async () => {
 };
 initDatabase();
 
-// 🔐 Authentication Guard (Replaces Laravel's auth:sanctum middleware)
-const authenticateToken = async (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Extract token after 'Bearer'
+// ==========================================
+// AUTHENTICATION GUARD
+// ==========================================
 
-  if (!token) return res.status(401).json({ message: 'Unauthorized access: Session token missing.' });
+const authenticateToken = async (req, res, next) => {
+
+  // Public job-board GET requests do not require authentication.
+  // These routes are still protected for POST/PATCH operations.
+  if (
+    req.method === 'GET' &&
+    (
+      req.path === '/jobs' ||
+      /^\/jobs\/\d+$/.test(req.path)
+    )
+  ) {
+    return next();
+  }
+
+  const authHeader = req.headers['authorization'];
+
+  // Expected format:
+  // Authorization: Bearer YOUR_TOKEN
+  const token =
+    authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.split(' ')[1]
+      : null;
+
+  if (!token) {
+    return res.status(401).json({
+      message: 'Unauthorized access: Session token missing.'
+    });
+  }
 
   try {
+
     const decoded = jwt.verify(token, JWT_SECRET);
-    const userQuery = await pool.query('SELECT id, name, email, role, is_active FROM users WHERE id = $1', [decoded.id]);
-    
+
+    const userQuery = await pool.query(
+      `
+      SELECT
+        id,
+        name,
+        email,
+        role,
+        is_active
+      FROM users
+      WHERE id = $1
+      `,
+      [decoded.id]
+    );
+
     if (userQuery.rows.length === 0) {
-      return res.status(403).json({ message: 'Access forbidden: Suspended or invalid user accounts.' });
+      return res.status(403).json({
+        message: 'Access forbidden: Suspended or invalid user accounts.'
+      });
     }
 
     const user = userQuery.rows[0];
+
     if (!user.is_active) {
-      return res.status(403).json({ message: 'Access forbidden: Suspended or invalid user accounts.' });
+      return res.status(403).json({
+        message: 'Access forbidden: Suspended or invalid user accounts.'
+      });
     }
-    
-    // Pass user metadata down to subsequent controllers safely
+
+    // Attach authenticated user to request
     req.user = {
       id: user.id,
       name: user.name,
@@ -147,9 +239,16 @@ const authenticateToken = async (req, res, next) => {
       role: user.role,
       isActive: user.is_active
     };
+
     next();
+
   } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired session parameters.' });
+
+    console.error('Authentication error:', err.message);
+
+    return res.status(403).json({
+      message: 'Invalid or expired session parameters.'
+    });
   }
 };
 

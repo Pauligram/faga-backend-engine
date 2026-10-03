@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <script src="../js/faga-api.js"></script>
+<script>
+    async function enforceAdmin() {
+        if (!FagaAPI.isLoggedIn()) { window.location.href = "login.html"; return; }
+        try {
+            const user = await FagaAPI.getProfile();
+            if (user.role !== 'admin') { window.location.href = "../user portal/login.html"; }
+        } catch { window.location.href = "login.html"; }
+    }
+    enforceAdmin();
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

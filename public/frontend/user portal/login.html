@@ -987,6 +987,24 @@
 <script src="../js/faga-api.js"></script>
 
 <script>
+document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop standard browser page刷新 loops
+    
+    const email = document.querySelector('input[type="email"]').value;
+    const password = document.querySelector('input[type="password"]').value;
+    const errorBox = document.getElementById('error-message'); // Ensure this ID exists on your layout
+
+    try {
+        const response = await FagaAPI.login(email, password);
+        if (response.token) {
+            // Forward user to operational workspace dynamically depending on user privilege tier
+            window.location.href = "dashboard.html";
+        }
+    } catch (err) {
+        errorBox.classList.remove('hidden');
+        errorBox.innerText = err.data?.message || "Invalid email format or password sequence.";
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
 

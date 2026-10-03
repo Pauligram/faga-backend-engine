@@ -13,4 +13,23 @@
 </form></main>
         <script src="../js/faga-api.js"></script>
         <script>document.getElementById('adminLogin').addEventListener('submit',async function(event){event.preventDefault();const button=document.getElementById('submit');const message=document.getElementById('message');button.disabled=true;message.textContent='';try{const result=await FagaAPI.login(document.getElementById('email').value.trim(),document.getElementById('password').value);const roles=(result.user&&Array.isArray(result.user.roles)?result.user.roles:[]).map(item=>typeof item==='string'?item:item.role);if(!roles.includes('admin')&&!roles.includes('super_admin')){FagaAPI.removeToken();throw new Error('This account does not have administrator access.');}window.location.href='index.html';}catch(error){message.textContent=error.message||(error.data&&error.data.message)||'Unable to sign in. Check your details and try again.';}finally{button.disabled=false;}});
-</script></body></html>
+document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop standard browser page刷新 loops
+    
+    const email = document.querySelector('input[type="email"]').value;
+    const password = document.querySelector('input[type="password"]').value;
+    const errorBox = document.getElementById('error-message'); // Ensure this ID exists on your layout
+
+    try {
+        const response = await FagaAPI.login(email, password);
+        if (response.token) {
+            // Forward user to operational workspace dynamically depending on user privilege tier
+            window.location.href = "dashboard.html";
+        }
+    } catch (err) {
+        errorBox.classList.remove('hidden');
+        errorBox.innerText = err.data?.message || "Invalid email format or password sequence.";
+    }
+});
+
+        </script></body></html>

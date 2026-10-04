@@ -1628,10 +1628,10 @@ app.get(
   id,
   latitude,
   longitude,
-  timestamp
+  created_at AS timestamp
 FROM telemetries
 WHERE delivery_id = $1
-ORDER BY timestamp DESC
+ORDER BY created_at DESC
 LIMIT 100
         `,
         [deliveryId]

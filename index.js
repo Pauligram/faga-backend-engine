@@ -534,6 +534,80 @@ app.post('/api/login', async (req, res) => {
 // ==========================================
 app.use('/api', authenticateToken);
 
+// ==========================================
+// AUTHENTICATED USER: CHANGE PASSWORD
+// ==========================================
+
+app.patch('/api/change-password', async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({
+      error: 'Current password and new password are required.'
+    });
+  }
+
+  if (typeof newPassword !== 'string' || newPassword.length < 8) {
+    return res.status(400).json({
+      error: 'New password must be at least 8 characters long.'
+    });
+  }
+
+  if (currentPassword === newPassword) {
+    return res.status(400).json({
+      error: 'New password must be different from the current password.'
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      'SELECT password FROM users WHERE id = $1 AND is_active = true',
+      [req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: 'User account not found.'
+      });
+    }
+
+    const passwordMatches = await bcrypt.compare(
+      currentPassword,
+      result.rows[0].password
+    );
+
+    if (!passwordMatches) {
+      return res.status(401).json({
+        error: 'Current password is incorrect.'
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    await pool.query(
+      `
+      UPDATE users
+      SET
+        password = $1,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $2
+      `,
+      [hashedPassword, req.user.id]
+    );
+
+    return res.json({
+      success: true,
+      message: 'Password changed successfully.'
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+
+    return res.status(500).json({
+      error: 'Unable to change password.'
+    });
+  }
+});
+
 // Customer Profile Logic
 app.get('/api/profile', (req, res) => {
   res.json(req.user);

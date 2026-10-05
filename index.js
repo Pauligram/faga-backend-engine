@@ -79,6 +79,16 @@ const initDatabase = async () => {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
+    CREATE TABLE IF NOT EXISTS admin_accounts (
+  id SERIAL PRIMARY KEY,
+  user_id INT UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  admin_role VARCHAR(50) NOT NULL,
+  created_by INT REFERENCES users(id) ON DELETE SET NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
     CREATE TABLE IF NOT EXISTS addresses (
       id SERIAL PRIMARY KEY,
       user_id INT REFERENCES users(id) ON DELETE CASCADE,
@@ -249,12 +259,130 @@ const initDatabase = async () => {
   `;
   try {
     await pool.query(schemaQuery);
-    console.log("FAGA Production Database tables initialized successfully. 🗄️");
+    console.log("FAGA Production Database tables initialized successfully. 🗄");
   } catch (err) {
-    console.error("Critical failure configuring database layout on boot:", err.message);
+    console.error(
+      "Critical failure configuring database layout on boot:",
+      err.message
+    );
+    throw err;
   }
 };
-initDatabase();
+// ==========================================
+// INITIAL SUPER ADMIN BOOTSTRAP
+// ==========================================
+const bootstrapSuperAdmin = async () => {
+  const email = process.env.FAGA_SUPER_ADMIN_EMAIL;
+  const password = process.env.FAGA_SUPER_ADMIN_PASSWORD;
+  const enabled = process.env.FAGA_SUPER_ADMIN_BOOTSTRAP === 'true';
+
+  if (!enabled) {
+    return;
+  }
+
+  if (!email || !password) {
+    throw new Error(
+      'FAGA_SUPER_ADMIN_EMAIL and FAGA_SUPER_ADMIN_PASSWORD are required when Super Admin bootstrap is enabled.'
+    );
+  }
+
+  try {
+    const existingUser = await pool.query(
+      'SELECT id, role, is_active FROM users WHERE email = $1',
+      [email]
+    );
+
+    let user;
+
+    if (existingUser.rows.length === 0) {
+      const hashedPassword = await bcrypt.hash(password, 12);
+
+      const result = await pool.query(
+        `
+        INSERT INTO users (
+          name,
+          email,
+          password,
+          role,
+          is_active
+        )
+        VALUES ($1, $2, $3, 'super_admin', true)
+        RETURNING id, name, email, role, is_active
+        `,
+        [
+          'FAGA Super Administrator',
+          email,
+          hashedPassword
+        ]
+      );
+
+      user = result.rows[0];
+
+      console.log(`Super Admin account created: ${email}`);
+    } else {
+      user = existingUser.rows[0];
+
+      if (user.role !== 'super_admin' || !user.is_active) {
+        await pool.query(
+          `
+          UPDATE users
+          SET
+            role = 'super_admin',
+            is_active = true,
+            updated_at = CURRENT_TIMESTAMP
+          WHERE id = $1
+          `,
+          [user.id]
+        );
+
+        user.role = 'super_admin';
+        user.is_active = true;
+
+        console.log(`Existing account elevated to Super Admin: ${email}`);
+      }
+    }
+
+    await pool.query(
+      `
+      INSERT INTO admin_accounts (
+        user_id,
+        admin_role,
+        created_by,
+        is_active
+      )
+      VALUES ($1, 'super_admin', NULL, true)
+      ON CONFLICT (user_id)
+      DO UPDATE SET
+        admin_role = 'super_admin',
+        is_active = true,
+        updated_at = CURRENT_TIMESTAMP
+      `,
+      [user.id]
+    );
+
+    console.log(`Super Admin bootstrap completed for ${email}`);
+  } catch (error) {
+    console.error('Super Admin bootstrap failed:', error.message);
+    throw error;
+  }
+};
+
+// ==========================================
+// DATABASE STARTUP SEQUENCE
+// ==========================================
+const startDatabase = async () => {
+  try {
+    await initDatabase();
+    await bootstrapSuperAdmin();
+
+    console.log('FAGA database startup sequence completed successfully.');
+  } catch (error) {
+    console.error('FAGA startup initialization failed:', error.message);
+    process.exit(1);
+  }
+};
+
+startDatabase();
 
 // ==========================================
 // AUTHENTICATION GUARD
@@ -344,10 +472,20 @@ const authenticateToken = async (req, res, next) => {
 
 // 🛡️ Role Enforcement Guard (Replaces Laravel's EnsureUserHasRole middleware)
 const authorizeRoles = (...allowedRoles) => {
+  const expandedRoles = new Set(allowedRoles);
+
+  // Super Admin has access to every administrative endpoint
+  if (allowedRoles.includes('admin')) {
+    expandedRoles.add('super_admin');
+  }
+
   return (req, res, next) => {
-    if (!allowedRoles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'Access forbidden: Insufficient access privileges.' });
+    if (!expandedRoles.has(req.user.role)) {
+      return res.status(403).json({
+        message: 'Access forbidden: Insufficient access privileges.'
+      });
     }
+
     next();
   };
 };

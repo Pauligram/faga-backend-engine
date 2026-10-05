@@ -1078,17 +1078,7 @@ app.post(
   }
 );
 
-app.get('/api/deliveries', async (req, res) => {
-  try {
-    const result = await pool.query(
-      'SELECT id, customer_id AS "customerId", rider_id AS "riderId", status, pickup_address AS "pickupAddress", dropoff_address AS "dropoffAddress" FROM deliveries WHERE customer_id = $1',
-      [req.user.id]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 app.patch('/api/deliveries/:id/assign-rider', authorizeRoles('admin'), async (req, res) => {
   const { riderId } = req.body;
@@ -1558,20 +1548,18 @@ app.post(
         INSERT INTO telemetries (
   delivery_id,
   latitude,
-  longitude,
-  timestamp
+  longitude
 )
 VALUES (
   $1,
   $2,
-  $3,
-  CURRENT_TIMESTAMP
+  $3
 )
 RETURNING
   delivery_id AS "deliveryId",
   latitude,
   longitude,
-  timestamp
+  created_at AS timestamp
         `,
         [deliveryId, latitude, longitude]
       );

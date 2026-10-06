@@ -59,12 +59,56 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 🗄️ Core PostgreSQL Database Connection Pool
+// ==========================================
+// 🗄️ FAGA POSTGRESQL DATABASE CONNECTION
+// ==========================================
+
+// Local development should use DATABASE_PUBLIC_URL.
+// Railway production can continue using DATABASE_URL.
+const databaseUrl =
+  process.env.DATABASE_PUBLIC_URL ||
+  process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error(
+    'FAGA database configuration missing. Set DATABASE_PUBLIC_URL locally or DATABASE_URL on Railway.'
+  );
+}
+
+// Railway private hostname cannot be reached from a local Windows PC.
+if (
+  !process.env.RAILWAY_ENVIRONMENT &&
+  databaseUrl.includes('railway.internal')
+) {
+  throw new Error(
+    'Local FAGA development is using Railway private database host "postgres.railway.internal". ' +
+    'Set DATABASE_PUBLIC_URL to the Railway public PostgreSQL connection string.'
+  );
+}
+
+const isLocalDatabase =
+  databaseUrl.includes('localhost') ||
+  databaseUrl.includes('127.0.0.1');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('localhost') 
-    ? false 
-    : { rejectUnauthorized: false } // Auto-enables secure SSL for production hosting like Railway
+  connectionString: databaseUrl,
+
+  // Local PostgreSQL normally does not require SSL.
+  // Railway public PostgreSQL requires SSL.
+  ssl: isLocalDatabase
+    ? false
+    : {
+        rejectUnauthorized: false
+      },
+
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
+});
+
+// Test the database connection when the application starts.
+pool.on('error', (error) => {
+  console.error('FAGA PostgreSQL pool error:', error.message);
 });
 
 // ==========================================
@@ -575,6 +619,372 @@ app.use('/api', authenticateToken);
 // ==========================================
 // FAGA LIVE RIDE BOOKING & TRACKING
 // ==========================================
+// ==========================================
+// FAGA REAL ROUTING ENGINE
+// ==========================================
+
+const FAGA_ROUTING_URL =
+  process.env.FAGA_ROUTING_URL ||
+  'https://router.project-osrm.org';
+
+const FAGA_GEOCODING_URL =
+  process.env.FAGA_GEOCODING_URL ||
+  'https://nominatim.openstreetmap.org/search';
+
+async function geocodeFagaAddress(address) {
+  const cleanAddress = String(address || '').trim();
+
+  if (!cleanAddress) {
+    throw new Error('Address is required for geocoding.');
+  }
+
+  try {
+    const response = await axios.get(
+      FAGA_GEOCODING_URL,
+      {
+        params: {
+          q: cleanAddress,
+          format: 'json',
+          limit: 1,
+          addressdetails: 1,
+          countrycodes:
+            process.env.FAGA_GEOCODING_COUNTRY_CODES || 'ng'
+        },
+        headers: {
+          'User-Agent':
+            process.env.FAGA_GEOCODING_USER_AGENT ||
+            'FAGA Logistics Platform'
+        },
+        timeout: 10000
+      }
+    );
+
+    const result = response.data?.[0];
+
+    if (!result) {
+      throw new Error(
+        `Unable to locate address: ${cleanAddress}`
+      );
+    }
+
+    const latitude = Number(result.lat);
+    const longitude = Number(result.lon);
+
+    if (
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude)
+    ) {
+      throw new Error(
+        `Invalid coordinates returned for: ${cleanAddress}`
+      );
+    }
+
+    return {
+      latitude,
+      longitude,
+      displayName: result.display_name || cleanAddress
+    };
+
+  } catch (error) {
+
+    console.error(
+      'FAGA geocoding error:',
+      error.response?.data || error.message
+    );
+
+    throw new Error(
+      `Unable to locate "${cleanAddress}". Please provide a more specific address.`
+    );
+  }
+}
+
+
+async function getFagaRoadRoute(
+  pickupLatitude,
+  pickupLongitude,
+  destinationLatitude,
+  destinationLongitude
+) {
+
+  const coordinates =
+    `${pickupLongitude},${pickupLatitude};` +
+    `${destinationLongitude},${destinationLatitude}`;
+
+  try {
+
+    const response = await axios.get(
+      `${FAGA_ROUTING_URL}/route/v1/driving/${coordinates}`,
+      {
+        params: {
+          overview: 'full',
+          geometries: 'geojson',
+          steps: false
+        },
+        timeout: 15000
+      }
+    );
+
+    const route =
+      response.data?.routes?.[0];
+
+    if (
+      response.data?.code !== 'Ok' ||
+      !route
+    ) {
+      throw new Error(
+        'No driving route was returned.'
+      );
+    }
+
+    const distanceKm =
+      Number(route.distance) / 1000;
+
+    const durationMinutes =
+      Math.max(
+        1,
+        Math.ceil(
+          Number(route.duration) / 60
+        )
+      );
+
+    if (
+      !Number.isFinite(distanceKm) ||
+      !Number.isFinite(durationMinutes)
+    ) {
+      throw new Error(
+        'Invalid route information returned.'
+      );
+    }
+
+    return {
+      distanceKm: Number(
+        distanceKm.toFixed(2)
+      ),
+
+      durationMinutes,
+
+      geometry:
+        route.geometry?.coordinates || []
+    };
+
+  } catch (error) {
+
+    console.error(
+      'FAGA routing error:',
+      error.response?.data || error.message
+    );
+
+    throw new Error(
+      'Unable to calculate the road route right now. Please try again.'
+    );
+  }
+}
+
+
+async function resolveFagaCoordinates({
+  address,
+  latitude,
+  longitude
+}) {
+
+  const validLatitude =
+    Number.isFinite(Number(latitude));
+
+  const validLongitude =
+    Number.isFinite(Number(longitude));
+
+  if (
+    validLatitude &&
+    validLongitude
+  ) {
+
+    return {
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+      displayName: address
+    };
+  }
+
+  return geocodeFagaAddress(address);
+}
+
+
+async function buildFagaRoute({
+  pickupAddress,
+  destinationAddress,
+  pickupLatitude,
+  pickupLongitude,
+  destinationLatitude,
+  destinationLongitude
+}) {
+
+  const pickup =
+    await resolveFagaCoordinates({
+      address: pickupAddress,
+      latitude: pickupLatitude,
+      longitude: pickupLongitude
+    });
+
+  const destination =
+    await resolveFagaCoordinates({
+      address: destinationAddress,
+      latitude: destinationLatitude,
+      longitude: destinationLongitude
+    });
+
+  const route =
+    await getFagaRoadRoute(
+      pickup.latitude,
+      pickup.longitude,
+      destination.latitude,
+      destination.longitude
+    );
+
+  const estimatedArrivalAt =
+    new Date(
+      Date.now() +
+      route.durationMinutes * 60 * 1000
+    );
+
+  return {
+    pickup,
+    destination,
+
+    distanceKm:
+      route.distanceKm,
+
+    durationMinutes:
+      route.durationMinutes,
+
+    estimatedArrivalAt,
+
+    routeGeometry:
+      route.geometry
+  };
+}
+
+
+// ==========================================
+// REAL RIDE ESTIMATE
+// ==========================================
+
+app.post('/api/rides/estimate', async (req, res) => {
+
+  const {
+    pickupAddress,
+    destinationAddress,
+    pickupLatitude = null,
+    pickupLongitude = null,
+    destinationLatitude = null,
+    destinationLongitude = null,
+    rideType = 'economy',
+    passengers = 1
+  } = req.body;
+
+  if (
+    !pickupAddress ||
+    !destinationAddress
+  ) {
+    return res.status(422).json({
+      message:
+        'Pickup and destination are required.'
+    });
+  }
+
+  const allowedRideTypes = {
+    economy: 1800,
+    comfort: 2500,
+    xl: 3500
+  };
+
+  const normalizedRideType =
+    String(rideType).toLowerCase();
+
+  const passengerCount =
+    Number(passengers);
+
+  if (
+    !allowedRideTypes[normalizedRideType]
+  ) {
+    return res.status(422).json({
+      message:
+        'Invalid ride type.'
+    });
+  }
+
+  if (
+    !Number.isInteger(passengerCount) ||
+    passengerCount < 1 ||
+    passengerCount > 6
+  ) {
+    return res.status(422).json({
+      message:
+        'Passengers must be between 1 and 6.'
+    });
+  }
+
+  try {
+
+    const route =
+      await buildFagaRoute({
+        pickupAddress,
+        destinationAddress,
+        pickupLatitude,
+        pickupLongitude,
+        destinationLatitude,
+        destinationLongitude
+      });
+
+    const fare =
+      allowedRideTypes[normalizedRideType] +
+      Math.max(
+        0,
+        passengerCount - 1
+      ) * 150;
+
+    return res.json({
+      success: true,
+
+      estimate: {
+        pickup: route.pickup,
+        destination: route.destination,
+
+        distanceKm:
+          route.distanceKm,
+
+        durationMinutes:
+          route.durationMinutes,
+
+        estimatedArrivalAt:
+          route.estimatedArrivalAt,
+
+        fare,
+
+        rideType:
+          normalizedRideType,
+
+        passengers:
+          passengerCount,
+
+        routeGeometry:
+          route.routeGeometry
+      }
+    });
+
+  } catch (error) {
+
+    console.error(
+      'FAGA ride estimate error:',
+      error
+    );
+
+    return res.status(422).json({
+      message:
+        error.message ||
+        'Unable to calculate ride estimate.'
+    });
+  }
+});
 
 // --------------------------------------------------
 // ROUTE CALCULATOR
@@ -659,17 +1069,96 @@ async function calculateRideRoute(
 // Create a real customer ride request.
 // --------------------------------------------------
 
-app.post('/api/rides', async (req, res) => {
+// ==========================================
+// FAGA LIVE RIDE ROUTING
+// ==========================================
 
+async function calculateRideRoute({
+  pickupLatitude,
+  pickupLongitude,
+  destinationLatitude,
+  destinationLongitude
+}) {
+  if (
+    pickupLatitude === null ||
+    pickupLatitude === undefined ||
+    pickupLongitude === null ||
+    pickupLongitude === undefined ||
+    destinationLatitude === null ||
+    destinationLatitude === undefined ||
+    destinationLongitude === null ||
+    destinationLongitude === undefined
+  ) {
+    return null;
+  }
+
+  const startLat = Number(pickupLatitude);
+  const startLng = Number(pickupLongitude);
+  const endLat = Number(destinationLatitude);
+  const endLng = Number(destinationLongitude);
+
+  if (
+    !Number.isFinite(startLat) ||
+    !Number.isFinite(startLng) ||
+    !Number.isFinite(endLat) ||
+    !Number.isFinite(endLng)
+  ) {
+    return null;
+  }
+
+  const url =
+    `https://router.project-osrm.org/route/v1/driving/` +
+    `${startLng},${startLat};${endLng},${endLat}` +
+    `?overview=false&steps=false`;
+
+  const response = await axios.get(url, {
+    timeout: 15000,
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'FAGA-Ride-Engine/1.0'
+    }
+  });
+
+  if (
+    !response.data ||
+    response.data.code !== 'Ok' ||
+    !Array.isArray(response.data.routes) ||
+    !response.data.routes.length
+  ) {
+    return null;
+  }
+
+  const route = response.data.routes[0];
+
+  const distanceKm = Number(route.distance) / 1000;
+
+  const durationMinutes = Math.max(
+    1,
+    Math.ceil(Number(route.duration) / 60)
+  );
+
+  return {
+    distanceKm: Number(distanceKm.toFixed(2)),
+    durationMinutes,
+    driverEtaMinutes: null
+  };
+}
+
+
+// ==========================================
+// LIVE RIDE BOOKING
+// ==========================================
+
+app.post('/api/rides', async (req, res) => {
   const {
     pickupAddress,
     destinationAddress,
     rideType = 'economy',
     passengers = 1,
-    pickupLatitude,
-    pickupLongitude,
-    destinationLatitude,
-    destinationLongitude
+    pickupLatitude = null,
+    pickupLongitude = null,
+    destinationLatitude = null,
+    destinationLongitude = null
   } = req.body;
 
   const allowedRideTypes = {
@@ -678,34 +1167,19 @@ app.post('/api/rides', async (req, res) => {
     xl: 3500
   };
 
-  const normalizedRideType =
-    String(rideType).trim().toLowerCase();
-
+  const normalizedRideType = String(rideType).trim().toLowerCase();
   const passengerCount = Number(passengers);
 
-  // ----------------------------------------------
-  // BASIC VALIDATION
-  // ----------------------------------------------
-
-  if (
-    !pickupAddress ||
-    !String(pickupAddress).trim()
-  ) {
+  if (!pickupAddress || !destinationAddress) {
     return res.status(422).json({
-      message: 'Pickup address is required.'
+      message: 'Pickup and destination are required.'
     });
   }
 
-  if (
-    !destinationAddress ||
-    !String(destinationAddress).trim()
-  ) {
-    return res.status(422).json({
-      message: 'Destination address is required.'
-    });
-  }
-
-  if (!allowedRideTypes[normalizedRideType]) {
+  if (!Object.prototype.hasOwnProperty.call(
+    allowedRideTypes,
+    normalizedRideType
+  )) {
     return res.status(422).json({
       message: 'Invalid ride type.'
     });
@@ -721,213 +1195,155 @@ app.post('/api/rides', async (req, res) => {
     });
   }
 
-  // ----------------------------------------------
-  // COORDINATE VALIDATION
-  // ----------------------------------------------
-
-  const pickupLat = Number(pickupLatitude);
-  const pickupLng = Number(pickupLongitude);
-
-  const destinationLat = Number(destinationLatitude);
-  const destinationLng = Number(destinationLongitude);
-
-  if (
-    !Number.isFinite(pickupLat) ||
-    !Number.isFinite(pickupLng) ||
-    !Number.isFinite(destinationLat) ||
-    !Number.isFinite(destinationLng)
-  ) {
-    return res.status(422).json({
-      message:
-        'Valid pickup and destination coordinates are required to calculate distance, trip time and ETA.'
-    });
-  }
-
-  if (
-    pickupLat < -90 ||
-    pickupLat > 90 ||
-    destinationLat < -90 ||
-    destinationLat > 90 ||
-    pickupLng < -180 ||
-    pickupLng > 180 ||
-    destinationLng < -180 ||
-    destinationLng > 180
-  ) {
-    return res.status(422).json({
-      message: 'Invalid geographic coordinates.'
-    });
-  }
-
-  // ----------------------------------------------
-  // REAL ROUTE CALCULATION
-  // ----------------------------------------------
-
-  let route;
-
   try {
+    // ------------------------------------------
+    // REAL ROUTE CALCULATION
+    // ------------------------------------------
 
-    route = await calculateRideRoute(
-      pickupLat,
-      pickupLng,
-      destinationLat,
-      destinationLng
-    );
+    let route = null;
 
-  } catch (error) {
+    if (
+      pickupLatitude !== null &&
+      pickupLongitude !== null &&
+      destinationLatitude !== null &&
+      destinationLongitude !== null
+    ) {
+      route = await calculateRideRoute({
+        pickupLatitude,
+        pickupLongitude,
+        destinationLatitude,
+        destinationLongitude
+      });
+    }
 
-    console.error(
-      'FAGA ride routing error:',
-      error.message
-    );
+    /*
+     * If the browser did not provide coordinates,
+     * we cannot honestly calculate distance or trip time.
+     *
+     * We therefore return null rather than displaying
+     * fake/demo values.
+     */
 
-    return res.status(503).json({
-      message:
-        'Unable to calculate the driving route right now. Please try again.'
-    });
-  }
+    const distanceKm = route?.distanceKm ?? null;
+    const durationMinutes = route?.durationMinutes ?? null;
 
-  const distanceKm = route.distanceKm;
-  const durationMinutes = route.durationMinutes;
+    /*
+     * Driver ETA is different from trip duration.
+     *
+     * There is no assigned driver at the moment of booking,
+     * so driver ETA must remain null until a real driver
+     * accepts the ride and sends a live location.
+     */
+    const driverEtaMinutes = null;
 
-  // ----------------------------------------------
-  // SERVER-SIDE FARE
-  // ----------------------------------------------
+    // ------------------------------------------
+    // SERVER-SIDE FARE
+    // ------------------------------------------
 
-  const baseFare =
-    allowedRideTypes[normalizedRideType];
+    const baseFare = allowedRideTypes[normalizedRideType];
 
-  const passengerCharge =
-    Math.max(0, passengerCount - 1) * 150;
+    const passengerCharge =
+      Math.max(0, passengerCount - 1) * 150;
 
-  const distanceCharge =
-    Math.max(0, distanceKm - 2) * 250;
+    /*
+     * Distance-based fare when a real route exists.
+     *
+     * Base fare:
+     * economy = ₦1,800
+     * comfort = ₦2,500
+     * XL      = ₦3,500
+     *
+     * Additional distance:
+     * ₦250 per kilometre
+     */
+    const distanceCharge =
+      Number.isFinite(distanceKm)
+        ? distanceKm * 250
+        : 0;
 
-  const calculatedFare =
-    baseFare +
-    distanceCharge +
-    passengerCharge;
+    const rawFare =
+      baseFare +
+      distanceCharge +
+      passengerCharge;
 
-  const fare =
-    Math.round(calculatedFare / 50) * 50;
+    const fare =
+      Math.max(
+        baseFare,
+        Math.round(rawFare / 50) * 50
+      );
 
-  // ----------------------------------------------
-  // INITIAL DRIVER ETA
-  //
-  // No driver has been assigned yet.
-  // Therefore we DO NOT invent an ETA.
-  // ----------------------------------------------
-
-  const driverEtaMinutes = null;
-
-  // ----------------------------------------------
-  // CREATE RIDE
-  // ----------------------------------------------
-
-  try {
+    // ------------------------------------------
+    // SAVE RIDE
+    // ------------------------------------------
 
     const result = await pool.query(
       `
       INSERT INTO rides (
         customer_id,
         status,
-
         pickup_address,
+        destination_address,
         pickup_latitude,
         pickup_longitude,
-
-        destination_address,
         destination_latitude,
         destination_longitude,
-
         ride_type,
         passengers,
-
         fare,
         distance_km,
         duration_minutes,
-        driver_eta_minutes,
-
-        created_at,
-        updated_at
+        driver_eta_minutes
       )
-
       VALUES (
         $1,
         'SEARCHING',
-
         $2,
         $3,
         $4,
-
         $5,
         $6,
         $7,
-
         $8,
         $9,
-
         $10,
         $11,
         $12,
-        $13,
-
-        CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP
+        $13
       )
-
       RETURNING
         id,
-
         customer_id AS "customerId",
-
         driver_id AS "driverId",
-
         status,
-
         pickup_address AS "pickupAddress",
+        destination_address AS "destinationAddress",
         pickup_latitude AS "pickupLatitude",
         pickup_longitude AS "pickupLongitude",
-
-        destination_address AS "destinationAddress",
         destination_latitude AS "destinationLatitude",
         destination_longitude AS "destinationLongitude",
-
         ride_type AS "rideType",
         passengers,
-
         fare,
-
         distance_km AS "distanceKm",
-
         duration_minutes AS "durationMinutes",
-
-        driver_eta_minutes AS "driverEtaMinutes",
-
+        driver_eta_minutes AS "driverEtaMinutes",estimated_arrival_at AS "estimatedArrivalAt",
+        route_geometry AS "routeGeometry",
         created_at AS "createdAt",
-
         updated_at AS "updatedAt"
       `,
-
       [
         req.user.id,
-
         String(pickupAddress).trim(),
-        pickupLat,
-        pickupLng,
-
         String(destinationAddress).trim(),
-        destinationLat,
-        destinationLng,
-
+        pickupLatitude,
+        pickupLongitude,
+        destinationLatitude,
+        destinationLongitude,
         normalizedRideType,
         passengerCount,
-
         fare,
-
         distanceKm,
-
         durationMinutes,
-
         driverEtaMinutes
       ]
     );
@@ -936,23 +1352,34 @@ app.post('/api/rides', async (req, res) => {
 
     return res.status(201).json({
       success: true,
-
-      message:
-        'Ride request created successfully.',
-
-      ride
+      message: 'Ride request created successfully.',
+      ride: {
+        ...ride,
+        distanceKm:
+          ride.distanceKm !== null
+            ? Number(ride.distanceKm)
+            : null,
+        durationMinutes:
+          ride.durationMinutes !== null
+            ? Number(ride.durationMinutes)
+            : null,
+        driverEtaMinutes:
+          ride.driverEtaMinutes !== null
+            ? Number(ride.driverEtaMinutes)
+            : null,
+        fare: Number(ride.fare)
+      }
     });
 
   } catch (error) {
-
-    console.error(
-      'FAGA ride creation error:',
-      error
-    );
+    console.error('FAGA ride creation error:', error);
 
     return res.status(500).json({
-      message:
-        'Unable to create the ride right now.'
+      message: 'Unable to calculate or create the ride right now.',
+      error:
+        process.env.NODE_ENV === 'production'
+          ? undefined
+          : error.message
     });
   }
 });
@@ -1056,137 +1483,200 @@ app.get('/api/rides/:id', async (req, res) => {
 // LIVE RIDE TRACKING
 // --------------------------------------------------
 
-app.get(
-  '/api/rides/:id/tracking',
-  async (req, res) => {
+app.get('/api/rides/:id/tracking', async (req, res) => {
 
-    const rideId =
-      Number.parseInt(req.params.id, 10);
+  const rideId =
+    Number.parseInt(
+      req.params.id,
+      10
+    );
 
-    if (!Number.isInteger(rideId)) {
+  if (!Number.isInteger(rideId)) {
+    return res.status(422).json({
+      message:
+        'Invalid ride ID.'
+    });
+  }
 
-      return res.status(422).json({
-        message: 'Invalid ride ID.'
+  try {
+
+    const rideResult =
+      await pool.query(
+        `
+        SELECT
+
+          id,
+
+          customer_id AS "customerId",
+          driver_id AS "driverId",
+
+          status,
+
+          pickup_address AS "pickupAddress",
+          pickup_latitude AS "pickupLatitude",
+          pickup_longitude AS "pickupLongitude",
+
+          destination_address AS "destinationAddress",
+          destination_latitude AS "destinationLatitude",
+          destination_longitude AS "destinationLongitude",
+
+          ride_type AS "rideType",
+          passengers,
+
+          fare,
+
+          distance_km AS "distanceKm",
+          duration_minutes AS "durationMinutes",
+          driver_eta_minutes AS "driverEtaMinutes",
+
+          estimated_arrival_at AS "estimatedArrivalAt",
+
+          route_geometry AS "routeGeometry"
+
+        FROM rides
+
+        WHERE id = $1
+          AND customer_id = $2
+        `,
+        [
+          rideId,
+          req.user.id
+        ]
+      );
+
+    if (
+      rideResult.rows.length === 0
+    ) {
+      return res.status(404).json({
+        message:
+          'Ride not found.'
       });
     }
 
-    try {
+    const ride =
+      rideResult.rows[0];
 
-      const rideResult =
+    const locationResult =
+      await pool.query(
+        `
+        SELECT
+
+          latitude,
+          longitude,
+
+          created_at AS "createdAt"
+
+        FROM ride_locations
+
+        WHERE ride_id = $1
+
+        ORDER BY created_at DESC
+
+        LIMIT 1
+        `,
+        [rideId]
+      );
+
+    let driverLocation =
+      locationResult.rows[0] || null;
+
+    let calculatedDriverEta =
+      null;
+
+    /*
+     * If the driver app has supplied
+     * a real GPS position, calculate
+     * the actual road ETA to pickup.
+     */
+    if (
+      driverLocation &&
+      ride.pickupLatitude != null &&
+      ride.pickupLongitude != null
+    ) {
+
+      try {
+
+        const driverRoute =
+          await getFagaRoadRoute(
+
+            Number(
+              driverLocation.latitude
+            ),
+
+            Number(
+              driverLocation.longitude
+            ),
+
+            Number(
+              ride.pickupLatitude
+            ),
+
+            Number(
+              ride.pickupLongitude
+            )
+
+          );
+
+        calculatedDriverEta =
+          driverRoute.durationMinutes;
+
         await pool.query(
           `
-          SELECT
+          UPDATE rides
 
-            id,
+          SET
+            driver_eta_minutes = $1,
+            updated_at = CURRENT_TIMESTAMP
 
-            customer_id AS "customerId",
-
-            driver_id AS "driverId",
-
-            status,
-
-            pickup_address AS "pickupAddress",
-
-            destination_address AS "destinationAddress",
-
-            pickup_latitude AS "pickupLatitude",
-            pickup_longitude AS "pickupLongitude",
-
-            destination_latitude AS "destinationLatitude",
-            destination_longitude AS "destinationLongitude",
-
-            ride_type AS "rideType",
-
-            passengers,
-
-            fare,
-
-            distance_km AS "distanceKm",
-
-            duration_minutes AS "durationMinutes",
-
-            driver_eta_minutes AS "driverEtaMinutes",
-
-            created_at AS "createdAt",
-
-            updated_at AS "updatedAt"
-
-          FROM rides
-
-          WHERE id = $1
-            AND customer_id = $2
+          WHERE id = $2
           `,
-
           [
-            rideId,
-            req.user.id
+            calculatedDriverEta,
+            rideId
           ]
         );
 
-      if (rideResult.rows.length === 0) {
+        ride.driverEtaMinutes =
+          calculatedDriverEta;
 
-        return res.status(404).json({
-          message: 'Ride not found.'
-        });
-      }
+      } catch (etaError) {
 
-      const locationResult =
-        await pool.query(
-          `
-          SELECT
-
-            latitude,
-            longitude,
-
-            created_at AS "createdAt"
-
-          FROM ride_locations
-
-          WHERE ride_id = $1
-
-          ORDER BY created_at DESC
-
-          LIMIT 1
-          `,
-
-          [rideId]
+        console.warn(
+          'Driver ETA calculation unavailable:',
+          etaError.message
         );
 
-      const ride =
-        rideResult.rows[0];
-
-      const driverLocation =
-        locationResult.rows[0] || null;
-
-      return res.json({
-
-        success: true,
-
-        ride,
-
-        driverLocation,
-
-        hasDriver:
-          ride.driverId !== null,
-
-        hasLiveDriverLocation:
-          driverLocation !== null
-      });
-
-    } catch (error) {
-
-      console.error(
-        'FAGA ride tracking error:',
-        error
-      );
-
-      return res.status(500).json({
-        message:
-          'Unable to load ride tracking.'
-      });
+      }
     }
+
+    return res.json({
+
+      success: true,
+
+      ride,
+
+      driverLocation,
+
+      driverEtaMinutes:
+        calculatedDriverEta ??
+        ride.driverEtaMinutes ??
+        null
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      'FAGA ride tracking error:',
+      error
+    );
+
+    return res.status(500).json({
+      message:
+        'Unable to load ride tracking.'
+    });
   }
-);
+});
 
 
 // --------------------------------------------------

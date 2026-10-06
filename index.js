@@ -576,16 +576,100 @@ app.use('/api', authenticateToken);
 // FAGA LIVE RIDE BOOKING & TRACKING
 // ==========================================
 
+// --------------------------------------------------
+// ROUTE CALCULATOR
+// Uses the real road network through OSRM.
+// Distance = actual driving route distance.
+// Duration = actual routing duration.
+// --------------------------------------------------
+
+async function calculateRideRoute(
+  pickupLatitude,
+  pickupLongitude,
+  destinationLatitude,
+  destinationLongitude
+) {
+  const coordinates = [
+    `${pickupLongitude},${pickupLatitude}`,
+    `${destinationLongitude},${destinationLatitude}`
+  ].join(';');
+
+  const url =
+    `https://router.project-osrm.org/route/v1/driving/${coordinates}` +
+    `?overview=false&alternatives=false&steps=false`;
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 10000);
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'FAGA-Backend/1.0'
+      },
+      signal: controller.signal
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Routing service returned HTTP ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (
+      data.code !== 'Ok' ||
+      !Array.isArray(data.routes) ||
+      !data.routes[0]
+    ) {
+      throw new Error(
+        data.message || 'No driving route was found.'
+      );
+    }
+
+    const route = data.routes[0];
+
+    const distanceKm = Number(
+      (Number(route.distance) / 1000).toFixed(2)
+    );
+
+    const durationMinutes = Math.max(
+      1,
+      Math.ceil(Number(route.duration) / 60)
+    );
+
+    return {
+      distanceKm,
+      durationMinutes
+    };
+
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+
+// --------------------------------------------------
+// POST /api/rides
+// Create a real customer ride request.
+// --------------------------------------------------
+
 app.post('/api/rides', async (req, res) => {
+
   const {
     pickupAddress,
     destinationAddress,
     rideType = 'economy',
     passengers = 1,
-    pickupLatitude = null,
-    pickupLongitude = null,
-    destinationLatitude = null,
-    destinationLongitude = null
+    pickupLatitude,
+    pickupLongitude,
+    destinationLatitude,
+    destinationLongitude
   } = req.body;
 
   const allowedRideTypes = {
@@ -594,12 +678,30 @@ app.post('/api/rides', async (req, res) => {
     xl: 3500
   };
 
-  const normalizedRideType = String(rideType).toLowerCase();
+  const normalizedRideType =
+    String(rideType).trim().toLowerCase();
+
   const passengerCount = Number(passengers);
 
-  if (!pickupAddress || !destinationAddress) {
+  // ----------------------------------------------
+  // BASIC VALIDATION
+  // ----------------------------------------------
+
+  if (
+    !pickupAddress ||
+    !String(pickupAddress).trim()
+  ) {
     return res.status(422).json({
-      message: 'Pickup and destination are required.'
+      message: 'Pickup address is required.'
+    });
+  }
+
+  if (
+    !destinationAddress ||
+    !String(destinationAddress).trim()
+  ) {
+    return res.status(422).json({
+      message: 'Destination address is required.'
     });
   }
 
@@ -619,95 +721,251 @@ app.post('/api/rides', async (req, res) => {
     });
   }
 
-  /*
-   * Server-side minimum fare.
-   * This prevents the browser from controlling the final fare.
-   *
-   * A distance-based fare engine can be connected later
-   * when the map/routing provider is integrated.
-   */
-  const fare =
-    allowedRideTypes[normalizedRideType] +
-    Math.max(0, passengerCount - 1) * 150;
+  // ----------------------------------------------
+  // COORDINATE VALIDATION
+  // ----------------------------------------------
+
+  const pickupLat = Number(pickupLatitude);
+  const pickupLng = Number(pickupLongitude);
+
+  const destinationLat = Number(destinationLatitude);
+  const destinationLng = Number(destinationLongitude);
+
+  if (
+    !Number.isFinite(pickupLat) ||
+    !Number.isFinite(pickupLng) ||
+    !Number.isFinite(destinationLat) ||
+    !Number.isFinite(destinationLng)
+  ) {
+    return res.status(422).json({
+      message:
+        'Valid pickup and destination coordinates are required to calculate distance, trip time and ETA.'
+    });
+  }
+
+  if (
+    pickupLat < -90 ||
+    pickupLat > 90 ||
+    destinationLat < -90 ||
+    destinationLat > 90 ||
+    pickupLng < -180 ||
+    pickupLng > 180 ||
+    destinationLng < -180 ||
+    destinationLng > 180
+  ) {
+    return res.status(422).json({
+      message: 'Invalid geographic coordinates.'
+    });
+  }
+
+  // ----------------------------------------------
+  // REAL ROUTE CALCULATION
+  // ----------------------------------------------
+
+  let route;
 
   try {
+
+    route = await calculateRideRoute(
+      pickupLat,
+      pickupLng,
+      destinationLat,
+      destinationLng
+    );
+
+  } catch (error) {
+
+    console.error(
+      'FAGA ride routing error:',
+      error.message
+    );
+
+    return res.status(503).json({
+      message:
+        'Unable to calculate the driving route right now. Please try again.'
+    });
+  }
+
+  const distanceKm = route.distanceKm;
+  const durationMinutes = route.durationMinutes;
+
+  // ----------------------------------------------
+  // SERVER-SIDE FARE
+  // ----------------------------------------------
+
+  const baseFare =
+    allowedRideTypes[normalizedRideType];
+
+  const passengerCharge =
+    Math.max(0, passengerCount - 1) * 150;
+
+  const distanceCharge =
+    Math.max(0, distanceKm - 2) * 250;
+
+  const calculatedFare =
+    baseFare +
+    distanceCharge +
+    passengerCharge;
+
+  const fare =
+    Math.round(calculatedFare / 50) * 50;
+
+  // ----------------------------------------------
+  // INITIAL DRIVER ETA
+  //
+  // No driver has been assigned yet.
+  // Therefore we DO NOT invent an ETA.
+  // ----------------------------------------------
+
+  const driverEtaMinutes = null;
+
+  // ----------------------------------------------
+  // CREATE RIDE
+  // ----------------------------------------------
+
+  try {
+
     const result = await pool.query(
-      `INSERT INTO rides (
+      `
+      INSERT INTO rides (
         customer_id,
         status,
+
         pickup_address,
-        destination_address,
         pickup_latitude,
         pickup_longitude,
+
+        destination_address,
         destination_latitude,
         destination_longitude,
+
         ride_type,
         passengers,
-        fare
+
+        fare,
+        distance_km,
+        duration_minutes,
+        driver_eta_minutes,
+
+        created_at,
+        updated_at
       )
+
       VALUES (
         $1,
         'SEARCHING',
+
         $2,
         $3,
         $4,
+
         $5,
         $6,
         $7,
+
         $8,
         $9,
-        $10
+
+        $10,
+        $11,
+        $12,
+        $13,
+
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
       )
+
       RETURNING
         id,
+
         customer_id AS "customerId",
+
         driver_id AS "driverId",
+
         status,
+
         pickup_address AS "pickupAddress",
+        pickup_latitude AS "pickupLatitude",
+        pickup_longitude AS "pickupLongitude",
+
         destination_address AS "destinationAddress",
+        destination_latitude AS "destinationLatitude",
+        destination_longitude AS "destinationLongitude",
+
         ride_type AS "rideType",
         passengers,
+
         fare,
+
         distance_km AS "distanceKm",
+
         duration_minutes AS "durationMinutes",
+
         driver_eta_minutes AS "driverEtaMinutes",
-        created_at AS "createdAt"`,
+
+        created_at AS "createdAt",
+
+        updated_at AS "updatedAt"
+      `,
+
       [
         req.user.id,
+
         String(pickupAddress).trim(),
+        pickupLat,
+        pickupLng,
+
         String(destinationAddress).trim(),
-        pickupLatitude,
-        pickupLongitude,
-        destinationLatitude,
-        destinationLongitude,
+        destinationLat,
+        destinationLng,
+
         normalizedRideType,
         passengerCount,
-        fare
+
+        fare,
+
+        distanceKm,
+
+        durationMinutes,
+
+        driverEtaMinutes
       ]
     );
 
+    const ride = result.rows[0];
+
     return res.status(201).json({
       success: true,
-      message: 'Ride request created successfully.',
-      ride: result.rows[0]
+
+      message:
+        'Ride request created successfully.',
+
+      ride
     });
 
   } catch (error) {
-    console.error('FAGA ride creation error:', error);
+
+    console.error(
+      'FAGA ride creation error:',
+      error
+    );
 
     return res.status(500).json({
-      message: 'Unable to create the ride right now.'
+      message:
+        'Unable to create the ride right now.'
     });
   }
 });
 
 
-// =========================================================
+// --------------------------------------------------
 // GET ONE RIDE
-// =========================================================
+// --------------------------------------------------
 
 app.get('/api/rides/:id', async (req, res) => {
-  const rideId = Number.parseInt(req.params.id, 10);
+
+  const rideId =
+    Number.parseInt(req.params.id, 10);
 
   if (!Number.isInteger(rideId)) {
     return res.status(422).json({
@@ -716,238 +974,313 @@ app.get('/api/rides/:id', async (req, res) => {
   }
 
   try {
+
     const result = await pool.query(
-      `SELECT
+      `
+      SELECT
+
         id,
+
         customer_id AS "customerId",
+
         driver_id AS "driverId",
+
         status,
+
         pickup_address AS "pickupAddress",
-        destination_address AS "destinationAddress",
+
         pickup_latitude AS "pickupLatitude",
         pickup_longitude AS "pickupLongitude",
+
+        destination_address AS "destinationAddress",
+
         destination_latitude AS "destinationLatitude",
         destination_longitude AS "destinationLongitude",
+
         ride_type AS "rideType",
+
         passengers,
+
         fare,
+
         distance_km AS "distanceKm",
+
         duration_minutes AS "durationMinutes",
+
         driver_eta_minutes AS "driverEtaMinutes",
+
         created_at AS "createdAt",
+
         updated_at AS "updatedAt"
-       FROM rides
-       WHERE id = $1
-         AND customer_id = $2`,
-      [rideId, req.user.id]
-    );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: 'Ride not found.'
-      });
-    }
+      FROM rides
 
-    return res.json({
-      success: true,
-      ride: result.rows[0]
-    });
-
-  } catch (error) {
-    console.error('FAGA ride lookup error:', error);
-
-    return res.status(500).json({
-      message: 'Unable to load the ride.'
-    });
-  }
-});
-
-
-// =========================================================
-// LIVE TRACKING SNAPSHOT
-// =========================================================
-
-app.get('/api/rides/:id/tracking', async (req, res) => {
-  const rideId = Number.parseInt(req.params.id, 10);
-
-  if (!Number.isInteger(rideId)) {
-    return res.status(422).json({
-      message: 'Invalid ride ID.'
-    });
-  }
-
-  try {
-    const rideResult = await pool.query(
-      `SELECT
-        id,
-        customer_id AS "customerId",
-        driver_id AS "driverId",
-        status,
-        pickup_address AS "pickupAddress",
-        destination_address AS "destinationAddress",
-        ride_type AS "rideType",
-        passengers,
-        fare,
-        driver_eta_minutes AS "driverEtaMinutes"
-       FROM rides
-       WHERE id = $1
-         AND customer_id = $2`,
-      [rideId, req.user.id]
-    );
-
-    if (rideResult.rows.length === 0) {
-      return res.status(404).json({
-        message: 'Ride not found.'
-      });
-    }
-
-    const locationResult = await pool.query(
-      `SELECT
-        latitude,
-        longitude,
-        created_at AS "createdAt"
-       FROM ride_locations
-       WHERE ride_id = $1
-       ORDER BY created_at DESC
-       LIMIT 1`,
-      [rideId]
-    );
-
-    return res.json({
-      success: true,
-      ride: rideResult.rows[0],
-      driverLocation: locationResult.rows[0] || null
-    });
-
-  } catch (error) {
-    console.error('FAGA ride tracking error:', error);
-
-    return res.status(500).json({
-      message: 'Unable to load ride tracking.'
-    });
-  }
-});
-
-
-// =========================================================
-// CUSTOMER CANCELLATION
-// =========================================================
-
-app.post('/api/rides/:id/cancel', async (req, res) => {
-  const rideId = Number.parseInt(req.params.id, 10);
-
-  if (!Number.isInteger(rideId)) {
-    return res.status(422).json({
-      message: 'Invalid ride ID.'
-    });
-  }
-
-  try {
-    const result = await pool.query(
-      `UPDATE rides
-       SET status = 'CANCELLED',
-           updated_at = CURRENT_TIMESTAMP
-       WHERE id = $1
-         AND customer_id = $2
-         AND status NOT IN ('COMPLETED', 'CANCELLED')
-       RETURNING id, status`,
-      [rideId, req.user.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(409).json({
-        message: 'This ride cannot be cancelled.'
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: 'Ride cancelled.',
-      ride: result.rows[0]
-    });
-
-  } catch (error) {
-    console.error('FAGA ride cancellation error:', error);
-
-    return res.status(500).json({
-      message: 'Unable to cancel the ride.'
-    });
-  }
-});
-
-// ==========================================
-// AUTHENTICATED USER: CHANGE PASSWORD
-// ==========================================
-
-app.patch('/api/change-password', async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
-
-  if (!currentPassword || !newPassword) {
-    return res.status(400).json({
-      error: 'Current password and new password are required.'
-    });
-  }
-
-  if (typeof newPassword !== 'string' || newPassword.length < 8) {
-    return res.status(400).json({
-      error: 'New password must be at least 8 characters long.'
-    });
-  }
-
-  if (currentPassword === newPassword) {
-    return res.status(400).json({
-      error: 'New password must be different from the current password.'
-    });
-  }
-
-  try {
-    const result = await pool.query(
-      'SELECT password FROM users WHERE id = $1 AND is_active = true',
-      [req.user.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        error: 'User account not found.'
-      });
-    }
-
-    const passwordMatches = await bcrypt.compare(
-      currentPassword,
-      result.rows[0].password
-    );
-
-    if (!passwordMatches) {
-      return res.status(401).json({
-        error: 'Current password is incorrect.'
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
-
-    await pool.query(
-      `
-      UPDATE users
-      SET
-        password = $1,
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
+      WHERE id = $1
+        AND customer_id = $2
       `,
-      [hashedPassword, req.user.id]
+
+      [
+        rideId,
+        req.user.id
+      ]
     );
+
+    if (result.rows.length === 0) {
+
+      return res.status(404).json({
+        message: 'Ride not found.'
+      });
+    }
 
     return res.json({
       success: true,
-      message: 'Password changed successfully.'
+      ride: result.rows[0]
     });
+
   } catch (error) {
-    console.error('Change password error:', error);
+
+    console.error(
+      'FAGA ride lookup error:',
+      error
+    );
 
     return res.status(500).json({
-      error: 'Unable to change password.'
+      message:
+        'Unable to load the ride.'
     });
   }
 });
+
+
+// --------------------------------------------------
+// LIVE RIDE TRACKING
+// --------------------------------------------------
+
+app.get(
+  '/api/rides/:id/tracking',
+  async (req, res) => {
+
+    const rideId =
+      Number.parseInt(req.params.id, 10);
+
+    if (!Number.isInteger(rideId)) {
+
+      return res.status(422).json({
+        message: 'Invalid ride ID.'
+      });
+    }
+
+    try {
+
+      const rideResult =
+        await pool.query(
+          `
+          SELECT
+
+            id,
+
+            customer_id AS "customerId",
+
+            driver_id AS "driverId",
+
+            status,
+
+            pickup_address AS "pickupAddress",
+
+            destination_address AS "destinationAddress",
+
+            pickup_latitude AS "pickupLatitude",
+            pickup_longitude AS "pickupLongitude",
+
+            destination_latitude AS "destinationLatitude",
+            destination_longitude AS "destinationLongitude",
+
+            ride_type AS "rideType",
+
+            passengers,
+
+            fare,
+
+            distance_km AS "distanceKm",
+
+            duration_minutes AS "durationMinutes",
+
+            driver_eta_minutes AS "driverEtaMinutes",
+
+            created_at AS "createdAt",
+
+            updated_at AS "updatedAt"
+
+          FROM rides
+
+          WHERE id = $1
+            AND customer_id = $2
+          `,
+
+          [
+            rideId,
+            req.user.id
+          ]
+        );
+
+      if (rideResult.rows.length === 0) {
+
+        return res.status(404).json({
+          message: 'Ride not found.'
+        });
+      }
+
+      const locationResult =
+        await pool.query(
+          `
+          SELECT
+
+            latitude,
+            longitude,
+
+            created_at AS "createdAt"
+
+          FROM ride_locations
+
+          WHERE ride_id = $1
+
+          ORDER BY created_at DESC
+
+          LIMIT 1
+          `,
+
+          [rideId]
+        );
+
+      const ride =
+        rideResult.rows[0];
+
+      const driverLocation =
+        locationResult.rows[0] || null;
+
+      return res.json({
+
+        success: true,
+
+        ride,
+
+        driverLocation,
+
+        hasDriver:
+          ride.driverId !== null,
+
+        hasLiveDriverLocation:
+          driverLocation !== null
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA ride tracking error:',
+        error
+      );
+
+      return res.status(500).json({
+        message:
+          'Unable to load ride tracking.'
+      });
+    }
+  }
+);
+
+
+// --------------------------------------------------
+// CUSTOMER CANCEL RIDE
+// --------------------------------------------------
+
+app.post(
+  '/api/rides/:id/cancel',
+  async (req, res) => {
+
+    const rideId =
+      Number.parseInt(req.params.id, 10);
+
+    if (!Number.isInteger(rideId)) {
+
+      return res.status(422).json({
+        message: 'Invalid ride ID.'
+      });
+    }
+
+    try {
+
+      const result =
+        await pool.query(
+          `
+          UPDATE rides
+
+          SET
+            status = 'CANCELLED',
+
+            updated_at =
+              CURRENT_TIMESTAMP
+
+          WHERE id = $1
+
+            AND customer_id = $2
+
+            AND status NOT IN (
+              'COMPLETED',
+              'CANCELLED'
+            )
+
+          RETURNING
+
+            id,
+
+            status,
+
+            distance_km AS "distanceKm",
+
+            duration_minutes AS "durationMinutes",
+
+            driver_eta_minutes AS "driverEtaMinutes"
+          `,
+
+          [
+            rideId,
+            req.user.id
+          ]
+        );
+
+      if (result.rows.length === 0) {
+
+        return res.status(409).json({
+          message:
+            'This ride cannot be cancelled.'
+        });
+      }
+
+      return res.json({
+
+        success: true,
+
+        message:
+          'Ride cancelled successfully.',
+
+        ride:
+          result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA ride cancellation error:',
+        error
+      );
+
+      return res.status(500).json({
+        message:
+          'Unable to cancel the ride.'
+      });
+    }
+  }
+);
 
 // Customer Profile Logic
 app.get('/api/profile', (req, res) => {

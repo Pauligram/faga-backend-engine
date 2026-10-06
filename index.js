@@ -3,6 +3,8 @@ const express = require('express');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -199,6 +201,14 @@ const initDatabase = async () => {
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+    ALTER TABLE transactions
+  ADD COLUMN IF NOT EXISTS payment_provider VARCHAR(50),
+  ADD COLUMN IF NOT EXISTS payment_reference VARCHAR(255);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_payment_reference
+ON transactions(payment_provider, payment_reference)
+WHERE payment_reference IS NOT NULL;
 
         CREATE TABLE IF NOT EXISTS seller_applications (
       id SERIAL PRIMARY KEY,
@@ -1368,39 +1378,381 @@ app.get('/api/finance/wallet', async (req, res) => {
   }
 });
 
-// 2. Fund Wallet / Process Deposit
+// 2. Initialize Paystack Wallet Funding
 app.post('/api/finance/deposit', async (req, res) => {
-  const { amount, description } = req.body;
-  
-  if (!amount || parseFloat(amount) <= 0) {
-    return res.status(400).json({ error: 'Invalid deposit amount.' });
+  const amount = Number(req.body.amount);
+
+  if (!Number.isFinite(amount) || amount < 100) {
+    return res.status(400).json({
+      error: 'Minimum wallet funding amount is ₦100.'
+    });
+  }
+
+  if (!process.env.PAYSTACK_SECRET_KEY) {
+    return res.status(500).json({
+      error: 'Payment provider is not configured.'
+    });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    // Get authenticated customer's account
+    const userResult = await client.query(
+      'SELECT id, name, email FROM users WHERE id = $1',
+      [req.user.id]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Customer account not found.'
+      });
+    }
+
+    const user = userResult.rows[0];
+
+    // Get or create wallet
+    let walletResult = await client.query(
+      'SELECT id FROM wallets WHERE user_id = $1',
+      [req.user.id]
+    );
+
+    if (walletResult.rows.length === 0) {
+      walletResult = await client.query(
+        'INSERT INTO wallets (user_id, balance) VALUES ($1, 0.00) RETURNING id',
+        [req.user.id]
+      );
+    }
+
+    const walletId = walletResult.rows[0].id;
+
+    // Paystack expects the amount in kobo
+    const amountInKobo = Math.round(amount * 100);
+
+    // Generate unique payment reference
+    const reference =
+      `FAGA-WALLET-${req.user.id}-${Date.now()}-${crypto.randomUUID()}`;
+
+    // Create pending transaction
+    const transactionResult = await client.query(
+      `
+      INSERT INTO transactions (
+        wallet_id,
+        amount,
+        type,
+        status,
+        description,
+        payment_provider,
+        payment_reference
+      )
+      VALUES ($1, $2, 'DEPOSIT', 'PENDING', $3, 'paystack', $4)
+      RETURNING
+        id,
+        amount,
+        type,
+        status,
+        description,
+        payment_provider AS "paymentProvider",
+        payment_reference AS "paymentReference",
+        created_at AS "createdAt"
+      `,
+      [
+        walletId,
+        amount,
+        'FAGA Wallet Funding via Paystack',
+        reference
+      ]
+    );
+
+    try {
+      const paystackResponse = await axios.post(
+        'https://api.paystack.co/transaction/initialize',
+        {
+          email: user.email,
+          amount: amountInKobo,
+          reference,
+          callback_url:
+            process.env.PAYSTACK_CALLBACK_URL ||
+            'https://faga-frontend-portal.vercel.app/user-portal/dashboard.html',
+          metadata: {
+            userId: req.user.id,
+            walletId,
+            transactionId: transactionResult.rows[0].id,
+            amount
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 15000
+        }
+      );
+
+      if (
+        !paystackResponse.data ||
+        !paystackResponse.data.status ||
+        !paystackResponse.data.data
+      ) {
+        throw new Error(
+          paystackResponse.data?.message ||
+          'Paystack payment initialization failed.'
+        );
+      }
+
+      return res.status(201).json({
+        message: 'Payment initialized successfully.',
+        authorizationUrl: paystackResponse.data.data.authorization_url,
+        accessCode: paystackResponse.data.data.access_code,
+        reference: paystackResponse.data.data.reference,
+        transaction: transactionResult.rows[0]
+      });
+
+    } catch (paystackError) {
+      await client.query(
+        `
+        UPDATE transactions
+        SET status = 'FAILED'
+        WHERE id = $1
+        `,
+        [transactionResult.rows[0].id]
+      );
+
+      console.error(
+        'Paystack initialization error:',
+        paystackError.response?.data || paystackError.message
+      );
+
+      return res.status(502).json({
+        error:
+          paystackError.response?.data?.message ||
+          'Unable to initialize Paystack payment.'
+      });
+    }
+
+  } catch (error) {
+    console.error('Wallet funding initialization error:', error);
+
+    return res.status(500).json({
+      error: 'Unable to initialize wallet funding.'
+    });
+  } finally {
+    client.release();
+  }
+});
+
+
+// 3. Verify Paystack Wallet Funding
+app.get('/api/finance/deposit/verify/:reference', async (req, res) => {
+  const { reference } = req.params;
+
+  if (!reference) {
+    return res.status(400).json({
+      error: 'Payment reference is required.'
+    });
+  }
+
+  if (!process.env.PAYSTACK_SECRET_KEY) {
+    return res.status(500).json({
+      error: 'Payment provider is not configured.'
+    });
   }
 
   try {
-    // Get user wallet
-    let walletQuery = await pool.query('SELECT id FROM wallets WHERE user_id = $1', [req.user.id]);
-    if (walletQuery.rows.length === 0) {
-      walletQuery = await pool.query('INSERT INTO wallets (user_id, balance) VALUES ($1, 0.00) RETURNING id', [req.user.id]);
-    }
-    const walletId = walletQuery.rows[0].id;
-
-    // Run wallet update and transaction insert as a single safe database block
-    await pool.query('BEGIN');
-    
-    await pool.query('UPDATE wallets SET balance = balance + $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [parseFloat(amount), walletId]);
-    
-    const txResult = await pool.query(
-      'INSERT INTO transactions (wallet_id, amount, type, description) VALUES ($1, $2, \'DEPOSIT\', $3) RETURNING id, amount, type, status, created_at AS "createdAt"',
-      [walletId, parseFloat(amount), description || 'Wallet Funding']
+    // Verify transaction directly with Paystack
+    const paystackResponse = await axios.get(
+      `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
+        },
+        timeout: 15000
+      }
     );
 
-    await pool.query('COMMIT');
-    res.status(201).json({ message: 'Wallet funded successfully.', transaction: txResult.rows[0] });
+    const payment = paystackResponse.data?.data;
+
+    if (!payment) {
+      return res.status(502).json({
+        error: 'Invalid response from payment provider.'
+      });
+    }
+
+    // Find the FAGA pending transaction
+    const transactionResult = await pool.query(
+      `
+      SELECT
+        t.id,
+        t.wallet_id AS "walletId",
+        t.amount,
+        t.status,
+        t.payment_reference AS "paymentReference",
+        w.user_id AS "userId"
+      FROM transactions t
+      INNER JOIN wallets w ON w.id = t.wallet_id
+      WHERE t.payment_provider = 'paystack'
+        AND t.payment_reference = $1
+      `,
+      [reference]
+    );
+
+    if (transactionResult.rows.length === 0) {
+      return res.status(404).json({
+        error: 'FAGA payment transaction not found.'
+      });
+    }
+
+    const transaction = transactionResult.rows[0];
+
+    // Never allow one customer to verify another customer's payment
+    if (Number(transaction.userId) !== Number(req.user.id)) {
+      return res.status(403).json({
+        error: 'You are not authorized to verify this payment.'
+      });
+    }
+
+    const expectedAmountInKobo = Math.round(
+      Number(transaction.amount) * 100
+    );
+
+    // Verify amount and currency returned by Paystack
+    if (
+      payment.currency !== 'NGN' ||
+      Number(payment.amount) !== expectedAmountInKobo
+    ) {
+      return res.status(400).json({
+        error: 'Payment amount or currency does not match the FAGA transaction.'
+      });
+    }
+
+    // Payment was not successful
+    if (payment.status !== 'success') {
+      await pool.query(
+        `
+        UPDATE transactions
+        SET status = 'FAILED'
+        WHERE id = $1
+          AND status = 'PENDING'
+        `,
+        [transaction.id]
+      );
+
+      return res.status(400).json({
+        error: 'Payment was not successful.',
+        paymentStatus: payment.status
+      });
+    }
+
+    // Atomically credit the wallet
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const lockedTransaction = await client.query(
+        `
+        SELECT id, wallet_id, amount, status
+        FROM transactions
+        WHERE id = $1
+        FOR UPDATE
+        `,
+        [transaction.id]
+      );
+
+      const currentTransaction = lockedTransaction.rows[0];
+
+      if (!currentTransaction) {
+        await client.query('ROLLBACK');
+
+        return res.status(404).json({
+          error: 'FAGA transaction no longer exists.'
+        });
+      }
+
+      // Already credited — safe idempotent response
+      if (currentTransaction.status === 'COMPLETED') {
+        await client.query('COMMIT');
+
+        return res.json({
+          message: 'Payment already verified and wallet credited.',
+          reference,
+          status: 'COMPLETED',
+          amount: Number(currentTransaction.amount)
+        });
+      }
+
+      if (currentTransaction.status !== 'PENDING') {
+        await client.query('ROLLBACK');
+
+        return res.status(400).json({
+          error: 'This payment transaction is no longer pending.',
+          status: currentTransaction.status
+        });
+      }
+
+      await client.query(
+        `
+        UPDATE wallets
+        SET
+          balance = balance + $1,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        `,
+        [
+          Number(currentTransaction.amount),
+          currentTransaction.wallet_id
+        ]
+      );
+
+      const completedTransaction = await client.query(
+        `
+        UPDATE transactions
+        SET status = 'COMPLETED'
+        WHERE id = $1
+        RETURNING
+          id,
+          amount,
+          type,
+          status,
+          description,
+          payment_provider AS "paymentProvider",
+          payment_reference AS "paymentReference",
+          created_at AS "createdAt"
+        `,
+        [currentTransaction.id]
+      );
+
+      await client.query('COMMIT');
+
+      return res.json({
+        message: 'Payment verified and wallet funded successfully.',
+        reference,
+        status: 'COMPLETED',
+        transaction: completedTransaction.rows[0]
+      });
+
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
+
   } catch (error) {
-    await pool.query('ROLLBACK');
-    res.status(500).json({ error: error.message });
+    console.error(
+      'Paystack verification error:',
+      error.response?.data || error.message
+    );
+
+    return res.status(502).json({
+      error:
+        error.response?.data?.message ||
+        'Unable to verify payment with Paystack.'
+    });
   }
 });
+
 // ==========================================
 // SELLER APPLICATION MANAGEMENT SYSTEM
 // ==========================================

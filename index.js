@@ -67,6 +67,32 @@ const pool = new Pool({
     : { rejectUnauthorized: false } // Auto-enables secure SSL for production hosting like Railway
 });
 
+// ==========================================
+// FAGA RIDE SCHEMA UPGRADE
+// ==========================================
+// The rides table already exists.
+// Add the fields required by the live Ride API
+// without deleting existing ride data.
+
+const fagaRideSchema = `
+  ALTER TABLE rides
+    ADD COLUMN IF NOT EXISTS distance_km NUMERIC(10, 2),
+    ADD COLUMN IF NOT EXISTS duration_minutes INT,
+    ADD COLUMN IF NOT EXISTS driver_eta_minutes INT;
+
+  CREATE INDEX IF NOT EXISTS rides_customer_idx
+    ON rides(customer_id);
+
+  CREATE INDEX IF NOT EXISTS rides_driver_idx
+    ON rides(driver_id);
+
+  CREATE INDEX IF NOT EXISTS rides_status_idx
+    ON rides(status);
+
+  CREATE INDEX IF NOT EXISTS ride_locations_ride_idx
+    ON ride_locations(ride_id, created_at DESC);
+`;
+
 // 🚀 AUTOMATED TABLE GENERATION ENGINE (Runs on Boot)
 const initDatabase = async () => {
   const schemaQuery = `
@@ -268,8 +294,10 @@ WHERE payment_reference IS NOT NULL;
 
   `;
   try {
-    await pool.query(schemaQuery);
-    console.log("FAGA Production Database tables initialized successfully. 🗄");
+  await pool.query(schemaQuery);
+  await pool.query(fagaRideSchema);
+
+  console.log("FAGA Production Database tables initialized successfully. 🗄");
   } catch (err) {
     console.error(
       "Critical failure configuring database layout on boot:",
@@ -543,6 +571,309 @@ app.post('/api/login', async (req, res) => {
 // SECURED ROUTING PIPELINE (Requires Authentication Guard)
 // ==========================================
 app.use('/api', authenticateToken);
+
+// ==========================================
+// FAGA LIVE RIDE BOOKING & TRACKING
+// ==========================================
+
+app.post('/api/rides', async (req, res) => {
+  const {
+    pickupAddress,
+    destinationAddress,
+    rideType = 'economy',
+    passengers = 1,
+    pickupLatitude = null,
+    pickupLongitude = null,
+    destinationLatitude = null,
+    destinationLongitude = null
+  } = req.body;
+
+  const allowedRideTypes = {
+    economy: 1800,
+    comfort: 2500,
+    xl: 3500
+  };
+
+  const normalizedRideType = String(rideType).toLowerCase();
+  const passengerCount = Number(passengers);
+
+  if (!pickupAddress || !destinationAddress) {
+    return res.status(422).json({
+      message: 'Pickup and destination are required.'
+    });
+  }
+
+  if (!allowedRideTypes[normalizedRideType]) {
+    return res.status(422).json({
+      message: 'Invalid ride type.'
+    });
+  }
+
+  if (
+    !Number.isInteger(passengerCount) ||
+    passengerCount < 1 ||
+    passengerCount > 6
+  ) {
+    return res.status(422).json({
+      message: 'Passengers must be between 1 and 6.'
+    });
+  }
+
+  /*
+   * Server-side minimum fare.
+   * This prevents the browser from controlling the final fare.
+   *
+   * A distance-based fare engine can be connected later
+   * when the map/routing provider is integrated.
+   */
+  const fare =
+    allowedRideTypes[normalizedRideType] +
+    Math.max(0, passengerCount - 1) * 150;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO rides (
+        customer_id,
+        status,
+        pickup_address,
+        destination_address,
+        pickup_latitude,
+        pickup_longitude,
+        destination_latitude,
+        destination_longitude,
+        ride_type,
+        passengers,
+        fare
+      )
+      VALUES (
+        $1,
+        'SEARCHING',
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10
+      )
+      RETURNING
+        id,
+        customer_id AS "customerId",
+        driver_id AS "driverId",
+        status,
+        pickup_address AS "pickupAddress",
+        destination_address AS "destinationAddress",
+        ride_type AS "rideType",
+        passengers,
+        fare,
+        distance_km AS "distanceKm",
+        duration_minutes AS "durationMinutes",
+        driver_eta_minutes AS "driverEtaMinutes",
+        created_at AS "createdAt"`,
+      [
+        req.user.id,
+        String(pickupAddress).trim(),
+        String(destinationAddress).trim(),
+        pickupLatitude,
+        pickupLongitude,
+        destinationLatitude,
+        destinationLongitude,
+        normalizedRideType,
+        passengerCount,
+        fare
+      ]
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: 'Ride request created successfully.',
+      ride: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('FAGA ride creation error:', error);
+
+    return res.status(500).json({
+      message: 'Unable to create the ride right now.'
+    });
+  }
+});
+
+
+// =========================================================
+// GET ONE RIDE
+// =========================================================
+
+app.get('/api/rides/:id', async (req, res) => {
+  const rideId = Number.parseInt(req.params.id, 10);
+
+  if (!Number.isInteger(rideId)) {
+    return res.status(422).json({
+      message: 'Invalid ride ID.'
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT
+        id,
+        customer_id AS "customerId",
+        driver_id AS "driverId",
+        status,
+        pickup_address AS "pickupAddress",
+        destination_address AS "destinationAddress",
+        pickup_latitude AS "pickupLatitude",
+        pickup_longitude AS "pickupLongitude",
+        destination_latitude AS "destinationLatitude",
+        destination_longitude AS "destinationLongitude",
+        ride_type AS "rideType",
+        passengers,
+        fare,
+        distance_km AS "distanceKm",
+        duration_minutes AS "durationMinutes",
+        driver_eta_minutes AS "driverEtaMinutes",
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+       FROM rides
+       WHERE id = $1
+         AND customer_id = $2`,
+      [rideId, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Ride not found.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      ride: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('FAGA ride lookup error:', error);
+
+    return res.status(500).json({
+      message: 'Unable to load the ride.'
+    });
+  }
+});
+
+
+// =========================================================
+// LIVE TRACKING SNAPSHOT
+// =========================================================
+
+app.get('/api/rides/:id/tracking', async (req, res) => {
+  const rideId = Number.parseInt(req.params.id, 10);
+
+  if (!Number.isInteger(rideId)) {
+    return res.status(422).json({
+      message: 'Invalid ride ID.'
+    });
+  }
+
+  try {
+    const rideResult = await pool.query(
+      `SELECT
+        id,
+        customer_id AS "customerId",
+        driver_id AS "driverId",
+        status,
+        pickup_address AS "pickupAddress",
+        destination_address AS "destinationAddress",
+        ride_type AS "rideType",
+        passengers,
+        fare,
+        driver_eta_minutes AS "driverEtaMinutes"
+       FROM rides
+       WHERE id = $1
+         AND customer_id = $2`,
+      [rideId, req.user.id]
+    );
+
+    if (rideResult.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Ride not found.'
+      });
+    }
+
+    const locationResult = await pool.query(
+      `SELECT
+        latitude,
+        longitude,
+        created_at AS "createdAt"
+       FROM ride_locations
+       WHERE ride_id = $1
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [rideId]
+    );
+
+    return res.json({
+      success: true,
+      ride: rideResult.rows[0],
+      driverLocation: locationResult.rows[0] || null
+    });
+
+  } catch (error) {
+    console.error('FAGA ride tracking error:', error);
+
+    return res.status(500).json({
+      message: 'Unable to load ride tracking.'
+    });
+  }
+});
+
+
+// =========================================================
+// CUSTOMER CANCELLATION
+// =========================================================
+
+app.post('/api/rides/:id/cancel', async (req, res) => {
+  const rideId = Number.parseInt(req.params.id, 10);
+
+  if (!Number.isInteger(rideId)) {
+    return res.status(422).json({
+      message: 'Invalid ride ID.'
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE rides
+       SET status = 'CANCELLED',
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $1
+         AND customer_id = $2
+         AND status NOT IN ('COMPLETED', 'CANCELLED')
+       RETURNING id, status`,
+      [rideId, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(409).json({
+        message: 'This ride cannot be cancelled.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Ride cancelled.',
+      ride: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('FAGA ride cancellation error:', error);
+
+    return res.status(500).json({
+      message: 'Unable to cancel the ride.'
+    });
+  }
+});
 
 // ==========================================
 // AUTHENTICATED USER: CHANGE PASSWORD

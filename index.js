@@ -137,6 +137,12 @@ const fagaRideSchema = `
 
   CREATE INDEX IF NOT EXISTS ride_locations_ride_idx
     ON ride_locations(ride_id, created_at DESC);
+
+    ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS rider_available BOOLEAN DEFAULT FALSE;
+
+CREATE INDEX IF NOT EXISTS users_rider_available_idx
+  ON users(rider_available);
 `;
 
 // 🚀 AUTOMATED TABLE GENERATION ENGINE (Runs on Boot)
@@ -4356,6 +4362,759 @@ app.post(
 
   }
 );
+
+// =========================================================
+// FAGA RIDER DISPATCH ENGINE
+// =========================================================
+
+// all the Part 2B code
+// GET /api/rider/rides
+// POST /api/rider/rides/:id/accept
+// PATCH /api/rider/rides/:id/status
+// PATCH /api/rider/availability
+
+// =========================================================
+// FAGA RIDER RIDE DISPATCH ENGINE
+// =========================================================
+//
+// Production rider APIs:
+//
+// GET   /api/rider/rides
+// POST  /api/rider/rides/:id/accept
+// PATCH /api/rider/rides/:id/status
+// PATCH /api/rider/availability
+//
+// Security:
+// - Rider authentication required.
+// - Rider role required.
+// - Ride assignment is performed transactionally.
+// - A ride cannot be accepted by two riders.
+// - Rider can only update rides assigned to them.
+// - Invalid status transitions are rejected.
+// =========================================================
+
+
+// ---------------------------------------------------------
+// RIDER: GET AVAILABLE + ASSIGNED RIDES
+// ---------------------------------------------------------
+
+app.get(
+  '/api/rider/rides',
+  authorizeRoles('rider'),
+  async (req, res) => {
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          id,
+
+          customer_id AS "customerId",
+
+          driver_id AS "driverId",
+
+          status,
+
+          pickup_address AS "pickupAddress",
+          pickup_latitude AS "pickupLatitude",
+          pickup_longitude AS "pickupLongitude",
+
+          destination_address AS "destinationAddress",
+          destination_latitude AS "destinationLatitude",
+          destination_longitude AS "destinationLongitude",
+
+          ride_type AS "rideType",
+
+          passengers,
+
+          fare,
+
+          distance_km AS "distanceKm",
+
+          duration_minutes AS "durationMinutes",
+
+          driver_eta_minutes AS "driverEtaMinutes",
+
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+
+        FROM rides
+
+        WHERE
+          (
+            status IN ('SEARCHING', 'REQUESTED')
+            AND driver_id IS NULL
+          )
+
+          OR
+
+          (
+            driver_id = $1
+            AND status NOT IN ('COMPLETED', 'CANCELLED')
+          )
+
+        ORDER BY
+          CASE
+            WHEN driver_id = $1 THEN 0
+            ELSE 1
+          END,
+
+          created_at ASC
+
+        LIMIT 100
+        `,
+        [req.user.id]
+      );
+
+      return res.json({
+        success: true,
+        rides: result.rows
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA rider ride loading error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          'Unable to load rider rides.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// RIDER: ACCEPT RIDE
+// ---------------------------------------------------------
+
+app.post(
+  '/api/rider/rides/:id/accept',
+  authorizeRoles('rider'),
+  async (req, res) => {
+
+    const rideId =
+      Number.parseInt(req.params.id, 10);
+
+    if (!Number.isInteger(rideId)) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'Invalid ride ID.'
+      });
+    }
+
+    const client =
+      await pool.connect();
+
+    try {
+
+      await client.query('BEGIN');
+
+
+      // ---------------------------------------------------
+      // Make sure this rider is available.
+      // ---------------------------------------------------
+
+      const riderResult =
+        await client.query(
+          `
+          SELECT
+            id,
+            role,
+            COALESCE(
+              rider_available,
+              FALSE
+            ) AS "riderAvailable"
+
+          FROM users
+
+          WHERE id = $1
+
+          FOR UPDATE
+          `,
+          [req.user.id]
+        );
+
+      if (
+        riderResult.rows.length === 0
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(404).json({
+          success: false,
+          message:
+            'Rider account not found.'
+        });
+      }
+
+
+      const rider =
+        riderResult.rows[0];
+
+
+      if (
+        rider.riderAvailable !== true
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'You must be online before accepting a ride.'
+        });
+      }
+
+
+      // ---------------------------------------------------
+      // Lock the ride.
+      //
+      // This prevents two riders from accepting
+      // the same ride simultaneously.
+      // ---------------------------------------------------
+
+      const rideResult =
+        await client.query(
+          `
+          SELECT
+            id,
+            customer_id AS "customerId",
+            driver_id AS "driverId",
+            status,
+
+            pickup_address AS "pickupAddress",
+            pickup_latitude AS "pickupLatitude",
+            pickup_longitude AS "pickupLongitude",
+
+            destination_address AS "destinationAddress",
+            destination_latitude AS "destinationLatitude",
+            destination_longitude AS "destinationLongitude",
+
+            ride_type AS "rideType",
+            passengers,
+            fare,
+
+            distance_km AS "distanceKm",
+            duration_minutes AS "durationMinutes",
+
+            created_at AS "createdAt",
+            updated_at AS "updatedAt"
+
+          FROM rides
+
+          WHERE id = $1
+
+          FOR UPDATE
+          `,
+          [rideId]
+        );
+
+
+      if (
+        rideResult.rows.length === 0
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(404).json({
+          success: false,
+          message:
+            'Ride not found.'
+        });
+      }
+
+
+      const ride =
+        rideResult.rows[0];
+
+
+      // ---------------------------------------------------
+      // The ride must still be available.
+      // ---------------------------------------------------
+
+      const rideStatus =
+        String(
+          ride.status || ''
+        ).toUpperCase();
+
+
+      if (
+        ride.driverId !== null ||
+        !['SEARCHING', 'REQUESTED']
+          .includes(rideStatus)
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'This ride is no longer available.'
+        });
+      }
+
+
+      // ---------------------------------------------------
+      // Assign rider.
+      // ---------------------------------------------------
+
+      const updateResult =
+        await client.query(
+          `
+          UPDATE rides
+
+          SET
+            driver_id = $1,
+            status = 'DRIVER_ASSIGNED',
+            updated_at = CURRENT_TIMESTAMP
+
+          WHERE id = $2
+            AND driver_id IS NULL
+            AND status IN (
+              'SEARCHING',
+              'REQUESTED'
+            )
+
+          RETURNING
+            id,
+
+            customer_id AS "customerId",
+            driver_id AS "driverId",
+
+            status,
+
+            pickup_address AS "pickupAddress",
+            pickup_latitude AS "pickupLatitude",
+            pickup_longitude AS "pickupLongitude",
+
+            destination_address AS "destinationAddress",
+            destination_latitude AS "destinationLatitude",
+            destination_longitude AS "destinationLongitude",
+
+            ride_type AS "rideType",
+            passengers,
+            fare,
+
+            distance_km AS "distanceKm",
+            duration_minutes AS "durationMinutes",
+            driver_eta_minutes AS "driverEtaMinutes",
+
+            created_at AS "createdAt",
+            updated_at AS "updatedAt"
+          `,
+          [
+            req.user.id,
+            rideId
+          ]
+        );
+
+
+      if (
+        updateResult.rows.length === 0
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'This ride was accepted by another rider.'
+        });
+      }
+
+
+      await client.query('COMMIT');
+
+
+      return res.json({
+        success: true,
+        message:
+          'Ride accepted successfully.',
+        ride:
+          updateResult.rows[0]
+      });
+
+    } catch (error) {
+
+      try {
+        await client.query('ROLLBACK');
+      } catch (_) {}
+
+      console.error(
+        'FAGA rider ride acceptance error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          'Unable to accept this ride.'
+      });
+
+    } finally {
+
+      client.release();
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// RIDER: UPDATE RIDE STATUS
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/rider/rides/:id/status',
+  authorizeRoles('rider'),
+  async (req, res) => {
+
+    const rideId =
+      Number.parseInt(req.params.id, 10);
+
+    const requestedStatus =
+      String(
+        req.body.status || ''
+      )
+        .trim()
+        .toUpperCase();
+
+
+    if (!Number.isInteger(rideId)) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'Invalid ride ID.'
+      });
+    }
+
+
+    const allowedTransitions = {
+
+      DRIVER_ASSIGNED:
+        ['DRIVER_ARRIVING'],
+
+      DRIVER_ARRIVING:
+        ['DRIVER_ARRIVED'],
+
+      DRIVER_ARRIVED:
+        ['IN_PROGRESS'],
+
+      IN_PROGRESS:
+        ['COMPLETED']
+
+    };
+
+
+    try {
+
+      const currentResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            driver_id AS "driverId",
+            status
+
+          FROM rides
+
+          WHERE id = $1
+            AND driver_id = $2
+          `,
+          [
+            rideId,
+            req.user.id
+          ]
+        );
+
+
+      if (
+        currentResult.rows.length === 0
+      ) {
+
+        return res.status(404).json({
+          success: false,
+          message:
+            'Ride not found or you are not assigned to it.'
+        });
+      }
+
+
+      const currentRide =
+        currentResult.rows[0];
+
+
+      const currentStatus =
+        String(
+          currentRide.status || ''
+        ).toUpperCase();
+
+
+      if (
+        !allowedTransitions[currentStatus]
+      ) {
+
+        return res.status(409).json({
+          success: false,
+          message:
+            `Ride cannot move from ${currentStatus}.`
+        });
+      }
+
+
+      if (
+        !allowedTransitions[
+          currentStatus
+        ].includes(requestedStatus)
+      ) {
+
+        return res.status(409).json({
+          success: false,
+          message:
+            `Invalid ride status transition: ${currentStatus} → ${requestedStatus}.`
+        });
+      }
+
+
+      const result =
+        await pool.query(
+          `
+          UPDATE rides
+
+          SET
+            status = $1,
+
+            completed_at =
+              CASE
+                WHEN $1 = 'COMPLETED'
+                THEN CURRENT_TIMESTAMP
+                ELSE completed_at
+              END,
+
+            updated_at =
+              CURRENT_TIMESTAMP
+
+          WHERE id = $2
+            AND driver_id = $3
+            AND status = $4
+
+          RETURNING
+            id,
+
+            customer_id AS "customerId",
+            driver_id AS "driverId",
+
+            status,
+
+            pickup_address AS "pickupAddress",
+            pickup_latitude AS "pickupLatitude",
+            pickup_longitude AS "pickupLongitude",
+
+            destination_address AS "destinationAddress",
+            destination_latitude AS "destinationLatitude",
+            destination_longitude AS "destinationLongitude",
+
+            ride_type AS "rideType",
+            passengers,
+            fare,
+
+            distance_km AS "distanceKm",
+            duration_minutes AS "durationMinutes",
+            driver_eta_minutes AS "driverEtaMinutes",
+
+            created_at AS "createdAt",
+            updated_at AS "updatedAt"
+          `,
+          [
+            requestedStatus,
+            rideId,
+            req.user.id,
+            currentStatus
+          ]
+        );
+
+
+      if (
+        result.rows.length === 0
+      ) {
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'Ride status changed before your update could be saved.'
+        });
+      }
+
+
+      return res.json({
+        success: true,
+        message:
+          `Ride status updated to ${requestedStatus}.`,
+        ride:
+          result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA rider ride status error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          'Unable to update ride status.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// RIDER: SET ONLINE / OFFLINE
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/rider/availability',
+  authorizeRoles('rider'),
+  async (req, res) => {
+
+    const available =
+      req.body.available;
+
+
+    if (
+      typeof available !== 'boolean'
+    ) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'Availability must be true or false.'
+      });
+    }
+
+
+    try {
+
+      // Do not allow a rider to go offline
+      // while actively carrying a ride.
+
+      if (!available) {
+
+        const activeRide =
+          await pool.query(
+            `
+            SELECT id
+
+            FROM rides
+
+            WHERE driver_id = $1
+
+              AND status IN (
+                'DRIVER_ASSIGNED',
+                'DRIVER_ARRIVING',
+                'DRIVER_ARRIVED',
+                'IN_PROGRESS'
+              )
+
+            LIMIT 1
+            `,
+            [req.user.id]
+          );
+
+
+        if (
+          activeRide.rows.length > 0
+        ) {
+
+          return res.status(409).json({
+            success: false,
+            message:
+              'You cannot go offline while a ride is active.'
+          });
+        }
+      }
+
+
+      const result =
+        await pool.query(
+          `
+          UPDATE users
+
+          SET
+            rider_available = $1,
+            updated_at = CURRENT_TIMESTAMP
+
+          WHERE id = $2
+            AND role = 'rider'
+
+          RETURNING
+            id,
+            name,
+            email,
+            role,
+            rider_available AS "riderAvailable"
+          `,
+          [
+            available,
+            req.user.id
+          ]
+        );
+
+
+      if (
+        result.rows.length === 0
+      ) {
+
+        return res.status(404).json({
+          success: false,
+          message:
+            'Rider account not found.'
+        });
+      }
+
+
+      return res.json({
+        success: true,
+        message:
+          available
+            ? 'You are now online.'
+            : 'You are now offline.',
+        rider:
+          result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA rider availability error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          'Unable to update rider availability.'
+      });
+    }
+  }
+);
+
+// Customer Profile Logic
+app.get('/api/profile', (req, res) => {
+  res.json(req.user);
+});
+
 // ==================================================
 // CUSTOMER PROFILE
 // ==================================================

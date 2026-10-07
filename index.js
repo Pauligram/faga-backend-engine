@@ -643,7 +643,77 @@ async function geocodeFagaAddress(address) {
       'Address is required for geocoding.'
     );
   }
+// ==========================================
+// FAGA ADDRESS GEOCODING API
+// ==========================================
+//
+// Current service area:
+// Lagos State, Nigeria
+//
+// This endpoint is intentionally behind the
+// FAGA authentication middleware because it
+// is used by the authenticated ride-booking
+// application.
+// ==========================================
 
+app.get('/api/geocode', async (req, res) => {
+
+  const address =
+    String(req.query.address || '').trim();
+
+  if (!address) {
+
+    return res.status(422).json({
+      message:
+        'Address is required.'
+    });
+
+  }
+
+  try {
+
+    const location =
+      await geocodeFagaAddress(address);
+
+    return res.json({
+
+      success: true,
+
+      location: {
+
+        latitude:
+          location.latitude,
+
+        longitude:
+          location.longitude,
+
+        displayName:
+          location.displayName
+
+      }
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      'FAGA /api/geocode error:',
+      error
+    );
+
+    return res.status(422).json({
+
+      success: false,
+
+      message:
+        error.message ||
+        'Unable to locate this address.'
+
+    });
+
+  }
+
+});
   /*
    * FAGA SERVICE AREA
    *

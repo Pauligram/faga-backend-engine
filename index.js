@@ -700,6 +700,71 @@ async function geocodeFagaAddress(address) {
   }
 }
 
+// ==========================================
+// FAGA ADDRESS GEOCODING API
+// Converts typed addresses into coordinates
+// ==========================================
+
+app.get('/api/geocode', async (req, res) => {
+
+  const address =
+    String(req.query.address || '').trim();
+
+  if (!address) {
+
+    return res.status(422).json({
+      message: 'Address is required.'
+    });
+
+  }
+
+  try {
+
+    const searchAddress =
+      /,?\s*nigeria\s*$/i.test(address)
+        ? address
+        : `${address}, Nigeria`;
+
+    const location =
+      await geocodeFagaAddress(searchAddress);
+
+    return res.json({
+
+      success: true,
+
+      location: {
+
+        latitude:
+          location.latitude,
+
+        longitude:
+          location.longitude,
+
+        displayName:
+          location.displayName
+
+      }
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      'FAGA address geocoding API error:',
+      error
+    );
+
+    return res.status(422).json({
+
+      message:
+        error.message ||
+        'Unable to locate this address.'
+
+    });
+
+  }
+
+});
 
 async function getFagaRoadRoute(
   pickupLatitude,

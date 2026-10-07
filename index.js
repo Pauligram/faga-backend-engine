@@ -634,216 +634,360 @@ const FAGA_GEOCODING_URL =
   'https://nominatim.openstreetmap.org/search';
 
 async function geocodeFagaAddress(address) {
-  const cleanAddress = String(address || '').trim();
+
+  const cleanAddress =
+    String(address || '').trim();
 
   if (!cleanAddress) {
-    throw new Error('Address is required for geocoding.');
+    throw new Error(
+      'Address is required for geocoding.'
+    );
   }
 
+  /*
+   * FAGA SERVICE AREA
+   *
+   * FAGA is currently operating in Lagos State.
+   *
+   * Keep this configurable so we can expand to
+   * other Nigerian states later.
+   */
+  const serviceCountry =
+    process.env.FAGA_SERVICE_COUNTRY || 'Nigeria';
+
+  const serviceState =
+    process.env.FAGA_SERVICE_STATE || 'Lagos';
+
+  /*
+   * If the customer has already supplied a state,
+   * do not append Lagos.
+   *
+   * Examples:
+   *
+   * Yaba
+   *       -> Yaba, Lagos, Nigeria
+   *
+   * Yaba, Lagos
+   *       -> Yaba, Lagos, Nigeria
+   *
+   * Ikeja, Lagos State
+   *       -> Ikeja, Lagos State, Nigeria
+   */
+  const normalizedAddress =
+    cleanAddress
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+
+  const containsNigeria =
+    normalizedAddress.includes('nigeria');
+
+  const containsLagos =
+    normalizedAddress.includes('lagos');
+
+  const geocodingQuery =
+    containsNigeria
+      ? cleanAddress
+      : containsLagos
+        ? `${cleanAddress}, Nigeria`
+        : `${cleanAddress}, ${serviceState}, ${serviceCountry}`;
+
+  console.log(
+    'FAGA geocoding query:',
+    geocodingQuery
+  );
+
   try {
-    const response = await axios.get(
-      FAGA_GEOCODING_URL,
-      {
-        params: {
-          q: cleanAddress,
-          format: 'json',
-          limit: 1,
-          addressdetails: 1,
-          countrycodes:
-            process.env.FAGA_GEOCODING_COUNTRY_CODES || 'ng'
-        },
-        headers: {
-          'User-Agent':
-            process.env.FAGA_GEOCODING_USER_AGENT ||
-            'FAGA Logistics Platform'
-        },
-        timeout: 10000
-      }
-    );
 
-    const result = response.data?.[0];
+    const response =
+      await axios.get(
+        FAGA_GEOCODING_URL,
+        {
+          params: {
 
-    if (!result) {
+            q: geocodingQuery,
+
+            format: 'json',
+
+            /*
+             * Get multiple results instead of blindly
+             * accepting the first result.
+             */
+            limit: 10,
+
+            addressdetails: 1,
+
+            countrycodes:
+              process.env.FAGA_GEOCODING_COUNTRY_CODES || 'ng',
+
+            /*
+             * Ask Nominatim for the best-ranked results.
+             */
+            dedupe: 1
+
+          },
+
+          headers: {
+
+            'User-Agent':
+              process.env.FAGA_GEOCODING_USER_AGENT ||
+              'FAGA Logistics Platform'
+
+          },
+
+          timeout: 10000
+
+        }
+      );
+
+    const results =
+      Array.isArray(response.data)
+        ? response.data
+        : [];
+
+    if (results.length === 0) {
+
       throw new Error(
         `Unable to locate address: ${cleanAddress}`
       );
+
     }
 
-    const latitude = Number(result.lat);
-    const longitude = Number(result.lon);
+    /*
+     * ==========================================
+     * FAGA LOCATION VALIDATION
+     * ==========================================
+     *
+     * Prefer results that actually belong to
+     * Lagos State while FAGA is operating there.
+     */
+
+    const normalizedState =
+      serviceState.toLowerCase();
+
+    const normalizedCountry =
+      serviceCountry.toLowerCase();
+
+    const scoredResults =
+      results.map(
+        (result) => {
+
+          const addressDetails =
+            result.address || {};
+
+          const displayName =
+            String(
+              result.display_name || ''
+            ).toLowerCase();
+
+          const state =
+            String(
+              addressDetails.state || ''
+            ).toLowerCase();
+
+          const stateDistrict =
+            String(
+              addressDetails.state_district || ''
+            ).toLowerCase();
+
+          const county =
+            String(
+              addressDetails.county || ''
+            ).toLowerCase();
+
+          const country =
+            String(
+              addressDetails.country || ''
+            ).toLowerCase();
+
+          let score = 0;
+
+          /*
+           * Nigeria match
+           */
+          if (
+            country.includes(
+              normalizedCountry
+            ) ||
+            country.includes('nigeria')
+          ) {
+            score += 100;
+          }
+
+          /*
+           * Lagos State match
+           */
+          if (
+            state.includes(
+              normalizedState
+            )
+          ) {
+            score += 1000;
+          }
+
+          /*
+           * Some Nominatim records may use
+           * Lagos in another administrative field.
+           */
+          if (
+            stateDistrict.includes(
+              normalizedState
+            )
+          ) {
+            score += 500;
+          }
+
+          if (
+            county.includes(
+              normalizedState
+            )
+          ) {
+            score += 300;
+          }
+
+          /*
+           * Prefer results whose display name
+           * explicitly contains Lagos.
+           */
+          if (
+            displayName.includes(
+              'lagos'
+            )
+          ) {
+            score += 200;
+          }
+
+          /*
+           * Prefer actual address/place results
+           * over very broad administrative areas.
+           */
+          if (
+            result.type === 'house' ||
+            result.type === 'building' ||
+            result.type === 'road' ||
+            result.type === 'neighbourhood' ||
+            result.type === 'suburb' ||
+            result.type === 'quarter' ||
+            result.type === 'place'
+          ) {
+            score += 50;
+          }
+
+          return {
+            result,
+            score
+          };
+
+        }
+      );
+
+    scoredResults.sort(
+      (a, b) =>
+        b.score - a.score
+    );
+
+    const bestMatch =
+      scoredResults[0]?.result;
+
+    if (!bestMatch) {
+
+      throw new Error(
+        `Unable to locate address: ${cleanAddress}`
+      );
+
+    }
+
+    const latitude =
+      Number(bestMatch.lat);
+
+    const longitude =
+      Number(bestMatch.lon);
 
     if (
       !Number.isFinite(latitude) ||
       !Number.isFinite(longitude)
     ) {
+
       throw new Error(
         `Invalid coordinates returned for: ${cleanAddress}`
       );
+
     }
 
-    return {
+    /*
+     * ==========================================
+     * SAFETY CHECK
+     * ==========================================
+     *
+     * During the Lagos launch phase, do not
+     * silently accept a result outside Lagos.
+     *
+     * If the result isn't identified as Lagos,
+     * ask the customer for a more specific address.
+     */
+
+    const matchedAddress =
+      bestMatch.address || {};
+
+    const matchedState =
+      String(
+        matchedAddress.state ||
+        matchedAddress.state_district ||
+        ''
+      ).toLowerCase();
+
+    const matchedDisplayName =
+      String(
+        bestMatch.display_name || ''
+      ).toLowerCase();
+
+    const isLagos =
+      matchedState.includes('lagos') ||
+      matchedDisplayName.includes('lagos');
+
+    if (!isLagos) {
+
+      throw new Error(
+        `We currently operate in Lagos State. Please include the city or state for "${cleanAddress}".`
+      );
+
+    }
+
+    console.log(
+      'FAGA geocoding selected:',
+      bestMatch.display_name
+    );
+
+    console.log(
+      'FAGA coordinates:',
       latitude,
+      longitude
+    );
+
+    return {
+
+      latitude,
+
       longitude,
-      displayName: result.display_name || cleanAddress
+
+      displayName:
+        bestMatch.display_name ||
+        cleanAddress
+
     };
 
   } catch (error) {
 
     console.error(
       'FAGA geocoding error:',
-      error.response?.data || error.message
+      error.response?.data ||
+      error.message
     );
 
     throw new Error(
-      `Unable to locate "${cleanAddress}". Please provide a more specific address.`
-    );
-  }
-}
-
-// ==========================================
-// FAGA ADDRESS GEOCODING API
-// Converts typed addresses into coordinates
-// ==========================================
-
-app.get('/api/geocode', async (req, res) => {
-
-  const address =
-    String(req.query.address || '').trim();
-
-  if (!address) {
-
-    return res.status(422).json({
-      message: 'Address is required.'
-    });
-
-  }
-
-  try {
-
-    const searchAddress =
-      /,?\s*nigeria\s*$/i.test(address)
-        ? address
-        : `${address}, Nigeria`;
-
-    const location =
-      await geocodeFagaAddress(searchAddress);
-
-    return res.json({
-
-      success: true,
-
-      location: {
-
-        latitude:
-          location.latitude,
-
-        longitude:
-          location.longitude,
-
-        displayName:
-          location.displayName
-
-      }
-
-    });
-
-  } catch (error) {
-
-    console.error(
-      'FAGA address geocoding API error:',
-      error
+      error.message ||
+      `Unable to locate "${cleanAddress}". Please provide a more specific Lagos State address.`
     );
 
-    return res.status(422).json({
-
-      message:
-        error.message ||
-        'Unable to locate this address.'
-
-    });
-
-  }
-
-});
-
-async function getFagaRoadRoute(
-  pickupLatitude,
-  pickupLongitude,
-  destinationLatitude,
-  destinationLongitude
-) {
-
-  const coordinates =
-    `${pickupLongitude},${pickupLatitude};` +
-    `${destinationLongitude},${destinationLatitude}`;
-
-  try {
-
-    const response = await axios.get(
-      `${FAGA_ROUTING_URL}/route/v1/driving/${coordinates}`,
-      {
-        params: {
-          overview: 'full',
-          geometries: 'geojson',
-          steps: false
-        },
-        timeout: 15000
-      }
-    );
-
-    const route =
-      response.data?.routes?.[0];
-
-    if (
-      response.data?.code !== 'Ok' ||
-      !route
-    ) {
-      throw new Error(
-        'No driving route was returned.'
-      );
-    }
-
-    const distanceKm =
-      Number(route.distance) / 1000;
-
-    const durationMinutes =
-      Math.max(
-        1,
-        Math.ceil(
-          Number(route.duration) / 60
-        )
-      );
-
-    if (
-      !Number.isFinite(distanceKm) ||
-      !Number.isFinite(durationMinutes)
-    ) {
-      throw new Error(
-        'Invalid route information returned.'
-      );
-    }
-
-    return {
-      distanceKm: Number(
-        distanceKm.toFixed(2)
-      ),
-
-      durationMinutes,
-
-      geometry:
-        route.geometry?.coordinates || []
-    };
-
-  } catch (error) {
-
-    console.error(
-      'FAGA routing error:',
-      error.response?.data || error.message
-    );
-
-    throw new Error(
-      'Unable to calculate the road route right now. Please try again.'
-    );
   }
 }
 

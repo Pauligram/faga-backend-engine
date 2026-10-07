@@ -3960,6 +3960,402 @@ app.get(
     }
   }
 );
+
+// =========================================================
+// FAGA LIVE DRIVER GPS — RIDE LOCATION
+// =========================================================
+//
+// This endpoint receives the driver's REAL GPS coordinates
+// from the rider's device.
+//
+// Security:
+// - Driver must be authenticated.
+// - Driver must have the "rider" role.
+// - Driver must actually be assigned to this ride.
+// - Coordinates must be valid.
+// - Very inaccurate GPS readings are rejected.
+// - Impossible GPS jumps are rejected.
+// - Completed/cancelled rides cannot receive GPS.
+//
+// =========================================================
+
+app.post(
+  '/api/rides/:id/location',
+  authorizeRoles('rider'),
+  async (req, res) => {
+
+    const rideId =
+      Number.parseInt(req.params.id, 10);
+
+    const latitude =
+      Number(req.body.latitude);
+
+    const longitude =
+      Number(req.body.longitude);
+
+    const accuracy =
+      Number(req.body.accuracy || 0);
+
+
+    // -----------------------------------------------------
+    // Validate ride ID
+    // -----------------------------------------------------
+
+    if (!Number.isInteger(rideId)) {
+
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid ride ID.'
+      });
+
+    }
+
+
+    // -----------------------------------------------------
+    // Validate GPS coordinates
+    // -----------------------------------------------------
+
+    if (
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude)
+    ) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'Valid GPS coordinates are required.'
+      });
+
+    }
+
+
+    // -----------------------------------------------------
+    // Validate coordinate ranges
+    // -----------------------------------------------------
+
+    if (
+      latitude < -90 ||
+      latitude > 90 ||
+      longitude < -180 ||
+      longitude > 180
+    ) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'GPS coordinates are outside valid bounds.'
+      });
+
+    }
+
+
+    // -----------------------------------------------------
+    // Reject very poor GPS accuracy
+    // -----------------------------------------------------
+    //
+    // accuracy is normally supplied by:
+    //
+    // navigator.geolocation.watchPosition()
+    //
+    // A value of 50 means approximately 50 metres.
+    //
+    // -----------------------------------------------------
+
+    if (
+      Number.isFinite(accuracy) &&
+      accuracy > 200
+    ) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          'GPS accuracy is too low. Please move to an area with a stronger GPS signal.'
+      });
+
+    }
+
+
+    try {
+
+      // ===================================================
+      // VERIFY DRIVER OWNERSHIP OF THIS RIDE
+      // ===================================================
+
+      const rideResult =
+        await pool.query(
+          `
+          SELECT
+            id,
+            driver_id AS "driverId",
+            status
+          FROM rides
+          WHERE id = $1
+            AND driver_id = $2
+          `,
+          [
+            rideId,
+            req.user.id
+          ]
+        );
+
+
+      if (rideResult.rows.length === 0) {
+
+        return res.status(403).json({
+          success: false,
+          message:
+            'You are not assigned to this ride.'
+        });
+
+      }
+
+
+      const ride =
+        rideResult.rows[0];
+
+
+      // ===================================================
+      // DO NOT ACCEPT GPS AFTER RIDE COMPLETION
+      // ===================================================
+
+      const rideStatus =
+        String(
+          ride.status || ''
+        ).toUpperCase();
+
+
+      if (
+        rideStatus === 'COMPLETED' ||
+        rideStatus === 'CANCELLED'
+      ) {
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'GPS tracking is no longer active for this ride.'
+        });
+
+      }
+
+
+      // ===================================================
+      // GET PREVIOUS GPS LOCATION
+      // ===================================================
+
+      const previousResult =
+        await pool.query(
+          `
+          SELECT
+            latitude,
+            longitude,
+            created_at AS "createdAt"
+          FROM ride_locations
+          WHERE ride_id = $1
+          ORDER BY created_at DESC
+          LIMIT 1
+          `,
+          [rideId]
+        );
+
+
+      // ===================================================
+      // BASIC GPS ANOMALY PROTECTION
+      // ===================================================
+      //
+      // We reject an impossible jump such as a driver
+      // appearing several kilometres away within seconds.
+      //
+      // This does NOT claim to make GPS spoofing impossible.
+      // It prevents obvious invalid location submissions.
+      //
+      // ===================================================
+
+      if (
+        previousResult.rows.length > 0
+      ) {
+
+        const previous =
+          previousResult.rows[0];
+
+
+        const previousLatitude =
+          Number(previous.latitude);
+
+        const previousLongitude =
+          Number(previous.longitude);
+
+
+        const previousTime =
+          new Date(
+            previous.createdAt
+          ).getTime();
+
+
+        const currentTime =
+          Date.now();
+
+
+        const elapsedHours =
+          Math.max(
+            (
+              currentTime -
+              previousTime
+            ) / 3600000,
+            0.001
+          );
+
+
+        // -----------------------------------------------
+        // Haversine distance calculation
+        // -----------------------------------------------
+
+        const toRadians =
+          value =>
+            value * Math.PI / 180;
+
+
+        const earthRadiusKm =
+          6371;
+
+
+        const dLatitude =
+          toRadians(
+            latitude -
+            previousLatitude
+          );
+
+
+        const dLongitude =
+          toRadians(
+            longitude -
+            previousLongitude
+          );
+
+
+        const a =
+          Math.sin(
+            dLatitude / 2
+          ) ** 2
+          +
+          Math.cos(
+            toRadians(
+              previousLatitude
+            )
+          )
+          *
+          Math.cos(
+            toRadians(
+              latitude
+            )
+          )
+          *
+          Math.sin(
+            dLongitude / 2
+          ) ** 2;
+
+
+        const distanceKm =
+          2 *
+          earthRadiusKm *
+          Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+          );
+
+
+        const speedKmh =
+          distanceKm /
+          elapsedHours;
+
+
+        // -----------------------------------------------
+        // FAGA maximum reasonable driving speed
+        // -----------------------------------------------
+
+        if (
+          speedKmh > 180
+        ) {
+
+          console.warn(
+            'FAGA rejected impossible driver GPS jump:',
+            {
+              rideId,
+              driverId:
+                req.user.id,
+              speedKmh,
+              latitude,
+              longitude
+            }
+          );
+
+
+          return res.status(422).json({
+            success: false,
+            message:
+              'GPS movement appears invalid. Please retry.'
+          });
+
+        }
+
+      }
+
+
+      // ===================================================
+      // SAVE REAL GPS LOCATION
+      // ===================================================
+
+      const result =
+        await pool.query(
+          `
+          INSERT INTO ride_locations (
+            ride_id,
+            latitude,
+            longitude
+          )
+          VALUES ($1, $2, $3)
+          RETURNING
+            latitude,
+            longitude,
+            created_at AS "createdAt"
+          `,
+          [
+            rideId,
+            latitude,
+            longitude
+          ]
+        );
+
+
+      // ===================================================
+      // RESPONSE
+      // ===================================================
+
+      return res.json({
+        success: true,
+        message:
+          'Driver GPS location updated.',
+        driverLocation:
+          result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'FAGA driver GPS update error:',
+        error
+      );
+
+
+      return res.status(500).json({
+        success: false,
+        message:
+          'Unable to update driver GPS location.'
+      });
+
+    }
+
+  }
+);
 // ==================================================
 // CUSTOMER PROFILE
 // ==================================================

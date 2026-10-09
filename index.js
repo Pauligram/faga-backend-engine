@@ -119,12 +119,16 @@ pool.on('error', (error) => {
 // without deleting existing ride data.
 
 const fagaRideSchema = `
-  ALTER TABLE rides
-    ADD COLUMN IF NOT EXISTS distance_km NUMERIC(10, 2),
-    ADD COLUMN IF NOT EXISTS duration_minutes INT,
-    ADD COLUMN IF NOT EXISTS driver_eta_minutes INT,
-    ADD COLUMN IF NOT EXISTS estimated_arrival_at TIMESTAMP,
-    ADD COLUMN IF NOT EXISTS route_geometry JSONB;
+  
+ALTER TABLE rides
+  ADD COLUMN IF NOT EXISTS distance_km NUMERIC(10, 2),
+  ADD COLUMN IF NOT EXISTS duration_minutes INT,
+  ADD COLUMN IF NOT EXISTS driver_eta_minutes INT,
+  ADD COLUMN IF NOT EXISTS estimated_arrival_at TIMESTAMP,
+  ADD COLUMN IF NOT EXISTS route_geometry JSONB,
+  ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP,
+  ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMP;
+
 
   CREATE INDEX IF NOT EXISTS rides_customer_idx
     ON rides(customer_id);

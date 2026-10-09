@@ -3005,7 +3005,7 @@ app.patch(
 
             completed_at =
               CASE
-                WHEN $1 = 'COMPLETED'
+                WHEN $1::varchar = 'COMPLETED'::varchar
                 THEN CURRENT_TIMESTAMP
                 ELSE completed_at
               END

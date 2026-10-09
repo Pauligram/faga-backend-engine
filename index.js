@@ -4897,11 +4897,11 @@ app.patch(
             status = $1,
 
             completed_at =
-              CASE
-                WHEN $1 = 'COMPLETED'
-                THEN CURRENT_TIMESTAMP
-                ELSE completed_at
-              END,
+  CASE
+    WHEN $5 = TRUE
+    THEN CURRENT_TIMESTAMP
+    ELSE completed_at
+  END,
 
             updated_at =
               CURRENT_TIMESTAMP
@@ -4938,11 +4938,12 @@ app.patch(
             updated_at AS "updatedAt"
           `,
           [
-            requestedStatus,
-            rideId,
-            req.user.id,
-            currentStatus
-          ]
+              requestedStatus,
+              rideId,
+              req.user.id,
+              currentStatus,
+              requestedStatus === 'COMPLETED'
+            ]
         );
 
 

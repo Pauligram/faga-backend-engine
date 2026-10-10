@@ -8,36 +8,67 @@ const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'faga_production_secure_token_secret_key';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// Never start with a known or empty signing secret. Configure a unique
+// secret in Railway Variables and in a local, uncommitted .env file.
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET is required and must be at least 32 characters. Configure it in the deployment environment.');
+}
 
 // ==========================================
-// CORS CONFIGURATION
+// CORS AND BASIC SECURITY HEADERS
 // ==========================================
 
-// Allows the FAGA frontend to communicate with the Railway API.
+const defaultDevelopmentOrigins = [
+  'http://localhost:5501',
+  'http://127.0.0.1:5501',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
+];
+const configuredOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map(value => value.trim())
+  .filter(Boolean)
+  .map(value => {
+    try { return new URL(value).origin; }
+    catch { return null; }
+  })
+  .filter(Boolean);
+const allowedOrigins = new Set(
+  configuredOrigins.length
+    ? configuredOrigins
+    : (NODE_ENV === 'production' ? [] : defaultDevelopmentOrigins)
+);
+
+if (NODE_ENV === 'production' && allowedOrigins.size === 0) {
+  throw new Error('FRONTEND_URL must contain the exact HTTPS origin(s) allowed to access the FAGA API. Multiple origins may be comma-separated.');
+}
+
 app.use((req, res, next) => {
-  const allowedOrigin = process.env.FRONTEND_URL || '*';
+  const origin = req.headers.origin;
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(self)');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-  res.header('Access-Control-Allow-Origin', allowedOrigin);
-  res.header(
-    'Access-Control-Allow-Methods',
-    'GET,POST,PATCH,PUT,DELETE,OPTIONS'
-  );
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-
-  // Browser CORS preflight request
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
+  if (origin && allowedOrigins.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
   }
 
+  if (req.method === 'OPTIONS') {
+    if (origin && !allowedOrigins.has(origin)) return res.sendStatus(403);
+    return res.sendStatus(204);
+  }
   next();
 });
 
-// Parse JSON request bodies
-app.use(express.json());
+// Keep request bodies bounded to reduce abuse from oversized JSON payloads.
+app.use(express.json({ limit: '1mb' }));
 
 // ==========================================
 // HEALTH CHECK
@@ -52,11 +83,14 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    status: 'online'
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    await pool.query('SELECT 1');
+    return res.json({ success: true, status: 'online', database: 'connected' });
+  } catch (error) {
+    console.error('FAGA readiness check failed:', error.message);
+    return res.status(503).json({ success: false, status: 'degraded', database: 'unavailable' });
+  }
 });
 
 // ==========================================
@@ -119,8 +153,9 @@ pool.on('error', (error) => {
 // without deleting existing ride data.
 
 const fagaRideSchema = `
-  
+
 ALTER TABLE rides
+  ADD COLUMN IF NOT EXISTS tracking_token VARCHAR(64),
   ADD COLUMN IF NOT EXISTS distance_km NUMERIC(10, 2),
   ADD COLUMN IF NOT EXISTS duration_minutes INT,
   ADD COLUMN IF NOT EXISTS driver_eta_minutes INT,
@@ -129,6 +164,10 @@ ALTER TABLE rides
   ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP,
   ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMP;
 
+
+  CREATE UNIQUE INDEX IF NOT EXISTS rides_tracking_token_unique_idx
+    ON rides(tracking_token)
+    WHERE tracking_token IS NOT NULL;
 
   CREATE INDEX IF NOT EXISTS rides_customer_idx
     ON rides(customer_id);
@@ -162,6 +201,8 @@ const initDatabase = async () => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(50);
 
     CREATE TABLE IF NOT EXISTS admin_accounts (
       id SERIAL PRIMARY KEY,
@@ -504,8 +545,6 @@ const startDatabase = async () => {
   }
 };
 
-startDatabase();
-
 // ==========================================
 // AUTHENTICATION GUARD
 // ==========================================
@@ -557,6 +596,7 @@ const authenticateToken = async (
           id,
           name,
           email,
+          phone,
           role,
           is_active
         FROM users
@@ -616,12 +656,12 @@ app.post('/api/login', async (req, res) => {
   } = req.body;
 
   if (
-    !email ||
-    !password
+    typeof email !== 'string' || !email.trim() ||
+    typeof password !== 'string' || !password ||
+    email.length > 254 || Buffer.byteLength(password, 'utf8') > 72
   ) {
     return res.status(422).json({
-      message:
-        'Email and password are required.'
+      message: 'A valid email and password are required.'
     });
   }
 
@@ -722,25 +762,27 @@ app.post('/api/register', async (req, res) => {
     name,
     email,
     password,
-    role = 'customer'
+    phone = ''
   } = req.body;
 
   if (
-    !name ||
-    !email ||
-    !password
+    typeof name !== 'string' || !name.trim() ||
+    typeof email !== 'string' || !email.trim() ||
+    typeof password !== 'string' || !password
   ) {
     return res.status(422).json({
-      message:
-        'Name, email and password are required.'
+      message: 'Name, email and password are required.'
     });
   }
 
-  if (password.length < 6) {
+  if (password.length < 8 || Buffer.byteLength(password, 'utf8') > 72) {
     return res.status(422).json({
-      message:
-        'Password must be at least 6 characters.'
+      message: 'Password must be at least 8 characters and no more than 72 UTF-8 bytes.'
     });
+  }
+
+  if (name.trim().length > 255 || email.trim().length > 254 || String(phone || '').trim().length > 50) {
+    return res.status(422).json({ message: 'One or more registration fields exceed the allowed length.' });
   }
 
   const normalizedEmail =
@@ -766,18 +808,8 @@ app.post('/api/register', async (req, res) => {
       });
     }
 
-    const allowedRoles = [
-      'customer',
-      'rider',
-      'seller'
-    ];
-
-    const normalizedRole =
-      allowedRoles.includes(
-        String(role).toLowerCase()
-      )
-        ? String(role).toLowerCase()
-        : 'customer';
+    // Public self-registration always creates a customer account. Rider and seller roles are granted only through approved workflows.
+    const normalizedRole = 'customer';
 
     const hashedPassword =
       await bcrypt.hash(
@@ -791,6 +823,7 @@ app.post('/api/register', async (req, res) => {
         INSERT INTO users (
           name,
           email,
+          phone,
           password,
           role,
           is_active
@@ -800,12 +833,14 @@ app.post('/api/register', async (req, res) => {
           $2,
           $3,
           $4,
+          $5,
           true
         )
         RETURNING
           id,
           name,
           email,
+          phone,
           role,
           is_active,
           created_at
@@ -813,6 +848,7 @@ app.post('/api/register', async (req, res) => {
         [
           name.trim(),
           normalizedEmail,
+          String(phone || '').trim() || null,
           hashedPassword,
           normalizedRole
         ]
@@ -870,6 +906,79 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+// Public ride tracking uses an unguessable, per-ride capability token.
+// It returns only the minimum trip data needed by the public tracking page.
+app.get('/api/public/rides/:trackingToken', async (req, res) => {
+  const trackingToken = String(req.params.trackingToken || '').toLowerCase();
+  if (!/^[a-f0-9]{48}$/i.test(trackingToken)) {
+    return res.status(404).json({ success: false, message: 'Tracking link is invalid or expired.' });
+  }
+
+  try {
+    const result = await pool.query(`
+      SELECT r.id, r.status, r.pickup_address, r.pickup_latitude, r.pickup_longitude,
+             r.destination_address, r.destination_latitude, r.destination_longitude,
+             r.ride_type, r.passengers, r.fare, r.driver_eta_minutes,
+             r.created_at, r.updated_at, u.name AS driver_name
+      FROM rides r
+      LEFT JOIN users u ON u.id = r.driver_id
+      WHERE r.tracking_token = $1
+      LIMIT 1
+    `, [trackingToken]);
+
+    if (!result.rows.length) {
+      return res.status(404).json({ success: false, message: 'Tracking link is invalid or expired.' });
+    }
+
+    const row = result.rows[0];
+    const terminalStatuses = new Set(['COMPLETED', 'CANCELLED', 'CANCELED']);
+    let location = null;
+    if (!terminalStatuses.has(String(row.status || '').toUpperCase())) {
+      const locationResult = await pool.query(`
+        SELECT latitude, longitude, created_at
+        FROM ride_locations
+        WHERE ride_id = $1
+        ORDER BY created_at DESC
+        LIMIT 1
+      `, [row.id]);
+      if (locationResult.rows.length) {
+        const latest = locationResult.rows[0];
+        location = {
+          latitude: Number(latest.latitude),
+          longitude: Number(latest.longitude),
+          createdAt: latest.created_at
+        };
+      }
+    }
+
+    const driverFirstName = row.driver_name ? String(row.driver_name).trim().split(/\s+/)[0] : null;
+    return res.json({
+      success: true,
+      ride: {
+        id: row.id,
+        status: row.status,
+        pickupAddress: row.pickup_address,
+        pickupLatitude: row.pickup_latitude == null ? null : Number(row.pickup_latitude),
+        pickupLongitude: row.pickup_longitude == null ? null : Number(row.pickup_longitude),
+        destinationAddress: row.destination_address,
+        destinationLatitude: row.destination_latitude == null ? null : Number(row.destination_latitude),
+        destinationLongitude: row.destination_longitude == null ? null : Number(row.destination_longitude),
+        rideType: row.ride_type,
+        passengers: row.passengers,
+        fare: Number(row.fare),
+        driverEtaMinutes: row.driver_eta_minutes,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      },
+      driver: driverFirstName ? { firstName: driverFirstName } : null,
+      location
+    });
+  } catch (error) {
+    console.error('Public ride tracking error:', error.message);
+    return res.status(500).json({ success: false, message: 'Unable to load ride tracking right now.' });
+  }
+});
+
 // ==========================================
 // AUTHENTICATED API AREA
 // ==========================================
@@ -894,6 +1003,7 @@ app.get('/api/me', async (req, res) => {
           id,
           name,
           email,
+          phone,
           role,
           is_active,
           created_at,
@@ -1506,36 +1616,40 @@ async function resolveFagaCoordinates({
   longitude
 }) {
 
-  const validLatitude =
-    Number.isFinite(
-      Number(latitude)
-    );
 
-  const validLongitude =
-    Number.isFinite(
-      Number(longitude)
-    );
+  const hasLatitude =
+    latitude !== null &&
+    latitude !== undefined &&
+    String(latitude).trim() !== '';
 
-  if (
-    validLatitude &&
-    validLongitude
-  ) {
+  const hasLongitude =
+    longitude !== null &&
+    longitude !== undefined &&
+    String(longitude).trim() !== '';
 
+  const numericLatitude = Number(latitude);
+  const numericLongitude = Number(longitude);
+
+  const validCoordinates =
+    hasLatitude &&
+    hasLongitude &&
+    Number.isFinite(numericLatitude) &&
+    Number.isFinite(numericLongitude) &&
+    numericLatitude >= -90 &&
+    numericLatitude <= 90 &&
+    numericLongitude >= -180 &&
+    numericLongitude <= 180;
+
+  if (validCoordinates) {
     return {
-      latitude:
-        Number(latitude),
-
-      longitude:
-        Number(longitude),
-
-      displayName:
-        address
+      latitude: numericLatitude,
+      longitude: numericLongitude,
+      displayName: address
     };
   }
 
-  return geocodeFagaAddress(
-    address
-  );
+  return geocodeFagaAddress(address);
+
 }
 
 // ==========================================
@@ -1944,20 +2058,22 @@ app.post(
       // during booking on the backend.
       //
 
-      const baseFare =
-        allowedRideTypes[
-          normalizedRideType
-        ];
+            const baseFare =
+        allowedRideTypes[normalizedRideType];
 
       const passengerSurcharge =
-        Math.max(
-          0,
-          passengerCount - 1
-        ) * 150;
+        Math.max(0, passengerCount - 1) * 150;
+
+      const distanceCharge =
+        Number(route.distanceKm) * 250;
+
+      const rawFare =
+        baseFare +
+        distanceCharge +
+        passengerSurcharge;
 
       const fare =
-        baseFare +
-        passengerSurcharge;
+        Math.max(0, Math.round(rawFare / 50) * 50);
 
       // ----------------------------------------
       // RETURN ESTIMATE
@@ -2452,6 +2568,8 @@ app.post(
       // CREATE RIDE
       // ----------------------------------------
 
+      const trackingToken = crypto.randomBytes(24).toString('hex');
+
       const rideResult =
         await pool.query(
           `
@@ -2477,6 +2595,7 @@ app.post(
             driver_eta_minutes,
             estimated_arrival_at,
             route_geometry,
+            tracking_token,
 
             created_at,
             updated_at
@@ -2503,6 +2622,7 @@ app.post(
             $13,
             $14,
             $15,
+            $16,
 
             CURRENT_TIMESTAMP,
             CURRENT_TIMESTAMP
@@ -2534,7 +2654,8 @@ app.post(
               route
                 ? route
                 : {}
-            )
+            ),
+            trackingToken
           ]
         );
 
@@ -2616,6 +2737,9 @@ app.post(
           routeGeometry:
             ride.route_geometry,
 
+          trackingToken:
+            ride.tracking_token,
+
           createdAt:
             ride.created_at,
 
@@ -2684,6 +2808,7 @@ app.get(
             driver_eta_minutes,
             estimated_arrival_at,
             route_geometry,
+            tracking_token,
 
             created_at,
             updated_at
@@ -5115,19 +5240,12 @@ app.patch(
   }
 );
 
-// Customer Profile Logic
-app.get('/api/profile', (req, res) => {
-  res.json(req.user);
-});
-
 // ==================================================
 // CUSTOMER PROFILE
 // ==================================================
 
 app.get('/api/profile', (req, res) => {
-
   res.json(req.user);
-
 });
 
 

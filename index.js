@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
@@ -94,7 +94,7 @@ app.get('/api/health', async (req, res) => {
 });
 
 // ==========================================
-// 🗄️ FAGA POSTGRESQL DATABASE CONNECTION
+// ðŸ—„ï¸ FAGA POSTGRESQL DATABASE CONNECTION
 // ==========================================
 
 // Local development should use DATABASE_PUBLIC_URL.
@@ -188,7 +188,7 @@ CREATE INDEX IF NOT EXISTS users_rider_available_idx
   ON users(rider_available);
 `;
 
-// 🚀 AUTOMATED TABLE GENERATION ENGINE (Runs on Boot)
+// ðŸš€ AUTOMATED TABLE GENERATION ENGINE (Runs on Boot)
 const initDatabase = async () => {
   const schemaQuery = `
     CREATE TABLE IF NOT EXISTS users (
@@ -358,6 +358,175 @@ const initDatabase = async () => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
+        // =========================================================
+    // FAGA JOB PROVIDER / APPLICANT SYSTEM
+    // =========================================================
+
+    ALTER TABLE jobs
+      ADD COLUMN IF NOT EXISTS provider_id INT
+        REFERENCES users(id) ON DELETE SET NULL,
+      ADD COLUMN IF NOT EXISTS category VARCHAR(150),
+      ADD COLUMN IF NOT EXISTS location VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS employment_type VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS salary_min NUMERIC(12, 2),
+      ADD COLUMN IF NOT EXISTS salary_max NUMERIC(12, 2),
+      ADD COLUMN IF NOT EXISTS application_deadline TIMESTAMP,
+      ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+    CREATE INDEX IF NOT EXISTS jobs_provider_idx
+      ON jobs(provider_id);
+
+    CREATE INDEX IF NOT EXISTS jobs_status_idx
+      ON jobs(status);
+
+    CREATE INDEX IF NOT EXISTS jobs_category_idx
+      ON jobs(category);
+
+
+    // ---------------------------------------------------------
+    // JOB PROVIDER APPLICATIONS
+    // ---------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS job_provider_applications (
+      id SERIAL PRIMARY KEY,
+
+      user_id INT UNIQUE NOT NULL
+        REFERENCES users(id) ON DELETE CASCADE,
+
+      business_name VARCHAR(255) NOT NULL,
+
+      business_description TEXT,
+
+      business_address TEXT NOT NULL,
+
+      phone VARCHAR(50),
+
+      status VARCHAR(50) NOT NULL DEFAULT 'pending',
+
+      reviewed_by INT
+        REFERENCES users(id) ON DELETE SET NULL,
+
+      reviewed_at TIMESTAMP,
+
+      rejection_reason TEXT,
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS job_provider_applications_status_idx
+      ON job_provider_applications(status);
+
+
+    // ---------------------------------------------------------
+    // JOB PROVIDER PROFILES
+    // ---------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS job_provider_profiles (
+      id SERIAL PRIMARY KEY,
+
+      user_id INT UNIQUE NOT NULL
+        REFERENCES users(id) ON DELETE CASCADE,
+
+      business_name VARCHAR(255) NOT NULL,
+
+      business_description TEXT,
+
+      business_address TEXT,
+
+      phone VARCHAR(50),
+
+      website VARCHAR(255),
+
+      logo_url TEXT,
+
+      is_verified BOOLEAN DEFAULT FALSE,
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+
+    // ---------------------------------------------------------
+    // JOB APPLICANT PROFILES
+    // ---------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS job_applicant_profiles (
+      id SERIAL PRIMARY KEY,
+
+      user_id INT UNIQUE NOT NULL
+        REFERENCES users(id) ON DELETE CASCADE,
+
+      headline VARCHAR(255),
+
+      bio TEXT,
+
+      skills TEXT,
+
+      experience TEXT,
+
+      education TEXT,
+
+      cv_url TEXT,
+
+      phone VARCHAR(50),
+
+      location VARCHAR(255),
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+
+    // ---------------------------------------------------------
+    // JOB APPLICATIONS
+    // ---------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS job_applications (
+      id SERIAL PRIMARY KEY,
+
+      job_id INT NOT NULL
+        REFERENCES jobs(id) ON DELETE CASCADE,
+
+      applicant_id INT NOT NULL
+        REFERENCES users(id) ON DELETE CASCADE,
+
+      cover_letter TEXT,
+
+      proposed_salary NUMERIC(12, 2),
+
+      status VARCHAR(50) NOT NULL DEFAULT 'pending',
+
+      reviewed_at TIMESTAMP,
+
+      accepted_at TIMESTAMP,
+
+      rejected_at TIMESTAMP,
+
+      withdrawn_at TIMESTAMP,
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      UNIQUE(job_id, applicant_id)
+    );
+
+    CREATE INDEX IF NOT EXISTS job_applications_job_idx
+      ON job_applications(job_id);
+
+    CREATE INDEX IF NOT EXISTS job_applications_applicant_idx
+      ON job_applications(applicant_id);
+
+    CREATE INDEX IF NOT EXISTS job_applications_status_idx
+      ON job_applications(status);
+
+
+
+
     CREATE TABLE IF NOT EXISTS rides (
       id SERIAL PRIMARY KEY,
 
@@ -396,7 +565,7 @@ const initDatabase = async () => {
     await pool.query(fagaRideSchema);
 
     console.log(
-      'FAGA Production Database tables initialized successfully. 🗄'
+      'FAGA Production Database tables initialized successfully. ðŸ—„'
     );
   } catch (err) {
     console.error(
@@ -2047,12 +2216,12 @@ app.post(
       //
       // Base fare:
       //
-      // economy = ₦1,800
-      // comfort = ₦2,500
-      // xl      = ₦3,500
+      // economy = â‚¦1,800
+      // comfort = â‚¦2,500
+      // xl      = â‚¦3,500
       //
       // Additional passengers:
-      // ₦150 each.
+      // â‚¦150 each.
       //
       // Actual ride fare is calculated again
       // during booking on the backend.
@@ -2523,7 +2692,7 @@ app.post(
       /*
        * Distance charge:
        *
-       * ₦250 per kilometre.
+       * â‚¦250 per kilometre.
        */
 
       const distanceCharge =
@@ -2541,7 +2710,7 @@ app.post(
         passengerSurcharge;
 
       /*
-       * Round to nearest ₦50.
+       * Round to nearest â‚¦50.
        */
 
       const fare =
@@ -3188,7 +3357,7 @@ app.patch(
 // This changes:
 //
 // SEARCHING
-//      ↓
+//      â†“
 // DRIVER_ASSIGNED
 //
 // ==========================================
@@ -4097,7 +4266,7 @@ app.get(
 );
 
 // =========================================================
-// FAGA LIVE DRIVER GPS — RIDE LOCATION
+// FAGA LIVE DRIVER GPS â€” RIDE LOCATION
 // =========================================================
 //
 // This endpoint receives the driver's REAL GPS coordinates
@@ -5008,7 +5177,7 @@ app.patch(
         return res.status(409).json({
           success: false,
           message:
-            `Invalid ride status transition: ${currentStatus} → ${requestedStatus}.`
+            `Invalid ride status transition: ${currentStatus} â†’ ${requestedStatus}.`
         });
       }
 
@@ -7077,6 +7246,71 @@ app.post(
 
 
 // ==================================================
+// RIDER: SUBMIT APPLICATION
+// Authenticated users may apply once. Admin approval activates rider access.
+app.post(
+  '/api/rider-applications',
+  authenticateToken,
+  async (req, res) => {
+    const userId = Number(req.user?.id);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(401).json({
+        success: false,
+        error: 'Authentication required.'
+      });
+    }
+
+    try {
+      const userResult = await pool.query(
+        'SELECT id, role FROM users WHERE id = $1',
+        [userId]
+      );
+
+      if (userResult.rows.length === 0) {
+        return res.status(401).json({
+          success: false,
+          error: 'User account not found.'
+        });
+      }
+
+      if (userResult.rows[0].role === 'rider') {
+        return res.status(409).json({
+          success: false,
+          error: 'Your account already has rider access.'
+        });
+      }
+
+      const result = await pool.query(
+        `
+        INSERT INTO rider_applications (user_id, status)
+        VALUES ($1, 'pending')
+        ON CONFLICT (user_id)
+        DO UPDATE SET
+          status = CASE
+            WHEN rider_applications.status = 'approved'
+              THEN 'approved'
+            ELSE 'pending'
+          END
+        RETURNING id, status, created_at
+        `,
+        [userId]
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: 'Rider application submitted for admin review.',
+        application: result.rows[0]
+      });
+    } catch (error) {
+      console.error('Rider application submission error:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Unable to submit rider application at this time.'
+      });
+    }
+  }
+);
 // ADMIN: APPROVE RIDER APPLICATION
 // ==================================================
 
@@ -7342,7 +7576,7 @@ app.post(
 
       return res.status(400).json({
         error:
-          'Minimum wallet funding amount is ₦100.'
+          'Minimum wallet funding amount is â‚¦100.'
       });
     }
 
@@ -8709,6 +8943,1720 @@ app.patch(
   }
 );
 
+// =========================================================
+// FAGA JOB PROVIDER API
+// =========================================================
+
+// ---------------------------------------------------------
+// JOB PROVIDER: APPLY
+// ---------------------------------------------------------
+
+app.post(
+  '/api/job-provider/applications',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    const {
+      businessName,
+      businessDescription = '',
+      businessAddress,
+      phone = ''
+    } = req.body;
+
+    if (
+      typeof businessName !== 'string' ||
+      !businessName.trim()
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: 'Business name is required.'
+      });
+    }
+
+    if (
+      typeof businessAddress !== 'string' ||
+      !businessAddress.trim()
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: 'Business address is required.'
+      });
+    }
+
+    try {
+
+      const existing = await pool.query(
+        `
+        SELECT
+          id,
+          status
+        FROM job_provider_applications
+        WHERE user_id = $1
+        LIMIT 1
+        `,
+        [req.user.id]
+      );
+
+      if (existing.rows.length) {
+
+        return res.status(409).json({
+          success: false,
+          message: 'You already have a job provider application.',
+          application: existing.rows[0]
+        });
+
+      }
+
+      const result = await pool.query(
+        `
+        INSERT INTO job_provider_applications (
+          user_id,
+          business_name,
+          business_description,
+          business_address,
+          phone
+        )
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING
+          id,
+          user_id AS "userId",
+          business_name AS "businessName",
+          business_description AS "businessDescription",
+          business_address AS "businessAddress",
+          phone,
+          status,
+          created_at AS "createdAt"
+        `,
+        [
+          req.user.id,
+          businessName.trim(),
+          businessDescription.trim(),
+          businessAddress.trim(),
+          phone.trim()
+        ]
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: 'Job provider application submitted successfully.',
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Job provider application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to submit job provider application.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// JOB PROVIDER: MY APPLICATION
+// ---------------------------------------------------------
+
+app.get(
+  '/api/job-provider/applications/me',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          id,
+          user_id AS "userId",
+          business_name AS "businessName",
+          business_description AS "businessDescription",
+          business_address AS "businessAddress",
+          phone,
+          status,
+          rejection_reason AS "rejectionReason",
+          reviewed_at AS "reviewedAt",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM job_provider_applications
+        WHERE user_id = $1
+        LIMIT 1
+        `,
+        [req.user.id]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'No job provider application found.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Get job provider application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve job provider application.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// ADMIN: LIST JOB PROVIDER APPLICATIONS
+// ---------------------------------------------------------
+
+app.get(
+  '/api/admin/job-provider/applications',
+  authorizeRoles('admin', 'super_admin'),
+  async (req, res) => {
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          a.id,
+          a.user_id AS "userId",
+          u.name,
+          u.email,
+          a.business_name AS "businessName",
+          a.business_description AS "businessDescription",
+          a.business_address AS "businessAddress",
+          a.phone,
+          a.status,
+          a.rejection_reason AS "rejectionReason",
+          a.created_at AS "createdAt"
+        FROM job_provider_applications a
+        INNER JOIN users u
+          ON u.id = a.user_id
+        ORDER BY a.created_at DESC
+        `
+      );
+
+      return res.json({
+        success: true,
+        applications: result.rows
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Admin job provider applications error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve job provider applications.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// ADMIN: APPROVE JOB PROVIDER
+// ---------------------------------------------------------
+
+app.post(
+  '/api/admin/job-provider/applications/:id/approve',
+  authorizeRoles('admin', 'super_admin'),
+  async (req, res) => {
+
+    const applicationId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(applicationId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid application ID.'
+      });
+    }
+
+    const client = await pool.connect();
+
+    try {
+
+      await client.query('BEGIN');
+
+      const application = await client.query(
+        `
+        SELECT
+          id,
+          user_id,
+          business_name,
+          business_description,
+          business_address,
+          phone,
+          status
+        FROM job_provider_applications
+        WHERE id = $1
+        FOR UPDATE
+        `,
+        [applicationId]
+      );
+
+      if (!application.rows.length) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(404).json({
+          success: false,
+          message: 'Job provider application not found.'
+        });
+      }
+
+      const provider = application.rows[0];
+
+      if (provider.status === 'approved') {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message: 'Job provider application is already approved.'
+        });
+      }
+
+      await client.query(
+        `
+        UPDATE job_provider_applications
+        SET
+          status = 'approved',
+          reviewed_by = $1,
+          reviewed_at = CURRENT_TIMESTAMP,
+          rejection_reason = NULL,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        `,
+        [
+          req.user.id,
+          applicationId
+        ]
+      );
+
+      await client.query(
+        `
+        UPDATE users
+        SET
+          role = 'job_provider',
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $1
+        `,
+        [provider.user_id]
+      );
+
+      await client.query(
+        `
+        INSERT INTO job_provider_profiles (
+          user_id,
+          business_name,
+          business_description,
+          business_address,
+          phone,
+          is_verified
+        )
+        VALUES ($1, $2, $3, $4, $5, TRUE)
+        ON CONFLICT (user_id)
+        DO UPDATE SET
+          business_name = EXCLUDED.business_name,
+          business_description = EXCLUDED.business_description,
+          business_address = EXCLUDED.business_address,
+          phone = EXCLUDED.phone,
+          is_verified = TRUE,
+          updated_at = CURRENT_TIMESTAMP
+        `,
+        [
+          provider.user_id,
+          provider.business_name,
+          provider.business_description,
+          provider.business_address,
+          provider.phone
+        ]
+      );
+
+      await client.query('COMMIT');
+
+      return res.json({
+        success: true,
+        message: 'Job provider approved successfully.'
+      });
+
+    } catch (error) {
+
+      await client.query('ROLLBACK');
+
+      console.error(
+        'Approve job provider error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to approve job provider.'
+      });
+
+    } finally {
+
+      client.release();
+
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// ADMIN: REJECT JOB PROVIDER
+// ---------------------------------------------------------
+
+app.post(
+  '/api/admin/job-provider/applications/:id/reject',
+  authorizeRoles('admin', 'super_admin'),
+  async (req, res) => {
+
+    const applicationId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    const rejectionReason =
+      typeof req.body.rejectionReason === 'string'
+        ? req.body.rejectionReason.trim()
+        : '';
+
+    if (!Number.isInteger(applicationId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid application ID.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        UPDATE job_provider_applications
+        SET
+          status = 'rejected',
+          reviewed_by = $1,
+          reviewed_at = CURRENT_TIMESTAMP,
+          rejection_reason = $2,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $3
+        RETURNING
+          id,
+          status,
+          rejection_reason AS "rejectionReason"
+        `,
+        [
+          req.user.id,
+          rejectionReason || null,
+          applicationId
+        ]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Job provider application not found.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Job provider application rejected.',
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Reject job provider error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to reject job provider application.'
+      });
+    }
+  }
+);
+
+// =========================================================
+// JOB PROVIDER JOB MANAGEMENT
+// =========================================================
+
+// ---------------------------------------------------------
+// PROVIDER: CREATE JOB
+// ---------------------------------------------------------
+
+app.post(
+  '/api/job-provider/jobs',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const {
+      title,
+      description,
+      category = '',
+      location = '',
+      employmentType = '',
+      salaryMin = null,
+      salaryMax = null,
+      applicationDeadline = null
+    } = req.body;
+
+    if (
+      typeof title !== 'string' ||
+      !title.trim()
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: 'Job title is required.'
+      });
+    }
+
+    if (
+      typeof description !== 'string' ||
+      !description.trim()
+    ) {
+      return res.status(422).json({
+        success: false,
+        message: 'Job description is required.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        INSERT INTO jobs (
+          provider_id,
+          title,
+          description,
+          category,
+          location,
+          employment_type,
+          salary_min,
+          salary_max,
+          application_deadline,
+          status
+        )
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8,
+          $9,
+          'open'
+        )
+        RETURNING
+          id,
+          provider_id AS "providerId",
+          title,
+          description,
+          category,
+          location,
+          employment_type AS "employmentType",
+          salary_min AS "salaryMin",
+          salary_max AS "salaryMax",
+          application_deadline AS "applicationDeadline",
+          status,
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        `,
+        [
+          req.user.id,
+          title.trim(),
+          description.trim(),
+          String(category || '').trim(),
+          String(location || '').trim(),
+          String(employmentType || '').trim(),
+          salaryMin,
+          salaryMax,
+          applicationDeadline || null
+        ]
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: 'Job created successfully.',
+        job: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Job provider create job error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to create job.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// PROVIDER: GET MY JOBS
+// ---------------------------------------------------------
+
+app.get(
+  '/api/job-provider/jobs',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          j.id,
+          j.provider_id AS "providerId",
+          j.title,
+          j.description,
+          j.category,
+          j.location,
+          j.employment_type AS "employmentType",
+          j.salary_min AS "salaryMin",
+          j.salary_max AS "salaryMax",
+          j.application_deadline AS "applicationDeadline",
+          j.status,
+          j.created_at AS "createdAt",
+          j.updated_at AS "updatedAt",
+
+          COUNT(
+            ja.id
+          )::INTEGER AS "applicationCount"
+
+        FROM jobs j
+
+        LEFT JOIN job_applications ja
+          ON ja.job_id = j.id
+
+        WHERE j.provider_id = $1
+
+        GROUP BY j.id
+
+        ORDER BY j.created_at DESC
+        `,
+        [req.user.id]
+      );
+
+      return res.json({
+        success: true,
+        jobs: result.rows
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Get provider jobs error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve your jobs.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// PROVIDER: UPDATE JOB
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/job-provider/jobs/:id',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const jobId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(jobId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid job ID.'
+      });
+    }
+
+    const {
+      title,
+      description,
+      category,
+      location,
+      employmentType,
+      salaryMin,
+      salaryMax,
+      applicationDeadline
+    } = req.body;
+
+    try {
+
+      const result = await pool.query(
+        `
+        UPDATE jobs
+        SET
+          title = COALESCE($1, title),
+          description = COALESCE($2, description),
+          category = COALESCE($3, category),
+          location = COALESCE($4, location),
+          employment_type = COALESCE($5, employment_type),
+          salary_min = COALESCE($6, salary_min),
+          salary_max = COALESCE($7, salary_max),
+          application_deadline = COALESCE(
+            $8,
+            application_deadline
+          ),
+          updated_at = CURRENT_TIMESTAMP
+        WHERE
+          id = $9
+          AND provider_id = $10
+        RETURNING
+          id,
+          provider_id AS "providerId",
+          title,
+          description,
+          category,
+          location,
+          employment_type AS "employmentType",
+          salary_min AS "salaryMin",
+          salary_max AS "salaryMax",
+          application_deadline AS "applicationDeadline",
+          status,
+          updated_at AS "updatedAt"
+        `,
+        [
+          title ?? null,
+          description ?? null,
+          category ?? null,
+          location ?? null,
+          employmentType ?? null,
+          salaryMin ?? null,
+          salaryMax ?? null,
+          applicationDeadline ?? null,
+          jobId,
+          req.user.id
+        ]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Job not found or you do not own this job.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Job updated successfully.',
+        job: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Update provider job error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to update job.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// PROVIDER: CLOSE OWN JOB
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/job-provider/jobs/:id/close',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const jobId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(jobId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid job ID.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        UPDATE jobs
+        SET
+          status = 'closed',
+          updated_at = CURRENT_TIMESTAMP
+        WHERE
+          id = $1
+          AND provider_id = $2
+        RETURNING
+          id,
+          title,
+          status,
+          updated_at AS "updatedAt"
+        `,
+        [
+          jobId,
+          req.user.id
+        ]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Job not found or you do not own this job.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Job closed successfully.',
+        job: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Close provider job error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to close job.'
+      });
+    }
+  }
+);
+
+// =========================================================
+// FAGA JOB APPLICANT API
+// =========================================================
+
+// ---------------------------------------------------------
+// APPLICANT: CREATE / UPDATE PROFILE
+// ---------------------------------------------------------
+
+app.put(
+  '/api/job-applicant/profile',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    const {
+      headline = '',
+      bio = '',
+      skills = '',
+      experience = '',
+      education = '',
+      cvUrl = '',
+      phone = '',
+      location = ''
+    } = req.body;
+
+    try {
+
+      const result = await pool.query(
+        `
+        INSERT INTO job_applicant_profiles (
+          user_id,
+          headline,
+          bio,
+          skills,
+          experience,
+          education,
+          cv_url,
+          phone,
+          location
+        )
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8,
+          $9
+        )
+
+        ON CONFLICT (user_id)
+
+        DO UPDATE SET
+          headline = EXCLUDED.headline,
+          bio = EXCLUDED.bio,
+          skills = EXCLUDED.skills,
+          experience = EXCLUDED.experience,
+          education = EXCLUDED.education,
+          cv_url = EXCLUDED.cv_url,
+          phone = EXCLUDED.phone,
+          location = EXCLUDED.location,
+          updated_at = CURRENT_TIMESTAMP
+
+        RETURNING
+          id,
+          user_id AS "userId",
+          headline,
+          bio,
+          skills,
+          experience,
+          education,
+          cv_url AS "cvUrl",
+          phone,
+          location,
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        `,
+        [
+          req.user.id,
+          headline,
+          bio,
+          skills,
+          experience,
+          education,
+          cvUrl,
+          phone,
+          location
+        ]
+      );
+
+      return res.json({
+        success: true,
+        profile: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Applicant profile error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to save applicant profile.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// APPLICANT: GET PROFILE
+// ---------------------------------------------------------
+
+app.get(
+  '/api/job-applicant/profile',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          id,
+          user_id AS "userId",
+          headline,
+          bio,
+          skills,
+          experience,
+          education,
+          cv_url AS "cvUrl",
+          phone,
+          location,
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM job_applicant_profiles
+        WHERE user_id = $1
+        LIMIT 1
+        `,
+        [req.user.id]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Applicant profile not found.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        profile: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Get applicant profile error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve applicant profile.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// APPLICANT: APPLY FOR JOB
+// ---------------------------------------------------------
+
+app.post(
+  '/api/jobs/:id/applications',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    const jobId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(jobId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid job ID.'
+      });
+    }
+
+    const {
+      coverLetter = '',
+      proposedSalary = null
+    } = req.body;
+
+    try {
+
+      const jobResult = await pool.query(
+        `
+        SELECT
+          id,
+          provider_id,
+          title,
+          status,
+          application_deadline
+        FROM jobs
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [jobId]
+      );
+
+      if (!jobResult.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Job not found.'
+        });
+      }
+
+      const job = jobResult.rows[0];
+
+      if (job.status !== 'open') {
+        return res.status(409).json({
+          success: false,
+          message: 'This job is no longer accepting applications.'
+        });
+      }
+
+      if (
+        job.application_deadline &&
+        new Date(job.application_deadline) < new Date()
+      ) {
+        return res.status(409).json({
+          success: false,
+          message: 'The application deadline has passed.'
+        });
+      }
+
+      if (
+        job.provider_id &&
+        Number(job.provider_id) === Number(req.user.id)
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: 'You cannot apply to your own job.'
+        });
+      }
+
+      const existing = await pool.query(
+        `
+        SELECT
+          id,
+          status
+        FROM job_applications
+        WHERE
+          job_id = $1
+          AND applicant_id = $2
+        LIMIT 1
+        `,
+        [
+          jobId,
+          req.user.id
+        ]
+      );
+
+      if (existing.rows.length) {
+        return res.status(409).json({
+          success: false,
+          message: 'You have already applied for this job.',
+          application: existing.rows[0]
+        });
+      }
+
+      const result = await pool.query(
+        `
+        INSERT INTO job_applications (
+          job_id,
+          applicant_id,
+          cover_letter,
+          proposed_salary
+        )
+        VALUES (
+          $1,
+          $2,
+          $3,
+          $4
+        )
+        RETURNING
+          id,
+          job_id AS "jobId",
+          applicant_id AS "applicantId",
+          cover_letter AS "coverLetter",
+          proposed_salary AS "proposedSalary",
+          status,
+          created_at AS "createdAt"
+        `,
+        [
+          jobId,
+          req.user.id,
+          coverLetter,
+          proposedSalary
+        ]
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: 'Job application submitted successfully.',
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Job application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to submit job application.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// APPLICANT: MY APPLICATIONS
+// ---------------------------------------------------------
+
+app.get(
+  '/api/job-applications/me',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        SELECT
+          ja.id,
+          ja.job_id AS "jobId",
+          ja.applicant_id AS "applicantId",
+
+          j.title AS "jobTitle",
+          j.description AS "jobDescription",
+          j.location AS "jobLocation",
+          j.category AS "jobCategory",
+
+          ja.cover_letter AS "coverLetter",
+          ja.proposed_salary AS "proposedSalary",
+          ja.status,
+
+          ja.reviewed_at AS "reviewedAt",
+          ja.accepted_at AS "acceptedAt",
+          ja.rejected_at AS "rejectedAt",
+          ja.withdrawn_at AS "withdrawnAt",
+
+          ja.created_at AS "createdAt",
+          ja.updated_at AS "updatedAt"
+
+        FROM job_applications ja
+
+        INNER JOIN jobs j
+          ON j.id = ja.job_id
+
+        WHERE ja.applicant_id = $1
+
+        ORDER BY ja.created_at DESC
+        `,
+        [req.user.id]
+      );
+
+      return res.json({
+        success: true,
+        applications: result.rows
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Get applicant applications error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve applications.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// APPLICANT: WITHDRAW APPLICATION
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/job-applications/:id/withdraw',
+  async (req, res) => {
+
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required.'
+      });
+    }
+
+    const applicationId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(applicationId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid application ID.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        UPDATE job_applications
+        SET
+          status = 'withdrawn',
+          withdrawn_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE
+          id = $1
+          AND applicant_id = $2
+          AND status IN ('pending', 'shortlisted')
+        RETURNING
+          id,
+          status,
+          withdrawn_at AS "withdrawnAt"
+        `,
+        [
+          applicationId,
+          req.user.id
+        ]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message:
+            'Application not found or cannot be withdrawn.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Job application withdrawn.',
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Withdraw application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to withdraw application.'
+      });
+    }
+  }
+);
+
+// =========================================================
+// JOB PROVIDER APPLICATION MANAGEMENT
+// =========================================================
+
+// ---------------------------------------------------------
+// PROVIDER: VIEW APPLICANTS FOR A JOB
+// ---------------------------------------------------------
+
+app.get(
+  '/api/job-provider/jobs/:id/applications',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const jobId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(jobId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid job ID.'
+      });
+    }
+
+    try {
+
+      const ownership = await pool.query(
+        `
+        SELECT id
+        FROM jobs
+        WHERE
+          id = $1
+          AND provider_id = $2
+        LIMIT 1
+        `,
+        [
+          jobId,
+          req.user.id
+        ]
+      );
+
+      if (!ownership.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message: 'Job not found or you do not own this job.'
+        });
+      }
+
+      const result = await pool.query(
+        `
+        SELECT
+          ja.id,
+          ja.job_id AS "jobId",
+
+          ja.applicant_id AS "applicantId",
+
+          u.name AS "applicantName",
+          u.email AS "applicantEmail",
+          u.phone AS "applicantPhone",
+
+          p.headline,
+          p.bio,
+          p.skills,
+          p.experience,
+          p.education,
+          p.cv_url AS "cvUrl",
+          p.location,
+
+          ja.cover_letter AS "coverLetter",
+          ja.proposed_salary AS "proposedSalary",
+          ja.status,
+
+          ja.created_at AS "createdAt",
+          ja.reviewed_at AS "reviewedAt",
+          ja.accepted_at AS "acceptedAt",
+          ja.rejected_at AS "rejectedAt"
+
+        FROM job_applications ja
+
+        INNER JOIN users u
+          ON u.id = ja.applicant_id
+
+        LEFT JOIN job_applicant_profiles p
+          ON p.user_id = ja.applicant_id
+
+        WHERE ja.job_id = $1
+
+        ORDER BY ja.created_at DESC
+        `,
+        [jobId]
+      );
+
+      return res.json({
+        success: true,
+        applications: result.rows
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Provider applications error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to retrieve job applications.'
+      });
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// PROVIDER: ACCEPT APPLICATION
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/job-provider/applications/:id/accept',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const applicationId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(applicationId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid application ID.'
+      });
+    }
+
+    const client = await pool.connect();
+
+    try {
+
+      await client.query('BEGIN');
+
+      const applicationResult = await client.query(
+        `
+        SELECT
+          ja.id,
+          ja.job_id,
+          ja.applicant_id,
+          ja.status,
+          j.provider_id,
+          j.status AS job_status
+        FROM job_applications ja
+
+        INNER JOIN jobs j
+          ON j.id = ja.job_id
+
+        WHERE ja.id = $1
+        FOR UPDATE
+        `,
+        [applicationId]
+      );
+
+      if (!applicationResult.rows.length) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(404).json({
+          success: false,
+          message: 'Job application not found.'
+        });
+      }
+
+      const application =
+        applicationResult.rows[0];
+
+      if (
+        Number(application.provider_id) !==
+        Number(req.user.id)
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(403).json({
+          success: false,
+          message: 'You do not own this job.'
+        });
+      }
+
+      if (application.job_status !== 'open') {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message: 'This job is no longer open.'
+        });
+      }
+
+      if (
+        !['pending', 'shortlisted']
+          .includes(application.status)
+      ) {
+
+        await client.query('ROLLBACK');
+
+        return res.status(409).json({
+          success: false,
+          message:
+            'This application cannot be accepted in its current state.'
+        });
+      }
+
+      await client.query(
+        `
+        UPDATE job_applications
+        SET
+          status = 'accepted',
+          accepted_at = CURRENT_TIMESTAMP,
+          reviewed_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $1
+        `,
+        [applicationId]
+      );
+
+      // Automatically reject the remaining applicants
+      // for this job.
+      await client.query(
+        `
+        UPDATE job_applications
+        SET
+          status = 'rejected',
+          rejected_at = CURRENT_TIMESTAMP,
+          reviewed_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE
+          job_id = $1
+          AND id <> $2
+          AND status IN ('pending', 'shortlisted')
+        `,
+        [
+          application.job_id,
+          applicationId
+        ]
+      );
+
+      // Close the job after selecting a worker.
+      await client.query(
+        `
+        UPDATE jobs
+        SET
+          status = 'closed',
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $1
+        `,
+        [application.job_id]
+      );
+
+      await client.query('COMMIT');
+
+      return res.json({
+        success: true,
+        message: 'Applicant accepted successfully.',
+        applicationId
+      });
+
+    } catch (error) {
+
+      await client.query('ROLLBACK');
+
+      console.error(
+        'Accept job application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to accept application.'
+      });
+
+    } finally {
+
+      client.release();
+
+    }
+  }
+);
+
+
+// ---------------------------------------------------------
+// PROVIDER: REJECT APPLICATION
+// ---------------------------------------------------------
+
+app.patch(
+  '/api/job-provider/applications/:id/reject',
+  authorizeRoles('job_provider'),
+  async (req, res) => {
+
+    const applicationId = Number.parseInt(
+      req.params.id,
+      10
+    );
+
+    if (!Number.isInteger(applicationId)) {
+      return res.status(422).json({
+        success: false,
+        message: 'Invalid application ID.'
+      });
+    }
+
+    try {
+
+      const result = await pool.query(
+        `
+        UPDATE job_applications ja
+
+        SET
+          status = 'rejected',
+          rejected_at = CURRENT_TIMESTAMP,
+          reviewed_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+
+        FROM jobs j
+
+        WHERE
+          ja.id = $1
+          AND j.id = ja.job_id
+          AND j.provider_id = $2
+          AND ja.status IN ('pending', 'shortlisted')
+
+        RETURNING
+          ja.id,
+          ja.status,
+          ja.rejected_at AS "rejectedAt"
+        `,
+        [
+          applicationId,
+          req.user.id
+        ]
+      );
+
+      if (!result.rows.length) {
+        return res.status(404).json({
+          success: false,
+          message:
+            'Application not found, not owned by you, or already processed.'
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Application rejected.',
+        application: result.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error(
+        'Reject job application error:',
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unable to reject application.'
+      });
+    }
+  }
+);
+
+
 
 // ==================================================
 // DELIVERY LIFECYCLE
@@ -9688,7 +11636,7 @@ async function startServer() {
       () => {
 
         console.log(
-          `FAGA Pure Node Engine streaming live on port ${PORT} 🚀`
+          `FAGA Pure Node Engine streaming live on port ${PORT} ðŸš€`
         );
 
       }

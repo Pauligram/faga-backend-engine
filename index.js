@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
@@ -358,9 +358,9 @@ const initDatabase = async () => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
-        // =========================================================
-    // FAGA JOB PROVIDER / APPLICANT SYSTEM
-    // =========================================================
+        -- =========================================================
+    -- FAGA JOB PROVIDER / APPLICANT SYSTEM
+    -- =========================================================
 
     ALTER TABLE jobs
       ADD COLUMN IF NOT EXISTS provider_id INT
@@ -383,9 +383,9 @@ const initDatabase = async () => {
       ON jobs(category);
 
 
-    // ---------------------------------------------------------
-    // JOB PROVIDER APPLICATIONS
-    // ---------------------------------------------------------
+    -- ---------------------------------------------------------
+    -- JOB PROVIDER APPLICATIONS
+    -- ---------------------------------------------------------
 
     CREATE TABLE IF NOT EXISTS job_provider_applications (
       id SERIAL PRIMARY KEY,
@@ -419,9 +419,9 @@ const initDatabase = async () => {
       ON job_provider_applications(status);
 
 
-    // ---------------------------------------------------------
-    // JOB PROVIDER PROFILES
-    // ---------------------------------------------------------
+    -- ---------------------------------------------------------
+    -- JOB PROVIDER PROFILES
+    -- ---------------------------------------------------------
 
     CREATE TABLE IF NOT EXISTS job_provider_profiles (
       id SERIAL PRIMARY KEY,
@@ -449,9 +449,9 @@ const initDatabase = async () => {
     );
 
 
-    // ---------------------------------------------------------
-    // JOB APPLICANT PROFILES
-    // ---------------------------------------------------------
+    -- ---------------------------------------------------------
+    -- JOB APPLICANT PROFILES
+    -- ---------------------------------------------------------
 
     CREATE TABLE IF NOT EXISTS job_applicant_profiles (
       id SERIAL PRIMARY KEY,
@@ -481,9 +481,9 @@ const initDatabase = async () => {
     );
 
 
-    // ---------------------------------------------------------
-    // JOB APPLICATIONS
-    // ---------------------------------------------------------
+    -- ---------------------------------------------------------
+    -- JOB APPLICATIONS
+    -- ---------------------------------------------------------
 
     CREATE TABLE IF NOT EXISTS job_applications (
       id SERIAL PRIMARY KEY,

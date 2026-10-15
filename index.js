@@ -7311,13 +7311,52 @@ app.post(
     }
   }
 );
+
+// ADMIN: LIST RIDER APPLICATIONS
+// ==================================================
+app.get(
+  '/api/admin/rider-applications',
+  authorizeRoles('admin', 'super_admin'),
+  async (req, res) => {
+    try {
+      const result = await pool.query(`
+        SELECT
+          ra.id,
+          ra.user_id,
+          ra.status,
+          ra.created_at,
+          u.name,
+          u.email,
+          u.phone
+        FROM rider_applications ra
+        JOIN users u ON u.id = ra.user_id
+        ORDER BY
+          CASE WHEN ra.status = 'pending' THEN 0 ELSE 1 END,
+          ra.created_at DESC
+      `);
+
+      return res.json({
+        success: true,
+        applications: result.rows
+      });
+    } catch (error) {
+      console.error('Rider application listing error:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Unable to load rider applications.'
+      });
+    }
+  }
+);
+
+// ==================================================
 // ADMIN: APPROVE RIDER APPLICATION
 // ==================================================
 
 app.post(
   '/api/admin/rider-applications/:id/approve',
 
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'super_admin'),
 
   async (req, res) => {
 

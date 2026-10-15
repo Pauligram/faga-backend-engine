@@ -8490,7 +8490,7 @@ app.get(
 app.get(
   '/api/admin/seller-applications',
 
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'super_admin'),
 
   async (req, res) => {
 
@@ -8547,7 +8547,7 @@ app.get(
 app.post(
   '/api/admin/seller-applications/:id/approve',
 
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'super_admin'),
 
   async (req, res) => {
 
